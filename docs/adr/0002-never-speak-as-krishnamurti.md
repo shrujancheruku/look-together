@@ -1,0 +1,3 @@
+# The app never speaks as Krishnamurti
+
+The Krishnamurti Foundations warn explicitly against AI that produces "Krishnamurti" text or emulates dialogue with him, and hold that his teaching has no interpreters, AI included. So the app never speaks as him, imitates his style, or attributes words to him; its Dialogue is its own way of inquiring, inspired by him rather than presented as his method; and his texts stay out of prompts, retrieval and training unless the Foundations give permission. We give up his words as material, the most obvious way to make the app sound like him, because using them would contradict both the Foundations and the authority-free approach the app exists to share.
