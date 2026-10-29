@@ -1,0 +1,458 @@
+<!doctype html>
+<!-- PROTOTYPE, throwaway: spoken Dialogue next to an on-screen Breakdown. Toggles live in the bottom bar and the URL. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Dialogue prototype</title>
+<style>
+  :root { --bg:#f7f5f0; --fg:#22211f; --muted:#77736b; --card:#fff; --line:#e3dfd6; --accent:#3d6b5a; --kw:#f3e3a6; --heard:#c9a227; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.45 system-ui, sans-serif; background:var(--bg); color:var(--fg); padding-bottom:150px; }
+  header { display:flex; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:17px; margin:0; font-weight:600; }
+  .badge { font:11px/1 ui-monospace, monospace; background:#22211f; color:#fff; padding:4px 6px; border-radius:4px; }
+  main { display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:20px; padding:16px; max-width:1200px; margin:0 auto; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; } #breakdown { position:sticky; top:0; z-index:2; background:var(--bg); max-height:45vh; overflow:auto; } }
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:0 0 8px; }
+  .card { background:var(--card); border:2px solid var(--line); border-radius:10px; padding:10px 12px; margin-bottom:8px; display:flex; gap:10px; transition:border-color .15s, box-shadow .15s, transform .15s; }
+  .card .n { font-weight:700; color:var(--muted); min-width:1.2em; }
+  .card.tappable { cursor:pointer; }
+  .card.tappable:hover { border-color:#c8c2b4; }
+  .card.heard { border-style:dashed; border-color:var(--heard); }
+  .card.focused { border-color:var(--accent); box-shadow:0 0 0 3px #3d6b5a22; transform:translateX(4px); }
+  .card .tag { font-size:11px; color:var(--muted); margin-left:auto; white-space:nowrap; }
+  mark.kw { background:var(--kw); padding:0 2px; border-radius:3px; }
+  #empty { color:var(--muted); font-style:italic; }
+  #status { display:flex; align-items:center; gap:10px; margin-bottom:10px; min-height:40px; }
+  #orb { width:16px; height:16px; border-radius:50%; background:#bbb; flex:none; }
+  #orb.listening { background:#c0392b; animation:pulse 1s infinite; }
+  #orb.thinking { background:#c9a227; animation:pulse .6s infinite; }
+  #orb.speaking { background:var(--accent); animation:pulse 1.4s infinite; }
+  @keyframes pulse { 50% { opacity:.4; } }
+  #stateLabel { font-weight:600; }
+  #interim { color:var(--muted); font-style:italic; }
+  #log .u, #log .a { margin:6px 0; padding:8px 10px; border-radius:10px; max-width:92%; }
+  #log .u { background:#e7eee9; margin-left:auto; }
+  #log .a { background:var(--card); border:1px solid var(--line); }
+  #log .a .unsaid { opacity:.35; }
+  #log .note { font-size:12px; color:var(--muted); text-align:center; }
+  #recap:empty { display:none; }
+  #recap { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin-top:10px; }
+  #recap h3 { margin:4px 0; font-size:15px; }
+  #inputRow { display:flex; gap:8px; margin-top:10px; align-items:center; }
+  #inputRow input { flex:1; padding:10px; border-radius:8px; border:1px solid var(--line); font:inherit; }
+  button { font:inherit; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:var(--card); cursor:pointer; }
+  #mic { width:56px; height:56px; border-radius:50%; font-size:22px; flex:none; touch-action:none; user-select:none; }
+  #mic.on { background:#c0392b; color:#fff; border-color:#c0392b; }
+  #meter { height:6px; background:var(--line); border-radius:3px; position:relative; margin-top:6px; overflow:hidden; }
+  #meter i { position:absolute; inset:0 auto 0 0; background:var(--accent); width:0; }
+  #meter b { position:absolute; top:0; bottom:0; width:2px; background:#c0392b; }
+  #start { position:fixed; inset:0; background:#f7f5f0ee; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; z-index:20; text-align:center; padding:16px; }
+  #start button { font-size:18px; padding:14px 26px; background:var(--accent); color:#fff; border:none; }
+  /* prototype chrome: visually separate from the design being judged */
+  #bar { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#1c1b19; color:#eee; border-radius:14px; padding:8px 10px; display:flex; flex-wrap:wrap; gap:6px 12px; justify-content:center; box-shadow:0 6px 24px #0005; z-index:10; font-size:12px; width:min(980px, calc(100% - 24px)); }
+  #bar label { display:flex; align-items:center; gap:4px; }
+  #bar .seg { display:inline-flex; border:1px solid #444; border-radius:7px; overflow:hidden; }
+  #bar .seg button { background:none; color:#bbb; border:none; border-radius:0; padding:4px 8px; font-size:12px; }
+  #bar .seg button.on { background:#eee; color:#111; }
+  #bar .tbtn { background:#333; color:#eee; border:none; padding:4px 8px; font-size:12px; }
+  #debug { position:fixed; right:12px; top:56px; width:min(560px, calc(100% - 24px)); max-height:calc(100vh - 220px); overflow:auto; background:#1c1b19; color:#ddd; font:12px/1.4 ui-monospace, monospace; border-radius:10px; padding:10px; z-index:15; display:none; }
+  #debug.open { display:block; }
+  #debug table { border-collapse:collapse; width:100%; margin-bottom:8px; }
+  #debug td, #debug th { border-bottom:1px solid #333; padding:3px 4px; text-align:right; }
+  #debug th:first-child, #debug td:first-child { text-align:left; }
+  #debug pre { white-space:pre-wrap; margin:0; }
+  #debug .err { color:#ff8a80; }
+</style>
+</head>
+<body>
+<header><h1>Look Together</h1><span class="badge">PROTOTYPE · voice Dialogue</span><span style="margin-left:auto;color:var(--muted);font-size:13px">headphones recommended for barge-in</span></header>
+
+<main>
+  <section id="breakdown">
+    <h2>Breakdown</h2>
+    <div id="cards"><p id="empty">What would you like to look at? Say it or type it, in your own words.</p></div>
+  </section>
+  <section>
+    <div id="status"><div id="orb"></div><span id="stateLabel">Idle</span><span id="interim"></span></div>
+    <div id="log"></div>
+    <div id="recap"></div>
+    <div id="inputRow">
+      <button id="mic" title="Hold to talk (or hold Space)">🎙</button>
+      <input id="text" placeholder="Type instead…" autocomplete="off">
+      <button id="send">Send</button>
+    </div>
+    <div id="meter"><i></i><b></b></div>
+  </section>
+</main>
+
+<div id="start">
+  <p style="max-width:440px">Throwaway prototype. Audio goes to Google Cloud (STT, Gemini 3.8 Flash on <code>us</code>, TTS) for this session only; nothing is stored.</p>
+  <button id="startBtn">Start</button>
+</div>
+
+<div id="debug"></div>
+<div id="bar"></div>
+
+<script>
+// ---------------- settings (URL-backed, so a variant is shareable and reload-stable) ----------------
+const OPTIONS = {
+  mode:     { label: 'Mode', values: { voice: 'Voice', text: 'Text' } },
+  turn:     { label: 'Turn-taking', values: { barge: 'Barge-in', ptt: 'Push-to-talk' } },
+  read:     { label: 'Breakdown', values: { '0': 'Shown only', '1': 'Read aloud' } },
+  pick:     { label: 'Pick by', values: { both: 'Tap + voice', tap: 'Tap', voice: 'Voice' } },
+  captions: { label: 'Voice transcript', values: { '1': 'Shown', '0': 'Hidden' } },
+  think:    { label: 'Breakdown thinking', values: { high: 'High', low: 'Low' } }, // Dialogue turns are always low
+};
+const params = new URLSearchParams(location.search);
+const S = { silence: +(params.get('silence') ?? 800), vad: +(params.get('vad') ?? 0.02) };
+for (const [k, o] of Object.entries(OPTIONS)) { const v = params.get(k); S[k] = v in o.values ? v : Object.keys(o.values)[0]; }
+function setSetting(k, v) {
+  S[k] = v; params.set(k, v); history.replaceState(null, '', '?' + params);
+  if (k === 'mode' && v === 'text') { stopCapture(true); interruptPlayback(); }
+  pushSettings(); renderBar(); renderCards(); renderLog(); updateUi();
+}
+function pushSettings() {
+  send({ type: 'settings', settings: { speak: S.mode === 'voice', readBreakdown: S.read === '1', thinking: S.think } });
+}
+
+function renderBar() {
+  const bar = document.getElementById('bar');
+  bar.innerHTML = '';
+  for (const [k, o] of Object.entries(OPTIONS)) {
+    const l = document.createElement('label'); l.textContent = o.label;
+    const seg = document.createElement('span'); seg.className = 'seg';
+    for (const [v, name] of Object.entries(o.values)) {
+      const b = document.createElement('button'); b.textContent = name; b.className = S[k] === v ? 'on' : '';
+      b.onclick = () => setSetting(k, v); seg.append(b);
+    }
+    l.append(seg); bar.append(l);
+  }
+  const sil = document.createElement('label');
+  sil.innerHTML = `Silence <input type="range" min="300" max="2000" step="50" value="${S.silence}" style="width:80px"> <span>${S.silence}ms</span>`;
+  sil.querySelector('input').oninput = e => { S.silence = +e.target.value; sil.querySelector('span').textContent = S.silence + 'ms'; params.set('silence', S.silence); history.replaceState(null, '', '?' + params); };
+  const vad = document.createElement('label');
+  vad.innerHTML = `Mic threshold <input type="range" min="0.003" max="0.1" step="0.001" value="${S.vad}" style="width:70px">`;
+  vad.querySelector('input').oninput = e => { S.vad = +e.target.value; params.set('vad', S.vad); history.replaceState(null, '', '?' + params); };
+  const dbg = document.createElement('button'); dbg.className = 'tbtn'; dbg.textContent = 'Debug (d)'; dbg.onclick = () => toggleDebug();
+  const rst = document.createElement('button'); rst.className = 'tbtn'; rst.textContent = 'New Inquiry'; rst.onclick = reset;
+  bar.append(sil, vad, dbg, rst);
+}
+
+// ---------------- state ----------------
+const st = {
+  state: 'idle',          // idle | listening | thinking | speaking
+  capturing: false, cards: {}, focus: null, heard: null,
+  log: [],                // { who: 'u'|'a', text, turn, says: [{seq, text}], note }
+  recap: [], interim: '', turn: 0, playedSeq: 0, lastAudioSeq: 0, turnDone: true,
+  timings: [], usage: null, errors: [], serverDump: null,
+};
+let pendingTurn = null; // client-side timing for the turn in flight
+
+// ---------------- websocket ----------------
+let ws;
+function send(o) { if (ws?.readyState === 1) ws.send(JSON.stringify(o)); }
+function connect() {
+  ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.binaryType = 'arraybuffer';
+  ws.onopen = pushSettings;
+  ws.onmessage = e => onServer(JSON.parse(e.data));
+  ws.onclose = () => { st.errors.push('socket closed: reload to start again'); updateUi(); };
+}
+
+function lastAppEntry(turn) {
+  let e = st.log.findLast(x => x.who === 'a' && x.turn === turn);
+  if (!e) { e = { who: 'a', turn, says: [] }; st.log.push(e); }
+  return e;
+}
+
+function onServer(m) {
+  switch (m.type) {
+    case 'interim':
+      st.interim = m.text; matchSpokenPick(m.text); break;
+    case 'heard':
+      st.interim = '';
+      if (m.text) { st.log.push({ who: 'u', text: m.text }); matchSpokenPick(m.text); }
+      if (pendingTurn) pendingTurn.sttFinalMs = m.sttFinalMs;
+      break;
+    case 'state':
+      if (m.turn && st.capturing) { send({ type: 'interrupt', playedSeq: 0 }); break; } // they kept talking: drop this reply
+      if (m.turn) { st.turn = m.turn; st.turnDone = false; st.playedSeq = 0; st.lastAudioSeq = 0; }
+      st.state = m.state; break;
+    case 'focus':
+      if (m.turn === st.turn) { st.focus = m.n; st.heard = null; renderCards(); } break;
+    case 'assumption': {
+      const prev = st.cards[m.n];
+      st.cards[m.n] = { text: m.text, added: m.added || prev?.added, reworded: m.reworded, fresh: Date.now() };
+      renderCards(); break;
+    }
+    case 'display':
+      st.recap.push(m.text); break;
+    case 'say': {
+      if (m.turn !== st.turn) break;
+      lastAppEntry(m.turn).says.push({ seq: m.seq, text: m.text });
+      if (!m.spoken && pendingTurn && pendingTurn.firstShown == null) pendingTurn.firstShown = performance.now();
+      break;
+    }
+    case 'audio':
+      if (m.turn === st.turn && S.mode === 'voice') playAudio(m); break;
+    case 'turn-done':
+      if (m.turn !== st.turn) break;
+      st.turnDone = true;
+      if (pendingTurn) { Object.assign(pendingTurn, m.marks, { thoughts: m.thoughts }); finishTiming(); }
+      if (!playing()) st.state = 'idle';
+      break;
+    case 'interrupted':
+      lastAppEntry(m.turn).note = 'interrupted'; break;
+    case 'usage': st.usage = m; break;
+    case 'error': st.errors.push(`${m.where}: ${m.message}`); if (m.where === 'llm') st.state = 'idle'; break;
+    case 'dump': st.serverDump = m; break;
+  }
+  renderCards(); renderLog(); updateUi();
+}
+
+// ---------------- Breakdown cards ----------------
+const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<mark class="kw">$1</mark>').replace(/\*(.+?)\*/g, '<em>$1</em>');
+const keywords = s => [...s.matchAll(/\*\*(.+?)\*\*/g)].map(m => m[1].toLowerCase());
+
+function renderCards() {
+  const el = document.getElementById('cards');
+  const ns = Object.keys(st.cards).map(Number).sort((a, b) => a - b);
+  if (!ns.length) { el.innerHTML = '<p id="empty">What would you like to look at? Say it or type it, in your own words.</p>'; return; }
+  el.innerHTML = '';
+  const tappable = S.pick !== 'voice';
+  for (const n of ns) {
+    const c = st.cards[n];
+    const d = document.createElement('div');
+    d.className = 'card' + (tappable ? ' tappable' : '') + (st.focus === n ? ' focused' : '') + (st.heard === n && st.focus !== n ? ' heard' : '');
+    d.innerHTML = `<span class="n">${n}</span><span>${md(c.text)}</span><span class="tag">${c.added ? 'added' : c.reworded ? 'reworded' : ''}</span>`;
+    if (tappable) d.onclick = () => tapCard(n);
+    el.append(d);
+  }
+}
+
+function tapCard(n) {
+  if (st.state === 'speaking' || st.state === 'thinking') interruptPlayback();
+  stopCapture(true);
+  st.focus = n; st.heard = null;
+  st.log.push({ who: 'u', text: `[Tapped Assumption ${n}]` });
+  startTiming('tap');
+  send({ type: 'text', text: `[Tapped Assumption ${n}]` });
+  renderCards(); renderLog();
+}
+
+// Client-side match so the card lights up while the person is still speaking, before the model answers.
+const ORD = { one: 1, first: 1, two: 2, second: 2, three: 3, third: 3, four: 4, fourth: 4, five: 5, fifth: 5, six: 6, sixth: 6 };
+function matchSpokenPick(text) {
+  if (S.pick === 'tap' || !text) return;
+  const t = text.toLowerCase();
+  let hit = null;
+  const num = t.match(/\b(?:number|assumption|the)\s+(one|two|three|four|five|six|first|second|third|fourth|fifth|sixth|\d)\b/);
+  if (num) hit = ORD[num[1]] ?? +num[1];
+  else for (const [n, c] of Object.entries(st.cards))
+    for (const kw of keywords(c.text))
+      if (kw.split(/\s+/).every(w => t.includes(w.length > 5 ? w.slice(0, 5) : w))) hit = +n;
+  if (hit && st.cards[hit] && hit !== st.heard) { st.heard = hit; renderCards(); }
+}
+
+// ---------------- Dialogue log ----------------
+function renderLog() {
+  const el = document.getElementById('log');
+  const showAll = S.mode === 'text' || S.captions === '1';
+  el.innerHTML = '';
+  for (const e of st.log) {
+    if (!showAll && !(S.mode === 'voice' && e === st.log[st.log.length - 1] && e.who === 'u')) continue;
+    const d = document.createElement('div'); d.className = e.who;
+    if (e.who === 'u') d.textContent = e.text;
+    else {
+      d.innerHTML = e.says.map(s => `<span class="${S.mode === 'voice' && e.turn === st.turn && s.seq > st.playedSeq && st.state === 'speaking' ? 'unsaid' : ''}">${md(s.text)}</span>`).join(' ');
+      if (!e.says.length) continue;
+    }
+    el.append(d);
+    if (e.note) { const n = document.createElement('div'); n.className = 'note'; n.textContent = `— ${e.note} —`; el.append(n); }
+  }
+  const r = document.getElementById('recap');
+  r.innerHTML = st.recap.map(l => l.startsWith('#') ? `<h3>${md(l.replace(/^#+\s*/, ''))}</h3>` : `<div>${md(l)}</div>`).join('');
+  if (showAll) el.lastElementChild?.scrollIntoView({ block: 'nearest' });
+}
+
+// ---------------- audio out ----------------
+let actx, nextTime = 0, sources = [];
+const playing = () => sources.length > 0;
+// Decode in arrival order: a short clip decodes faster and would otherwise jump ahead of a longer one.
+let decodeChain = Promise.resolve();
+function playAudio(m) { decodeChain = decodeChain.then(() => playAudioNow(m)).catch(e => st.errors.push('audio: ' + e.message)); }
+async function playAudioNow(m) {
+  const bytes = Uint8Array.from(atob(m.data), c => c.charCodeAt(0));
+  const buf = await actx.decodeAudioData(bytes.buffer);
+  if (m.turn !== st.turn) return;
+  const src = actx.createBufferSource(); src.buffer = buf; src.connect(actx.destination);
+  const at = Math.max(actx.currentTime + 0.02, nextTime);
+  src.start(at); nextTime = at + buf.duration; sources.push(src);
+  st.lastAudioSeq = m.seq;
+  if (pendingTurn && pendingTurn.playStart == null) { pendingTurn.playStart = performance.now() + (at - actx.currentTime) * 1000; finishTiming(); }
+  setTimeout(() => { if (m.turn === st.turn && st.state !== 'listening') { st.state = 'speaking'; renderLog(); updateUi(); } }, (at - actx.currentTime) * 1000);
+  src.onended = () => {
+    sources = sources.filter(s => s !== src);
+    if (m.turn === st.turn) st.playedSeq = Math.max(st.playedSeq, m.seq);
+    if (!playing() && st.turnDone && st.state === 'speaking') st.state = 'idle';
+    renderLog(); updateUi();
+  };
+}
+function interruptPlayback() {
+  const wasActive = playing() || st.state === 'speaking' || st.state === 'thinking';
+  for (const s of sources) { s.onended = null; try { s.stop(); } catch {} }
+  sources = []; nextTime = 0;
+  if (wasActive && !st.turnDone) send({ type: 'interrupt', playedSeq: st.playedSeq });
+  st.turn = -1; st.turnDone = true;
+}
+
+// ---------------- audio in: worklet downsamples to 16 kHz PCM16, 20 ms frames + RMS ----------------
+const WORKLET = `class Cap extends AudioWorkletProcessor {
+  constructor() { super(); this.r = sampleRate / 16000; this.acc = 0; this.sum = 0; this.n = 0; this.out = new Int16Array(320); this.o = 0; this.e = 0; this.en = 0; }
+  process(inputs) { const ch = inputs[0][0]; if (!ch) return true;
+    for (let i = 0; i < ch.length; i++) { const s = ch[i]; this.e += s * s; this.en++; this.sum += s; this.n++;
+      if (++this.acc >= this.r) { this.acc -= this.r; const v = this.sum / this.n; this.sum = 0; this.n = 0;
+        this.out[this.o++] = Math.max(-1, Math.min(1, v)) * 32767;
+        if (this.o === 320) { this.port.postMessage({ pcm: this.out.slice().buffer, rms: Math.sqrt(this.e / this.en) }); this.o = 0; this.e = 0; this.en = 0; } } }
+    return true; } }
+registerProcessor('cap', Cap);`;
+const preroll = []; // last 300 ms
+let loud = 0, quietMs = 0, lastLoudAt = 0, sendBuf = [];
+async function startMic() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+  await actx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], { type: 'text/javascript' })));
+  const node = new AudioWorkletNode(actx, 'cap');
+  actx.createMediaStreamSource(stream).connect(node);
+  node.port.onmessage = e => onFrame(e.data);
+}
+function onFrame({ pcm, rms }) {
+  const thr = st.state === 'speaking' ? S.vad * 2.5 : S.vad; // raised while the app talks, against echo
+  meter(rms, thr);
+  preroll.push(pcm); if (preroll.length > 15) preroll.shift();
+  if (S.mode !== 'voice') return;
+  if (rms > thr) { loud++; quietMs = 0; lastLoudAt = performance.now(); } else { loud = 0; quietMs += 20; }
+  if (st.capturing) {
+    sendBuf.push(pcm);
+    if (sendBuf.length >= 5) flushAudio();
+    if (S.turn === 'barge' && quietMs >= S.silence) endCapture(lastLoudAt);
+  } else if (S.turn === 'barge' && loud >= 3) beginCapture();
+}
+function flushAudio() {
+  if (!sendBuf.length) return;
+  const total = sendBuf.reduce((a, b) => a + b.byteLength, 0), out = new Uint8Array(total);
+  let o = 0; for (const b of sendBuf) { out.set(new Uint8Array(b), o); o += b.byteLength; }
+  ws.send(out.buffer); sendBuf = [];
+}
+function beginCapture() {
+  if (st.capturing) return;
+  if (st.state === 'speaking' || st.state === 'thinking' || playing()) interruptPlayback();
+  st.capturing = true; st.state = 'listening'; st.interim = ''; st.heard = null;
+  send({ type: 'stt-start' });
+  sendBuf = preroll.slice(); flushAudio();
+  updateUi();
+}
+function endCapture(speechEndAt) {
+  if (!st.capturing) return;
+  flushAudio(); st.capturing = false; st.state = 'thinking';
+  startTiming(S.turn, speechEndAt);
+  send({ type: 'stt-end' });
+  updateUi();
+}
+function stopCapture(cancel) {
+  if (!st.capturing) return;
+  st.capturing = false; sendBuf = [];
+  send({ type: cancel ? 'stt-cancel' : 'stt-end' });
+  if (cancel) st.state = 'idle';
+}
+function meter(rms, thr) {
+  const scale = v => Math.min(100, Math.sqrt(v / 0.15) * 100);
+  document.querySelector('#meter i').style.width = scale(rms) + '%';
+  document.querySelector('#meter b').style.left = scale(thr) + '%';
+}
+
+// push-to-talk: hold the mic button or Space
+const mic = document.getElementById('mic');
+mic.addEventListener('pointerdown', e => { e.preventDefault(); if (S.mode !== 'voice') setSetting('mode', 'voice'); if (S.turn === 'ptt') beginCapture(); else if (st.capturing) endCapture(performance.now()); else beginCapture(); });
+mic.addEventListener('pointerup', () => { if (S.turn === 'ptt') endCapture(performance.now()); });
+mic.addEventListener('pointerleave', () => { if (S.turn === 'ptt' && st.capturing) endCapture(performance.now()); });
+const typing = () => document.activeElement?.matches('input, textarea, [contenteditable]');
+addEventListener('keydown', e => {
+  if (typing()) return;
+  if (e.code === 'Space' && S.turn === 'ptt' && S.mode === 'voice' && !e.repeat) { e.preventDefault(); beginCapture(); }
+  if (e.key === 'd') toggleDebug();
+});
+addEventListener('keyup', e => { if (e.code === 'Space' && S.turn === 'ptt' && !typing()) { e.preventDefault(); endCapture(performance.now()); } });
+
+// typing
+const textEl = document.getElementById('text');
+function sendText() {
+  const t = textEl.value.trim(); if (!t) return;
+  textEl.value = '';
+  interruptPlayback(); stopCapture(true);
+  st.log.push({ who: 'u', text: t }); st.state = 'thinking';
+  startTiming('typed');
+  send({ type: 'text', text: t });
+  renderLog(); updateUi();
+}
+document.getElementById('send').onclick = sendText;
+textEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendText(); });
+
+// ---------------- timings ----------------
+function startTiming(how, speechEndAt) {
+  pendingTurn = { n: st.timings.length + 1, how, mode: S.mode, think: S.think, endWait: how === 'barge' ? S.silence : 0, t0: speechEndAt ?? performance.now() };
+  st.timings.push(pendingTurn);
+}
+function finishTiming() {
+  const p = pendingTurn; if (!p) return;
+  const end = p.playStart ?? p.firstShown;
+  if (end != null) p.perceived = Math.round(end - p.t0);
+}
+
+// ---------------- UI ----------------
+const LABEL = { idle: 'Idle', listening: 'Listening…', thinking: 'Thinking…', speaking: 'Speaking' };
+function updateUi() {
+  document.getElementById('orb').className = st.state;
+  let label = LABEL[st.state];
+  if (st.state === 'idle' && S.mode === 'voice') label = S.turn === 'barge' ? 'Your turn: just speak' : 'Your turn: hold 🎙 or Space';
+  document.getElementById('stateLabel').textContent = label;
+  document.getElementById('interim').textContent = st.capturing || st.state === 'thinking' ? st.interim : '';
+  mic.className = st.capturing ? 'on' : '';
+  mic.style.display = S.mode === 'voice' ? '' : 'none';
+  if (debugOpen) renderDebug();
+}
+let debugOpen = false;
+function toggleDebug() { debugOpen = !debugOpen; document.getElementById('debug').classList.toggle('open', debugOpen); if (debugOpen) send({ type: 'dump' }); updateUi(); }
+const f = v => v == null ? '–' : v;
+function renderDebug() {
+  const u = st.usage;
+  const rows = st.timings.map(t => `<tr><td>${t.n} ${t.how}/${t.mode}/${t.think}</td><td>${t.endWait || '–'}</td><td>${f(t.sttFinalMs)}</td><td>${f(t.firstTokenMs)}</td><td>${f(t.firstSentenceMs)}</td><td>${f(t.firstAudioMs)}</td><td><b>${f(t.perceived)}</b></td><td>${f(t.thoughts)}</td></tr>`).join('');
+  document.getElementById('debug').innerHTML = `
+    <b>Per turn (ms). Server columns from end of capture; "perceived" = last loud mic frame (or release/send) → first audio playing (or first text shown).</b>
+    <table><tr><th>turn</th><th>silence wait</th><th>STT final</th><th>1st token</th><th>1st sentence</th><th>1st audio</th><th>perceived</th><th>thoughts</th></tr>${rows}</table>
+    <b>Usage this Inquiry</b><pre>${u ? `turns ${u.turns} · in ${u.in} · out ${u.out} · thoughts ${u.thoughts} · STT ${u.sttSec.toFixed(1)}s · TTS ${u.ttsChars} chars\nest. cost $${u.cost.toFixed(4)} (list prices)` : '–'}</pre>
+    ${st.errors.map(e => `<div class="err">${esc(e)}</div>`).join('')}
+    <b>Client state</b><pre>${esc(JSON.stringify({ ...S, state: st.state, capturing: st.capturing, turn: st.turn, focus: st.focus, heard: st.heard, playedSeq: st.playedSeq, lastAudioSeq: st.lastAudioSeq, turnDone: st.turnDone, cards: Object.keys(st.cards).length, playing: sources.length }, null, 1))}</pre>
+    <b>Server state</b> <button onclick="send({type:'dump'})" style="font-size:11px;padding:2px 6px">refresh</button><pre>${esc(JSON.stringify(st.serverDump, null, 1) ?? '–')}</pre>`;
+}
+
+function reset() {
+  interruptPlayback(); stopCapture(true);
+  Object.assign(st, { state: 'idle', cards: {}, focus: null, heard: null, log: [], recap: [], interim: '', timings: [], errors: [], turn: 0, turnDone: true });
+  pendingTurn = null;
+  send({ type: 'reset' });
+  renderCards(); renderLog(); updateUi();
+}
+
+document.getElementById('startBtn').onclick = async () => {
+  actx = new AudioContext();
+  try { await startMic(); } catch (e) { st.errors.push('mic: ' + e.message); }
+  document.getElementById('start').remove();
+  updateUi();
+};
+renderBar(); renderCards(); connect(); updateUi();
+</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "voice-dialogue-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^8.2.1",
+    "google-auth-library": "^11.3.1",
+    "ws": "^8.22.0"
+  }
+}
