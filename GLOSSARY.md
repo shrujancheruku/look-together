@@ -28,6 +28,10 @@ _Avoid_: Chat, conversation, coaching
 A question handed back to the person, deliberately unanswered, when a Dialogue can find no further angle of questioning.
 _Avoid_: Homework, takeaway, advice
 
+**Recap**:
+What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Assumptions explored, any change in understanding in the person's own words, the Open Questions, and the Assumptions not looked at yet.
+_Avoid_: Summary, results, takeaways, report
+
 **Pattern**:
 An Assumption or friction that recurs across a person's Inquiries, shown to them only in a long-term view, outside any Inquiry.
 _Avoid_: Insight, profile, progress
