@@ -2,7 +2,7 @@
 
 Usage: python3 run.py [candidate-id ...]   (results are cached in results/; delete a file to rerun it)
 """
-import json, subprocess, sys, tempfile, time, urllib.request, urllib.error
+import json, os, subprocess, sys, tempfile, time, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -10,7 +10,7 @@ HERE = Path(__file__).parent
 PROJECT = "issho-dev-512213"
 SYSTEM = (HERE / "system-prompt.md").read_text()
 PROBLEMS = json.loads((HERE / "problems.json").read_text())
-RESULTS = HERE / "results"
+RESULTS = HERE / os.environ.get("BAKEOFF_RESULTS", "results")
 
 CANDIDATES = [
     {"id": "claude-opus-5-5", "via": "claude-cli"},
@@ -51,7 +51,7 @@ def gemini_turn(model, history):
     d = post(f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}/locations/global/publishers/google/models/{model}:generateContent",
              {"systemInstruction": {"parts": [{"text": SYSTEM}]}, "contents": contents})
     parts = d["candidates"][0].get("content", {}).get("parts", [])
-    return "".join(p.get("text", "") for p in parts if not p.get("thought"))
+    return "".join(p.get("text", "") for p in parts if not p.get("thought")), d.get("usageMetadata")
 
 
 def openai_turn(model, history):
@@ -59,7 +59,7 @@ def openai_turn(model, history):
         {"role": m["role"], "content": m["text"]} for m in history]
     d = post(f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}/locations/global/endpoints/openapi/chat/completions",
              {"model": f"google/{model}", "messages": msgs})
-    return d["choices"][0]["message"]["content"]
+    return d["choices"][0]["message"]["content"], d.get("usage")
 
 
 class ClaudeCli:
@@ -84,7 +84,7 @@ class ClaudeCli:
                 d = {"is_error": True, "result": p.stderr[:300]}
             if not d.get("is_error"):
                 self.session = d["session_id"]
-                return d["result"]
+                return d["result"], {**d.get("usage", {}), "total_cost_usd": d.get("total_cost_usd")}
             time.sleep(10 * (i + 1))
         raise RuntimeError(d.get("result"))
 
@@ -100,12 +100,12 @@ def run_one(cand, prob):
             history.append({"role": "user", "text": text})
             t0 = time.time()
             if cli:
-                reply = cli.turn(history)
+                reply, usage = cli.turn(history)
             elif cand["via"] == "vertex-gemini":
-                reply = gemini_turn(cand["id"], history)
+                reply, usage = gemini_turn(cand["id"], history)
             else:
-                reply = openai_turn(cand["id"], history)
-            history.append({"role": "assistant", "text": reply, "seconds": round(time.time() - t0, 1)})
+                reply, usage = openai_turn(cand["id"], history)
+            history.append({"role": "assistant", "text": reply, "seconds": round(time.time() - t0, 1), "usage": usage})
     except Exception as e:
         return f"FAILED  {cand['id']} / {prob['id']}: {e}"
     out.parent.mkdir(parents=True, exist_ok=True)

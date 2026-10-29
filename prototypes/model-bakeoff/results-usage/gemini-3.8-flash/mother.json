@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that by age 41, you **should** no longer be affected by her words.\n2. You assume that her comments are what **wrecks** your day.\n3. You assume that still feeling this reaction means you are not **over it**.\n\nWhich of these stands out?",
+      "seconds": 5.9,
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 66,
+        "totalTokenCount": 1433,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 66
+          }
+        ],
+        "thoughtsTokenCount": 490
+      }
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What connects your age to how much her criticism affects you?",
+      "seconds": 3.7,
+      "usage": {
+        "promptTokenCount": 952,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1315,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 952
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 351
+      }
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "You are an adult, and her words still affect you. What tells you that those two things can't exist together?",
+      "seconds": 7.4,
+      "usage": {
+        "promptTokenCount": 983,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1564,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 983
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "thoughtsTokenCount": 556
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Where did that rule come from\u2014that an adult isn't supposed to care?",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 1014,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1378,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1014
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "thoughtsTokenCount": 347
+      }
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "We've hit a blank on where the rule came from. \n\nIf a friend told you their mother's criticism still hurt them at 41, would you expect them not to care?",
+      "seconds": 8.8,
+      "usage": {
+        "promptTokenCount": 1034,
+        "candidatesTokenCount": 41,
+        "totalTokenCount": 1526,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1034
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 41
+          }
+        ],
+        "thoughtsTokenCount": 451
+      }
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's leave this one with an Open Question for you to hold:\n\n*What would it mean if an adult never actually stops caring what their mother thinks?*\n\nWe can look at one of the others, or stop here:\n\n2. You assume that her comments are what **wrecks** your day.\n3. You assume that still feeling this reaction means you are not **over it**.\n\nWhere would you like to go?",
+      "seconds": 6.2,
+      "usage": {
+        "promptTokenCount": 1082,
+        "candidatesTokenCount": 92,
+        "totalTokenCount": 1739,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1082
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 92
+          }
+        ],
+        "thoughtsTokenCount": 565
+      }
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that by age 41, you **should** no longer be affected by her words.\n\n**In your words**\n- \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n- What would it mean if an adult never actually stops caring what their mother thinks?\n\n**Assumptions not looked at yet**\n- You assume that her comments are what **wrecks** your day.\n- You assume that still feeling this reaction means you are not **over it**.",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 1179,
+        "candidatesTokenCount": 128,
+        "totalTokenCount": 1680,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1179
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 128
+          }
+        ],
+        "thoughtsTokenCount": 373
+      }
+    }
+  ]
+}

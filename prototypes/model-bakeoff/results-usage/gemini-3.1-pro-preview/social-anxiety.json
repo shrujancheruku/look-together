@@ -1,0 +1,175 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume there is a **right** way to speak that you must prepare for.\n2. You assume the things you say are often **wrong**.\n3. You assume other people are paying enough attention to **judge** you.\n4. You assume that being seen as **weird** is a problem.\n\nWhich of these stands out?",
+      "seconds": 11.8,
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 73,
+        "totalTokenCount": 1685,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 73
+          }
+        ],
+        "thoughtsTokenCount": 752
+      }
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you rehearse, what does the \"right\" way to speak actually look like to you?",
+      "seconds": 7.3,
+      "usage": {
+        "promptTokenCount": 936,
+        "candidatesTokenCount": 19,
+        "totalTokenCount": 1279,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 936
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 19
+          }
+        ],
+        "thoughtsTokenCount": 324
+      }
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't have tips or solutions. This is just a place to look at how you understand the situation. \n\nWhen you are rehearsing, what makes something the \"right\" thing to say?",
+      "seconds": 10.8,
+      "usage": {
+        "promptTokenCount": 971,
+        "candidatesTokenCount": 42,
+        "totalTokenCount": 1461,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 971
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 42
+          }
+        ],
+        "thoughtsTokenCount": 448
+      }
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"coming across badly\" look like to you?",
+      "seconds": 9.0,
+      "usage": {
+        "promptTokenCount": 1030,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1493,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1030
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 451
+      }
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "If you've never asked anyone, how do you decide that you came across badly?",
+      "seconds": 9.0,
+      "usage": {
+        "promptTokenCount": 1052,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1476,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1052
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "thoughtsTokenCount": 406
+      }
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**The Assumption explored:**\nYou assume there is a **right** way to speak that you must prepare for. \n\n**What you noticed:**\nYou saw that when it comes to coming across badly, \"I suppose I've never actually asked anyone.\"\n\n**Open Question:**\nIf you've never asked anyone, how do you decide that you came across badly?\n\n**Assumptions not looked at yet:**\n* You assume the things you say are often **wrong**.\n* You assume other people are paying enough attention to **judge** you.\n* You assume that being seen as **weird** is a problem.",
+      "seconds": 8.0,
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 136,
+        "totalTokenCount": 1756,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 136
+          }
+        ],
+        "thoughtsTokenCount": 542
+      }
+    }
+  ]
+}

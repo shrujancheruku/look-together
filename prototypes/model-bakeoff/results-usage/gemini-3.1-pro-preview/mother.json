@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your age means you **should** no longer be affected by her words.\n2. You assume that her criticism has the power to **wreck** your day.\n3. You assume you know what being **over it** looks like.\n4. You assume her criticism says something real about **how you live** your life.\n\nWhich of these stands out?",
+      "seconds": 10.7,
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 80,
+        "totalTokenCount": 1589,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 80
+          }
+        ],
+        "thoughtsTokenCount": 632
+      }
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does being 'over it' actually look like to you?",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 966,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1191,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 966
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 212
+      }
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "So the rule is that an adult shouldn't care. When you *do* care, what do you tell yourself about that?",
+      "seconds": 11.1,
+      "usage": {
+        "promptTokenCount": 998,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1664,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 998
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "thoughtsTokenCount": 639
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's slow down. When the phone call ends and you realize you *do* care, what makes caring wrong?",
+      "seconds": 10.1,
+      "usage": {
+        "promptTokenCount": 1031,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1574,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1031
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "thoughtsTokenCount": 518
+      }
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "We seem to be hitting a wall on this one. I will leave this as an open question for you to keep looking at on your own: Does the feeling of being 'wrecked' come from her actual words, or from the fact that you care when you believe you shouldn't?\n\nWould you like to look at another Assumption from the list, or stop here?",
+      "seconds": 14.9,
+      "usage": {
+        "promptTokenCount": 1059,
+        "candidatesTokenCount": 76,
+        "totalTokenCount": 2394,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1059
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 76
+          }
+        ],
+        "thoughtsTokenCount": 1259
+      }
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That is alright. It sounds like a good place to stop for today.\n\n### What we looked at\n\n**Assumptions explored**\n* You assume that your age means you should no longer be affected by her words. You noted the rule you hold that \"Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n* Does the feeling of being 'wrecked' come from her actual words, or from the fact that you care when you believe you shouldn't?\n\n**Assumptions not looked at yet**\n* You assume that her criticism has the power to wreck your day.\n* You assume you know what being over it looks like.\n* You assume her criticism says something real about how you live your life.",
+      "seconds": 16.9,
+      "usage": {
+        "promptTokenCount": 1142,
+        "candidatesTokenCount": 156,
+        "totalTokenCount": 2480,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1142
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 156
+          }
+        ],
+        "thoughtsTokenCount": 1182
+      }
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "We will stop here. You can return whenever you are ready.",
+      "seconds": 4.6,
+      "usage": {
+        "promptTokenCount": 1303,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1511,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1303
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 195
+      }
+    }
+  ]
+}

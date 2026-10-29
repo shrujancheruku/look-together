@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is a specific thing you are **supposed** to do with your life.\n2. You assume that the people around you have actually **found** clarity, rather than just settled into a direction.\n3. You assume that by age 34, you **should** already know your path.\n4. You assume that not having a single defined pursuit means your life is being **wasted**.\n\nWhich of these stands out?",
+      "seconds": 8.8,
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 96,
+        "totalTokenCount": 1596,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 96
+          }
+        ],
+        "thoughtsTokenCount": 628
+      }
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say you don't know what you are \"supposed\" to do, who or what does the supposing?",
+      "seconds": 9.1,
+      "usage": {
+        "promptTokenCount": 976,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1331,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 976
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "thoughtsTokenCount": 330
+      }
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "What makes you think a purpose exists out there waiting to be found, rather than being something that is made?",
+      "seconds": 6.2,
+      "usage": {
+        "promptTokenCount": 1025,
+        "candidatesTokenCount": 22,
+        "totalTokenCount": 1594,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1025
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 22
+          }
+        ],
+        "thoughtsTokenCount": 547
+      }
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "You assume that it is **too late** for you to find or choose a purpose. \n\nAdd it?",
+      "seconds": 4.5,
+      "usage": {
+        "promptTokenCount": 1064,
+        "candidatesTokenCount": 23,
+        "totalTokenCount": 1342,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1064
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 23
+          }
+        ],
+        "thoughtsTokenCount": 255
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine, we don't have to add it. \n\nWhere does your attention go right now: whether a purpose is out there waiting for you, or the sense that time is running out?",
+      "seconds": 4.6,
+      "usage": {
+        "promptTokenCount": 1093,
+        "candidatesTokenCount": 43,
+        "totalTokenCount": 1584,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1093
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 43
+          }
+        ],
+        "thoughtsTokenCount": 448
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "We've hit a point where it just feels true, even without words for it. \n\nIf there weren't a pre-set purpose waiting out there for you to find, what would that mean for how you live right now?",
+      "seconds": 5.2,
+      "usage": {
+        "promptTokenCount": 1148,
+        "candidatesTokenCount": 49,
+        "totalTokenCount": 1521,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1148
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 49
+          }
+        ],
+        "thoughtsTokenCount": 324
+      }
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that there is a specific thing you are **supposed** to do with your life.\n  - You described this as: *\"Like there's a purpose out there and I just haven't found it yet. Some people find it early.\"*\n\n**Open Questions**\n- If there weren't a pre-set purpose waiting out there for you to find, what would that mean for how you live right now?\n- Is purpose something that exists out there waiting to be found, or is it something made?\n\n**Assumptions not looked at yet**\n- You assume that the people around you have actually **found** clarity, rather than just settled into a direction.\n- You assume that by age 34, you **should** already know your path.\n- You assume that not having a single defined pursuit means your life is being **wasted**.\n- The potential assumption you brought up: that it is **too late** for you.",
+      "seconds": 5.2,
+      "usage": {
+        "promptTokenCount": 1204,
+        "candidatesTokenCount": 215,
+        "totalTokenCount": 1871,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1204
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 215
+          }
+        ],
+        "thoughtsTokenCount": 452
+      }
+    }
+  ]
+}

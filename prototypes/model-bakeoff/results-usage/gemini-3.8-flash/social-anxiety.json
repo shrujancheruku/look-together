@@ -1,0 +1,175 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that social interaction requires advance **preparation** to go well.\n2. You assume that what you said was actually **wrong**.\n3. You assume that other people are judging you as **weird**.\n4. You assume that replaying the event gives you an **accurate** picture of how it went.\n\nWhich of these stands out?",
+      "seconds": 5.5,
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 74,
+        "totalTokenCount": 1388,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 74
+          }
+        ],
+        "thoughtsTokenCount": 454
+      }
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "What do you imagine would happen if you went in without preparing anything?",
+      "seconds": 8.1,
+      "usage": {
+        "promptTokenCount": 937,
+        "candidatesTokenCount": 14,
+        "totalTokenCount": 1212,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 937
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 14
+          }
+        ],
+        "thoughtsTokenCount": 261
+      }
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't offer tips or solutions. This is a place to look at how you see it.\n\nWhat do you imagine would happen if you went into an event without preparing anything?",
+      "seconds": 4.4,
+      "usage": {
+        "promptTokenCount": 967,
+        "candidatesTokenCount": 38,
+        "totalTokenCount": 1346,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 967
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 38
+          }
+        ],
+        "thoughtsTokenCount": 341
+      }
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "What is going on for you when you say you know you come across badly?",
+      "seconds": 4.8,
+      "usage": {
+        "promptTokenCount": 1022,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 1615,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1022
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "thoughtsTokenCount": 577
+      }
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "If you haven't asked anyone, what tells you that you come across badly?",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 1048,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1508,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1048
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "thoughtsTokenCount": 443
+      }
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that social interaction requires advance preparation to go well.\n\n**In your own words**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- If you haven't asked anyone, what tells you that you come across badly?\n\n**Assumptions not looked at yet**\n- You assume that what you said was actually **wrong**.\n- You assume that other people are judging you as **weird**.\n- You assume that replaying the event gives you an **accurate** picture of how it went.",
+      "seconds": 5.0,
+      "usage": {
+        "promptTokenCount": 1073,
+        "candidatesTokenCount": 126,
+        "totalTokenCount": 1600,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1073
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 126
+          }
+        ],
+        "thoughtsTokenCount": 401
+      }
+    }
+  ]
+}

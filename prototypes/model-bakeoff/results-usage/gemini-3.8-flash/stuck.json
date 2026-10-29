@@ -1,0 +1,147 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What are you feeling stuck in?",
+      "seconds": 4.8,
+      "usage": {
+        "promptTokenCount": 833,
+        "candidatesTokenCount": 7,
+        "totalTokenCount": 986,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 833
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 7
+          }
+        ],
+        "thoughtsTokenCount": 146
+      }
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that staying in the same job, flat, and routine for six years means something has gone **wrong**.\n2. You assume that you **ought** to be changing.\n3. You assume that setting an intention in January is what makes change **happen**.\n4. You assume that remaining where you are means you are **stuck** rather than choosing to stay.\n\nWhich of these stands out?",
+      "seconds": 6.2,
+      "usage": {
+        "promptTokenCount": 875,
+        "candidatesTokenCount": 88,
+        "totalTokenCount": 1717,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 875
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 88
+          }
+        ],
+        "thoughtsTokenCount": 754
+      }
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"this is the year\" in January, what do you expect that declaration to do?",
+      "seconds": 6.0,
+      "usage": {
+        "promptTokenCount": 967,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1290,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 967
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "thoughtsTokenCount": 302
+      }
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "You assume that change has to be **big** to count as change. Add it?",
+      "seconds": 10.6,
+      "usage": {
+        "promptTokenCount": 1001,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1991,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1001
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "thoughtsTokenCount": 972
+      }
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that setting an intention in January is what makes change **happen**.\n\n**In your own words**\n- \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Open question**\n- What makes an action count as change?\n\n**Assumptions not looked at yet**\n- You assume that staying in the same job, flat, and routine for six years means something has gone **wrong**.\n- You assume that you **ought** to be changing.\n- You assume that remaining where you are means you are **stuck** rather than choosing to stay.\n- You assume that change has to be **big** to count as change.",
+      "seconds": 6.1,
+      "usage": {
+        "promptTokenCount": 1024,
+        "candidatesTokenCount": 153,
+        "totalTokenCount": 1611,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1024
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 153
+          }
+        ],
+        "thoughtsTokenCount": 434
+      }
+    }
+  ]
+}

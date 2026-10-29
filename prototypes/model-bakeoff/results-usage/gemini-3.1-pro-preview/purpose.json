@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that the people around you have actually **found** their thing.\n3. You assume that a life is meant to be organized around a single **thing**.\n4. You assume that living without knowing this purpose means you are **wasting** your life.\n\nWhich of these stands out?",
+      "seconds": 7.7,
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 85,
+        "totalTokenCount": 1477,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 85
+          }
+        ],
+        "thoughtsTokenCount": 520
+      }
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "Who or what is deciding what you are supposed to do?",
+      "seconds": 5.7,
+      "usage": {
+        "promptTokenCount": 965,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1310,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 965
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 333
+      }
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "You talk about this purpose as if it is an object \"out there\" waiting to be found. What does \"out there\" mean to you?",
+      "seconds": 6.6,
+      "usage": {
+        "promptTokenCount": 1001,
+        "candidatesTokenCount": 30,
+        "totalTokenCount": 1503,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1001
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 30
+          }
+        ],
+        "thoughtsTokenCount": 472
+      }
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "You assume that it is **too late** for you. Add it?",
+      "seconds": 3.3,
+      "usage": {
+        "promptTokenCount": 1048,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1197,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1048
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 134
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "You named it as an assumption, but now you aren't sure. What makes you hesitate?",
+      "seconds": 6.6,
+      "usage": {
+        "promptTokenCount": 1069,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 1541,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1069
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 20
+          }
+        ],
+        "thoughtsTokenCount": 452
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "It feels that way. What exactly is it too late for?",
+      "seconds": 10.7,
+      "usage": {
+        "promptTokenCount": 1101,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1733,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1101
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 619
+      }
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n* You assume there is something you are **supposed** to do with your life.\n* You assume that it is **too late** for you.\n\n**What you noticed:**\n* You described feeling \"like there's a purpose out there and I just haven't found it yet.\" \n* You brought up a new assumption \"that it's too late for me,\" noting that \"it just feels that way.\"\n\n**Open Questions:**\n* What does a purpose being \"out there\" mean to you?\n* What exactly is it too late for?\n\n**Assumptions not looked at yet:**\n* You assume that the people around you have actually **found** their thing.\n* You assume that a life is meant to be organized around a single **thing**.\n* You assume that living without knowing this purpose means you are **wasting** your life.",
+      "seconds": 8.9,
+      "usage": {
+        "promptTokenCount": 1121,
+        "candidatesTokenCount": 196,
+        "totalTokenCount": 1917,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1121
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 196
+          }
+        ],
+        "thoughtsTokenCount": 600
+      }
+    }
+  ]
+}

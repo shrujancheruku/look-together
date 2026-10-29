@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume there is an objective measure for doing things **properly**.\n2. You assume that without your oversight, **nothing** would get done.\n3. You assume that your partner calling you controlling means they are making you the **bad guy**.\n\nWhich of these stands out?",
+      "seconds": 10.0,
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 61,
+        "totalTokenCount": 1730,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 61
+          }
+        ],
+        "thoughtsTokenCount": 795
+      }
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "What makes a way of doing things the \"proper\" way?",
+      "seconds": 7.3,
+      "usage": {
+        "promptTokenCount": 939,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1251,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 939
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 299
+      }
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"things fall apart,\" what actually happens?",
+      "seconds": 5.8,
+      "usage": {
+        "promptTokenCount": 969,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1348,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 969
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 367
+      }
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for Krishnamurti or anyone else. This is about you looking at your own understanding. \n\nWhen you say \"things fall apart\" if you let go, what actually happens?",
+      "seconds": 4.8,
+      "usage": {
+        "promptTokenCount": 990,
+        "candidatesTokenCount": 42,
+        "totalTokenCount": 1304,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 990
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 42
+          }
+        ],
+        "thoughtsTokenCount": 272
+      }
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "I can't answer who has the problem. We are looking at your own understanding of this. \n\nWhen you say things fall apart, what actually happens in the house or with the money?",
+      "seconds": 7.1,
+      "usage": {
+        "promptTokenCount": 1046,
+        "candidatesTokenCount": 40,
+        "totalTokenCount": 1574,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1046
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 40
+          }
+        ],
+        "thoughtsTokenCount": 488
+      }
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "If you look at it now, what does \"properly\" mean?",
+      "seconds": 5.3,
+      "usage": {
+        "promptTokenCount": 1102,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1437,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1102
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 320
+      }
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n* You assume there is an objective measure for doing things **properly**.\n\n**Your understanding:**\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions:**\n* When you say \"things fall apart,\" what actually happens?\n* If you look at it now, what does \"properly\" mean?\n\n**Assumptions not looked at yet:**\n* You assume that without your oversight, **nothing** would get done.\n* You assume that your partner calling you controlling means they are making you the **bad guy**.",
+      "seconds": 8.5,
+      "usage": {
+        "promptTokenCount": 1128,
+        "candidatesTokenCount": 132,
+        "totalTokenCount": 1774,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1128
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 132
+          }
+        ],
+        "thoughtsTokenCount": 514
+      }
+    }
+  ]
+}

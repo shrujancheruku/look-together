@@ -1,0 +1,271 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that what you say needs to be **prepared** in advance to come out **right**.\n2. You assume that some of what you said was **wrong**, and that replaying it afterwards **does** something.\n3. You assume that other people are **watching** and **judging** what you say.\n4. You assume that you know what people **think** of you, and that it is \"**weird**.\"\n5. You assume that the **anxiety** is a sign that something is actually **at stake**.\n\nWhich of these stands out?",
+      "seconds": 5.0,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 1775,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 207,
+        "output_tokens_details": {
+          "thinking_tokens": 55
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 1775,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 207,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 1775,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1775
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.018348
+      }
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"right\" mean to you here? What would it look like if what you said came out right?",
+      "seconds": 3.5,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 213,
+        "cache_read_input_tokens": 1775,
+        "output_tokens": 26,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 213,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 26,
+            "cache_read_input_tokens": 1775,
+            "cache_creation_input_tokens": 213,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 213
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.020943
+      }
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I won't give tips here. This is a place to look at your own understanding, not to be handed a fix. You picked \"right,\" so let's stay with that: when you rehearse, what are you trying to make sure happens?",
+      "seconds": 4.3,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 50,
+        "cache_read_input_tokens": 1988,
+        "output_tokens": 132,
+        "output_tokens_details": {
+          "thinking_tokens": 67
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 50,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 132,
+            "cache_read_input_tokens": 1988,
+            "cache_creation_input_tokens": 50,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 50
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0243966
+      }
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "Okay. Then what is the rehearsing for, if not to get it right?",
+      "seconds": 3.8,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 154,
+        "cache_read_input_tokens": 2038,
+        "output_tokens": 123,
+        "output_tokens_details": {
+          "thinking_tokens": 98
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 154,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 123,
+            "cache_read_input_tokens": 2038,
+            "cache_creation_input_tokens": 154,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 154
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0285122
+      }
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "Then I'll reword the first one to fit what you've said: *You assume that you **come across** badly, and that you **know** it.*\n\nYou said you \"just know,\" and also that you've never asked anyone. Where does the knowing come from?",
+      "seconds": 7.7,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 142,
+        "cache_read_input_tokens": 2192,
+        "output_tokens": 537,
+        "output_tokens_details": {
+          "thinking_tokens": 465
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 142,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 537,
+            "cache_read_input_tokens": 2192,
+            "cache_creation_input_tokens": 142,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 142
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.04084260000000001
+      }
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored**\n1. *You assume that you **come across** badly, and that you **know** it.* (Reworded from \"You assume that what you say needs to be **prepared** in advance to come out **right**.\")\n\n**In your words**\n- At first: \"I just know I come across badly.\"\n- Then: \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- If you've never asked anyone, where does the knowing come from?\n\n**Not looked at yet**\n2. You assume that some of what you said was **wrong**, and that replaying it afterwards **does** something.\n3. You assume that other people are **watching** and **judging** what you say.\n4. You assume that you know what people **think** of you, and that it is \"**weird**.\"\n5. You assume that the **anxiety** is a sign that something is actually **at stake**.",
+      "seconds": 6.0,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 551,
+        "cache_read_input_tokens": 2334,
+        "output_tokens": 403,
+        "output_tokens_details": {
+          "thinking_tokens": 136
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 551,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 403,
+            "cache_read_input_tokens": 2334,
+            "cache_creation_input_tokens": 551,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 551
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.053793400000000005
+      }
+    }
+  ]
+}

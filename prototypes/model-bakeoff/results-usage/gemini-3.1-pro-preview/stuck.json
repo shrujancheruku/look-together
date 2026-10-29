@@ -1,0 +1,147 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What is it that you are stuck on?",
+      "seconds": 4.2,
+      "usage": {
+        "promptTokenCount": 833,
+        "candidatesTokenCount": 9,
+        "totalTokenCount": 1048,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 833
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9
+          }
+        ],
+        "thoughtsTokenCount": 206
+      }
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that staying in the same job, flat, and routine for six years means you are **stuck**.\n2. You assume that **changing** something is the only way to move forward.\n3. You assume that making a declaration in January **should** lead to doing something different.\n4. You assume that not changing anything over six years is a **problem**.\n\nWhich of these stands out?",
+      "seconds": 6.7,
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 87,
+        "totalTokenCount": 1412,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 87
+          }
+        ],
+        "thoughtsTokenCount": 448
+      }
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"this is the year\" in January, what do you expect to make the change actually happen?",
+      "seconds": 6.5,
+      "usage": {
+        "promptTokenCount": 968,
+        "candidatesTokenCount": 23,
+        "totalTokenCount": 1389,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 968
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 23
+          }
+        ],
+        "thoughtsTokenCount": 398
+      }
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "If change means doing something \"big\" like moving or quitting, what happens when you actually face doing those things after January?",
+      "seconds": 10.3,
+      "usage": {
+        "promptTokenCount": 1004,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1765,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1004
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "thoughtsTokenCount": 737
+      }
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**The Assumption explored:**\n* You assume that making a declaration in January should lead to doing something different. \n\n**What you noted:**\n* You saw that to you, change means \"doing something big. Moving abroad or quitting.\"\n\n**An Open Question to keep looking at:**\n* What happens when you actually face doing those \"big\" things after January?\n\n**Assumptions not looked at yet:**\n* You assume that staying in the same job, flat, and routine for six years means you are stuck.\n* You assume that changing something is the only way to move forward.\n* You assume that not changing anything over six years is a problem.",
+      "seconds": 8.7,
+      "usage": {
+        "promptTokenCount": 1034,
+        "candidatesTokenCount": 144,
+        "totalTokenCount": 1783,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1034
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 144
+          }
+        ],
+        "thoughtsTokenCount": 605
+      }
+    }
+  ]
+}

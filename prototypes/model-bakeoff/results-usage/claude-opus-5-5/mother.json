@@ -1,0 +1,315 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your mother **criticises** **everything** you do.\n2. You assume that at 41 you **should** be **over it** by now.\n3. You assume that her words are what **wreck** your day.\n4. You assume that there is a point at which this **stops** affecting you.\n5. You assume that her opinion of your job, partner and parenting **matters** to how you see them.\n\nWhich of these stands out?",
+      "seconds": 6.4,
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 572,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 176,
+        "output_tokens_details": {
+          "thinking_tokens": 48
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 572,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 176,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 572,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 572
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0083468
+      }
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What would \"over it\" look like, if you were?",
+      "seconds": 8.0,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 189,
+        "cache_read_input_tokens": 1786,
+        "output_tokens": 15,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 189,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 15,
+            "cache_read_input_tokens": 1786,
+            "cache_creation_input_tokens": 189,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 189
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.010532
+      }
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "That's a reason you should be, not what it would look like. There's also a premise in it: that caring what your parents think is something adults are meant to grow out of.\n\nSupposed to, according to whom?",
+      "seconds": 6.8,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 45,
+        "cache_read_input_tokens": 1975,
+        "output_tokens": 293,
+        "output_tokens_details": {
+          "thinking_tokens": 233
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 45,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 293,
+            "cache_read_input_tokens": 1975,
+            "cache_creation_input_tokens": 45,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 45
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.017163
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Then leave where it came from aside.\n\nSetting \"supposed to\" down for a moment: do you care what she thinks?",
+      "seconds": 6.1,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 302,
+        "cache_read_input_tokens": 2020,
+        "output_tokens": 111,
+        "output_tokens_details": {
+          "thinking_tokens": 73
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 302,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 111,
+            "cache_read_input_tokens": 2020,
+            "cache_creation_input_tokens": 302,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 302
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.022219000000000003
+      }
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "That's two in a row, so let's go slower and stay with something concrete.\n\nAfter the last call with her, what did the rest of your day actually look like?",
+      "seconds": 7.2,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 119,
+        "cache_read_input_tokens": 2322,
+        "output_tokens": 143,
+        "output_tokens_details": {
+          "thinking_tokens": 98
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 119,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 143,
+            "cache_read_input_tokens": 2322,
+            "cache_creation_input_tokens": 119,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 119
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.026511400000000004
+      }
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We've come at this from a few sides and it keeps landing on \"I don't know,\" so let's leave it here as something to keep looking at.\n\n**Open Question:** If you didn't care what she thinks, what would there be for a phone call to wreck?\n\nYou can go into another Assumption, or stop here. Which would you like?",
+      "seconds": 8.5,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 153,
+        "cache_read_input_tokens": 2441,
+        "output_tokens": 345,
+        "output_tokens_details": {
+          "thinking_tokens": 247
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 153,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 345,
+            "cache_read_input_tokens": 2441,
+            "cache_creation_input_tokens": 153,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 153
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.03513960000000001
+      }
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Assumption explored:**\n- You assume that at 41 you **should** be **over it** by now.\n  - You said: \"Adults aren't supposed to care what their parents think.\"\n  - Where that \"supposed to\" comes from, whether you care what she thinks, and what the day after a call looks like all stayed at \"I don't know.\"\n\n**Open Question:**\n- If you didn't care what she thinks, what would there be for a phone call to wreck?\n\n**Not looked at yet:**\n1. You assume that your mother **criticises** **everything** you do.\n2. You assume that her words are what **wreck** your day.\n3. You assume that there is a point at which this **stops** affecting you.\n4. You assume that her opinion of your job, partner and parenting **matters** to how you see them.",
+      "seconds": 6.6,
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 355,
+        "cache_read_input_tokens": 2594,
+        "output_tokens": 320,
+        "output_tokens_details": {
+          "thinking_tokens": 66
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 355,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 320,
+            "cache_read_input_tokens": 2594,
+            "cache_creation_input_tokens": 355,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 355
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.04491440000000001
+      }
+    }
+  ]
+}

@@ -1,0 +1,259 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that having more **time** at the company means you should be promoted first.\n2. You assume that working **harder** than anyone else is what earns a promotion.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that not getting the promotion means management does not **see** you at all.\n\nWhich of these stands out?",
+      "seconds": 7.6,
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 85,
+        "totalTokenCount": 1449,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 85
+          }
+        ],
+        "thoughtsTokenCount": 475
+      }
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does working \"harder\" actually look like to you?",
+      "seconds": 5.3,
+      "usage": {
+        "promptTokenCount": 978,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1367,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 978
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 376
+      }
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "You are describing what you think the result should be. But what does the \"hard work\" itself actually look like for you?",
+      "seconds": 10.9,
+      "usage": {
+        "promptTokenCount": 1020,
+        "candidatesTokenCount": 26,
+        "totalTokenCount": 1622,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1020
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 26
+          }
+        ],
+        "thoughtsTokenCount": 576
+      }
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "If you don't assume hard work means a reward, what is the connection for you between working harder than anyone and this promotion?",
+      "seconds": 8.7,
+      "usage": {
+        "promptTokenCount": 1065,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1578,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1065
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "thoughtsTokenCount": 486
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's slow down. When you look at your day-to-day, what exactly are you doing that makes you say you work harder than the rest of the team?",
+      "seconds": 7.8,
+      "usage": {
+        "promptTokenCount": 1098,
+        "candidatesTokenCount": 36,
+        "totalTokenCount": 1614,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1098
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 36
+          }
+        ],
+        "thoughtsTokenCount": 480
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "It's alright to let the circle be. I will leave you with this to look at when you are ready: What is the exact difference between working hard, and doing the work that gets promoted?\n\nWould you like to look at one of the other assumptions, or stop for now?",
+      "seconds": 10.5,
+      "usage": {
+        "promptTokenCount": 1147,
+        "candidatesTokenCount": 59,
+        "totalTokenCount": 1839,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1147
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 59
+          }
+        ],
+        "thoughtsTokenCount": 633
+      }
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Since you aren't sure, we can stop here for now. \n\n**What we looked at**\n* The assumption that working harder than anyone else is what earns a promotion.\n* You noted that you \"know life isn't fair,\" but found yourself \"going round in circles\" when trying to pin down the connection between your hard work and the promotion.\n* **Open Question:** What is the exact difference between working hard, and doing the work that gets promoted?\n\n**Assumptions not looked at yet**\n* You assume that having more time at the company means you should be promoted first.\n* You assume that being passed over means you are not good enough.\n* You assume that not getting the promotion means management does not see you at all.",
+      "seconds": 14.1,
+      "usage": {
+        "promptTokenCount": 1213,
+        "candidatesTokenCount": 159,
+        "totalTokenCount": 2165,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1213
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 159
+          }
+        ],
+        "thoughtsTokenCount": 793
+      }
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I cannot tell you if you are right or wrong. What makes you equate not getting this promotion with being a failure?",
+      "seconds": 7.3,
+      "usage": {
+        "promptTokenCount": 1386,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1763,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1386
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "thoughtsTokenCount": 353
+      }
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "We can stop here.\n\n**What we looked at**\n\n* The assumption that working **harder** than anyone else is what earns a promotion. You noted that you \"know life isn't fair\" but found yourself \"going round in circles\" when trying to connect your hard work to the promotion.\n* **Open Question:** What is the exact difference between working hard, and doing the work that gets promoted?\n* The assumption that being passed over means you \"feel like a failure\" or are not good enough. \n* **Open Question:** What makes you equate not getting this promotion with being a failure?\n\n**Assumptions not looked at yet**\n\n* You assume that having more time at the company means you should be promoted first.\n* You assume that not getting the promotion means management does not see you at all.",
+      "seconds": 9.4,
+      "usage": {
+        "promptTokenCount": 1415,
+        "candidatesTokenCount": 173,
+        "totalTokenCount": 2260,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1415
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 173
+          }
+        ],
+        "thoughtsTokenCount": 672
+      }
+    }
+  ]
+}

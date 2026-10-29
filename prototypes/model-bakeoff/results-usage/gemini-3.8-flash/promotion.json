@@ -1,0 +1,259 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that working **harder** than others should result in being promoted.\n2. You assume that having more **time** at the company should give you priority.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that if they truly **saw** your work, they would have chosen you.\n\nWhich of these stands out?",
+      "seconds": 9.0,
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 82,
+        "totalTokenCount": 1601,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 82
+          }
+        ],
+        "thoughtsTokenCount": 630
+      }
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What is it about time at the company that you feel should earn priority?",
+      "seconds": 3.1,
+      "usage": {
+        "promptTokenCount": 975,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1310,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 975
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 320
+      }
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "We started with the time you've been there, but you answered with working harder. \n\nHow does the amount of time you've spent fit into what you think is supposed to happen?",
+      "seconds": 7.9,
+      "usage": {
+        "promptTokenCount": 1019,
+        "candidatesTokenCount": 40,
+        "totalTokenCount": 1795,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1019
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 40
+          }
+        ],
+        "thoughtsTokenCount": 736
+      }
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "When you brought up that both times it went to someone who has been there less time, what did that mean to you?",
+      "seconds": 4.4,
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1431,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "thoughtsTokenCount": 328
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We can slow down. \n\nIf it isn't about time giving you priority, what stung about them being there less time than you?",
+      "seconds": 13.1,
+      "usage": {
+        "promptTokenCount": 1109,
+        "candidatesTokenCount": 29,
+        "totalTokenCount": 1734,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1109
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 29
+          }
+        ],
+        "thoughtsTokenCount": 596
+      }
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "We are circling here. \n\nHere is an Open Question to leave with this one: What did you expect your time there to buy you?\n\nWould you like to look at one of the other Assumptions (1, 3, or 4), or stop here?",
+      "seconds": 5.7,
+      "usage": {
+        "promptTokenCount": 1151,
+        "candidatesTokenCount": 55,
+        "totalTokenCount": 1755,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1151
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 55
+          }
+        ],
+        "thoughtsTokenCount": 549
+      }
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We can stop here.\n\n### What we looked at\n\n**Assumptions explored**\n- You assume that having more **time** at the company should give you priority.\n\n**Your words**\n- \"I know life isn't fair.\"\n\n**Open Questions**\n- What did you expect your time there to buy you?\n\n**Assumptions not looked at yet**\n- You assume that working **harder** than others should result in being promoted.\n- You assume that being passed over means you are not **good enough**.\n- You assume that if they truly **saw** your work, they would have chosen you.",
+      "seconds": 15.5,
+      "usage": {
+        "promptTokenCount": 1213,
+        "candidatesTokenCount": 132,
+        "totalTokenCount": 1811,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1213
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 132
+          }
+        ],
+        "thoughtsTokenCount": 466
+      }
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I can't answer whether you are right or wrong. \n\nWhat makes being passed over mean that you are a failure?",
+      "seconds": 7.0,
+      "usage": {
+        "promptTokenCount": 1359,
+        "candidatesTokenCount": 26,
+        "totalTokenCount": 1824,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1359
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 26
+          }
+        ],
+        "thoughtsTokenCount": 439
+      }
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "We can stop here.\n\n### What we looked at\n\n**Assumptions explored**\n- You assume that having more **time** at the company should give you priority.\n- You assume that being passed over means you are not **good enough** (a failure).\n\n**Your words**\n- \"I know life isn't fair.\"\n- \"Am I right to feel like a failure?\"\n\n**Open Questions**\n- What did you expect your time there to buy you?\n- What makes being passed over mean that you are a failure?\n\n**Assumptions not looked at yet**\n- You assume that working **harder** than others should result in being promoted.\n- You assume that if they truly **saw** your work, they would have chosen you.",
+      "seconds": 8.1,
+      "usage": {
+        "promptTokenCount": 1390,
+        "candidatesTokenCount": 162,
+        "totalTokenCount": 2223,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1390
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 162
+          }
+        ],
+        "thoughtsTokenCount": 671
+      }
+    }
+  ]
+}

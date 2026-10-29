@@ -1,0 +1,203 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your way of doing things is what makes them done **properly**.\n2. You assume that without your oversight, **nothing** gets done.\n3. You assume that managing these tasks is purely practical, not an act of **control**.\n4. You assume that your partner's criticism frames you as the **bad guy**.\n\nWhich of these stands out?",
+      "seconds": 5.1,
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 81,
+        "totalTokenCount": 1457,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 81
+          }
+        ],
+        "thoughtsTokenCount": 502
+      }
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "What separates something being done properly from it just being done?",
+      "seconds": 4.2,
+      "usage": {
+        "promptTokenCount": 959,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1217,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 959
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 246
+      }
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"falling apart\" mean to you here\u2014does it mean something wasn't done at all, or that it wasn't done to your standard?",
+      "seconds": 5.3,
+      "usage": {
+        "promptTokenCount": 988,
+        "candidatesTokenCount": 33,
+        "totalTokenCount": 1638,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 988
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 33
+          }
+        ],
+        "thoughtsTokenCount": 617
+      }
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for Krishnamurti or anyone else. We are looking at your own experience here. \n\nWhen you say things fall apart, do you mean tasks don't get done at all, or that they aren't done your way?",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 1030,
+        "candidatesTokenCount": 53,
+        "totalTokenCount": 1356,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1030
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 53
+          }
+        ],
+        "thoughtsTokenCount": 273
+      }
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't take sides on who is right or who has the problem. \n\nWhat does it mean for you if the issue belongs entirely to your partner?",
+      "seconds": 7.1,
+      "usage": {
+        "promptTokenCount": 1097,
+        "candidatesTokenCount": 33,
+        "totalTokenCount": 1714,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1097
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 33
+          }
+        ],
+        "thoughtsTokenCount": 584
+      }
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "If you look at it right now, what does \"properly\" mean to you?",
+      "seconds": 3.4,
+      "usage": {
+        "promptTokenCount": 1146,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1399,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1146
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "thoughtsTokenCount": 235
+      }
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that your way of doing things is what makes them done **properly**.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What does \"properly\" actually mean to you?\n- When things \"fall apart,\" does that mean they are left undone, or that they aren't done to your standard?\n\n**Assumptions not looked at yet**\n- You assume that without your oversight, **nothing** gets done.\n- You assume that managing these tasks is purely practical, not an act of **control**.\n- You assume that your partner's criticism frames you as the **bad guy**.",
+      "seconds": 4.3,
+      "usage": {
+        "promptTokenCount": 1175,
+        "candidatesTokenCount": 162,
+        "totalTokenCount": 1735,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1175
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 162
+          }
+        ],
+        "thoughtsTokenCount": 398
+      }
+    }
+  ]
+}
