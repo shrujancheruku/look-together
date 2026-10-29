@@ -1,0 +1,61 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is a **right** and **wrong** way to speak at a social event.\n2. You assume that **rehearsing** beforehand will protect you from getting it wrong.\n3. You assume that other people are **evaluating** what you say the way you do.\n4. You assume that being thought of as **weird** is something you have to avoid.\n\nWhich of these stands out?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you replay a conversation afterwards and decide you said something \"wrong\", what makes it wrong to you?",
+      "seconds": 3.1
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't give tips or tell you what to do\u2014we're here to see how this works for you from the inside. \n\nBefore trying to fix it, let's look at what's happening: when you replay a conversation and judge something you said as \"wrong\", what is the rule you feel you broke?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "What tells you that you've come across badly\u2014what is actually happening in those moments?",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "You haven't asked anyone, yet you said \"I just know I come across badly.\" If it isn't coming from what other people say, where does that \"knowing\" come from?",
+      "seconds": 3.3
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored**\n- 1. You assume that there is a **right** and **wrong** way to speak at a social event. (Reframed through your pushback as: \"I just know I come across badly.\")\n\n**Your own words**\n- \"I just know I come across badly.\"\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Questions**\n- If knowing that you \"come across badly\" isn't coming from what other people say, where does that knowing come from?\n\n**Assumptions not looked at yet**\n- 2. You assume that **rehearsing** beforehand will protect you from getting it wrong.\n- 3. You assume that other people are **evaluating** what you say the way you do.\n- 4. You assume that being thought of as **weird** is something you have to avoid.",
+      "seconds": 5.4
+    }
+  ]
+}

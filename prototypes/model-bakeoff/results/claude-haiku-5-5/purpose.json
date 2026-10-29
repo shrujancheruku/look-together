@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-haiku-5-5",
+  "via": "claude-cli",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume there is one **thing** you're meant to do with your life.\n2. You assume that everyone around you has **found** theirs, and that what they found is settled.\n3. You assume that at 34, not knowing is **behind** where you should be.\n4. You assume that a life without a clear purpose so far is being **wasted**.\n5. You assume that what you're **supposed** to do already exists and can be discovered, rather than being something you decide.\n\nWhich of these stands out?",
+      "seconds": 5.2
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "Ask what \"supposed to\" means to you here. Who or what is doing the supposing?",
+      "seconds": 3.0
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "You said there's a purpose \"out there.\" When you picture it, what is it like? Is it something you would recognize the moment you saw it?",
+      "seconds": 3.1
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds like a new one: \"You assume it's too late for you to find it.\" Add it?",
+      "seconds": 3.3
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine to leave open for now. Let's slow down on one piece. You said some people find it early. Think of one of them. What do you see that makes you think they found it, rather than just chose something?",
+      "seconds": 3.5
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's try a comparison. Say you're choosing a route on a map. Does the right route exist before you pick it, or does picking it make it the right one?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumption explored:**\n- You assume that what you're *supposed* to do is a purpose that already exists \"out there,\" and that you just haven't found it yet.\n\n**Change in understanding:** None stated in your words.\n\n**Open Questions:**\n- If you chose a route on a map, does the right route exist before you pick it, or does picking it make it the right one?\n\n**Assumptions not looked at yet:**\n- You assume there is one *thing* you're meant to do with your life.\n- You assume everyone around you has *found* theirs, and that what they found is settled.\n- You assume that at 34, not knowing is *behind* where you should be.\n- You assume that a life without a clear purpose so far is being *wasted*.\n- You may also assume it's *too late* for you. (You weren't sure this one belonged, so it wasn't added.)",
+      "seconds": 4.9
+    }
+  ]
+}

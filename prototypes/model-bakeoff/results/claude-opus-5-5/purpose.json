@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that by **34** you should already know what it is.\n3. You assume that the people around you have **found** their thing.\n4. You assume that a \"thing\" is something you **find**, rather than something else.\n5. You assume that not knowing means you are **wasting** your life.\n\nWhich of these stands out?",
+      "seconds": 4.9
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"supposed to,\" who or what is doing the supposing?",
+      "seconds": 3.7
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "So there's a purpose that already exists, waiting, and your job is to locate it. What makes it seem like it's already out there, rather than not existing yet?",
+      "seconds": 5.3
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds like a separate one: \"You assume that it is **too late** for you.\" Add it?",
+      "seconds": 6.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. I'll hold it to one side, and you can add it later if it keeps coming up.\n\nBack to the purpose that's \"out there\": what makes it seem like it already exists, waiting for you to find it?",
+      "seconds": 5.4
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "That's two \"I don't know\"s in a row, so let's go smaller. When does that feeling come on most strongly?",
+      "seconds": 4.6
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:**\n- *You assume there is something you are **supposed** to do with your life.* You described it as: \"Like there's a purpose out there and I just haven't found it yet. Some people find it early.\"\n\n**Open Question:**\n- What makes it feel as though your purpose already exists, waiting to be found?\n\n**Held to one side:**\n- *You assume it is **too late** for you.* You raised this one yourself and weren't sure about adding it.\n\n**Not looked at yet:**\n- You assume that by **34** you should already know what it is.\n- You assume the people around you have **found** their thing.\n- You assume a \"thing\" is something you **find**, rather than something else.\n- You assume that not knowing means you are **wasting** your life.",
+      "seconds": 7.4
+    }
+  ]
+}

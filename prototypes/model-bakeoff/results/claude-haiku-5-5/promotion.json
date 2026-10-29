@@ -1,0 +1,88 @@
+{
+  "candidate": "claude-haiku-5-5",
+  "via": "claude-cli",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that **working harder** than anyone else should count toward promotion.\n2. You assume that **time on the team** should have decided it, since the person chosen has been there less time than you.\n3. You assume that the decision-makers **see** your work, and that if they didn't pick you, it's because they don't see you.\n4. You assume that the two decisions tell you something about your **ability**, that you may not be good enough.\n\nWhich of these stands out?",
+      "seconds": 6.6
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What do you mean by \"time on the team\" here? What would that time have to show for it to count toward a promotion?",
+      "seconds": 4.8
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "You've moved from time to effort: working harder should be what gets rewarded. Should I add that as an assumption: \"You assume that **working harder** is what gets **rewarded**, and that this is how it's supposed to work\"?\n\nAlso, when you say \"supposed to,\" who or what sets that rule?",
+      "seconds": 5.0
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "Thanks for telling me. What's going on for you when you say \"that's how it's supposed to work,\" if it isn't that effort should be rewarded?",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. Let's go slower and stay with one word: \"supposed to.\" Think of a specific time you saw someone get what they'd earned. What did you expect to happen to them?",
+      "seconds": 4.7
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "Going in circles usually means there are too many threads at once, so let's pull just one. Here's a plain comparison: you put money into a vending machine and expect the snack. Is a promotion like that for you, where the right input should produce the output?",
+      "seconds": 5.4
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's okay, you don't have to settle this now. Let's set the rule aside for a moment. When the person chosen had less time than you, what did that difference mean to you?",
+      "seconds": 5.8
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I can't tell you whether that feeling is right, but I can ask what you mean by it. What would being a failure look like to you, in this job?",
+      "seconds": 4.4
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumption explored:** 2. You assume that **time on the team** should have decided the promotion, since the person chosen has been there less time than you.\n- You moved from time to effort: working harder should be what gets rewarded.\n- You said that isn't an assumption you hold, and that you know life isn't fair. I didn't add it.\n\n**Changes in your understanding:** None recorded in your own words.\n\n**Open Questions:**\n- When the person chosen had less time than you, what did that difference mean to you?\n- What does \"supposed to\" mean to you here, and who sets that rule?\n- What would being a failure look like to you, in this job?\n\n**Assumptions not looked at yet:**\n1. You assume that **working harder** than anyone else should count toward promotion.\n3. You assume that the decision-makers **see** your work, and that if they didn't pick you, it's because they don't see you.\n4. You assume that the two decisions tell you something about your **ability**, that you may not be good enough.",
+      "seconds": 5.4
+    }
+  ]
+}

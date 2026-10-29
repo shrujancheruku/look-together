@@ -1,0 +1,61 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that if you **rehearse**, you can control how an interaction will go.\n2. You assume there is a **right** and **wrong** way to speak in a social situation.\n3. You assume you can **know** what other people are thinking about you.\n4. You assume that being seen as **weird** is something you must avoid.\n\nWhich of these stands out?",
+      "seconds": 6.4
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you rehearse what you'll say, what exactly are you trying to control?",
+      "seconds": 6.4
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't offer tips or solutions. We are just here to look at what is actually happening. \n\nWhen you rehearse what you'll say, what exactly are you trying to control?",
+      "seconds": 8.6
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "If you already \"know\" you come across badly, what is the rehearsal for?",
+      "seconds": 10.5
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "If you haven't asked anyone, what are you using to decide that you came across badly?",
+      "seconds": 9.8
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**The assumption we explored:**\n* You assume that if you rehearse, you can control how an interaction will go.\n\n**What you noticed:**\nYou noted that despite being certain you come across badly, \"I suppose I've never actually asked anyone.\"\n\n**Open question to keep looking at:**\n* If you haven't asked anyone, what are you using to decide that you came across badly?\n\n**Assumptions not looked at yet:**\n* You assume there is a right and wrong way to speak in a social situation.\n* You assume you can know what other people are thinking about you.\n* You assume that being seen as weird is something you must avoid.",
+      "seconds": 7.7
+    }
+  ]
+}

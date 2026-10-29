@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-haiku-5-5",
+  "via": "claude-cli",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that you **should** be over this by now, and that 41 is the age when that deadline applies.\n2. You assume that each call **wrecks** you, and that the rest of your day follows from the call itself.\n3. You assume that her comments are **criticism** of how you live, rather than something else she is doing when she calls.\n4. You assume that being **over it** would mean the calls stop affecting you at all.\n\nWhich of these stands out?",
+      "seconds": 6.3
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "Who told you that you should be over it by now: is it something you believe, or something you think others expect of you?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "You're saying an adult isn't supposed to care what their parents think. What does \"care\" mean to you here: that the comments don't land at all, or that they land and you still have to make your own choices?",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine, and we can slow down. Think of the last call you got after it ended. What was the first thing you did or thought once you hung up?",
+      "seconds": 4.6
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "That's okay, and we don't need to answer it now. Here is a question to keep looking at when you're ready: when you think about the idea that adults shouldn't care what their parents think, whose voice does it sound like?\n\nWould you like to look at another of the assumptions, or stop here?",
+      "seconds": 4.9
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We can leave this one here. Would you like to try a different assumption, such as the one about the calls wrecking you, or stop here?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at\n\n**Assumption explored:** You assume that you **should** be over this by now, and that 41 is the age when that deadline applies.\n\n- You said adults aren't supposed to care what their parents think.\n- Asked what \"care\" means to you, you said \"I don't know.\"\n- Asked about the last call, you said \"No idea.\"\n\n**Change in understanding (in your words):** None recorded.\n\n**Open Question:** When you think about the idea that adults shouldn't care what their parents think, whose voice does it sound like?\n\n**Assumptions not looked at yet:**\n- You assume that each call **wrecks** you, and that the rest of your day follows from the call itself.\n- You assume that her comments are **criticism** of how you live, rather than something else she is doing when she calls.\n- You assume that being **over it** would mean the calls stop affecting you at all.",
+      "seconds": 4.3
+    }
+  ]
+}

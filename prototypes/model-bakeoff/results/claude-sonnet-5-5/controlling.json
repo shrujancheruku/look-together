@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that being called **controlling** means being cast as the **bad guy**.\n2. You assume that there is a **proper** way for the house and the money to be done.\n3. You assume that if you don't **keep on top** of the house and the money, nothing gets done.\n4. You assume that liking things done properly is different from being controlling.\n\nWhich of these stands out?",
+      "seconds": 5.6
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "When your partner says \"controlling,\" what do you hear them saying about you?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds closer to the third Assumption, about things falling apart. Do you want to go into that one, or stay with what you hear in \"controlling\"?",
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for anyone, so I can't tell you that. What I can do is keep looking at this with you.\n\nWhich would you rather look at: what you hear in \"controlling,\" or what you've seen fall apart when you let go?",
+      "seconds": 3.5
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "I won't say who has the problem. That's yours to look at.\n\nSomething came up in what you said: you assume that this comes down to which of you is the one with the problem. Add it?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's look at it. When you say \"properly,\" what do you mean? Pick one thing in the house or the money, and say what \"properly\" looks like there.",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Assumptions explored**\n- **1. Being called \"controlling\" means being cast as the bad guy.** We started here. You said: \"if I let go, things fall apart. I've seen it happen.\" That points to Assumption 3, which we only touched.\n- **2. There is a proper way for the house and the money to be done.** You said: \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What do you hear your partner saying about you when they say \"controlling\"?\n- What does \"properly\" look like in one specific thing, in the house or in the money?\n\n**Not looked at yet**\n- 3. If you don't keep on top of the house and the money, nothing gets done.\n- 4. Liking things done properly is different from being controlling.\n- The one I offered, that this comes down to which of you is the one with the problem. You didn't say whether to add it, so it's not on the list.",
+      "seconds": 7.2
+    }
+  ]
+}

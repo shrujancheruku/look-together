@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that reaching 41 means you **should be over** how your mother treats you.\n2. You assume that her criticism says something real about **your choices**.\n3. You assume that a phone call has the power to **wreck** the rest of your day.\n\nWhich of these stands out?",
+      "seconds": 13.2
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"being over it\" actually look like to you?",
+      "seconds": 4.8
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "You say an adult isn't supposed to care. But you do care. \n\nWhat does the belief that you *shouldn't* care add to the experience of being criticized?",
+      "seconds": 11.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's slow it down. \n\nWhen she criticizes you, it hurts. Then the rule comes in: \"I'm an adult, I shouldn't care.\" \n\nIf you drop that rule about how an adult is supposed to react, what is left?",
+      "seconds": 8.8
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "It is hard to imagine the hurt without the judgment piled on top. Let's leave this as an open question for you to keep looking at: What happens if you just let the criticism hurt, without demanding that you shouldn't care?\n\nWould you like to look at one of the other assumptions, or would you prefer to stop here?",
+      "seconds": 10.4
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "You don't have to know. We can just stop here. \n\nWould you like a recap of where we left off, or would you prefer to just close it for now?",
+      "seconds": 8.8
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n*Assumptions explored:*\n- You assume that reaching 41 means you **should be over** how your mother treats you.\n\n*Open Question:*\n- What happens if you just let the criticism hurt, without demanding that you shouldn't care?\n\n*Assumptions not looked at yet:*\n- You assume that her criticism says something real about **your choices**.\n- You assume that a phone call has the power to **wreck** the rest of your day.",
+      "seconds": 7.8
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that you should **rehearse** what you'll say, because unprepared words will go badly.\n2. You assume that what you say can be **wrong**, and that you can tell which parts were.\n3. You assume that replaying everything afterwards is how you **find out** what happened.\n4. You assume that people **probably think** you're weird.\n5. You assume that **weird** is something to avoid being seen as.\n\nWhich of these stands out?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "What do you picture happening if you walk in without rehearsing?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't give tips here. This is a place for you to look at how you understand this yourself.\n\nBack to the question: if you walked in without rehearsing, what do you picture happening?",
+      "seconds": 4.4
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "Okay. What's going on for you when you say you \"know\" you come across badly?",
+      "seconds": 3.6
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "Assumption 1 doesn't fit what you've said, so I'm removing it. Something else came up in its place: \"You assume that you **come across** badly, and that you **know** it.\"\n\nAdd it?",
+      "seconds": 4.6
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:**\n- Assumption 1 (rehearsing): you said it didn't fit. What you said instead was \"I just know I come across badly.\" We removed Assumption 1 and replaced it with: \"You assume that you **come across** badly, and that you **know** it.\" I took your \"OK\" as a yes to adding it.\n\n**What shifted, in your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Questions:**\n- None set.\n\n**Not looked at yet:**\n- You assume that what you say can be **wrong**, and that you can tell which parts were.\n- You assume that replaying everything afterwards is how you **find out** what happened.\n- You assume that people **probably think** you're weird.\n- You assume that **weird** is something to avoid being seen as.\n- You assume that you **come across** badly, and that you **know** it.",
+      "seconds": 6.6
+    }
+  ]
+}

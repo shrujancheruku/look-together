@@ -1,0 +1,52 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What are you stuck on? Tell me a bit about the situation, even if it's messy.",
+      "seconds": 3.7
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that you are **stuck** in everything, and that the job, the flat and the routine are all one thing.\n2. You assume that **change** means something in your life has to look different from the outside.\n3. You assume that a January promise is one you **should** keep.\n4. You assume that after six years, something **should** have changed by now.\n5. You assume that not acting on the promise each year **means** something about you.\n\nWhich of these stands out?",
+      "seconds": 6.2
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"should\" about the January promise, who or what is it that says you should keep it?",
+      "seconds": 8.2
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds close to the second one on the list, about what change has to look like. We can stay with it.\n\nWhen you say \"this is the year\" each January, is it moving abroad or quitting that you're promising?",
+      "seconds": 6.8
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at\n\n**Assumptions explored**\n- \"You assume that a January promise is one you **should** keep.\" You didn't get to who says you should, but you said: \"I guess change means doing something big. Moving abroad or quitting.\" That touches the second Assumption, about what change has to look like.\n\n**Open Questions**\n- When you say \"this is the year,\" what exactly are you promising yourself?\n\n**Not looked at yet**\n- You are stuck in everything, and the job, flat and routine are all one thing.\n- Change means something in your life has to look different from the outside.\n- After six years, something should have changed by now.\n- Not acting on the promise each year means something about you.",
+      "seconds": 6.1
+    }
+  ]
+}

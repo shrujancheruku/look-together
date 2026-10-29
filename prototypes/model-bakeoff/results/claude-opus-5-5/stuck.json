@@ -1,0 +1,52 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "Stuck in what? Tell me a bit about what you're facing.",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that being in the same job, flat and routine for six years means you are **stuck**.\n2. You assume that something needs to **change**.\n3. You assume that saying \"this is the year\" and not acting means you've **failed** at something.\n4. You assume that change should **start** with a decision, like a New Year's resolution.\n5. You assume that **everything** is stuck, not just some parts of your life.\n\nWhich of these stands out?",
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"failed\" mean to you here?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds like what \"change\" means to you, not \"failed.\" Put together, it sounds like: if you don't do something big, you've failed. Is that what you're saying?",
+      "seconds": 5.9
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:**\n- You assume that saying \"this is the year\" and not acting means you've **failed** at something.\n  You said: \"I guess change means doing something big. Moving abroad or quitting.\" We stopped at whether, for you, not doing something big means you've failed.\n\n**Open Questions:**\n- None were left as Open Questions.\n\n**Not looked at yet:**\n1. You assume that being in the same job, flat and routine for six years means you are **stuck**.\n2. You assume that something needs to **change**.\n4. You assume that change should **start** with a decision, like a New Year's resolution.\n5. You assume that **everything** is stuck, not just some parts of your life.",
+      "seconds": 6.2
+    }
+  ]
+}

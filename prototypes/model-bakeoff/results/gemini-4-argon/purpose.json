@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is something specific you are **supposed** to do with your life.\n2. You assume that by **34**, you should already know what that is.\n3. You assume that having \"**their thing**\" means the people around you have figured out their lives.\n4. You assume that living without knowing \"your thing\" means you are **wasting** your life.\n\nWhich of these stands out?",
+      "seconds": 97.1
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say there is something you are \"supposed\" to do with your life, where does that assignment come from?",
+      "seconds": 3.0
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "You describe a purpose as something already \"out there\" waiting to be found, like an object hidden in a room. How do you know a purpose is something you find, rather than something you make or choose?",
+      "seconds": 3.7
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "We can frame that as: \"You assume that it is **too late** for you.\" Add it?",
+      "seconds": 2.4
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We can leave it off the list for now, and we also seem to have paused on the question of \"supposed to.\" \n\nLet's slow down and stay with that first assumption for a moment: when you look at someone who you think \"found their purpose early,\" what are they actually doing in real life that makes you call it a \"purpose\"?",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "We're hitting a wall where it's hard to put words to the feeling. \n\nThink of it like walking into a restaurant: you might assume there is one \"right\" dish on the menu you are meant to order, or you might just see a list of options to try. When you look at your life, what makes you sure there is a single \"right\" dish waiting for you?",
+      "seconds": 5.9
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume that there is something specific you are **supposed** to do with your life. (You described this as feeling \"like there's a purpose out there and I just haven't found it yet.\")\n\n**New assumption noticed**\n* You mentioned a belief \"that it's too late for me.\"\n\n**Open Question**\n* How do you know a purpose is something already \"out there\" waiting to be found, rather than something you choose or make?\n\n**Assumptions not looked at yet**\n* You assume that by **34**, you should already know what that is.\n* You assume that having \"**their thing**\" means the people around you have figured out their lives.\n* You assume that living without knowing \"your thing\" means you are **wasting** your life.",
+      "seconds": 4.9
+    }
+  ]
+}

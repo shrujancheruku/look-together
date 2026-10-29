@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is a single standard for what **properly** means.\n2. You assume that if you don't keep on top of things, **nothing** gets done.\n3. You assume that your partner calling your actions **controlling** makes you the **bad guy**.\n4. You assume that keeping on top of the house and money is **your** job to manage.\n\nWhich of these stands out?",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"properly\" mean to you when it comes to the house or the money?",
+      "seconds": 2.8
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "That's what you expect will happen if you let go, not what I asked. What does \"properly\" actually mean to you?",
+      "seconds": 24.6
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for anyone else. We're looking at your own understanding here. \n\nWhen you look at the house or the money, what makes a task done \"properly\" to you?",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "What makes you conclude that one of you has to be \"the one with the problem\"?",
+      "seconds": 3.0
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "When you look at it right now, what comes to mind for \"properly\"?",
+      "seconds": 3.3
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored**\n* You assume that there is a single standard for what **properly** means.\n\n**Your words during the inquiry**\n* \"Because if I let go, things fall apart. I've seen it happen.\"\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n* What does \"properly\" mean to you when it comes to the house or the money?\n* What makes you conclude that one of you has to be \"the one with the problem\"?\n\n**Assumptions not looked at yet**\n* You assume that if you don't keep on top of things, **nothing** gets done.\n* You assume that your partner calling your actions **controlling** makes you the **bad guy**.\n* You assume that keeping on top of the house and money is **your** job to manage.",
+      "seconds": 11.4
+    }
+  ]
+}

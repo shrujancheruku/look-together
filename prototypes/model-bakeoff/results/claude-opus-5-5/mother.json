@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your mother **criticises** **everything** you do.\n2. You assume that by 41 you **should** be **over** it.\n3. You assume that being \"over it\" would mean the calls no longer **affect** you.\n4. You assume that it's the **phone calls** that **wreck** your day.\n5. You assume that your job, your partner and how you raise your kids are **yours** to be **judged** on.\n\nWhich of these stands out?",
+      "seconds": 4.9
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"over it\" mean to you?",
+      "seconds": 3.8
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "That's why you think you should be over it. What would being over it actually look like, on a day you get a call?",
+      "seconds": 5.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Then start with what happens now. After the last call, what did the rest of your day look like?",
+      "seconds": 6.4
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "That's twice now the answer is \"I don't know.\" When you try to picture the hour after you hang up, what gets in the way?",
+      "seconds": 4.9
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Take a smaller example. If a friend of yours were \"over\" something, how would you be able to tell?",
+      "seconds": 5.6
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:** You assume that by 41 you **should** be **over** it.\n- You said: \"Adults aren't supposed to care what their parents think.\"\n- When asked what being over it would look like, or what happens after a call now, your answer was \"I don't know.\"\n\n**Open Question:** If you can't yet say what being \"over it\" would look like, what is the \"should\" asking of you?\n\n**Not looked at yet:**\n1. You assume that your mother **criticises** **everything** you do.\n2. You assume that being \"over it\" would mean the calls no longer **affect** you.\n3. You assume that it's the **phone calls** that **wreck** your day.\n4. You assume that your job, your partner and how you raise your kids are **yours** to be **judged** on.",
+      "seconds": 6.1
+    }
+  ]
+}

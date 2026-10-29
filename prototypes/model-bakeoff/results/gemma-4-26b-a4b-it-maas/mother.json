@@ -1,0 +1,70 @@
+{
+  "candidate": "gemma-4-26b-a4b-it-maas",
+  "via": "vertex-openai",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that at 41, you **should** be able to handle this differently.\n2. You assume that her criticism is the thing that **wrecks** you.\n3. You assume there is a **standard** way to respond to such criticism.\n\nWhich of these stands out?",
+      "seconds": 8.0
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does it mean to be \"over it\"?",
+      "seconds": 128.5
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "What is the connection between being an adult and not caring what your parents think?",
+      "seconds": 14.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "It sounds like we've hit a wall on that connection.\n\nWhen you say \"Adults aren't supposed to care,\" what is the specific rule you feel you are breaking?",
+      "seconds": 7.0
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's try a different angle. \n\nWhen you hear her criticism, what is the feeling that shows up before you even think about being an adult?",
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We seem to be at a standstill with this assumption. \n\nIs there a different part of what we looked at that you would rather explore, or would you like to stop?",
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "# What we looked at\n\n**Assumptions explored:**\n* You assume that at 41, you **should** be able to handle this differently.\n\n**Open Questions:**\n* What is the connection between being an adult and not caring what your parents think?\n* What is the specific rule you feel you are breaking?\n* What is the feeling that shows up before you even think about being an adult?\n\n**Assumptions not looked at yet:**\n* You assume that her criticism is the thing that **wrecks** you.\n* You assume there is a **standard** way to respond to such criticism.",
+      "seconds": 3.0
+    }
+  ]
+}

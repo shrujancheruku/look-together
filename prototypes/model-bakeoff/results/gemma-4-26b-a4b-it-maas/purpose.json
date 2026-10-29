@@ -1,0 +1,70 @@
+{
+  "candidate": "gemma-4-26b-a4b-it-maas",
+  "via": "vertex-openai",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume there is a specific **thing** you are supposed to do with your life.\n2. You assume that others have **found** their purpose.\n3. You assume that not having a clear direction constitutes **wasting** your life.\n\nWhich of these stands out?",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"supposed to\" mean to you?",
+      "seconds": 15.4
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "If you haven't found this purpose yet, what does that say about you?",
+      "seconds": 15.0
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "Add it?",
+      "seconds": 1.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "It seems we've hit a wall. \n\nWhen you say \"I don't know,\" are you feeling stuck on what the new assumption means, or are you unsure how to continue looking at the one we started with?\n\nIf you want to keep going, we can either look closer at what \"supposed to\" means, or we can look at this new idea that it's too late.\n\nWhat would you like to do?",
+      "seconds": 13.5
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "It feels like a heavy weight.\n\nTo help us move, let's try a different angle. When you think about the idea that it's \"too late,\" what is the specific deadline you feel you've missed?",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at:\n\n**Assumptions explored**\n*   The idea that there is a specific **thing** you are supposed to do.\n*   The possibility that it is **too late** for you.\n\n**Open Questions**\n*   What does \"supposed to\" mean to you?\n*   If you haven't found this purpose yet, what does that say about you?\n*   When you think about the idea that it's \"too late,\" what is the specific deadline you feel you've missed?\n\n**Assumptions not looked at yet**\n*   You assume that others have **found** their purpose.\n*   You assume that not having a clear direction constitutes **wasting** your life.",
+      "seconds": 4.6
+    }
+  ]
+}

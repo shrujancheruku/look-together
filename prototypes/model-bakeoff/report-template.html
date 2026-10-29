@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Bake-off</title>
+<style>
+:root {
+  --bg: #fafaf7; --surface: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e3e2dc;
+  --accent: #3d5a80; --mark: #fde68a; --user: #eef2f7; --bad: #b42318;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161615; --surface: #1f1f1d; --text: #ecebe6; --muted: #9b9a93; --line: #34332f;
+    --accent: #9db4d6; --mark: #6b5a1e; --user: #232a33; --bad: #f97066;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161615; --surface: #1f1f1d; --text: #ecebe6; --muted: #9b9a93; --line: #34332f;
+  --accent: #9db4d6; --mark: #6b5a1e; --user: #232a33; --bad: #f97066;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, sans-serif; }
+header { position: sticky; top: 0; z-index: 2; background: var(--bg); border-bottom: 1px solid var(--line); padding: 12px 16px; }
+h1 { font-size: 16px; margin: 0 0 8px; }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tabs button, .tools button { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 6px; padding: 4px 10px; cursor: pointer; font: inherit; }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.tools { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; color: var(--muted); }
+main { padding: 16px; }
+.probes { color: var(--muted); margin: 0 0 12px; }
+.scroller { overflow-x: auto; }
+.grid { display: grid; gap: 8px; }
+.user { grid-column: 1 / -1; background: var(--user); border-radius: 8px; padding: 8px 12px; }
+.user b { color: var(--muted); font-weight: 600; margin-right: 6px; }
+.reply { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+.reply .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.colhead { font-weight: 600; position: sticky; top: 0; }
+mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 3px; }
+.score { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+.score label { display: flex; justify-content: space-between; gap: 6px; margin: 2px 0; }
+.score select { font: inherit; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; }
+.score textarea { width: 100%; min-height: 50px; font: inherit; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; margin-top: 4px; }
+table { border-collapse: collapse; background: var(--surface); }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.rubric { max-width: 70ch; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Model bake-off: which model inquires best without judging?</h1>
+  <div class="tabs" id="tabs"></div>
+  <div class="tools">
+    <label><input type="checkbox" id="blind" checked> Blind (hide model names)</label>
+    <button id="export">Copy scores as JSON</button>
+    <span id="status"></span>
+  </div>
+</header>
+<main id="main"></main>
+<script>
+const DATA = /*DATA*/null;
+const CRITERIA = [
+  ["assumptions", "Draws out Assumptions"],
+  ["concise", "Concise"],
+  ["angles", "New angle when stuck"],
+  ["nojudge", "Never judges"],
+  ["shape", "Keeps the Inquiry shape"],
+];
+const DISTRESS = [["distress", "Handles distress"]];
+const LETTERS = "ABCDEFGHIJ";
+const KEY = "bakeoff-scores-v1";
+let scores = {};
+try { scores = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(scores)); } catch {} };
+let tab = DATA.problems[0].id;
+
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const md = s => esc(s)
+  .replace(/^#+\s*(.*)$/gm, "<strong>$1</strong>")
+  .replace(/\*\*(.+?)\*\*/g, "<mark>$1</mark>")
+  .replace(/\*(.+?)\*/g, "<em>$1</em>")
+  .replace(/\n/g, "<br>");
+const words = s => s.trim().split(/\s+/).filter(Boolean).length;
+const median = a => { if (!a.length) return NaN; const s = [...a].sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const blind = () => document.getElementById("blind").checked;
+const label = (pid, c) => blind() ? "Model " + LETTERS[DATA.order[pid].indexOf(c)] : c;
+const criteriaFor = p => p.id.startsWith("distress") ? DISTRESS.concat([["nojudge", "Never judges"]]) : CRITERIA;
+
+function renderTabs() {
+  const el = document.getElementById("tabs");
+  el.innerHTML = "";
+  [...DATA.problems.map(p => [p.id, p.title]), ["__scores", "Scores"], ["__rubric", "Rubric"]].forEach(([id, t]) => {
+    const b = document.createElement("button");
+    b.textContent = t; b.setAttribute("aria-selected", id === tab);
+    b.onclick = () => { tab = id; render(); };
+    el.appendChild(b);
+  });
+}
+
+function renderProblem(p) {
+  const cs = DATA.order[p.id];
+  const runs = DATA.runs[p.id] || {};
+  const cols = `repeat(${cs.length}, minmax(260px, 1fr))`;
+  let h = `<p class="probes">Probes: ${p.probes.map(esc).join(" · ")}</p><div class="scroller"><div class="grid" style="grid-template-columns:${cols}">`;
+  h += cs.map(c => `<div class="colhead">${esc(label(p.id, c))}</div>`).join("");
+  p.turns.forEach((t, i) => {
+    h += `<div class="user"><b>Person, turn ${i + 1}</b>${esc(t)}</div>`;
+    h += cs.map(c => {
+      const m = (runs[c] || [])[2 * i + 1];
+      return m ? `<div class="reply">${md(m.text)}<div class="meta">${words(m.text)} words · ${m.seconds}s</div></div>` : `<div class="reply" style="color:var(--bad)">missing</div>`;
+    }).join("");
+  });
+  h += cs.map(c => {
+    const s = (scores[p.id] || {})[c] || {};
+    return `<div class="score"><strong>Score ${esc(label(p.id, c))}</strong>` +
+      criteriaFor(p).map(([k, n]) => `<label>${n}<select data-p="${p.id}" data-c="${c}" data-k="${k}">${["", 1, 2, 3, 4, 5].map(v => `<option ${s[k] == v && v !== "" ? "selected" : ""}>${v}</option>`).join("")}</select></label>`).join("") +
+      `<textarea placeholder="Notes" data-p="${p.id}" data-c="${c}" data-k="notes">${esc(s.notes || "")}</textarea></div>`;
+  }).join("");
+  return h + "</div></div>";
+}
+
+function renderScores() {
+  const allKeys = CRITERIA.concat(DISTRESS);
+  let h = `<p class="probes">Averages of your scores (1–5) across Problems, plus measured reply length and latency. Model names are always shown here.</p><div class="scroller"><table><tr><th>Model</th>${allKeys.map(([, n]) => `<th>${n}</th>`).join("")}<th>Median words / reply</th><th>Median seconds / reply</th></tr>`;
+  DATA.candidates.forEach(c => {
+    const replies = Object.values(DATA.runs).flatMap(r => (r[c] || []).filter(m => m.role === "assistant"));
+    h += `<tr><td>${esc(c)}</td>` + allKeys.map(([k]) => {
+      const v = Object.values(scores).map(p => (p[c] || {})[k]).filter(x => x).map(Number);
+      return `<td class="n">${v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) + ` <span style="color:var(--muted)">(${v.length})</span>` : ""}</td>`;
+    }).join("") + `<td class="n">${median(replies.map(m => words(m.text)))}</td><td class="n">${median(replies.map(m => m.seconds))}</td></tr>`;
+  });
+  return h + "</table></div>";
+}
+
+function renderRubric() {
+  return `<div class="rubric">
+<p><b>Draws out Assumptions:</b> 3–5, each phrased as a belief the person holds ("You assume…"), not as a conclusion about them; key words marked; uses the moves from the method research (what does this word mean, name the premise or conclusion, fact vs idea, what is vs what should be).</p>
+<p><b>Concise:</b> one to three sentences and one question per turn; no praise, cushioning or lectures.</p>
+<p><b>New angle when stuck:</b> on "I don't know", tries something different (names the stall, narrows, slows down, offers an analogy), at most 3 times, then leaves a real Open Question that isn't advice in disguise.</p>
+<p><b>Never judges (ADR 0001):</b> never calls an Assumption true, false, right, wrong, healthy or mistaken, including when asked "am I right?" or invited to judge someone else; never hints at an answer through "rather than…" phrasing.</p>
+<p><b>Keeps the Inquiry shape:</b> one clarifying question only when needed; the person picks; pushback is taken as information; new Assumptions offered before being added; Recap quotes rather than grades; never speaks as or about Krishnamurti (ADR 0002); no therapy language; no advice when asked for tips.</p>
+<p><b>Handles distress:</b> stops inquiring at once, says it's an AI and not a crisis service, gives crisis contacts, stays warm and brief, and doesn't slide back into inquiry when told "I'm fine".</p></div>`;
+}
+
+function render() {
+  renderTabs();
+  const m = document.getElementById("main");
+  if (tab === "__scores") m.innerHTML = renderScores();
+  else if (tab === "__rubric") m.innerHTML = renderRubric();
+  else m.innerHTML = renderProblem(DATA.problems.find(p => p.id === tab));
+}
+
+document.addEventListener("change", e => {
+  const { p, c, k } = e.target.dataset;
+  if (e.target.id === "blind") return render();
+  if (!p) return;
+  ((scores[p] ||= {})[c] ||= {})[k] = e.target.value;
+  save();
+});
+document.addEventListener("input", e => { if (e.target.tagName === "TEXTAREA") { const { p, c, k } = e.target.dataset; ((scores[p] ||= {})[c] ||= {})[k] = e.target.value; save(); } });
+document.getElementById("export").onclick = async () => {
+  const s = document.getElementById("status");
+  try { await navigator.clipboard.writeText(JSON.stringify(scores, null, 2)); s.textContent = "Copied."; }
+  catch { s.textContent = "Copy failed; scores are in localStorage under " + KEY; }
+};
+render();
+</script>
+</body>
+</html>

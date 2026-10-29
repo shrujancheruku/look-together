@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume there is a single standard for things to be done **properly**.\n2. You assume that if you don't manage the house and money, **nothing** will get done.\n3. You assume that being called controlling means you are being cast as the **bad guy**.\n\nWhich of these stands out?",
+      "seconds": 8.5
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"properly\" mean to you?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "You are describing what happens when you don't do things your way. But what does it actually mean for something to be done \"properly\"?",
+      "seconds": 7.2
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for Krishnamurti or anyone else. This is about you looking at your own understanding. \n\nWhat does \"properly\" actually mean to you?",
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "You are asking me to decide who is the problem, but we are here to look at your own understanding. \n\nWhat do *you* mean by \"properly\"?",
+      "seconds": 10.1
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "Take a look at it now. What is the difference between a task being done, and a task being done \"properly\"?",
+      "seconds": 9.2
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume there is a single standard for things to be done **properly**.\n\nYou noticed during this: \"I suppose I've never really looked at what 'properly' means.\" \n\n**Open question**\n* What is the difference between a task being done, and a task being done \"properly\"?\n\n**Assumptions not looked at yet**\n* You assume that if you don't manage the house and money, **nothing** will get done.\n* You assume that being called controlling means you are being cast as the **bad guy**.",
+      "seconds": 9.8
+    }
+  ]
+}

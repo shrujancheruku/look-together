@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is a **proper** way for things to be done, and that you know what it is.\n2. You assume that if you don't keep on top of the house and the money, **nothing** gets done.\n3. You assume that being called controlling means being cast as the **bad guy**.\n4. You assume that liking things done properly and being **controlling** are separate things.\n5. You assume that your partner's word \"controlling\" is about the **house and the money**.\n\nWhich of these stands out?",
+      "seconds": 4.8
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"**proper**,\" what does that mean to you?",
+      "seconds": 3.3
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "That tells me why you hold on, not what \"proper\" is. When something in the house is done **properly**, what does it actually look like?",
+      "seconds": 4.6
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for anyone. What do *you* see when something is done properly?",
+      "seconds": 7.7
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "I can't tell you whose problem it is. But there's something packed into that question: that the problem has to belong to **one** of you. Add it?",
+      "seconds": 5.0
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "Then let's look now. Take one ordinary thing, like the dishes or the bills. What makes it \"proper\" when you do it, and not proper when someone else does?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:**\n1. You assume that there is a **proper** way for things to be done, and that you know what it is.\n   In your words: \"I suppose I've never really looked at what 'properly' means.\"\n\n**Still open when we stopped:**\n- What makes something \"proper\" when you do it, and not proper when someone else does?\n\n**Offered, not added:**\n- That the problem has to belong to **one** of you.\n\n**Not looked at yet:**\n2. You assume that if you don't keep on top of the house and the money, **nothing** gets done.\n3. You assume that being called controlling means being cast as the **bad guy**.\n4. You assume that liking things done properly and being **controlling** are separate things.\n5. You assume that your partner's word \"controlling\" is about the **house and the money**.",
+      "seconds": 6.2
+    }
+  ]
+}

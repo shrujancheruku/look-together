@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your mother criticises **everything** you do.\n2. You assume that at 41 you **should** be over it by now.\n3. You assume that being **over it** would mean her words no longer affect you.\n4. You assume that the call itself is what **wrecks** the rest of your day.\n\nWhich of these stands out?",
+      "seconds": 7.6
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"should,\" whose rule is that? Where did you pick it up?",
+      "seconds": 6.2
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "Two things may be packed into \"care\" there. Is it caring what she thinks, or being hit hard when she says it? Which one do you mean?",
+      "seconds": 7.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. Let's slow down and take just one call, the most recent one. What was the moment in it that hit you?",
+      "seconds": 5.5
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "Maybe it's a blur, and I'm asking you to pick through it. Try something smaller: when her name comes up on your phone, what's the first thing you notice?",
+      "seconds": 8.5
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Sometimes people can't say what hit them in the moment, only that they feel tender afterwards, like a bruise you didn't see happen. Is it anything like that for you, or different?",
+      "seconds": 10.5
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:** \"You assume that at 41 you **should** be over it by now.\"\n- You put the \"should\" down to being an adult: \"Adults aren't supposed to care what their parents think.\"\n- When asked what \"care\" meant, and what stood out in a call or when her name appears, you said \"I don't know\" and \"No idea.\" No shift in understanding came up, and that's what's here.\n\n**Open Question to keep looking at:** When you say adults aren't supposed to \"care,\" do you mean caring what she thinks, or being hit hard when she says it? Are those the same thing for you?\n\n**Not looked at yet:**\n- You assume that your mother criticises **everything** you do.\n- You assume that being **over it** would mean her words no longer affect you.\n- You assume that the call itself is what **wrecks** the rest of your day.\n\nYou can come back to any of these whenever you like.",
+      "seconds": 9.5
+    }
+  ]
+}
