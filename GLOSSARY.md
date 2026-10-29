@@ -5,7 +5,7 @@ An app for examining one's own understanding of life, inspired by the approach o
 ## Language
 
 **Problem**:
-What a person brings to an Inquiry: a worry, belief, situation or question, in their own words.
+What a person brings to an Inquiry, in their own words: something in their life they have to face and understand, not something the app promises to solve.
 _Avoid_: Concern, issue, topic
 
 **Inquiry**:
