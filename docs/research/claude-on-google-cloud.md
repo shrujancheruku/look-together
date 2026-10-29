@@ -1,0 +1,103 @@
+# Claude on Google Cloud: which offering keeps Inquiries private?
+
+Research for [#21](https://github.com/shrujancheruku/look-together/issues/21) (parent map [#1](https://github.com/shrujancheruku/look-together/issues/1)), following [#6](https://github.com/shrujancheruku/look-together/issues/6) (`docs/research/privacy-options.md` on branch `research/privacy-options`) and the model choice in [#11](https://github.com/shrujancheruku/look-together/issues/11) (Claude Sonnet 5.5).
+
+All sources were read on **2026-10-29**. The Google Cloud pages carried "Last updated 2026-10-28 UTC". Vendor docs and terms change often, so check them again before relying on any of this.
+
+> **Not legal advice.** This is a technical survey of vendor documentation for planning. The disclosures and the processor/transfer analysis need review by a qualified privacy lawyer for the launch region before launch.
+
+## Short answer
+
+- **There are two offerings, and they put different companies in the processor role.** *Claude Models on Google Cloud (Google managed)* (Model Garden, `aiplatform.googleapis.com`) makes **Google** the processor. *Claude Models on Google Cloud (Anthropic managed)* (`claude.googleapis.com`, bought through Marketplace) is the Claude API run by **Anthropic**, with Google handling only access and billing. Anthropic is the processor there.
+- **For an EU launch, Google managed is the only option that keeps Inquiry processing in the EU.** It has an `eu` multi-region endpoint, and Sonnet 5.5 is served there. Anthropic managed offers only `inference_geo` `global` or `us`, its workspace (at-rest) geo is fixed to `us`, and Anthropic's trust and safety systems "process data outside Google Cloud".
+- **Anthropic managed is the only option with a written, contractual zero-data-retention (ZDR) path,** and that path is "on request" through an Anthropic account representative. Google's ZDR guidance doesn't mention partner models, and its abuse-monitoring page doesn't say how Sonnet 5.5 without Advanced AI is logged.
+- **Abuse logging for non-Covered Claude on Google managed is not settled by the docs.** The Master Agreement exemption is written under the heading for *Google* models. Claude is governed by Anthropic's terms, "enforced" by the same abuse-monitoring systems, without a stated logging rule. The question for the Google account team is below.
+- **Prompt caching is compatible with a "nothing kept after the response" claim on both offerings,** with wording caveats. The KV cache and hashes are held **in memory only** for the TTL (5 minutes or 1 hour) and then deleted, and caching is listed as ZDR-eligible. Google treats the cache hashes as "Service Data", not "Customer Data". Disclose it as "held briefly in memory to speed up the next turn, up to an hour", not as "never retained".
+- **Sonnet 5.5 is outside Covered/Advanced AI 30-day logging as long as the Cyber Verification Program flag stays off.** Covered Models are Fable and Mythos only. On Google Cloud, Opus ≥4.7 and Sonnet ≥5 become "Advanced AI" only "when `advanced_ai_enabled` is set to `true` ... All other usage of these models is out of scope." Google's CVP page doesn't even list Sonnet 5.5 as a supported model.
+
+**Recommendation for the MVP:** use **Google managed, Sonnet 5.5, on a pinned multi-region endpoint** (`eu` or `us`, matching the launch region, never `global`), with request-response logging off. **Get Google's written answer on abuse logging before making a zero-retention claim.** If the answer is "flagged prompts may be logged", fall back to the honest wording ("not used for training; not stored except if flagged for abuse"). Alternatively, for a US-only launch, take Anthropic managed with a ZDR agreement.
+
+## 1. Google managed vs Anthropic managed
+
+| | Google managed | Anthropic managed |
+|---|---|---|
+| **Processor** | Google. "the cloud provider is the data processor" ([Anthropic: API and data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention)) | Anthropic. "Anthropic is the data processor ... Some supporting services, such as Anthropic's trust and safety systems, process data outside Google Cloud." ([Anthropic managed](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/anthropic-managed#data-retention)) |
+| **Governing terms** | Google Cloud terms + Cloud Data Processing Addendum. For the model itself: "Use of Anthropic models on Gemini Enterprise Agent Platform is governed by Anthropic's Commercial Terms of Service or other applicable agreement with Anthropic" ([Google: Abuse monitoring](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/abuse-monitoring)) | Anthropic Commercial Terms of Service and Usage Policy, accepted during setup. Setup creates a new Anthropic organization for the project. |
+| **Content shared with Anthropic?** | "Customer prompts and model responses are not shared with third-parties when using the Gemini Enterprise API, including partner models" ([Google: Partner models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)). Anthropic isn't on Google Cloud's third-party subprocessor list (last modified 2026-10-19) ([Google Cloud subprocessors](https://cloud.google.com/terms/subprocessors)). The exception is Covered/Advanced AI models (see §4). | Yes, Anthropic runs the inference. |
+| **Default retention** | Nothing stored by the request itself. Request-response logging is off by default ([Google: request-response logging](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/request-response-logging)). Google's ZDR page ([data governance](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/data-governance)) doesn't mention partner models. | Conflicting first-party wording. The API docs say "Conversation content ... is not retained by default" ([API and data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention)). Anthropic's privacy centre says "we automatically delete inputs and outputs on our backend within 30 days" ([Privacy centre, updated 2026-07-01](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data)). Plan disclosures around "up to 30 days" unless ZDR is signed. |
+| **ZDR** | No partner-model-specific ZDR statement. | "ZDR is available on request. Contact your Anthropic account representative." A ZDR arrangement on another Anthropic org "doesn't carry over". |
+| **Abuse logging / human review** | See §2. Not settled for non-Covered Claude. | Even under ZDR: "if a chat or session is flagged, Anthropic may retain inputs and outputs for up to 2 years". Trust and safety classification scores are kept for up to 7 years ([privacy centre](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data)). Human review isn't described for standard API data. |
+| **Residency: inference** | `global` (any region, "don't provide any data residency guarantees"), multi-region `us` / `eu`, or regional. **Regional endpoints serve Sonnet 4.6 and earlier only.** For Sonnet 5.5, use `global` or a multi-region endpoint ([Anthropic: Google managed](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/google-managed#global-multi-region-and-regional-endpoints)). Sonnet 5.5 model availability: US multi-region, Europe multi-region, global ([Google: Sonnet 5.5](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/sonnet-5-5)). | Location in the URL is always `global`. `inference_geo` is `"global"` (default) or `"us"`. "Only `"us"` and `"global"` are available." **No EU option** ([Anthropic: Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency)). |
+| **Residency: at rest** | "Your data is stored at rest within the selected region or multi-region" ([Partner models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)) | Workspace geo "is not configurable. Every workspace uses `"us"`" ([Data residency](https://platform.claude.com/docs/en/manage-claude/data-residency#workspace-geo)) |
+| **EU boundary detail** | "The European Union multi-region (`eu`) endpoint strictly covers data residency within EU member states. ... the United Kingdom and Switzerland, are excluded" ([Google: Data residency](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/data-residency)) | n/a |
+| **Price for pinned residency** | Multi-region and regional cost "10 percent more than global" | `inference_geo: "us"` costs 1.1x |
+| **Features we'd care about** | Messages, prompt caching (5 min and 1 h), structured outputs, tools. No Batches, no Files, no Usage and Cost API. | Same as the Claude API, including Batches, Files and the Compliance API. CMEK via Cloud KMS. Cloud Audit Logs Data Access logs are off by default. |
+| **Rate limits** | Google quotas. Sonnet 5.5 multi-region: 1,250 QPM, 12.5M input TPM. Global: 2,500 QPM ([Sonnet 5.5 page](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/sonnet-5-5)) | Anthropic-managed rate limits, shared across geos |
+
+Comparison and identification table: [Anthropic: Claude Models on Google Cloud overview](https://platform.claude.com/docs/en/build-with-claude/claude-models-on-google-cloud/overview).
+
+## 2. Does the Master Agreement abuse-logging exemption cover non-Covered Claude?
+
+**The docs don't settle it.** What the [abuse monitoring page](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/abuse-monitoring) says, in order:
+
+1. Under the heading **"Google models not designated as 'Google Frontier Models' or 'Advanced AI'"**: flagged prompts may be logged "for up to 90 days in the same region or multi-region", "Authorized Google employees may assess the flagged prompts", "Services in scope: Google's Generative AI Services", and "**customers with a Google Cloud Master Agreement are exempt from prompt logging for this abuse monitoring by default**".
+2. Under **"Non-Google Advanced AI models"**: all prompts and responses are logged for up to 30 days. The scope is Mythos, Fable, and "Claude Opus >=4.7 and Sonnet >=5 when `advanced_ai_enabled` is set to `true` ... All other usage of these models is out of scope of the Advanced AI Safety Addendum."
+3. Under **"Partner-specific terms > Anthropic"**: use is "governed by Anthropic's Commercial Terms of Service ... **The abuse monitoring systems described on this page are used to ensure adherence to these terms.**"
+
+So non-Advanced Claude is policed by "the systems described on this page". The only system that isn't Advanced AI or Frontier is the one written for *Google* models, and the exemption sits inside that section. Whether Sonnet 5.5 counts as one of "Google's Generative AI Services" for that section (and so gets the 90-day flagged logging, the human review, *and* the exemption) isn't stated. The data governance page's ZDR section doesn't mention partner models.
+
+A second gap: Look Together will almost certainly start on **online terms (Google Cloud Platform Terms of Service), not a Master Agreement**. Even if the exemption covered Claude, it wouldn't apply to us by default.
+
+**Question for the Google account team (send as written):**
+
+> We call Anthropic Claude Sonnet 5.5 (`claude-sonnet-5-5`) through Agent Platform (Google managed, `aiplatform.eu.rep.googleapis.com` / `aiplatform.us.rep.googleapis.com`), with `advancedAiEnabled` never set, no Advanced AI Safety Addendum consent, and request-response logging off. For this model and configuration:
+> 1. Does Google (or Anthropic, through Google) log any prompts or responses for abuse monitoring, including prompts flagged by safety classifiers? If yes, for how long, in which location, and may authorised Google or Anthropic staff review them?
+> 2. Does the "Customers in scope" exemption on the Abuse monitoring page ("customers with a Google Cloud Master Agreement are exempt from prompt logging") apply to partner models like Claude, or only to Google models?
+> 3. If we are on the online Google Cloud Platform Terms of Service rather than a Master Agreement, can we request the same exemption for Claude, and how?
+> 4. Is any Claude prompt or response content shared with Anthropic in this configuration (for abuse monitoring or anything else)?
+> 5. Does Google's zero-data-retention guidance (disable caching, `store = false`, and so on) apply to Claude partner models, and is there anything else retained for Claude that the guidance doesn't list?
+
+## 3. Prompt caching vs a zero-retention claim
+
+| | Google managed | Anthropic managed |
+|---|---|---|
+| What's held | Google: caching "behaves as described in the Anthropic documentation". Hashes are treated as "User Metadata ... customer 'Service Data' under the Google Cloud Privacy Notice and not as 'Customer Data' under the Cloud Data Processing Addendum ... additional protections for 'Customer Data' don't apply to these hashes" ([Google: Claude prompt caching](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/prompt-caching)) | "KV (key-value) cache representations and cryptographic hashes of cached content are held in memory only and are not stored at rest. Cached entries have a minimum lifetime of 5 minutes (standard) or 1 hour (extended), after which they are promptly, though not immediately, deleted." ([Anthropic: Prompt caching, Data retention](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#data-retention)) |
+| ZDR status | Not stated by Google | "Prompt caching (both automatic and explicit) is ZDR eligible" (excludes Covered Models) |
+| Isolation | Per Google Cloud project ("cannot be used by other projects"). Anthropic's doc says organization-level. | Per workspace |
+| Endpoints | Supported on global and multi-region endpoints ([Partner models](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)) | `global` location; works "as on the Claude API" |
+| 1-hour TTL | Supported (`"ttl": "1h"`) | **Unclear.** Anthropic's prompt-caching page lists 1-hour availability on "the Claude API, Amazon Bedrock, ..., Claude Platform on AWS, Claude Models on Google Cloud (Google managed), and Microsoft Foundry". It omits Anthropic managed, while the Anthropic-managed page lists prompt caching as working "as they do on the Claude API". Test it before relying on it. |
+| Opt-out | Can be disabled per project through Google support | Simply don't send `cache_control` |
+
+**Verdict:** caching is compatible with "not stored after the response" in the at-rest sense on both offerings. It isn't compatible with a literal "nothing exists after your turn". Derived KV state lives in RAM for up to the TTL plus a short deletion lag, and on Google, hashes are Service Data. The 1-hour cache stretches that to over an hour. Suggested wording: *"To respond faster, a temporary in-memory copy of the conversation's processed form may be kept for up to an hour, then deleted. It is never written to disk or used for training."* Have counsel confirm. Use the 5-minute TTL unless the gap between Dialogue turns is regularly over 5 minutes. Turns in an Inquiry are usually seconds to minutes apart, so a 5-minute cache that refreshes on each read probably captures most of the benefit, and the 1-hour write costs 2x base input versus 1.25x.
+
+**Cost note (Usage limits and cost):** Anthropic's list price for Sonnet 5.5 is $2/MTok input, $2.50 for a 5-minute write, $4 for a 1-hour write, **$0.10/MTok for cache hits (0.05x)**, and $10/MTok output ([Anthropic prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pricing)). The minimum cacheable prefix for Sonnet 5.5 is 512 tokens. Google's Claude caching page states "Cache read tokens are 90% cheaper" (0.1x) generically, so **check the Vertex price sheet for Sonnet 5.5's cache-read rate**. Both offerings add +10% for pinned residency.
+
+## 4. Sonnet 5.5 and Covered / Advanced AI 30-day logging
+
+- **Anthropic:** Covered Models are "Claude Fable 5.1, Claude Mythos 5.1, Claude Fable 5, and Claude Mythos 5". They "require 30-day data retention". On Google Cloud, "retained data stays within your cloud provider's environment" ([API and data retention](https://platform.claude.com/docs/en/manage-claude/api-and-data-retention)). **Sonnet 5.5 isn't a Covered Model.**
+- **Google:** Advanced AI scope is "Claude Mythos (all versions)", "Claude Fable (all versions)", and "Claude Opus >=4.7 and Sonnet >=5 when `advanced_ai_enabled` is set to `true` for use within Anthropic's Cyber Verification Program (CVP). All other usage of these models is out of scope of the Advanced AI Safety Addendum" ([Abuse monitoring](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/abuse-monitoring)).
+- **Google's [CVP page](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude/cyber-verification-program)** names the field `advancedAiEnabled` in `claudeFeatureConfig`, set through `setPublisherModelConfig` (v1beta1). It's "scoped per project, location, publisher, and model". The supported models it lists are Opus 4.7, Opus 4.8 and Sonnet 5, plus Opus 5 and Opus 5.5 with `dataSharingEnabledProvider: ANTHROPIC`. **Sonnet 5.5 isn't listed.** An empty `fetchPublisherModelConfig` result means "no custom publisher model settings have been applied".
+- **Confirmed:** with the flag off (or unavailable), Sonnet 5.5 is outside the 30-day logging. **Guardrails:** don't grant `aiplatform.consents.update` (in `roles/aiplatform.admin`) to anyone routinely, so nobody can consent to the Advanced AI Safety Addendum. Restrict who can call `setPublisherModelConfig`. Have a startup or CI check that `fetchPublisherModelConfig` returns `{}` for `claude-sonnet-5-5` in each location used. Block Fable and Mythos in Model Garden with an org policy.
+
+## 5. What each choice means for disclosures
+
+**GDPR Art. 13** (recipients, transfers, retention). See `privacy-options.md` §(e) for the full list.
+
+- *Google managed + `eu` endpoint:* the recipient is **Google Cloud as processor**. If Google confirms the point in §2, Anthropic isn't a recipient. Inference and at-rest data stay in the EU multi-region. Google is still a US-parented company, so the transfer/safeguards line should rely on Google's Cloud Data Processing Addendum (counsel to confirm wording). Retention: "not stored after the response", with the caching note, plus whatever Google says about flagged-prompt logging.
+- *Anthropic managed:* the recipient is **Anthropic as processor**, with Google as access and billing gateway. **International transfer to the US is certain** (workspace geo `us`, inference `us` or `global`, trust and safety outside Google Cloud). It needs Art. 46 safeguards named in the notice (Anthropic's DPA and SCCs, to be checked by counsel; not read here). Retention: "up to 30 days" without ZDR. With ZDR: "not retained, except flagged content up to 2 years and classifier scores up to 7 years".
+- **Patterns** are still profiling either way (see #6).
+
+**Apple 5.1.2(i)** ("clearly disclose where personal data will be shared with third parties, including with third-party AI, and obtain explicit permission"): both offerings mean sharing with third-party AI. The consent screen should name the model and who runs it:
+- Google managed: "sent to Anthropic's Claude model, run by Google Cloud".
+- Anthropic managed: "sent to Anthropic (Claude), via Google Cloud".
+
+The App Store privacy label must reflect the processor's collection either way. Google managed has the simpler story: one processor, no Anthropic access, if Google confirms.
+
+## Open points
+
+- **Google's answer to the §2 question.** It decides whether "not kept after the response" can be said for Google managed.
+- **Anthropic ZDR availability for a small new org** on Anthropic managed: whether an account rep will grant it, and whether the privacy centre's "within 30 days" or the docs' "not retained by default" governs without it.
+- **1-hour cache on Anthropic managed:** the docs conflict. Test it.
+- **Sonnet 5.5 cache-read price on Vertex:** 0.05x (Anthropic list) vs 0.1x (Google's generic page).
+- **UK and Switzerland** are outside the `eu` multi-region. A UK launch has no in-jurisdiction Sonnet 5.5 endpoint (regional endpoints stop at Sonnet 4.6).
+- Anthropic's DPA and subprocessor list (trust.anthropic.com) weren't readable in this session. Counsel should review them if Anthropic managed is chosen.
