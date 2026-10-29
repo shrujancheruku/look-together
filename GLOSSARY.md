@@ -32,6 +32,10 @@ _Avoid_: Homework, takeaway, advice
 What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Assumptions explored, any change in understanding in the person's own words, the Open Questions, and the Assumptions not looked at yet.
 _Avoid_: Summary, results, takeaways, report
 
+**Step-out**:
+The app leaving an Inquiry because the person may be at risk, to point them to people who can help. An Inquiry that has been stepped out of never resumes.
+_Avoid_: Escalation, intervention, crisis mode
+
 **Pattern**:
 An Assumption or friction that recurs across a person's Inquiries, shown to them only in a long-term view, outside any Inquiry.
 _Avoid_: Insight, profile, progress
