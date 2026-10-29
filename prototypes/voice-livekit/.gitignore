@@ -1,0 +1,7 @@
+node_modules/
+.env
+loadtest/*.wav
+app/node_modules/
+app/android/
+app/ios/
+app/.expo/

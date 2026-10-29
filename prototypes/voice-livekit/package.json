@@ -1,0 +1,20 @@
+{
+  "name": "voice-livekit-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "turn": "node server/turn.mjs",
+    "worker": "node worker/agent.mjs start",
+    "worker:download": "node worker/agent.mjs download-files",
+    "load": "node loadtest/load.mjs"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^8.2.1",
+    "@livekit/agents": "1.9.5",
+    "@livekit/agents-plugin-silero": "1.9.5",
+    "@livekit/protocol": "^1.53.1",
+    "@livekit/rtc-node": "^1.2.1",
+    "google-auth-library": "^11.3.1",
+    "livekit-server-sdk": "^2.19.2"
+  }
+}

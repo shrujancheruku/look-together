@@ -1,0 +1,5 @@
+allowBuilds:
+  "@livekit/blingfire": true
+  "@livekit/local-inference": true
+  onnxruntime-node: true
+  protobufjs: true
