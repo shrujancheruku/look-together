@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that rehearsing what you'll say will make you **safe** in the conversation.\n2. You assume that some things you said were **wrong**, and that replaying them afterwards **matters**.\n3. You assume that you know what other people **think** of you.\n4. You assume that being seen as **weird** would be **bad**.\n5. You assume that the anxiety before an event means something is **wrong** with you.\n\nWhich of these stands out?",
-      "seconds": 5.3
+      "model": "claude-opus-5-5",
+      "text": "1. You assume that what you say needs to be **rehearsed** to be acceptable.\n2. You assume that there is a **wrong** way to say things, and that you've done it.\n3. You assume that you can know what **people** think of you.\n4. You assume that being seen as **weird** would matter.\n5. You assume that replaying the conversation **afterwards** will show you something.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 335,
+        "cache_read_input_tokens": 1438,
+        "output_tokens": 127,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 335,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 127,
+            "cache_read_input_tokens": 1438,
+            "cache_creation_input_tokens": 335,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 335
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0055156,
+        "api_seconds": 2.2
+      },
+      "seconds": 2.2
     },
     {
       "role": "user",
-      "text": "Number one."
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When you rehearse, what does \"safe\" mean to you? Safe from what?",
-      "seconds": 3.8
+      "model": "claude-opus-5-5",
+      "text": "When you rehearse, what are you trying to make sure of?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 472,
+        "cache_read_input_tokens": 1438,
+        "output_tokens": 51,
+        "output_tokens_details": {
+          "thinking_tokens": 31
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 472,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 51,
+            "cache_read_input_tokens": 1438,
+            "cache_creation_input_tokens": 472,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 472
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0106152,
+        "api_seconds": 1.4
+      },
+      "seconds": 1.4
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "I don't give tips. Here we look at what's underneath. You can stop if tips are what you need right now.\n\nIf you want to keep looking: when you rehearse, what are you trying to keep from happening?",
-      "seconds": 6.8
+      "model": "claude-opus-5-5",
+      "text": "This app doesn't give tips. It's a place to look at what's underneath the anxiety for yourself. Tips for social anxiety are easy to find elsewhere if that's what you need right now.\n\nIf you want to keep looking: when you rehearse, what are you trying to make sure of?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 75,
+        "cache_read_input_tokens": 1910,
+        "output_tokens": 138,
+        "output_tokens_details": {
+          "thinking_tokens": 48
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 75,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 138,
+            "cache_read_input_tokens": 1910,
+            "cache_creation_input_tokens": 75,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 75
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0143732,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "Okay. Then what is the rehearsing for, if not to keep you safe?",
-      "seconds": 4.6
+      "model": "claude-opus-5-5",
+      "text": "So the rehearsing isn't about making things acceptable. It's because you already come across badly. What happens when you don't rehearse?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 160,
+        "cache_read_input_tokens": 1985,
+        "output_tokens": 163,
+        "output_tokens_details": {
+          "thinking_tokens": 121
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 160,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 163,
+            "cache_read_input_tokens": 1985,
+            "cache_creation_input_tokens": 160,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 160
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.019326199999999998,
+        "api_seconds": 2.3
+      },
+      "seconds": 2.3
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "Then I'll reword the first one: you assume that rehearsing will stop you coming across **badly**.\n\nYou said you \"just know\" you come across badly, and also that you've never asked anyone. Where does that knowing come from?",
-      "seconds": 6.5
+      "model": "claude-opus-5-5",
+      "text": "Then I'll reword the first one to fit what you've said: \"You assume that you **come across badly**, and rehearsing is how you manage it.\"\n\nIf you've never asked anyone, where does the \"knowing\" come from?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 182,
+        "cache_read_input_tokens": 2145,
+        "output_tokens": 273,
+        "output_tokens_details": {
+          "thinking_tokens": 205
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 182,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 273,
+            "cache_read_input_tokens": 2145,
+            "cache_creation_input_tokens": 182,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 182
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.026687199999999998,
+        "api_seconds": 3.8
+      },
+      "seconds": 3.8
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**Explored:**\n- You assume that rehearsing will keep you **safe** in the conversation. You said that's not what you assume: \"I just know I come across badly.\" It became: you assume that rehearsing will stop you coming across **badly**.\n\n**What shifted, in your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question:**\n- You \"just know\" you come across badly, but you've never asked anyone. Where does that knowing come from?\n\n**Not looked at yet:**\n2. You assume that some things you said were **wrong**, and that replaying them afterwards **matters**.\n3. You assume that you know what other people **think** of you.\n4. You assume that being seen as **weird** would be **bad**.\n5. You assume that the anxiety before an event means something is **wrong** with you.",
-      "seconds": 6.8
+      "model": "claude-opus-5-5",
+      "text": "**What we looked at**\n\n**Explored:**\n- Rehearsing. It started as \"You assume that what you say needs to be **rehearsed** to be acceptable.\" You said that wasn't it: \"I just know I come across badly.\" It became \"You assume that you **come across badly**, and rehearsing is how you manage it.\"\n\n**In your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question:**\n- If you've never asked anyone, where does the \"knowing\" that you come across badly come from?\n\n**Not looked at yet:**\n2. You assume that there is a **wrong** way to say things, and that you've done it.\n3. You assume that you can know what **people** think of you.\n4. You assume that being seen as **weird** would matter.\n5. You assume that replaying the conversation **afterwards** will show you something.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 287,
+        "cache_read_input_tokens": 2327,
+        "output_tokens": 406,
+        "output_tokens_details": {
+          "thinking_tokens": 143
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 287,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 406,
+            "cache_read_input_tokens": 2327,
+            "cache_creation_input_tokens": 287,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 287
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.037584599999999996,
+        "api_seconds": 4.3
+      },
+      "seconds": 4.3
     }
   ]
 }

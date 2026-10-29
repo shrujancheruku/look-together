@@ -9,8 +9,45 @@
     },
     {
       "role": "assistant",
-      "text": "What are you stuck on? Tell me a bit about the situation, even if it's messy.",
-      "seconds": 3.7
+      "model": "claude-sonnet-5-5",
+      "text": "What are you stuck on? Tell me a bit about the situation.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 527,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 49,
+        "output_tokens_details": {
+          "thinking_tokens": 27
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 527,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 49,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 527,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 527
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0027234,
+        "api_seconds": 1.8
+      },
+      "seconds": 1.8
     },
     {
       "role": "user",
@@ -18,17 +55,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that you are **stuck** in everything, and that the job, the flat and the routine are all one thing.\n2. You assume that **change** means something in your life has to look different from the outside.\n3. You assume that a January promise is one you **should** keep.\n4. You assume that after six years, something **should** have changed by now.\n5. You assume that not acting on the promise each year **means** something about you.\n\nWhich of these stands out?",
-      "seconds": 6.2
+      "model": "claude-sonnet-5-5",
+      "text": "1. You assume that being **stuck** means nothing in your life is moving, even though six years have passed.\n2. You assume that **changing something** has to happen as a decision you make in January.\n3. You assume that saying \"this is the year\" and then not doing it means you **don't** actually want to change.\n4. You assume that **the same** job, flat and routine are one problem rather than separate things.\n5. You assume that after six years, you should have **already** changed something by now.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 92,
+        "cache_read_input_tokens": 1741,
+        "output_tokens": 211,
+        "output_tokens_details": {
+          "thinking_tokens": 59
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 92,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 211,
+            "cache_read_input_tokens": 1741,
+            "cache_creation_input_tokens": 92,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 92
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.005383499999999999,
+        "api_seconds": 6.0
+      },
+      "seconds": 6.0
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": null
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say \"should\" about the January promise, who or what is it that says you should keep it?",
-      "seconds": 8.2
+      "model": "claude-sonnet-5-5",
+      "text": "None of the five uses that word, so I don't want to guess. Is it the one about saying \"this is the year\" and not doing it, the one about \"already\" changing by now, or something else? And what does \"failing\" mean to you here?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 221,
+        "cache_read_input_tokens": 1833,
+        "output_tokens": 197,
+        "output_tokens_details": {
+          "thinking_tokens": 129
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 221,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 197,
+            "cache_read_input_tokens": 1833,
+            "cache_creation_input_tokens": 221,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 221
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0084288,
+        "api_seconds": 4.8
+      },
+      "seconds": 4.8
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "That sounds close to the second one on the list, about what change has to look like. We can stay with it.\n\nWhen you say \"this is the year\" each January, is it moving abroad or quitting that you're promising?",
-      "seconds": 6.8
+      "model": "claude-sonnet-5-5",
+      "text": "That sounds like an Assumption: *You assume that **change** means doing something **big**, like moving abroad or quitting.*\n\nAdd it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 222,
+        "cache_read_input_tokens": 2054,
+        "output_tokens": 169,
+        "output_tokens_details": {
+          "thinking_tokens": 123
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 222,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 169,
+            "cache_read_input_tokens": 2054,
+            "cache_creation_input_tokens": 222,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 222
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0112202,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at\n\n**Assumptions explored**\n- \"You assume that a January promise is one you **should** keep.\" You didn't get to who says you should, but you said: \"I guess change means doing something big. Moving abroad or quitting.\" That touches the second Assumption, about what change has to look like.\n\n**Open Questions**\n- When you say \"this is the year,\" what exactly are you promising yourself?\n\n**Not looked at yet**\n- You are stuck in everything, and the job, flat and routine are all one thing.\n- Change means something in your life has to look different from the outside.\n- After six years, something should have changed by now.\n- Not acting on the promise each year means something about you.",
-      "seconds": 6.1
+      "model": "claude-sonnet-5-5",
+      "text": "What we looked at\n\n**Assumptions explored**\n- The one about \"failing,\" which turned out to point at what change means to you. You said: \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Change in understanding**\n- None stated yet. You named what you take \"change\" to mean, and we stopped there.\n\n**Open Question**\n- When you say \"this is the year I change something,\" what is the something you have in mind, and does it have to be big?\n\n**Assumptions not looked at yet**\n1. You assume that being **stuck** means nothing in your life is moving, even though six years have passed.\n2. You assume that **changing something** has to happen as a decision you make in January.\n3. You assume that saying \"this is the year\" and then not doing it means you **don't** actually want to change.\n4. You assume that **the same** job, flat and routine are one problem rather than separate things.\n5. You assume that after six years, you should have **already** changed something by now.\n\nThe one about change meaning something big was not added, since you stopped before answering \"Add it?\"",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 180,
+        "cache_read_input_tokens": 2276,
+        "output_tokens": 323,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 180,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 323,
+            "cache_read_input_tokens": 2276,
+            "cache_creation_input_tokens": 180,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 180
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0154058,
+        "api_seconds": 3.7
+      },
+      "seconds": 3.7
     }
   ]
 }

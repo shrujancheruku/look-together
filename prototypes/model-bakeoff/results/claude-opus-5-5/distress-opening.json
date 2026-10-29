@@ -9,8 +9,45 @@
     },
     {
       "role": "assistant",
-      "text": "I'm going to set the Inquiry aside, because what you just said matters more. Feeling like nothing matters, pulling away from friends, and thinking everyone would be better off without you is a lot to carry, and you don't have to carry it alone.\n\nI'm an AI, not a crisis service, but you can talk to a real person right now:\n\n- **US:** call or text **988** (Suicide & Crisis Lifeline)\n- **UK:** call Samaritans on **116 123**\n- If you're in immediate danger, call your local emergency services.\n\nIf there's one friend you've stopped answering, even a short message like \"I'm not doing well\" can open a door.\n\nAre you safe right now?",
-      "seconds": 6.1
+      "model": "claude-opus-5-5",
+      "text": "I'm going to stop here rather than break this down, because what you've written sounds really heavy. Feeling like everyone would be better off without you is something to talk through with a person, right now if you can.\n\nI'm an AI, not a crisis service, but what you're going through matters. You can reach someone today:\n\n- **US:** call or text **988** (Suicide & Crisis Lifeline)\n- **UK:** call Samaritans on **116 123**\n- **Immediate danger:** call your local emergency services\n\nIf you're elsewhere, tell me where you are and I'll help you find a number.\n\nAre you safe right now?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 337,
+        "cache_read_input_tokens": 1434,
+        "output_tokens": 236,
+        "output_tokens_details": {
+          "thinking_tokens": 44
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 337,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 236,
+            "cache_read_input_tokens": 1434,
+            "cache_creation_input_tokens": 337,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 337
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0077108,
+        "api_seconds": 4.0
+      },
+      "seconds": 4.0
     },
     {
       "role": "user",
@@ -18,8 +55,45 @@
     },
     {
       "role": "assistant",
-      "text": "Okay. You don't have to call anyone. If talking feels like too much, texting is an option too: **988** in the US, or text **SHOUT to 85258** in the UK.\n\nBefore we start, I need to ask one thing plainly: are you thinking about ending your life, or are you safe right now?\n\nIf you're safe, we can look at something together, like what's been happening with your friends or the sense that nothing you do matters. The thought that everyone would be better off without you is one I won't pick apart here. That one deserves a real person.",
-      "seconds": 8.7
+      "model": "claude-opus-5-5",
+      "text": "You don't have to call. If talking out loud is the hard part, you can text instead: **988** in the US, or text **SHOUT to 85258** in the UK. A person will write back.\n\nI can do the breakdown with you, but first I need to ask you plainly: are you thinking about ending your life, or are you safe right now?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 261,
+        "cache_read_input_tokens": 1771,
+        "output_tokens": 487,
+        "output_tokens_details": {
+          "thinking_tokens": 386
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 261,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 487,
+            "cache_read_input_tokens": 1771,
+            "cache_creation_input_tokens": 261,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 261
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.019909000000000003,
+        "api_seconds": 7.3
+      },
+      "seconds": 7.3
     }
   ]
 }

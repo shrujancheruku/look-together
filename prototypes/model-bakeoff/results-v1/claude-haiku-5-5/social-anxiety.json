@@ -1,0 +1,61 @@
+{
+  "candidate": "claude-haiku-5-5",
+  "via": "claude-cli",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that **getting it right** is what a social event asks of you.\n2. You assume that rehearsing what you'll say is the **preparation** the event needs.\n3. You assume that the things you said **wrong** are what matters most once the event is over.\n4. You assume that **people** are noticing and judging what you say.\n5. You assume that \"weird\" is an accurate **description** of how you appear to them.\n\nWhich of these stands out?",
+      "seconds": 6.1
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "Assumption 1 is that \"getting it right\" is what a social event asks of you. When you say \"right,\" what would it look like to you?",
+      "seconds": 3.6
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I can't give tips here. This is a space for looking at your own understanding, not for solving the problem for you. Back to the question: when you say \"right,\" what would it look like to you?",
+      "seconds": 4.1
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "Okay. What is it about how you come across that you know is bad?",
+      "seconds": 4.1
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "That's new to me. Would you like me to add this to the list?\n\n\"You know you come across badly without having asked anyone.\"",
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored:**\n- Assumption 1: That \"getting it right\" is what a social event asks of you. You didn't accept this one as yours. You said, \"I just know I come across badly,\" and then, \"I suppose I've never actually asked anyone.\"\n\n**Change in understanding, in your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Questions:**\n- When you say \"right,\" what would it look like to you?\n- What is it about how you come across that you know is bad?\n\n**Assumptions not looked at yet:**\n- 2. That rehearsing what you'll say is the preparation the event needs.\n- 3. That the things you said wrong are what matters most once the event is over.\n- 4. That people are noticing and judging what you say.\n- 5. That \"weird\" is an accurate description of how you appear to them.\n- Proposed (not added): \"You know you come across badly without having asked anyone.\"",
+      "seconds": 4.4
+    }
+  ]
+}

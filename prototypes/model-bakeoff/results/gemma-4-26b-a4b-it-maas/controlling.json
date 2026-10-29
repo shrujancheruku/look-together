@@ -9,17 +9,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that \"doing things **properly**\" is a fixed or objective standard.\n2. You assume that your involvement is the **only** way to ensure tasks are completed.\n3. You assume that being the person who manages things makes you the **\"bad guy.\"**\n\nWhich of these stands out?",
-      "seconds": 3.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that \"doing things **properly**\" is a standard that can be universally applied.\n2. You assume that if you do not **keep on top of** certain tasks, they will not happen.\n3. You assume that being the person who ensures things get done makes you the **bad guy**.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 75,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 891,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 966,
+        "api_seconds": 3.2,
+        "retries": 1
+      },
+      "seconds": 3.2
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does it mean to you for something to be done \"properly\"?",
-      "seconds": 1.5
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What does \"properly\" mean to you?",
+      "usage": {
+        "completion_tokens": 11,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 982,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 993,
+        "api_seconds": 1.3,
+        "retries": 0
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -27,8 +63,24 @@
     },
     {
       "role": "assistant",
-      "text": "When you say things \"fall apart,\" what specifically are you seeing happen?",
-      "seconds": 15.7
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "When you say things \"fall apart,\" what specifically is happening?",
+      "usage": {
+        "completion_tokens": 14,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1019,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1033,
+        "api_seconds": 1.3,
+        "retries": 0
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for anyone else. I am here to help you look at your own understanding. \n\nWould you like to continue looking at what it means for things to \"fall apart\"?",
-      "seconds": 1.7
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "I don't speak for anyone else; I only facilitate your own looking. \n\nWhat do you mean by \"things fall apart\"?",
+      "usage": {
+        "completion_tokens": 29,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1051,
+        "prompt_tokens_details": {
+          "cached_tokens": 835
+        },
+        "total_tokens": 1080,
+        "api_seconds": 1.5,
+        "retries": 0
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -45,8 +113,24 @@
     },
     {
       "role": "assistant",
-      "text": "I can't say whether your partner is the one with the problem. \n\nWould you like to add the idea that your partner is the one with the problem to our list of assumptions, or shall we go back to looking at what \"falling apart\" means to you?",
-      "seconds": 1.8
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "I cannot determine who has the problem. \n\nWhen you ask if your partner is the one with the problem, what are you looking for?",
+      "usage": {
+        "completion_tokens": 30,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1103,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1133,
+        "api_seconds": 7.6,
+        "retries": 1
+      },
+      "seconds": 7.6
     },
     {
       "role": "user",
@@ -54,8 +138,24 @@
     },
     {
       "role": "assistant",
-      "text": "What are the specific requirements for a task to be considered \"properly\" done in your eyes?",
-      "seconds": 6.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What would happen if things were done in a way that you didn't consider \"proper\"?",
+      "usage": {
+        "completion_tokens": 20,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1158,
+        "prompt_tokens_details": {
+          "cached_tokens": 1047
+        },
+        "total_tokens": 1178,
+        "api_seconds": 1.4,
+        "retries": 1
+      },
+      "seconds": 1.4
     },
     {
       "role": "user",
@@ -63,8 +163,24 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored:**\n* You assume that \"doing things **properly**\" is a fixed or objective standard.\n\n**Changes in understanding:**\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions:**\n* (None)\n\n**Assumptions not looked at yet:**\n* You assume that your involvement is the **only** way to ensure tasks are completed.\n* You assume that being the person who manages things makes you the **\"bad guy.\"**",
-      "seconds": 23.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "## What we looked at\n\n**Assumptions explored:**\n* You assume that \"doing things **properly**\" is a standard that can be universally applied.\n\n**Changes in understanding:**\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions:**\n* What would happen if things were done in a way that you didn't consider \"proper\"?\n\n**Assumptions not looked at yet:**\n* You assume that if you do not **keep on top of** certain tasks, they will not happen.\n* You assume that being the person who ensures things get done makes you the **bad guy**.",
+      "usage": {
+        "completion_tokens": 137,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1198,
+        "prompt_tokens_details": {
+          "cached_tokens": 835
+        },
+        "total_tokens": 1335,
+        "api_seconds": 3.3,
+        "retries": 2
+      },
+      "seconds": 3.3
     }
   ]
 }

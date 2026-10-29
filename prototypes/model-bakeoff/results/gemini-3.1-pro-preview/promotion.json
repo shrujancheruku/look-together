@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that working **harder** is what earns a promotion.\n2. You assume that being there **longer** should give you priority.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that if they actually **saw** you, they would promote you.\n\nWhich of these stands out?",
-      "seconds": 6.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that working **harder** and being there longer are the things that earn a promotion.\n2. You assume that not getting the promotion means you are not **good enough**.\n3. You assume that if management truly **saw** you, they would have chosen you.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 67,
+        "totalTokenCount": 1448,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 67
+          }
+        ],
+        "thoughtsTokenCount": 492,
+        "api_seconds": 7.3,
+        "retries": 0
+      },
+      "seconds": 7.3
     },
     {
       "role": "user",
-      "text": "The second one."
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What makes being there longer equal priority for a promotion?",
-      "seconds": 6.3
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does working \"harder\" look like for you in your day-to-day work?",
+      "usage": {
+        "promptTokenCount": 962,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 1267,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 962
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 20
+          }
+        ],
+        "thoughtsTokenCount": 285,
+        "api_seconds": 5.4,
+        "retries": 0
+      },
+      "seconds": 5.4
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "You say that is how it is \"supposed to work\". Is a promotion a reward?",
-      "seconds": 15.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "You're talking about the reward you expect. What does working \"harder\" actually look like in your day-to-day work?",
+      "usage": {
+        "promptTokenCount": 1011,
+        "candidatesTokenCount": 29,
+        "totalTokenCount": 1505,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1011
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 29
+          }
+        ],
+        "thoughtsTokenCount": 465,
+        "api_seconds": 8.5,
+        "retries": 0
+      },
+      "seconds": 8.5
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "If you aren't expecting it to be fair, what is going on for you when someone newer gets the role?",
-      "seconds": 7.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "You just said that working harder should get you rewarded because \"that's how it's supposed to work.\" But you also say you know life isn't fair. What is going on for you between those two thoughts?",
+      "usage": {
+        "promptTokenCount": 1059,
+        "candidatesTokenCount": 46,
+        "totalTokenCount": 1723,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1059
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 46
+          }
+        ],
+        "thoughtsTokenCount": 618,
+        "api_seconds": 10.5,
+        "retries": 0
+      },
+      "seconds": 10.5
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "It's okay not to know right away. Let's slow down. \n\nA moment ago you said hard work being rewarded is \"how it's supposed to work,\" but you also say you know \"life isn't fair.\" \n\nAre you holding onto two different rulebooks at the same time?",
-      "seconds": 12.0
+      "model": "gemini-3.1-pro-preview",
+      "text": "You are holding a rule about how things are supposed to work, while looking a situation that didn't follow it. If you put that rule down for a moment, what are you actually left with at your job?",
+      "usage": {
+        "promptTokenCount": 1111,
+        "candidatesTokenCount": 43,
+        "totalTokenCount": 1751,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1111
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 43
+          }
+        ],
+        "thoughtsTokenCount": 597,
+        "api_seconds": 11.1,
+        "retries": 0
+      },
+      "seconds": 11.1
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "Let's step out of the circle. \n\nIf we set aside how things are \"supposed\" to work, what is actually happening is that you have been there longer, and they promoted someone newer. \n\nWhen you look just at that, what does it say to you about your time there?",
-      "seconds": 15.1
+      "model": "gemini-3.1-pro-preview",
+      "text": "It makes sense that you are going in circles. I'll leave you with an Open Question to sit with later: If the rule that hard work equals a promotion isn't holding up here, what is actually keeping you working so hard?\n\nWould you like to look at one of the other Assumptions, or stop for now?\n\n2. You assume that not getting the promotion means you are not **good enough**.\n3. You assume that if management truly **saw** you, they would have chosen you.",
+      "usage": {
+        "promptTokenCount": 1168,
+        "candidatesTokenCount": 105,
+        "totalTokenCount": 1963,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1168
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 105
+          }
+        ],
+        "thoughtsTokenCount": 690,
+        "api_seconds": 12.2,
+        "retries": 0
+      },
+      "seconds": 12.2
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "We have hit a wall here, and that is fine. I'll leave this as an open question for you to look at later: \n\nIf being there longer doesn't put you next in line, what exactly is your time there doing for you?\n\nWould you like to look at one of the other assumptions, or stop for now?\n1. You assume that working **harder** is what earns a promotion.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that if they actually **saw** you, they would promote you.",
-      "seconds": 11.1
+      "model": "gemini-3.1-pro-preview",
+      "text": "It sounds like this is a good place to stop for now. \n\n**What we looked at**\n* The assumption that working harder and being there longer are the things that earn a promotion.\n* The tension between your belief that hard work gets rewarded because \"that's how it's supposed to work\" and your knowledge that \"life isn't fair.\"\n* Open Question: If the rule that hard work equals a promotion isn't holding up here, what is actually keeping you working so hard?\n\n**Assumptions not looked at yet**\n* You assume that not getting the promotion means you are not good enough.\n* You assume that if management truly saw you, they would have chosen you.",
+      "usage": {
+        "promptTokenCount": 1280,
+        "candidatesTokenCount": 148,
+        "totalTokenCount": 2152,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1280
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 148
+          }
+        ],
+        "thoughtsTokenCount": 724,
+        "api_seconds": 10.4,
+        "retries": 0
+      },
+      "seconds": 10.4
     },
     {
       "role": "user",
@@ -72,8 +230,30 @@
     },
     {
       "role": "assistant",
-      "text": "I cannot tell you if you are right or wrong. \n\nWhat does being a \"failure\" mean to you in this situation?",
-      "seconds": 8.4
+      "model": "gemini-3.1-pro-preview",
+      "text": "I can't tell you if you are right or wrong to feel that way. If we set aside whether the feeling is \"right,\" what does being a \"failure\" actually mean to you right now?",
+      "usage": {
+        "promptTokenCount": 1442,
+        "candidatesTokenCount": 42,
+        "totalTokenCount": 1945,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1442
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 42
+          }
+        ],
+        "thoughtsTokenCount": 461,
+        "api_seconds": 6.5,
+        "retries": 0
+      },
+      "seconds": 6.5
     },
     {
       "role": "user",
@@ -81,8 +261,30 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**The Assumptions explored:**\nWe looked at your assumption that being there longer should give you priority. \n\n**What you noticed:**\nYou saw a tension between feeling that hard work being rewarded is \"how it's supposed to work\" and knowing that \"life isn't fair.\" \n\n**Open Questions to keep looking at:**\n* If being there longer doesn't put you next in line, what exactly is your time there doing for you?\n* What does being a \"failure\" mean to you in this situation?\n\n**Assumptions not looked at yet:**\n* You assume that working harder is what earns a promotion.\n* You assume that being passed over means you are not good enough.\n* You assume that if they actually saw you, they would promote you. \n\nWe can pick this up again whenever you are ready.",
-      "seconds": 8.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "Yes, we can stop here. \n\n**What we looked at**\n* The assumption that working harder and being there longer earn a promotion.\n* The tension between your belief that hard work gets rewarded because \"that's how it's supposed to work\" and your knowledge that \"life isn't fair.\"\n* Open Question: If the rule that hard work equals a promotion isn't holding up here, what is actually keeping you working so hard?\n* Open Question: What does being a \"failure\" actually mean to you?\n\n**Assumptions not looked at yet**\n* You assume that not getting the promotion means you are not good enough.\n* You assume that if management truly saw you, they would have chosen you.",
+      "usage": {
+        "promptTokenCount": 1489,
+        "candidatesTokenCount": 155,
+        "totalTokenCount": 2528,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1489
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 155
+          }
+        ],
+        "thoughtsTokenCount": 884,
+        "api_seconds": 11.2,
+        "retries": 0
+      },
+      "seconds": 11.2
     }
   ]
 }

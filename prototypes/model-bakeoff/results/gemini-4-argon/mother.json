@@ -9,17 +9,63 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that being **41** means you **should** be over her criticism.\n2. You assume that her words are what **wrecks** your day.\n3. You assume that \"being **over it**\" means not feeling hurt when she criticises you.\n4. You assume you **have to** stay on these phone calls while she criticises everything you do.\n\nWhich of these stands out?",
-      "seconds": 5.0
+      "model": "gemini-4-argon",
+      "text": "1. You assume that being **41** means you **should** be over her criticism.\n2. You assume that there is a point where a person gets **over it** once and for all.\n3. You assume that the phone call is what **wrecks** you.\n4. You assume that her **criticism** says something real about your job, your partner, or how you raise your kids.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 912,
+        "candidatesTokenCount": 99,
+        "totalTokenCount": 1011,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 912
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 99
+          }
+        ],
+        "api_seconds": 4.6,
+        "retries": 0
+      },
+      "seconds": 4.6
     },
     {
       "role": "user",
-      "text": "The one about 'should be over it'."
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What makes 41 an age where her criticism shouldn't affect you anymore?",
-      "seconds": 2.6
+      "model": "gemini-4-argon",
+      "text": "What happens to a person by age 41 that makes them immune to their mother's criticism?",
+      "usage": {
+        "promptTokenCount": 1026,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1051,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1026
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "api_seconds": 4.3,
+        "retries": 0
+      },
+      "seconds": 4.3
     },
     {
       "role": "user",
@@ -27,8 +73,29 @@
     },
     {
       "role": "assistant",
-      "text": "Where did you get the idea that an \"adult\" is someone who doesn't care what their parents think?",
-      "seconds": 2.9
+      "model": "gemini-4-argon",
+      "text": "What do *you* mean by an \"adult\" here?",
+      "usage": {
+        "promptTokenCount": 1076,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1093,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1076
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 3.7,
+        "retries": 0
+      },
+      "seconds": 3.7
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "Let's look at it from another angle. When you get off the phone with her, there's the hurt from what she said, and then there's the thought \"I shouldn't care about this because I'm an adult.\" What does that second thought do to you?",
-      "seconds": 43.9
+      "model": "gemini-4-argon",
+      "text": "Let's slow down. You have a job, a partner, and kids you are raising\u2014in those parts of your life, are you an adult?",
+      "usage": {
+        "promptTokenCount": 1105,
+        "candidatesTokenCount": 36,
+        "totalTokenCount": 1141,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1105
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 36
+          }
+        ],
+        "api_seconds": 3.7,
+        "retries": 0
+      },
+      "seconds": 3.7
     },
     {
       "role": "user",
@@ -45,8 +133,30 @@
     },
     {
       "role": "assistant",
-      "text": "We're hitting a wall here, so let's try one more angle. If your own kids are 41 one day, and you criticise their jobs, partners, and parenting, would you expect them to feel nothing just because they're adults?",
-      "seconds": 2.8
+      "model": "gemini-4-argon",
+      "text": "Suppose a friend your age told you they were hurt by something their parent said. Would you look at them and think they weren't an adult?",
+      "usage": {
+        "promptTokenCount": 1150,
+        "candidatesTokenCount": 34,
+        "totalTokenCount": 1210,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1150
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 34
+          }
+        ],
+        "thoughtsTokenCount": 26,
+        "api_seconds": 3.9,
+        "retries": 0
+      },
+      "seconds": 3.9
     },
     {
       "role": "user",
@@ -54,8 +164,29 @@
     },
     {
       "role": "assistant",
-      "text": "That's okay. We can leave this one with an Open Question for you to keep looking at on your own: *What is the difference between what actually happens in you when your mother criticises you, and your rule about what an \"adult\" is supposed to feel?*\n\nWould you like to look at one of the other Assumptions, or stop here?",
-      "seconds": 22.9
+      "model": "gemini-4-argon",
+      "text": "We seem to be stuck here, and that's fine. Let's leave this with an Open Question for you to keep looking at:\n\n*Where did the idea come from that being an adult means not caring what a parent thinks?*\n\nWould you like to look at another Assumption from the list, or stop here?",
+      "usage": {
+        "promptTokenCount": 1197,
+        "candidatesTokenCount": 70,
+        "totalTokenCount": 1267,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1197
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 70
+          }
+        ],
+        "api_seconds": 4.4,
+        "retries": 0
+      },
+      "seconds": 4.4
     },
     {
       "role": "user",
@@ -63,8 +194,29 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored**\n* You assume that being **41** means you **should** be over her criticism.\n* In your words: \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n* What is the difference between what actually happens in you when your mother criticises you, and your rule about what an \"adult\" is supposed to feel?\n\n**Assumptions not looked at yet**\n* You assume that her words are what **wrecks** your day.\n* You assume that \"being **over it**\" means not feeling hurt when she criticises you.\n* You assume you **have to** stay on these phone calls while she criticises everything you do.",
-      "seconds": 4.4
+      "model": "gemini-4-argon",
+      "text": "## What we looked at\n\n**Assumptions explored:**\n1. You assume that being **41** means you **should** be over her criticism.\n- What came up: \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions:**\n- Where did the idea come from that being an adult means not caring what a parent thinks?\n\n**Assumptions not looked at yet:**\n2. You assume that there is a point where a person gets **over it** once and for all.\n3. You assume that the phone call is what **wrecks** you.\n4. You assume that her **criticism** says something real about your job, your partner, or how you raise your kids.",
+      "usage": {
+        "promptTokenCount": 1278,
+        "candidatesTokenCount": 164,
+        "totalTokenCount": 1442,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1278
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 164
+          }
+        ],
+        "api_seconds": 6.5,
+        "retries": 0
+      },
+      "seconds": 6.5
     }
   ]
 }

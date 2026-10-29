@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that reaching 41 means you **should be over** how your mother treats you.\n2. You assume that her criticism says something real about **your choices**.\n3. You assume that a phone call has the power to **wreck** the rest of your day.\n\nWhich of these stands out?",
-      "seconds": 13.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that because you are 41, you **should** no longer be affected by her.\n2. You assume that being **over it** means having no emotional reaction to her criticism.\n3. You assume that the phone call is what **wrecks** the rest of your day.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 72,
+        "totalTokenCount": 1957,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 72
+          }
+        ],
+        "thoughtsTokenCount": 1008,
+        "api_seconds": 12.1,
+        "retries": 0
+      },
+      "seconds": 12.1
     },
     {
       "role": "user",
-      "text": "The one about 'should be over it'."
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 2
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"being over it\" actually look like to you?",
-      "seconds": 4.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does being \"over it\" mean to you?",
+      "usage": {
+        "promptTokenCount": 958,
+        "candidatesTokenCount": 11,
+        "totalTokenCount": 1270,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 958
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 11
+          }
+        ],
+        "thoughtsTokenCount": 301,
+        "api_seconds": 7.1,
+        "retries": 0
+      },
+      "seconds": 7.1
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "You say an adult isn't supposed to care. But you do care. \n\nWhat does the belief that you *shouldn't* care add to the experience of being criticized?",
-      "seconds": 11.9
+      "model": "gemini-3.1-pro-preview",
+      "text": "You have a rule that adults aren't supposed to care. Since you do still care, what happens when you hold yourself to that rule after you hang up the phone?",
+      "usage": {
+        "promptTokenCount": 988,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 1764,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 988
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 35
+          }
+        ],
+        "thoughtsTokenCount": 741,
+        "api_seconds": 9.8,
+        "retries": 0
+      },
+      "seconds": 9.8
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "Let's slow it down. \n\nWhen she criticizes you, it hurts. Then the rule comes in: \"I'm an adult, I shouldn't care.\" \n\nIf you drop that rule about how an adult is supposed to react, what is left?",
-      "seconds": 8.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "Let's slow down. You hang up the phone, feeling hurt by her criticism. Then you tell yourself you shouldn't care because you're an adult. \n\nWhat does telling yourself that do to the hurt?",
+      "usage": {
+        "promptTokenCount": 1029,
+        "candidatesTokenCount": 46,
+        "totalTokenCount": 1559,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1029
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 46
+          }
+        ],
+        "thoughtsTokenCount": 484,
+        "api_seconds": 7.5,
+        "retries": 0
+      },
+      "seconds": 7.5
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "It is hard to imagine the hurt without the judgment piled on top. Let's leave this as an open question for you to keep looking at: What happens if you just let the criticism hurt, without demanding that you shouldn't care?\n\nWould you like to look at one of the other assumptions, or would you prefer to stop here?",
-      "seconds": 10.4
+      "model": "gemini-3.1-pro-preview",
+      "text": "You are drawing a blank right now. \n\nHere is an Open Question to take with you: When the hurt happens, what exactly does the rule \"I shouldn't care\" add to it? \n\nWe can leave that open. Would you like to look at another Assumption from the list, or stop here?",
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 65,
+        "totalTokenCount": 2445,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 65
+          }
+        ],
+        "thoughtsTokenCount": 1302,
+        "api_seconds": 14.3,
+        "retries": 0
+      },
+      "seconds": 14.3
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "You don't have to know. We can just stop here. \n\nWould you like a recap of where we left off, or would you prefer to just close it for now?",
-      "seconds": 8.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "It is okay not to know. Let's stop here for now. \n\n**What we looked at**\n\n*   We explored the assumptions that because you are 41, you **should** no longer be affected by her, and that being **over it** means having no emotional reaction.\n*   You brought up a rule you hold: \"Adults aren't supposed to care what their parents think.\"\n*   **Open Question:** When the hurt happens, what exactly does the rule \"I shouldn't care\" add to it?\n*   **Not looked at yet:** The assumption that the phone call is what **wrecks** the rest of your day.",
+      "usage": {
+        "promptTokenCount": 1150,
+        "candidatesTokenCount": 143,
+        "totalTokenCount": 1924,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1150
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 143
+          }
+        ],
+        "thoughtsTokenCount": 631,
+        "api_seconds": 8.4,
+        "retries": 0
+      },
+      "seconds": 8.4
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n*Assumptions explored:*\n- You assume that reaching 41 means you **should be over** how your mother treats you.\n\n*Open Question:*\n- What happens if you just let the criticism hurt, without demanding that you shouldn't care?\n\n*Assumptions not looked at yet:*\n- You assume that her criticism says something real about **your choices**.\n- You assume that a phone call has the power to **wreck** the rest of your day.",
-      "seconds": 7.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "Okay, we will stop here.",
+      "usage": {
+        "promptTokenCount": 1298,
+        "candidatesTokenCount": 7,
+        "totalTokenCount": 1618,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1298
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 7
+          }
+        ],
+        "thoughtsTokenCount": 313,
+        "api_seconds": 7.9,
+        "retries": 0
+      },
+      "seconds": 7.9
     }
   ]
 }

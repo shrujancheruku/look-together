@@ -1,0 +1,52 @@
+{
+  "candidate": "gemma-4-26b-a4b-it-maas",
+  "via": "vertex-openai",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What is it that you are stuck on?",
+      "seconds": 1.6
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your **routine** is the cause of your being stuck.\n2. You assume that \"changing something\" is the **necessary solution** to your current state.\n3. You assume that your failure to act each January is a **lack of willpower**.\n4. You assume that your life has become **static** over these six years.\n\nWhich of these stands out?",
+      "seconds": 16.9
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"lack of willpower\" mean to you in this context?",
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "You are connecting \"change\" to actions like moving abroad or quitting. Is there a distinction in your mind between those \"big\" changes and the changes you've failed to make each January?",
+      "seconds": 6.8
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at:\n\n**Assumptions explored**\n* You assume that your failure to act each January is a **lack of willpower**.\n\n**Open Questions**\n* Is there a distinction in your mind between \"big\" changes and the changes you've failed to make each January?\n\n**Assumptions not looked at yet**\n* You assume that your **routine** is the cause of your being stuck.\n* You assume that \"changing something\" is the **necessary solution** to your current state.\n* You assume that your life has become **static** over these six years.",
+      "seconds": 9.4
+    }
+  ]
+}

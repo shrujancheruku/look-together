@@ -1,0 +1,88 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that being there **longer** means you should be promoted first.\n2. You assume that **working harder** than anyone else is what gets someone promoted.\n3. You assume that not getting the promotion means you are **not good enough**.\n4. You assume that if they don't promote you, they **don't see** you at all.\n\nWhich of these stands out?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does \"working harder\" look like in your day-to-day?",
+      "seconds": 4.1
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "That's what you expect to happen, not what I asked. What does \"working harder\" actually look like in your day-to-day?",
+      "seconds": 112.6
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "If it's not that working harder gets you promoted, what is going on for you around working harder than everyone else?",
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "You said earlier, \"if I work harder than everyone, I should be the one who gets rewarded.\" What happens when you know life isn't fair, but you still expect that reward?",
+      "seconds": 3.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "We are going in circles, so let's narrow it to one thing. Imagine two people building a wall: one carries the heaviest bricks all day, and the other decides where the wall should go. Which one is \"working harder\" to you?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's slow right down. When you watch the people who did get promoted, what are they actually doing in their day that is different from what you do?",
+      "seconds": 2.4
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I can't tell you if you're right or wrong. Since we're stuck on the question of working harder, I'll leave you with an Open Question to sit with: *What is the difference between working hard at your current job and doing what they look for in the next one?*\n\nJust now, you brought in the word \"failure.\" Do you want to look at Assumption 3\u2014that not getting the promotion means you are **not good enough**\u2014choose another from the list, or stop here?",
+      "seconds": 61.0
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that **working harder** than anyone else is what gets someone promoted.\n\n**Where your understanding moved**\n- You noted a tension between your expectation and what you know: \"if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work,\" alongside, \"I know life isn't fair.\"\n\n**Open Questions**\n- *What is the difference between working hard at your current job and doing what they look for in the next one?*\n\n**Assumptions not looked at yet**\n- You assume that being there **longer** means you should be promoted first.\n- You assume that not getting the promotion means you are **not good enough** (or, in your words, \"a failure\").\n- You assume that if they don't promote you, they **don't see** you at all.",
+      "seconds": 5.0
+    }
+  ]
+}

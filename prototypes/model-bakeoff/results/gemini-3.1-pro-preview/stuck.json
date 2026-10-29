@@ -9,8 +9,30 @@
     },
     {
       "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
       "text": "What are you stuck on?",
-      "seconds": 5.9
+      "usage": {
+        "promptTokenCount": 833,
+        "candidatesTokenCount": 6,
+        "totalTokenCount": 1003,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 833
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 6
+          }
+        ],
+        "thoughtsTokenCount": 164,
+        "api_seconds": 6.4,
+        "retries": 0
+      },
+      "seconds": 6.4
     },
     {
       "role": "user",
@@ -18,17 +40,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that staying in the same job, flat, and routine for six years means you are **stuck**.\n2. You assume that **change** is something you are supposed to be making happen.\n3. You assume that not changing anything since last January is a **failure**.\n4. You assume that a new job, flat, or routine would make you **unstuck**.\n\nWhich of these stands out?",
-      "seconds": 8.4
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that having the same job, flat, and routine for six years means you are **stuck**.\n2. You assume that making a **change** will fix how you are feeling.\n3. You assume that you **should** have done something differently by now.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 66,
+        "totalTokenCount": 1690,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 66
+          }
+        ],
+        "thoughtsTokenCount": 750,
+        "api_seconds": 12.0,
+        "retries": 0
+      },
+      "seconds": 12.0
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": null
+      }
     },
     {
       "role": "assistant",
-      "text": "What makes not changing anything a failure?",
-      "seconds": 8.0
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does \"failing\" mean to you here?",
+      "usage": {
+        "promptTokenCount": 945,
+        "candidatesTokenCount": 11,
+        "totalTokenCount": 1356,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 945
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 11
+          }
+        ],
+        "thoughtsTokenCount": 400,
+        "api_seconds": 6.2,
+        "retries": 0
+      },
+      "seconds": 6.2
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "Why does change have to be \"big\" to keep you from failing?",
-      "seconds": 9.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "So failing means not doing something big, like moving or quitting?",
+      "usage": {
+        "promptTokenCount": 969,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1683,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 969
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 701,
+        "api_seconds": 11.3,
+        "retries": 0
+      },
+      "seconds": 11.3
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**The Assumption explored:**\n* You assume that not changing anything since last January is a failure.\n\n**What you noticed:**\nYou saw that you define change as \"doing something big,\" like \"moving abroad or quitting.\"\n\n**Open Question:**\n* Why does change have to be \"big\" to keep you from failing?\n\n**Assumptions not looked at yet:**\n* You assume that staying in the same job, flat, and routine for six years means you are stuck.\n* You assume that change is something you are supposed to be making happen.\n* You assume that a new job, flat, or routine would make you unstuck.",
-      "seconds": 9.1
+      "model": "gemini-3.1-pro-preview",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n- You assume that you **should** have done something differently by now (which you brought up as \"failing\"). \n\n**What was said:**\n- You noticed that for you, \"change means doing something big. Moving abroad or quitting.\"\n\n**Open question:**\n- Does failing mean not doing something big?\n\n**Assumptions not looked at yet:**\n- You assume that having the same job, flat, and routine for six years means you are **stuck**.\n- You assume that making a **change** will fix how you are feeling.",
+      "usage": {
+        "promptTokenCount": 987,
+        "candidatesTokenCount": 128,
+        "totalTokenCount": 1634,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 987
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 128
+          }
+        ],
+        "thoughtsTokenCount": 519,
+        "api_seconds": 28.4,
+        "retries": 0
+      },
+      "seconds": 28.4
     }
   ]
 }

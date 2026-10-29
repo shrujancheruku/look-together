@@ -1,0 +1,228 @@
+{
+  "candidate": "hybrid-pro-breakdown-flash-dialogue",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that there is a set way for things to be done **properly**.\n2. You assume that if you do not keep on top of things, **nothing** will get done.\n3. You assume that being called controlling means you are being seen as the **bad guy**.\n4. You assume that managing the house and money cannot be **controlling**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 85,
+        "totalTokenCount": 1589,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 85
+          }
+        ],
+        "thoughtsTokenCount": 630,
+        "api_seconds": 12.5,
+        "retries": 0
+      },
+      "seconds": 12.5
+    },
+    {
+      "role": "user",
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does doing something \"properly\" mean to you?",
+      "usage": {
+        "promptTokenCount": 966,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1234,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 966
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 256,
+        "api_seconds": 5.9,
+        "retries": 0
+      },
+      "seconds": 5.9
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That explains why you don't let go. \n\nWhat makes something done \"properly\"?",
+      "usage": {
+        "promptTokenCount": 995,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 1379,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 995
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 20
+          }
+        ],
+        "thoughtsTokenCount": 364,
+        "api_seconds": 7.2,
+        "retries": 0
+      },
+      "seconds": 7.2
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't speak for Krishnamurti or anyone else; this is about your own looking. \n\nWhat makes something done \"properly\"?",
+      "usage": {
+        "promptTokenCount": 1024,
+        "candidatesTokenCount": 30,
+        "totalTokenCount": 1354,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1024
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 30
+          }
+        ],
+        "thoughtsTokenCount": 300,
+        "api_seconds": 4.2,
+        "retries": 0
+      },
+      "seconds": 4.2
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I can't tell you who has the problem. \n\nWe were looking at the assumption you chose: what makes a way of doing something \"proper\"?",
+      "usage": {
+        "promptTokenCount": 1068,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1640,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1068
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "thoughtsTokenCount": 540,
+        "api_seconds": 8.5,
+        "retries": 0
+      },
+      "seconds": 8.5
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "If you look at it right now, what does \"properly\" mean?",
+      "usage": {
+        "promptTokenCount": 1116,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 1442,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1116
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "thoughtsTokenCount": 310,
+        "api_seconds": 3.5,
+        "retries": 0
+      },
+      "seconds": 3.5
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumption explored**\n* You assume that there is a set way for things to be done **properly**.\n\n**In your own words**\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Question**\n* What makes a way of doing something \"proper\"?\n\n**Assumptions not looked at yet**\n* You assume that if you do not keep on top of things, **nothing** will get done.\n* You assume that being called controlling means you are being seen as the **bad guy**.\n* You assume that managing the house and money cannot be **controlling**.",
+      "usage": {
+        "promptTokenCount": 1143,
+        "candidatesTokenCount": 137,
+        "totalTokenCount": 1744,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1143
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 137
+          }
+        ],
+        "thoughtsTokenCount": 464,
+        "api_seconds": 23.8,
+        "retries": 0
+      },
+      "seconds": 23.8
+    }
+  ]
+}

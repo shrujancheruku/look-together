@@ -1,0 +1,61 @@
+{
+  "candidate": "gemma-4-26b-a4b-it-maas",
+  "via": "vertex-openai",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that **rehearsing** and **replaying** are the ways you manage your anxiety.\n2. You assume that your performance is the primary way people **judge** you.\n3. You assume that there is a **standard** for what is \"weird\" versus \"normal.\"\n\nWhich of these stands out?",
+      "seconds": 17.9
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "What do you mean by \"rehearsing\" and \"replaying\"?",
+      "seconds": 1.5
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I can't give you tips or tell you what to do. I am here to help you look at the assumptions behind your experience.\n\nDo you want to continue looking at the idea of rehearsing and replaying, or would you like to pick a different assumption?",
+      "seconds": 3.4
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "What is happening when you say you \"come across badly\"?",
+      "seconds": 13.3
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "Would you like to add the assumption that you **know** how you come across without asking?",
+      "seconds": 8.6
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that **rehearsing** and **replaying** are the ways you manage your anxiety.\n* You assume that you **know** how you come across without asking.\n\n**Open Questions:**\n* (None)\n\n**Assumptions not looked at yet:**\n* You assume that your performance is the primary way people **judge** you.\n* You assume that there is a **standard** for what is \"weird\" versus \"normal.\"",
+      "seconds": 3.6
+    }
+  ]
+}

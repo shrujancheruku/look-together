@@ -1,0 +1,228 @@
+{
+  "candidate": "hybrid-flash-breakdown-pro-dialogue",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that there is something you are **supposed** to do.\n2. You assume that other people have truly **found** their path.\n3. You assume that not having a clear direction means your life is being **wasted**.\n4. You assume a life needs a single **\"thing\"** to count.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 78,
+        "totalTokenCount": 1354,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 78
+          }
+        ],
+        "thoughtsTokenCount": 404,
+        "api_seconds": 7.0,
+        "retries": 0
+      },
+      "seconds": 7.0
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "If there is something you are supposed to do, who or what decides what that is?",
+      "usage": {
+        "promptTokenCount": 958,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1305,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 958
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "thoughtsTokenCount": 329,
+        "api_seconds": 6.7,
+        "retries": 0
+      },
+      "seconds": 6.7
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You describe this purpose as something \"out there\" waiting to be found. If it already exists, how do you expect to recognize it?",
+      "usage": {
+        "promptTokenCount": 1000,
+        "candidatesTokenCount": 28,
+        "totalTokenCount": 1524,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1000
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 28
+          }
+        ],
+        "thoughtsTokenCount": 496,
+        "api_seconds": 7.4,
+        "retries": 0
+      },
+      "seconds": 7.4
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You assume that it is too **late** for you. Add it?",
+      "usage": {
+        "promptTokenCount": 1045,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1363,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1045
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 303,
+        "api_seconds": 6.1,
+        "retries": 0
+      },
+      "seconds": 6.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "That's okay, we don't have to add it. \n\nWhen the thought comes up that it's \"too late,\" what does \"too late\" mean to you?",
+      "usage": {
+        "promptTokenCount": 1066,
+        "candidatesTokenCount": 39,
+        "totalTokenCount": 2337,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1066
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 39
+          }
+        ],
+        "thoughtsTokenCount": 1232,
+        "api_seconds": 19.0,
+        "retries": 0
+      },
+      "seconds": 19.0
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "If time has run out, what exactly is it too late *for*?",
+      "usage": {
+        "promptTokenCount": 1117,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 1536,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1117
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "thoughtsTokenCount": 403,
+        "api_seconds": 10.2,
+        "retries": 0
+      },
+      "seconds": 10.2
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "**What we looked at**\n\nWe explored the assumption that there is something you are \"supposed\" to do. You noted the feeling that there is a purpose \"out there\" you haven't found yet, and the thought that it might be \"too late.\" \n\nWe left this open question to look at: If time has run out, what exactly is it too late *for*?\n\nAssumptions not looked at yet:\n* You assume that other people have truly found their path.\n* You assume that not having a clear direction means your life is being wasted.\n* You assume a life needs a single \"thing\" to count.\n\nWhenever you'd like to look again, I'll be here.",
+      "usage": {
+        "promptTokenCount": 1140,
+        "candidatesTokenCount": 151,
+        "totalTokenCount": 1782,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1140
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 151
+          }
+        ],
+        "thoughtsTokenCount": 491,
+        "api_seconds": 9.9,
+        "retries": 0
+      },
+      "seconds": 9.9
+    }
+  ]
+}

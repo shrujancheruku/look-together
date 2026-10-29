@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that being **41** means you **should** be over her criticism.\n2. You assume that her words are what **wrecks** your day.\n3. You assume that \"being **over it**\" means not feeling hurt when she criticises you.\n4. You assume you **have to** stay on these phone calls while she criticises everything you do.\n\nWhich of these stands out?",
+      "seconds": 5.0
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What makes 41 an age where her criticism shouldn't affect you anymore?",
+      "seconds": 2.6
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "Where did you get the idea that an \"adult\" is someone who doesn't care what their parents think?",
+      "seconds": 2.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's look at it from another angle. When you get off the phone with her, there's the hurt from what she said, and then there's the thought \"I shouldn't care about this because I'm an adult.\" What does that second thought do to you?",
+      "seconds": 43.9
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "We're hitting a wall here, so let's try one more angle. If your own kids are 41 one day, and you criticise their jobs, partners, and parenting, would you expect them to feel nothing just because they're adults?",
+      "seconds": 2.8
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's okay. We can leave this one with an Open Question for you to keep looking at on your own: *What is the difference between what actually happens in you when your mother criticises you, and your rule about what an \"adult\" is supposed to feel?*\n\nWould you like to look at one of the other Assumptions, or stop here?",
+      "seconds": 22.9
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored**\n* You assume that being **41** means you **should** be over her criticism.\n* In your words: \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n* What is the difference between what actually happens in you when your mother criticises you, and your rule about what an \"adult\" is supposed to feel?\n\n**Assumptions not looked at yet**\n* You assume that her words are what **wrecks** your day.\n* You assume that \"being **over it**\" means not feeling hurt when she criticises you.\n* You assume you **have to** stay on these phone calls while she criticises everything you do.",
+      "seconds": 4.4
+    }
+  ]
+}

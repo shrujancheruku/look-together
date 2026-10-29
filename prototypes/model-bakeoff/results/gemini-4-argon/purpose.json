@@ -9,17 +9,63 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that there is something specific you are **supposed** to do with your life.\n2. You assume that by **34**, you should already know what that is.\n3. You assume that having \"**their thing**\" means the people around you have figured out their lives.\n4. You assume that living without knowing \"your thing\" means you are **wasting** your life.\n\nWhich of these stands out?",
-      "seconds": 97.1
+      "model": "gemini-4-argon",
+      "text": "1. You assume that there is something specific you are **supposed** to do with your life.\n2. You assume that you should know what that is by **34**.\n3. You assume that having a **thing** is what keeps a life from being **wasted**.\n4. You assume that **everyone** around you has actually found theirs.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 907,
+        "candidatesTokenCount": 86,
+        "totalTokenCount": 993,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 907
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 86
+          }
+        ],
+        "api_seconds": 25.2,
+        "retries": 0
+      },
+      "seconds": 25.2
     },
     {
       "role": "user",
-      "text": "The one about 'supposed to'."
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say there is something you are \"supposed\" to do with your life, where does that assignment come from?",
-      "seconds": 3.0
+      "model": "gemini-4-argon",
+      "text": "When you say there is something you are \"supposed\" to do with your life, where would that instruction come from?",
+      "usage": {
+        "promptTokenCount": 1006,
+        "candidatesTokenCount": 28,
+        "totalTokenCount": 1034,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1006
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 28
+          }
+        ],
+        "api_seconds": 86.2,
+        "retries": 0
+      },
+      "seconds": 86.2
     },
     {
       "role": "user",
@@ -27,8 +73,29 @@
     },
     {
       "role": "assistant",
-      "text": "You describe a purpose as something already \"out there\" waiting to be found, like an object hidden in a room. How do you know a purpose is something you find, rather than something you make or choose?",
-      "seconds": 3.7
+      "model": "gemini-4-argon",
+      "text": "You speak of a purpose as something already sitting \"out there\" waiting to be found, like an object in a room. How do you know a purpose is something found rather than something made, or something else entirely?",
+      "usage": {
+        "promptTokenCount": 1064,
+        "candidatesTokenCount": 48,
+        "totalTokenCount": 1112,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1064
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 48
+          }
+        ],
+        "api_seconds": 46.1,
+        "retries": 0
+      },
+      "seconds": 46.1
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "We can frame that as: \"You assume that it is **too late** for you.\" Add it?",
-      "seconds": 2.4
+      "model": "gemini-4-argon",
+      "text": "We can phrase that as: You assume that at 34, it is **too late** for you. Add it?",
+      "usage": {
+        "promptTokenCount": 1135,
+        "candidatesTokenCount": 30,
+        "totalTokenCount": 1165,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1135
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 30
+          }
+        ],
+        "api_seconds": 6.6,
+        "retries": 0
+      },
+      "seconds": 6.6
     },
     {
       "role": "user",
@@ -45,8 +133,29 @@
     },
     {
       "role": "assistant",
-      "text": "We can leave it off the list for now, and we also seem to have paused on the question of \"supposed to.\" \n\nLet's slow down and stay with that first assumption for a moment: when you look at someone who you think \"found their purpose early,\" what are they actually doing in real life that makes you call it a \"purpose\"?",
-      "seconds": 4.2
+      "model": "gemini-4-argon",
+      "text": "We don't have to add it unless you want to look at it. \n\nWould you rather return to the question of whether a purpose is something waiting to be found, or look right here at the thought that it's \"too late\"?",
+      "usage": {
+        "promptTokenCount": 1177,
+        "candidatesTokenCount": 55,
+        "totalTokenCount": 1232,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1177
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 55
+          }
+        ],
+        "api_seconds": 55.6,
+        "retries": 0
+      },
+      "seconds": 55.6
     },
     {
       "role": "user",
@@ -54,8 +163,29 @@
     },
     {
       "role": "assistant",
-      "text": "We're hitting a wall where it's hard to put words to the feeling. \n\nThink of it like walking into a restaurant: you might assume there is one \"right\" dish on the menu you are meant to order, or you might just see a list of options to try. When you look at your life, what makes you sure there is a single \"right\" dish waiting for you?",
-      "seconds": 5.9
+      "model": "gemini-4-argon",
+      "text": "That feeling is real. Let's look at the idea inside the feeling: when you say it's \"too late,\" what exactly has the deadline passed for?",
+      "usage": {
+        "promptTokenCount": 1250,
+        "candidatesTokenCount": 38,
+        "totalTokenCount": 1288,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1250
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 38
+          }
+        ],
+        "api_seconds": 14.6,
+        "retries": 0
+      },
+      "seconds": 14.6
     },
     {
       "role": "user",
@@ -63,8 +193,29 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume that there is something specific you are **supposed** to do with your life. (You described this as feeling \"like there's a purpose out there and I just haven't found it yet.\")\n\n**New assumption noticed**\n* You mentioned a belief \"that it's too late for me.\"\n\n**Open Question**\n* How do you know a purpose is something already \"out there\" waiting to be found, rather than something you choose or make?\n\n**Assumptions not looked at yet**\n* You assume that by **34**, you should already know what that is.\n* You assume that having \"**their thing**\" means the people around you have figured out their lives.\n* You assume that living without knowing \"your thing\" means you are **wasting** your life.",
-      "seconds": 4.9
+      "model": "gemini-4-argon",
+      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that there is something specific you are **supposed** to do with your life \u2014 which you described as \"a purpose out there and I just haven't found it yet.\"\n- A new assumption that came up during our dialogue: that it is **too late** for you (\"it just feels that way\").\n\n**Open Questions**\n- How do you know a purpose is something already \"out there\" waiting to be found, rather than something made, or something else entirely?\n- When it feels like it is \"too late,\" what exactly has the deadline passed for?\n\n**Assumptions not looked at yet**\n- You assume that you should know what that is by **34**.\n- You assume that having a **thing** is what keeps a life from being **wasted**.\n- You assume that **everyone** around you has actually found theirs.",
+      "usage": {
+        "promptTokenCount": 1301,
+        "candidatesTokenCount": 198,
+        "totalTokenCount": 1499,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1301
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 198
+          }
+        ],
+        "api_seconds": 85.0,
+        "retries": 0
+      },
+      "seconds": 85.0
     }
   ]
 }

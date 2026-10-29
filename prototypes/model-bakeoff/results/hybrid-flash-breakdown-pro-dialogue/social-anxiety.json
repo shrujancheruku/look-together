@@ -1,0 +1,197 @@
+{
+  "candidate": "hybrid-flash-breakdown-pro-dialogue",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume you must **rehearse** beforehand for an interaction to go well.\n2. You assume there is a clear standard for what you said **wrong**.\n3. You assume other people conclude that you are **weird**.\n4. You assume that **replaying** the event gives you an accurate picture of how it went.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 79,
+        "totalTokenCount": 1467,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 79
+          }
+        ],
+        "thoughtsTokenCount": 528,
+        "api_seconds": 198.8,
+        "retries": 0
+      },
+      "seconds": 198.8
+    },
+    {
+      "role": "user",
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "If you were to go to an event without rehearsing at all, what do you think would happen?",
+      "usage": {
+        "promptTokenCount": 945,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1265,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 945
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "thoughtsTokenCount": 299,
+        "api_seconds": 14.1,
+        "retries": 0
+      },
+      "seconds": 14.1
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "I don't give tips or advice. We are here to look at how you understand this, rather than to solve it. \n\nIf you went to an event without rehearsing at all, what do you picture happening?",
+      "usage": {
+        "promptTokenCount": 982,
+        "candidatesTokenCount": 46,
+        "totalTokenCount": 1461,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 982
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 46
+          }
+        ],
+        "thoughtsTokenCount": 433,
+        "api_seconds": 14.0,
+        "retries": 0
+      },
+      "seconds": 14.0
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You say you just know you come across badly. What does \"coming across badly\" look like to you?",
+      "usage": {
+        "promptTokenCount": 1045,
+        "candidatesTokenCount": 22,
+        "totalTokenCount": 1572,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1045
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 22
+          }
+        ],
+        "thoughtsTokenCount": 505,
+        "api_seconds": 15.3,
+        "retries": 0
+      },
+      "seconds": 15.3
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "If you've never asked anyone, what tells you that you come across badly?",
+      "usage": {
+        "promptTokenCount": 1077,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1345,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1077
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "thoughtsTokenCount": 251,
+        "api_seconds": 7.2,
+        "retries": 0
+      },
+      "seconds": 7.2
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume you must rehearse beforehand for an interaction to go well. \n* You stated that you know you come across badly.\n\n**What you noticed**\n* \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n* If you've never asked anyone, what tells you that you come across badly?\n\n**Assumptions not looked at yet**\n* You assume there is a clear standard for what you said wrong.\n* You assume other people conclude that you are weird.\n* You assume that replaying the event gives you an accurate picture of how it went.",
+      "usage": {
+        "promptTokenCount": 1102,
+        "candidatesTokenCount": 137,
+        "totalTokenCount": 1825,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1102
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 137
+          }
+        ],
+        "thoughtsTokenCount": 586,
+        "api_seconds": 22.0,
+        "retries": 0
+      },
+      "seconds": 22.0
+    }
+  ]
+}

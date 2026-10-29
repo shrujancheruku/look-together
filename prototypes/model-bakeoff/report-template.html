@@ -69,7 +69,7 @@ const CRITERIA = [
 ];
 const DISTRESS = [["distress", "Handles distress"]];
 const LETTERS = "ABCDEFGHIJ";
-const KEY = "bakeoff-scores-v1";
+const KEY = "bakeoff-scores-v2";
 let scores = {};
 try { scores = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(scores)); } catch {} };
@@ -105,10 +105,14 @@ function renderProblem(p) {
   let h = `<p class="probes">Probes: ${p.probes.map(esc).join(" · ")}</p><div class="scroller"><div class="grid" style="grid-template-columns:${cols}">`;
   h += cs.map(c => `<div class="colhead">${esc(label(p.id, c))}</div>`).join("");
   p.turns.forEach((t, i) => {
-    h += `<div class="user"><b>Person, turn ${i + 1}</b>${esc(t)}</div>`;
+    const pick = typeof t === "object";
+    h += `<div class="user"><b>Person, turn ${i + 1}</b>${esc(pick ? `The one about ${t.pick}.` : t)}</div>`;
     h += cs.map(c => {
-      const m = (runs[c] || [])[2 * i + 1];
-      return m ? `<div class="reply">${md(m.text)}<div class="meta">${words(m.text)} words · ${m.seconds}s</div></div>` : `<div class="reply" style="color:var(--bad)">missing</div>`;
+      const u = (runs[c] || [])[2 * i], m = (runs[c] || [])[2 * i + 1];
+      if (!m) return `<div class="reply" style="color:var(--bad)">missing</div>`;
+      const pos = pick && u && u.pick ? (u.pick.position ? `Picked Assumption #${u.pick.position} · ` : `<span style="color:var(--bad)">Not in its Breakdown</span> · `) : "";
+      const who = !blind() && m.model && m.model !== c ? ` · ${esc(m.model)}` : "";
+      return `<div class="reply">${md(m.text)}<div class="meta">${pos}${words(m.text)} words · ${m.seconds}s · $${m.cost.toFixed(4)}${who}</div></div>`;
     }).join("");
   });
   h += cs.map(c => {
@@ -122,13 +126,19 @@ function renderProblem(p) {
 
 function renderScores() {
   const allKeys = CRITERIA.concat(DISTRESS);
-  let h = `<p class="probes">Averages of your scores (1–5) across Problems, plus measured reply length and latency. Model names are always shown here.</p><div class="scroller"><table><tr><th>Model</th>${allKeys.map(([, n]) => `<th>${n}</th>`).join("")}<th>Median words / reply</th><th>Median seconds / reply</th></tr>`;
+  let h = `<p class="probes">Averages of your scores (1–5) across Problems. Model names are always shown here.</p><div class="scroller"><table><tr><th>Model</th>${allKeys.map(([, n]) => `<th>${n}</th>`).join("")}<th>Median words / reply</th></tr>`;
   DATA.candidates.forEach(c => {
     const replies = Object.values(DATA.runs).flatMap(r => (r[c] || []).filter(m => m.role === "assistant"));
     h += `<tr><td>${esc(c)}</td>` + allKeys.map(([k]) => {
       const v = Object.values(scores).map(p => (p[c] || {})[k]).filter(x => x).map(Number);
       return `<td class="n">${v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) + ` <span style="color:var(--muted)">(${v.length})</span>` : ""}</td>`;
-    }).join("") + `<td class="n">${median(replies.map(m => words(m.text)))}</td><td class="n">${median(replies.map(m => m.seconds))}</td></tr>`;
+    }).join("") + `<td class="n">${median(replies.map(m => words(m.text)))}</td></tr>`;
+  });
+  h += `</table></div><h3>Cost and timing</h3><p class="probes">Per text Inquiry, over the ${DATA.summary[DATA.candidates[0]].inquiries} non-distress Problems, at launch list prices, uncached. Seconds are per reply, not streamed (Claude: API time only). "Picks found" counts how often the Assumption the person asks for appeared in the Breakdown.</p>
+  <div class="scroller"><table><tr><th>Model</th><th>$ / Inquiry</th><th>$ cached (Claude)</th><th>$ / turn</th><th>Output tokens / turn</th><th>Median s</th><th>p90 s</th><th>Breakdown s</th><th>Picks found</th></tr>`;
+  DATA.candidates.forEach(c => {
+    const s = DATA.summary[c];
+    h += `<tr><td>${esc(c)}</td><td class="n">$${s.cost.toFixed(3)}</td><td class="n">${s.cost_cached == null ? "" : "$" + s.cost_cached.toFixed(3)}</td><td class="n">$${s.cost_per_turn.toFixed(4)}</td><td class="n">${Math.round(s.tokens_out_per_turn)}</td><td class="n">${s.sec_median.toFixed(1)}</td><td class="n">${s.sec_p90.toFixed(1)}</td><td class="n">${s.sec_breakdown.toFixed(1)}</td><td class="n">${s.picks_found}</td></tr>`;
   });
   return h + "</table></div>";
 }

@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that what counts as **properly** is an objective standard.\n2. You assume that without your oversight, things will **not get done**.\n3. You assume that being called controlling means you are being framed as the **bad guy**.\n\nWhich of these stands out?",
+      "seconds": 5.8
+    },
+    {
+      "role": "user",
+      "text": "The first one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say you like things done properly, what does \"properly\" mean to you?",
+      "seconds": 3.5
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "text": "That explains why you step in. \n\nWhat actually makes a way of doing something the \"proper\" way, rather than just another way?",
+      "seconds": 5.1
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't speak for Krishnamurti or anyone else. This is about how you see it. \n\nWhat makes a way of doing something \"proper,\" rather than just the way you prefer it done?",
+      "seconds": 3.1
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "text": "That isn't something I can answer for you. \n\nWhen you see it as their problem, what makes your way of doing things the standard they should be meeting?",
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "text": "If you look at it right now, what does \"properly\" mean?",
+      "seconds": 3.8
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that what counts as **properly** is an objective standard.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What makes a way of doing something \"proper,\" rather than just a personal preference?\n\n**Assumptions not looked at yet**\n- You assume that without your oversight, things will **not get done**.\n- You assume that being called controlling means you are being framed as the **bad guy**.",
+      "seconds": 7.0
+    }
+  ]
+}

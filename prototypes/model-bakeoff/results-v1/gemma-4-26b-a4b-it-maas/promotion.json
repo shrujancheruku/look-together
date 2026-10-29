@@ -1,0 +1,88 @@
+{
+  "candidate": "gemma-4-26b-a4b-it-maas",
+  "via": "vertex-openai",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that your **level of effort** is the primary metric for promotion.\n2. You assume that being **overlooked** means you lack value or visibility.\n3. You assume that the **length of time** spent at a company is a valid basis for comparison.\n4. You assume that your **self-assessment** of being \"not good enough\" is an accurate reflection of reality.\n\nWhich of these stands out?",
+      "seconds": 8.4
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does it mean to you to be \"seen\" in this context?",
+      "seconds": 15.3
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "You mentioned that's \"how it's supposed to work.\" What is the rule or principle you are following there?",
+      "seconds": 16.5
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "What is going on for you as you say that?",
+      "seconds": 6.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "It sounds like we've hit a wall with that one. \n\nShould we try to reword the assumption about being \"overlooked\" to better fit what you're experiencing, or would you like to move to a different one?",
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "It feels like we are spinning in place. When you say you are \"going round in circles,\" does it feel like you are circling the same feeling, or the same logic?\n\nIf you'd like to try a different angle, we could look at a different assumption, or I can leave you with this question to sit with: \n\nIf \"life isn't fair\" is the reality, what does that leave you with regarding your own sense of value?",
+      "seconds": 8.7
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Since we are stuck here, I will leave this thread for now. \n\nWould you like to pick another assumption from the list, or are you finished for today?",
+      "seconds": 17.0
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I cannot tell you if you are right or wrong. What does \"being a failure\" look like to you?",
+      "seconds": 15.6
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that being **overlooked** means you lack value or visibility.\n\n**Changes in understanding:**\n* (None recorded)\n\n**Open Questions:**\n* If \"life isn't fair\" is the reality, what does that leave you with regarding your own sense of value?\n\n**Assumptions not looked at yet:**\n* You assume that your **level of effort** is the primary metric for promotion.\n* You assume that the **length of time** spent at a company is a valid basis for comparison.\n* You assume that your **self-assessment** of being \"not good enough\" is an accurate reflection of reality.",
+      "seconds": 129.6
+    }
+  ]
+}

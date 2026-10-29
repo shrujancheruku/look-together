@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that **working harder** than anyone else should count toward promotion.\n2. You assume that **time on the team** should have decided it, since the person chosen has been there less time than you.\n3. You assume that the decision-makers **see** your work, and that if they didn't pick you, it's because they don't see you.\n4. You assume that the two decisions tell you something about your **ability**, that you may not be good enough.\n\nWhich of these stands out?",
-      "seconds": 6.6
+      "model": "claude-haiku-5-5",
+      "text": "1. You assume that **working harder** than others should be what earns the promotion.\n2. You assume that **time there** should count for more than the other things they were weighing.\n3. You assume that being passed over **says something about you** as a person or as a professional.\n4. You assume that they **don't see** your work, and that they would see it if they were paying attention.\n5. You assume that the two decisions **point the same way**, and that the reasons behind them are the same.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 1824,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 596,
+        "output_tokens_details": {
+          "thinking_tokens": 449
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 1824,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 596,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 1824,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1824
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.000663,
+        "api_seconds": 4.0
+      },
+      "seconds": 4.0
     },
     {
       "role": "user",
-      "text": "The second one."
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What do you mean by \"time on the team\" here? What would that time have to show for it to count toward a promotion?",
-      "seconds": 4.8
+      "model": "claude-haiku-5-5",
+      "text": "Which word in that one matters most to you: \"working,\" \"harder,\" or \"earns\"?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 630,
+        "cache_read_input_tokens": 1824,
+        "output_tokens": 27,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 630,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 27,
+            "cache_read_input_tokens": 1824,
+            "cache_creation_input_tokens": 630,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 630
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0008209399999999999,
+        "api_seconds": 1.0
+      },
+      "seconds": 1.0
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "You've moved from time to effort: working harder should be what gets rewarded. Should I add that as an assumption: \"You assume that **working harder** is what gets **rewarded**, and that this is how it's supposed to work\"?\n\nAlso, when you say \"supposed to,\" who or what sets that rule?",
-      "seconds": 5.0
+      "model": "claude-haiku-5-5",
+      "text": "You say \"supposed to work.\" Who or what sets that supposition: a rule your company wrote down, something you were taught, or something you've come to expect from how you've seen things go?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 91,
+        "cache_read_input_tokens": 2454,
+        "output_tokens": 55,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 91,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 55,
+            "cache_read_input_tokens": 2454,
+            "cache_creation_input_tokens": 91,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 91
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00089138,
+        "api_seconds": 1.1
+      },
+      "seconds": 1.1
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "Thanks for telling me. What's going on for you when you say \"that's how it's supposed to work,\" if it isn't that effort should be rewarded?",
-      "seconds": 4.2
+      "model": "claude-haiku-5-5",
+      "text": "What's going on for you when you say that? Is it that you're not really expecting fairness, or that you still feel the effort should count in some way?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 102,
+        "cache_read_input_tokens": 2545,
+        "output_tokens": 109,
+        "output_tokens_details": {
+          "thinking_tokens": 66
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 102,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 109,
+            "cache_read_input_tokens": 2545,
+            "cache_creation_input_tokens": 102,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 102
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00099193,
+        "api_seconds": 1.1
+      },
+      "seconds": 1.1
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine. Let's go slower and stay with one word: \"supposed to.\" Think of a specific time you saw someone get what they'd earned. What did you expect to happen to them?",
-      "seconds": 4.7
+      "model": "claude-haiku-5-5",
+      "text": "That's fine. Let's slow down to one part. When you imagine being rewarded for working harder, what do you picture actually happening?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 141,
+        "cache_read_input_tokens": 2647,
+        "output_tokens": 168,
+        "output_tokens_details": {
+          "thinking_tokens": 126
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 141,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 168,
+            "cache_read_input_tokens": 2647,
+            "cache_creation_input_tokens": 141,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 141
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0011308,
+        "api_seconds": 1.5
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Going in circles usually means there are too many threads at once, so let's pull just one. Here's a plain comparison: you put money into a vending machine and expect the snack. Is a promotion like that for you, where the right input should produce the output?",
-      "seconds": 5.4
+      "model": "claude-haiku-5-5",
+      "text": "Going in circles is common here, so let's try a different angle. Say you put in extra hours on a project and someone else got the credit. Which part of that bothers you more: that the reward didn't come, or that the effort didn't count?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 209,
+        "cache_read_input_tokens": 2788,
+        "output_tokens": 378,
+        "output_tokens_details": {
+          "thinking_tokens": 307
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 209,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 378,
+            "cache_read_input_tokens": 2788,
+            "cache_creation_input_tokens": 209,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 209
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00138968,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's okay, you don't have to settle this now. Let's set the rule aside for a moment. When the person chosen had less time than you, what did that difference mean to you?",
-      "seconds": 5.8
+      "model": "claude-haiku-5-5",
+      "text": "That's okay. We can leave this one open for now:\n\n*Open question: When the effort goes unrewarded, what do you think it is really saying about the effort, and what do you think it is saying about you?*\n\nWould you like to look at one of the other assumptions, or stop here?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 411,
+        "cache_read_input_tokens": 2997,
+        "output_tokens": 231,
+        "output_tokens_details": {
+          "thinking_tokens": 147
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 411,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 231,
+            "cache_read_input_tokens": 2997,
+            "cache_creation_input_tokens": 411,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 411
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00161755,
+        "api_seconds": 1.7
+      },
+      "seconds": 1.7
     },
     {
       "role": "user",
@@ -72,8 +335,45 @@
     },
     {
       "role": "assistant",
-      "text": "I can't tell you whether that feeling is right, but I can ask what you mean by it. What would being a failure look like to you, in this job?",
-      "seconds": 4.4
+      "model": "claude-haiku-5-5",
+      "text": "I can't give you a verdict on that. What does \"failure\" mean to you in this situation?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 278,
+        "cache_read_input_tokens": 3408,
+        "output_tokens": 219,
+        "output_tokens_details": {
+          "thinking_tokens": 190
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 278,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 219,
+            "cache_read_input_tokens": 3408,
+            "cache_creation_input_tokens": 278,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 278
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00181693,
+        "api_seconds": 1.7
+      },
+      "seconds": 1.7
     },
     {
       "role": "user",
@@ -81,8 +381,45 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumption explored:** 2. You assume that **time on the team** should have decided the promotion, since the person chosen has been there less time than you.\n- You moved from time to effort: working harder should be what gets rewarded.\n- You said that isn't an assumption you hold, and that you know life isn't fair. I didn't add it.\n\n**Changes in your understanding:** None recorded in your own words.\n\n**Open Questions:**\n- When the person chosen had less time than you, what did that difference mean to you?\n- What does \"supposed to\" mean to you here, and who sets that rule?\n- What would being a failure look like to you, in this job?\n\n**Assumptions not looked at yet:**\n1. You assume that **working harder** than anyone else should count toward promotion.\n3. You assume that the decision-makers **see** your work, and that if they didn't pick you, it's because they don't see you.\n4. You assume that the two decisions tell you something about your **ability**, that you may not be good enough.",
-      "seconds": 5.4
+      "model": "claude-haiku-5-5",
+      "text": "What we looked at\n\n**Assumptions explored**\n- You assume that **working harder** than others should be what earns the promotion. We looked at this one. You said you know life isn't fair, and when we slowed down to the picture of being rewarded, you said you didn't know what you'd picture. You also said you didn't know whether the reward or the effort being counted matters more to you.\n\n**Change in understanding**\n- None recorded in your own words.\n\n**Open questions**\n- When the effort goes unrewarded, what do you think it is really saying about the effort, and what do you think it is saying about you?\n- What does \"failure\" mean to you in this situation?\n\n**Assumptions not looked at yet**\n- You assume that **time there** should count for more than the other things they were weighing.\n- You assume that being passed over **says something about you** as a person or as a professional.\n- You assume that they **don't see** your work, and that they would see it if they were paying attention.\n- You assume that the two decisions **point the same way**, and that the reasons behind them are the same.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 253,
+        "cache_read_input_tokens": 3686,
+        "output_tokens": 323,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 253,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 323,
+            "cache_read_input_tokens": 3686,
+            "cache_creation_input_tokens": 253,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 253
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00206609,
+        "api_seconds": 1.9
+      },
+      "seconds": 1.9
     }
   ]
 }

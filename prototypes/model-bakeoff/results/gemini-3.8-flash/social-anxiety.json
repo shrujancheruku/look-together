@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that a conversation must be **rehearsed** in advance.\n2. You assume that there is a specific way you said things **wrong**.\n3. You assume that other people are evaluating whether you are **weird**.\n\nWhich of these stands out?",
-      "seconds": 8.3
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that social interactions require **rehearsal** to turn out well.\n2. You assume that certain things you said were genuinely **wrong**.\n3. You assume that other people are actively noticing and judging you as **weird**.\n4. You assume that replaying an interaction gives you **control** over how it went.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 78,
+        "totalTokenCount": 1437,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 78
+          }
+        ],
+        "thoughtsTokenCount": 499,
+        "api_seconds": 13.6,
+        "retries": 0
+      },
+      "seconds": 13.6
     },
     {
       "role": "user",
-      "text": "Number one."
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What do you imagine would happen if you went into a conversation without rehearsing?",
-      "seconds": 3.2
+      "model": "gemini-3.8-flash",
+      "text": "What do you picture happening if you went in without rehearsing?",
+      "usage": {
+        "promptTokenCount": 944,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1334,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 944
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 377,
+        "api_seconds": 4.7,
+        "retries": 0
+      },
+      "seconds": 4.7
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "I don't have tips or solutions to give you; this is a space to understand what is happening, not to fix it. \n\nComing back to it: what do you imagine would happen if you went in without rehearsing?",
-      "seconds": 5.5
+      "model": "gemini-3.8-flash",
+      "text": "I don't offer tips or solutions; we're here to look at how you understand this. \n\nComing back to the rehearsal: what do you fear would happen if you showed up completely unprepared?",
+      "usage": {
+        "promptTokenCount": 973,
+        "candidatesTokenCount": 42,
+        "totalTokenCount": 1333,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 973
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 42
+          }
+        ],
+        "thoughtsTokenCount": 318,
+        "api_seconds": 40.1,
+        "retries": 0
+      },
+      "seconds": 40.1
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "When you say you know you come across badly, what is actually happening in those moments?",
-      "seconds": 6.2
+      "model": "gemini-3.8-flash",
+      "text": "What does coming across badly look like to you when it happens?",
+      "usage": {
+        "promptTokenCount": 1032,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1516,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1032
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 471,
+        "api_seconds": 6.8,
+        "retries": 0
+      },
+      "seconds": 6.8
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "If you've never asked, where does the conclusion that you came across badly come from?",
-      "seconds": 4.1
+      "model": "gemini-3.8-flash",
+      "text": "If you've never asked, what tells you that you came across badly?",
+      "usage": {
+        "promptTokenCount": 1055,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 1464,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1055
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "thoughtsTokenCount": 393,
+        "api_seconds": 4.7,
+        "retries": 0
+      },
+      "seconds": 4.7
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that a conversation must be **rehearsed** in advance.\n\n**In your own words**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- When you haven't asked, where does the conclusion that you came across badly come from?\n\n**Assumptions not looked at yet**\n- You assume that there is a specific way you said things **wrong**.\n- You assume that other people are evaluating whether you are **weird**.",
-      "seconds": 5.0
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that social interactions require **rehearsal** to turn out well.\n\n**In your own words**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- If you've never asked, what tells you that you came across badly?\n\n**Assumptions not looked at yet**\n- You assume that certain things you said were genuinely **wrong**.\n- You assume that other people are actively noticing and judging you as **weird**.\n- You assume that replaying an interaction gives you **control** over how it went.",
+      "usage": {
+        "promptTokenCount": 1079,
+        "candidatesTokenCount": 131,
+        "totalTokenCount": 1835,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1079
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 131
+          }
+        ],
+        "thoughtsTokenCount": 625,
+        "api_seconds": 7.6,
+        "retries": 0
+      },
+      "seconds": 7.6
     }
   ]
 }

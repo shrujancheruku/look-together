@@ -9,8 +9,29 @@
     },
     {
       "role": "assistant",
-      "text": "What are you stuck on, and what happens when you try to move?",
-      "seconds": 12.7
+      "model": "gemini-4-argon",
+      "text": "What are you stuck on, and what happens when you try to move with it?",
+      "usage": {
+        "promptTokenCount": 868,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 889,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 868
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "api_seconds": 2.6,
+        "retries": 0
+      },
+      "seconds": 2.6
     },
     {
       "role": "user",
@@ -18,17 +39,63 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that staying in the **same** job, flat, and routine means you are **stuck**.\n2. You assume that your life **should** be changing over time.\n3. You assume that deciding to change in **January** is what should make the change happen.\n4. You assume that if you haven't changed these big things, you haven't changed **anything**.\n\nWhich of these stands out?",
-      "seconds": 4.3
+      "model": "gemini-4-argon",
+      "text": "1. You assume that staying in the same job, flat, and routine for six years means you are **stuck**.\n2. You assume that you **should** be changing these things.\n3. You assume that deciding to change in January is what **produces** change.\n4. You assume that because you haven't changed your job, flat, or routine, **nothing** has changed.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 930,
+        "candidatesTokenCount": 94,
+        "totalTokenCount": 1024,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 930
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 94
+          }
+        ],
+        "api_seconds": 9.7,
+        "retries": 0
+      },
+      "seconds": 9.7
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": null
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say in January \"this is the year I change something,\" what do you expect that decision to actually do?",
-      "seconds": 4.4
+      "model": "gemini-4-argon",
+      "text": "\"Failing\" wasn't in the list, which means you read it into one of them. Are we adding \"You assume that not changing these things means you are **failing**\"\u2014and if so, do we start there?",
+      "usage": {
+        "promptTokenCount": 1035,
+        "candidatesTokenCount": 52,
+        "totalTokenCount": 1087,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1035
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 52
+          }
+        ],
+        "api_seconds": 10.1,
+        "retries": 0
+      },
+      "seconds": 10.1
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "That sounds like another assumption: You assume that **change** only counts if it is **big**, like moving abroad or quitting. Add it?\n\nAnd coming back to what I asked: when you make that decision in January, what do you expect the decision itself to do?",
-      "seconds": 3.9
+      "model": "gemini-4-argon",
+      "text": "That's a new one: \"You assume that for something to count as **change**, it has to be **big**, like moving abroad or quitting.\" Add it, or go back to the question about **failing**?",
+      "usage": {
+        "promptTokenCount": 1106,
+        "candidatesTokenCount": 50,
+        "totalTokenCount": 1156,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1106
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 50
+          }
+        ],
+        "api_seconds": 7.0,
+        "retries": 0
+      },
+      "seconds": 7.0
     },
     {
       "role": "user",
@@ -45,8 +133,29 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that deciding to change in **January** is what should make the change happen.\n\n**What came up in your words**\n- \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Open Questions**\n- When you make the decision in January to change something, what do you expect the decision itself to do?\n\n**Assumptions not looked at yet**\n- You assume that staying in the **same** job, flat, and routine means you are **stuck**.\n- You assume that your life **should** be changing over time.\n- You assume that if you haven't changed these big things, you haven't changed **anything**.\n- (Offered, not yet added) You assume that **change** only counts if it is **big**, like moving abroad or quitting.",
-      "seconds": 5.7
+      "model": "gemini-4-argon",
+      "text": "## What we looked at\n\n**Assumptions surfaced during the conversation**\n- You assume that not changing these things means you are **failing** \u2014 noticed when you read \"failing\" into the initial list.\n- You assume that for something to count as **change**, it has to be **big**, like moving abroad or quitting \u2014 in your words, *\"I guess change means doing something big. Moving abroad or quitting.\"*\n\n**Open Questions**\n- None left open yet.\n\n**Assumptions not looked at yet**\n1. You assume that staying in the same job, flat, and routine for six years means you are **stuck**.\n2. You assume that you **should** be changing these things.\n3. You assume that deciding to change in January is what **produces** change.\n4. You assume that because you haven't changed your job, flat, or routine, **nothing** has changed.",
+      "usage": {
+        "promptTokenCount": 1167,
+        "candidatesTokenCount": 195,
+        "totalTokenCount": 1362,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1167
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 195
+          }
+        ],
+        "api_seconds": 10.8,
+        "retries": 0
+      },
+      "seconds": 10.8
     }
   ]
 }

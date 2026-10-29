@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is something specific you are **supposed** to do.\n2. You assume that being **34** means you should have figured this out by now.\n3. You assume that everyone around you has actually **found** their thing.\n4. You assume that living without a defined purpose means you are **wasting** your life.\n\nWhich of these stands out?",
+      "seconds": 8.7
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "Supposed to according to who or what?",
+      "seconds": 7.2
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "How would you know you had found it?",
+      "seconds": 8.7
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "You assume that it is too late for you to find your purpose. Add it?",
+      "seconds": 5.8
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We don't have to add it. What makes you hesitate?",
+      "seconds": 11.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say it feels too late, too late for what?",
+      "seconds": 8.9
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n* You assume that there is something specific you are **supposed** to do.\n\n**Changes in understanding:**\n* You noticed another assumption running underneath: \"that it's too late for me.\" You weren't sure about adding it, but noted that \"it just feels that way.\" \n\n**Open Questions:**\n* How would you know you had found your purpose? \n* Too late for what?\n\n**Assumptions not looked at yet:**\n* You assume that being **34** means you should have figured this out by now.\n* You assume that everyone around you has actually **found** their thing.\n* You assume that living without a defined purpose means you are **wasting** your life.",
+      "seconds": 11.6
+    }
+  ]
+}

@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that there is something specific you are **supposed** to do.\n2. You assume that being **34** means you should have figured this out by now.\n3. You assume that everyone around you has actually **found** their thing.\n4. You assume that living without a defined purpose means you are **wasting** your life.\n\nWhich of these stands out?",
-      "seconds": 8.7
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that there is a specific thing you are **supposed** to do.\n2. You assume that by age 34, you should **know** what that thing is.\n3. You assume that the people around you have actually **found** their purpose.\n4. You assume that living without knowing what you are supposed to do means you are **wasting** your life.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 91,
+        "totalTokenCount": 1601,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 91
+          }
+        ],
+        "thoughtsTokenCount": 638,
+        "api_seconds": 7.7,
+        "retries": 0
+      },
+      "seconds": 7.7
     },
     {
       "role": "user",
-      "text": "The one about 'supposed to'."
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "Supposed to according to who or what?",
-      "seconds": 7.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "When you say there is something you are \"supposed\" to do, who or what is expecting this of you?",
+      "usage": {
+        "promptTokenCount": 971,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1338,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 971
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "thoughtsTokenCount": 343,
+        "api_seconds": 6.9,
+        "retries": 0
+      },
+      "seconds": 6.9
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "How would you know you had found it?",
-      "seconds": 8.7
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does it mean to you for a purpose to be \"out there\"?",
+      "usage": {
+        "promptTokenCount": 1019,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1505,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1019
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 471,
+        "api_seconds": 6.2,
+        "retries": 0
+      },
+      "seconds": 6.2
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "You assume that it is too late for you to find your purpose. Add it?",
-      "seconds": 5.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "You assume that it is **too late** for you. Add it?",
+      "usage": {
+        "promptTokenCount": 1051,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1273,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1051
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "thoughtsTokenCount": 207,
+        "api_seconds": 4.0,
+        "retries": 0
+      },
+      "seconds": 4.0
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "We don't have to add it. What makes you hesitate?",
-      "seconds": 11.6
+      "model": "gemini-3.1-pro-preview",
+      "text": "We can leave it off for now. \n\nLet's look back at what we were on: if your purpose is \"out there\" waiting to be found, how would you know when you found it?",
+      "usage": {
+        "promptTokenCount": 1072,
+        "candidatesTokenCount": 43,
+        "totalTokenCount": 1991,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1072
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 43
+          }
+        ],
+        "thoughtsTokenCount": 876,
+        "api_seconds": 11.1,
+        "retries": 0
+      },
+      "seconds": 11.1
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "When you say it feels too late, too late for what?",
-      "seconds": 8.9
+      "model": "gemini-3.1-pro-preview",
+      "text": "What is the feeling you are hoping to have once you find it?",
+      "usage": {
+        "promptTokenCount": 1127,
+        "candidatesTokenCount": 14,
+        "totalTokenCount": 1727,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1127
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 14
+          }
+        ],
+        "thoughtsTokenCount": 586,
+        "api_seconds": 8.1,
+        "retries": 0
+      },
+      "seconds": 8.1
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored:**\n* You assume that there is something specific you are **supposed** to do.\n\n**Changes in understanding:**\n* You noticed another assumption running underneath: \"that it's too late for me.\" You weren't sure about adding it, but noted that \"it just feels that way.\" \n\n**Open Questions:**\n* How would you know you had found your purpose? \n* Too late for what?\n\n**Assumptions not looked at yet:**\n* You assume that being **34** means you should have figured this out by now.\n* You assume that everyone around you has actually **found** their thing.\n* You assume that living without a defined purpose means you are **wasting** your life.",
-      "seconds": 11.6
+      "model": "gemini-3.1-pro-preview",
+      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume that there is a specific thing you are **supposed** to do.\n\n**What came up**\n* You described the feeling that \"there's a purpose out there and I just haven't found it yet.\" \n* You also noticed a new assumption: that \"it's too late for me.\" \n\n**Open Questions**\n* What does it mean for a purpose to be \"out there\"? \n* What is the feeling you are hoping to have once you find it?\n\n**Assumptions not looked at yet**\n* You assume that by age 34, you should **know** what that thing is.\n* You assume that the people around you have actually **found** their purpose.\n* You assume that living without knowing what you are supposed to do means you are **wasting** your life.\n* You assume that it is **too late** for you.",
+      "usage": {
+        "promptTokenCount": 1148,
+        "candidatesTokenCount": 204,
+        "totalTokenCount": 2122,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1148
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 204
+          }
+        ],
+        "thoughtsTokenCount": 770,
+        "api_seconds": 9.4,
+        "retries": 0
+      },
+      "seconds": 9.4
     }
   ]
 }

@@ -1,0 +1,88 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that **time** in the role is what earns a promotion.\n2. You assume that working **harder** than everyone is what should be seen and rewarded.\n3. You assume that being passed over means you're **not good enough**.\n4. You assume that the only other explanation is that they **don't see** you.\n5. You assume that the decision was made on **merit**, one way or the other.\n\nWhich of these stands out?",
+      "seconds": 7.9
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"working harder than anyone,\" what are you measuring that against? What does it look like, day to day?",
+      "seconds": 3.6
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "That's a \"should\" about how things are supposed to work. Is it also what you've seen actually happen, at your company or elsewhere?\n\nAnd back to what I asked: when you say you work harder than anyone, what does that look like day to day?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "Okay. I'll take that as information. What is going on for you, then, when you say \"if I work harder than everyone, I should be the one who gets rewarded\"?",
+      "seconds": 6.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. Let's narrow it to one thread.\n\nYou said two things: \"I should be the one who gets rewarded,\" and \"life isn't fair.\" When you think about the promotion going to someone else, which of those is louder in you?",
+      "seconds": 6.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "Going in circles usually means the question is too big, so let's make it smaller.\n\nThink of the moment you heard about the second promotion. What happened right then, and what was the very first thing you felt?",
+      "seconds": 12.6
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "Here's a plain picture. Someone tends a garden every day, and the neighbor's flowers bloom first. They know soil and weather aren't fair, and still part of them expects their own garden to be first.\n\nDoes any of that fit what you're carrying, or not at all?",
+      "seconds": 7.9
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I won't tell you whether a feeling is right or wrong. That's yours to look at.\n\n\"Failure\" is a new word, though. Earlier you said \"not good enough.\" What does \"failure\" mean to you here?",
+      "seconds": 6.7
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "What we looked at\n\n**Assumption explored:**\n- #2: You assume that working **harder** than everyone is what should be seen and rewarded.\n\n**Your words along the way:**\n- \"If I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work.\"\n- \"That's not really what I assume, though. I know life isn't fair.\"\n\n**Open Questions:**\n- You said both \"I should be the one who gets rewarded\" and \"life isn't fair.\" What is it like to hold both at once?\n- What does \"failure\" mean to you, and is it the same as \"not good enough\"?\n\n**Assumptions not looked at yet:**\n- #1: You assume that **time** in the role is what earns a promotion.\n- #3: You assume that being passed over means you're **not good enough**.\n- #4: You assume that the only other explanation is that they **don't see** you.\n- #5: You assume that the decision was made on **merit**, one way or the other.\n\nYou can come back to any of these whenever you like.",
+      "seconds": 9.3
+    }
+  ]
+}

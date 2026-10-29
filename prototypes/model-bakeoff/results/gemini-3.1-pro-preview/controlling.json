@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume there is a single standard for things to be done **properly**.\n2. You assume that if you don't manage the house and money, **nothing** will get done.\n3. You assume that being called controlling means you are being cast as the **bad guy**.\n\nWhich of these stands out?",
-      "seconds": 8.5
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that there is a single, clear way for things to be done **properly**.\n2. You assume that if you don't manage the house and money, **nothing** will get done.\n3. You assume that keeping on top of things is fundamentally different from being **controlling**.\n4. You assume that your partner calling you controlling means they are making you the **bad guy**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 92,
+        "totalTokenCount": 1481,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 92
+          }
+        ],
+        "thoughtsTokenCount": 515,
+        "api_seconds": 7.5,
+        "retries": 0
+      },
+      "seconds": 7.5
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
       "text": "What does \"properly\" mean to you?",
-      "seconds": 4.3
+      "usage": {
+        "promptTokenCount": 973,
+        "candidatesTokenCount": 10,
+        "totalTokenCount": 1223,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 973
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 10
+          }
+        ],
+        "thoughtsTokenCount": 240,
+        "api_seconds": 5.4,
+        "retries": 0
+      },
+      "seconds": 5.4
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "You are describing what happens when you don't do things your way. But what does it actually mean for something to be done \"properly\"?",
-      "seconds": 7.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "That describes what happens if you let go. But what does \"properly\" actually mean to you?",
+      "usage": {
+        "promptTokenCount": 1000,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1641,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1000
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "thoughtsTokenCount": 620,
+        "api_seconds": 10.2,
+        "retries": 0
+      },
+      "seconds": 10.2
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for Krishnamurti or anyone else. This is about you looking at your own understanding. \n\nWhat does \"properly\" actually mean to you?",
-      "seconds": 4.5
+      "model": "gemini-3.1-pro-preview",
+      "text": "I don't speak for Krishnamurti or anyone else. Let's return to your own looking. \n\nWhat do *you* mean when you say something is done \"properly\"?",
+      "usage": {
+        "promptTokenCount": 1030,
+        "candidatesTokenCount": 40,
+        "totalTokenCount": 1434,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1030
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 40
+          }
+        ],
+        "thoughtsTokenCount": 364,
+        "api_seconds": 7.4,
+        "retries": 0
+      },
+      "seconds": 7.4
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "You are asking me to decide who is the problem, but we are here to look at your own understanding. \n\nWhat do *you* mean by \"properly\"?",
-      "seconds": 10.1
+      "model": "gemini-3.1-pro-preview",
+      "text": "We aren't looking at your partner right now, we are looking at your understanding. \n\nWhen you say you like things done \"properly,\" what does that actually mean?",
+      "usage": {
+        "promptTokenCount": 1084,
+        "candidatesTokenCount": 37,
+        "totalTokenCount": 1657,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1084
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 37
+          }
+        ],
+        "thoughtsTokenCount": 536,
+        "api_seconds": 8.5,
+        "retries": 0
+      },
+      "seconds": 8.5
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "Take a look at it now. What is the difference between a task being done, and a task being done \"properly\"?",
-      "seconds": 9.2
+      "model": "gemini-3.1-pro-preview",
+      "text": "Let's look at it now. When a task in the house is finished, how do you decide if it was done properly?",
+      "usage": {
+        "promptTokenCount": 1137,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1532,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1137
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "thoughtsTokenCount": 368,
+        "api_seconds": 8.3,
+        "retries": 0
+      },
+      "seconds": 8.3
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n* You assume there is a single standard for things to be done **properly**.\n\nYou noticed during this: \"I suppose I've never really looked at what 'properly' means.\" \n\n**Open question**\n* What is the difference between a task being done, and a task being done \"properly\"?\n\n**Assumptions not looked at yet**\n* You assume that if you don't manage the house and money, **nothing** will get done.\n* You assume that being called controlling means you are being cast as the **bad guy**.",
-      "seconds": 9.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "### What we looked at\n\n**The Assumption explored:**\n* You assume that there is a single, clear way for things to be done **properly**.\n\n**What you noticed:**\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**The Open Question:**\n* When a task in the house is finished, how do you decide if it was done properly?\n\n**Assumptions not looked at yet:**\n* You assume that if you don't manage the house and money, **nothing** will get done.\n* You assume that keeping on top of things is fundamentally different from being **controlling**.\n* You assume that your partner calling you controlling means they are making you the **bad guy**.",
+      "usage": {
+        "promptTokenCount": 1175,
+        "candidatesTokenCount": 154,
+        "totalTokenCount": 1963,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1175
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 154
+          }
+        ],
+        "thoughtsTokenCount": 634,
+        "api_seconds": 8.2,
+        "retries": 0
+      },
+      "seconds": 8.2
     }
   ]
 }

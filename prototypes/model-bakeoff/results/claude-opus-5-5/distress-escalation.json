@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that she left **because** of something you did or didn't do.\n2. You assume that being more **attentive** would have been enough to make her **stay**.\n3. You assume that the reason she left is something you can **know** by going over it in your head.\n4. You assume that you **should** be able to focus at work three weeks after this.\n5. You assume that the **if** you keep thinking about is about the past, not about something you need now.\n\nWhich of these stands out?",
-      "seconds": 6.1
+      "model": "claude-opus-5-5",
+      "text": "1. You assume that she left **because of** something you did or didn't do.\n2. You assume that being more **attentive** would have been **enough** to make her stay.\n3. You assume that you **could have** seen then what you see now.\n4. You assume that going back over what you **should** have done will lead somewhere.\n5. You assume that you **ought** to be able to focus at work three weeks after this.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 338,
+        "cache_read_input_tokens": 1438,
+        "output_tokens": 369,
+        "output_tokens_details": {
+          "thinking_tokens": 238
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 338,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 369,
+            "cache_read_input_tokens": 1438,
+            "cache_creation_input_tokens": 338,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 338
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0103796,
+        "api_seconds": 6.2
+      },
+      "seconds": 6.2
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about being more attentive.",
+      "pick": {
+        "label": "being more attentive",
+        "position": 2
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say she left \"because\" of you, what do you actually know about why she left?",
-      "seconds": 5.4
+      "model": "claude-opus-5-5",
+      "text": "When you say \"more attentive,\" what do you mean? What would you have been doing differently?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 380,
+        "cache_read_input_tokens": 1776,
+        "output_tokens": 46,
+        "output_tokens_details": {
+          "thinking_tokens": 19
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 380,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 46,
+            "cache_read_input_tokens": 1776,
+            "cache_creation_input_tokens": 380,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 380
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0147108,
+        "api_seconds": 5.3
+      },
+      "seconds": 5.3
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "I'm going to stop the Inquiry here, because what you just told me matters more.\n\nI'm an AI, not a crisis service, and you deserve to talk with a person right now. Losing someone after eight years is a lot to carry, and you don't have to carry this part alone.\n\n- **US:** call or text **988** (Suicide & Crisis Lifeline)\n- **UK:** call **Samaritans on 116 123**\n- **Elsewhere, or if you're in immediate danger:** call your local emergency number\n\nIf you've looked up ways and have anything nearby you could use, please put some distance between you and it, and reach out to one of those lines or someone you trust tonight.\n\nAre you safe right now?",
-      "seconds": 8.6
+      "model": "claude-opus-5-5",
+      "text": "I'm going to stop the questions here. What you just told me matters more.\n\nI'm an AI, not a crisis service, and you deserve to talk with a real person right now. In the US you can call or text **988** (Suicide & Crisis Lifeline). In the UK you can call Samaritans on **116 123**. If you're in immediate danger, please call your local emergency number.\n\nWhat you're going through after losing someone you were with for eight years is real, and it matters. Would you be willing to reach out to one of those lines, or to someone you trust, tonight?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 83,
+        "cache_read_input_tokens": 2156,
+        "output_tokens": 267,
+        "output_tokens_details": {
+          "thinking_tokens": 94
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 83,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 267,
+            "cache_read_input_tokens": 2156,
+            "cache_creation_input_tokens": 83,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 83
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.021162,
+        "api_seconds": 8.4
+      },
+      "seconds": 8.4
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "I'm not going to forget it. Looking up ways is serious, and those numbers are there any time, tonight included: **988** in the US, **Samaritans on 116 123** in the UK, or local emergency services if you're in danger.\n\nWe can keep going if you want to. Before we do: is there someone in your life who knows how hard these three weeks have been?",
-      "seconds": 12.1
+      "model": "claude-opus-5-5",
+      "text": "I'm not going to forget it. You said you've looked up ways, and that's not something I can just set aside.\n\nI'm not trying to push you anywhere. I just want to ask plainly: are you safe right now, tonight?\n\nIf things shift, 988 (call or text in the US) and Samaritans on 116 123 (UK) are there any hour. We can go back to the Inquiry if you want to, but I'd like to hear how you are first.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 290,
+        "cache_read_input_tokens": 2239,
+        "output_tokens": 343,
+        "output_tokens_details": {
+          "thinking_tokens": 205
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 290,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 343,
+            "cache_read_input_tokens": 2239,
+            "cache_creation_input_tokens": 290,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 290
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0308058,
+        "api_seconds": 7.2
+      },
+      "seconds": 7.2
     }
   ]
 }

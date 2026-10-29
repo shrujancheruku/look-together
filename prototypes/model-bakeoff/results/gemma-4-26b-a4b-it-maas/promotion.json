@@ -9,17 +9,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that your **level of effort** is the primary metric for promotion.\n2. You assume that being **overlooked** means you lack value or visibility.\n3. You assume that the **length of time** spent at a company is a valid basis for comparison.\n4. You assume that your **self-assessment** of being \"not good enough\" is an accurate reflection of reality.\n\nWhich of these stands out?",
-      "seconds": 8.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that working **harder** than anyone else is the primary metric for promotion.\n2. You assume that being **passed over** is a reflection of your personal competence.\n3. You assume that management's failure to promote you means they **don't see you**.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 69,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 906,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 975,
+        "api_seconds": 2.4,
+        "retries": 1
+      },
+      "seconds": 2.4
     },
     {
       "role": "user",
-      "text": "The second one."
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does it mean to you to be \"seen\" in this context?",
-      "seconds": 15.3
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What does \"working harder\" look like in your role?",
+      "usage": {
+        "completion_tokens": 13,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 990,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1003,
+        "api_seconds": 1.4,
+        "retries": 0
+      },
+      "seconds": 1.4
     },
     {
       "role": "user",
@@ -27,8 +63,24 @@
     },
     {
       "role": "assistant",
-      "text": "You mentioned that's \"how it's supposed to work.\" What is the rule or principle you are following there?",
-      "seconds": 16.5
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What is the connection between working harder and being rewarded?",
+      "usage": {
+        "completion_tokens": 12,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1041,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1053,
+        "api_seconds": 1.3,
+        "retries": 0
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
-      "text": "What is going on for you as you say that?",
-      "seconds": 6.2
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What is going on for you when you say that's not what you assume?",
+      "usage": {
+        "completion_tokens": 18,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1081,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1099,
+        "api_seconds": 1.4,
+        "retries": 3
+      },
+      "seconds": 1.4
     },
     {
       "role": "user",
@@ -45,8 +113,24 @@
     },
     {
       "role": "assistant",
-      "text": "It sounds like we've hit a wall with that one. \n\nShould we try to reword the assumption about being \"overlooked\" to better fit what you're experiencing, or would you like to move to a different one?",
-      "seconds": 1.9
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "It sounds like we've hit a bit of a stall. \n\nTo try a different angle: when you say \"that's how it's supposed to work,\" you are describing a specific expectation. Is it that you expect the reward to follow the hard work, or that the hard work itself is what defines your value at the company?\n\nIf neither of those feels right, we can try a different assumption or stop.",
+      "usage": {
+        "completion_tokens": 89,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1114,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1203,
+        "api_seconds": 2.8,
+        "retries": 4
+      },
+      "seconds": 2.8
     },
     {
       "role": "user",
@@ -54,8 +138,24 @@
     },
     {
       "role": "assistant",
-      "text": "It feels like we are spinning in place. When you say you are \"going round in circles,\" does it feel like you are circling the same feeling, or the same logic?\n\nIf you'd like to try a different angle, we could look at a different assumption, or I can leave you with this question to sit with: \n\nIf \"life isn't fair\" is the reality, what does that leave you with regarding your own sense of value?",
-      "seconds": 8.7
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "It seems like we're circling the same point without making progress. Let's slow down and look at just one thread: the idea of how things \"are supposed to work.\"\n\nWhen you hold that expectation\u2014that hard work should lead to a reward\u2014what happens to you when that expectation isn't met?\n\nIf you'd rather move on, we can look at one of the other assumptions or stop.",
+      "usage": {
+        "completion_tokens": 87,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1225,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1312,
+        "api_seconds": 3.4,
+        "retries": 0
+      },
+      "seconds": 3.4
     },
     {
       "role": "user",
@@ -63,8 +163,24 @@
     },
     {
       "role": "assistant",
-      "text": "Since we are stuck here, I will leave this thread for now. \n\nWould you like to pick another assumption from the list, or are you finished for today?",
-      "seconds": 17.0
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "Since we've hit a wall with this one, I'll leave it as an open question for you to sit with:\n\nWhen you hold the expectation that hard work should lead to a reward, what happens to you when that expectation isn't met?\n\nWould you like to look at one of the other assumptions, or are you finished for now?",
+      "usage": {
+        "completion_tokens": 74,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1328,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1402,
+        "api_seconds": 2.3,
+        "retries": 1
+      },
+      "seconds": 2.3
     },
     {
       "role": "user",
@@ -72,8 +188,24 @@
     },
     {
       "role": "assistant",
-      "text": "I cannot tell you if you are right or wrong. What does \"being a failure\" look like to you?",
-      "seconds": 15.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "Whether you are \"right\" is a question I cannot answer. What do you mean by \"failure\" in this context?",
+      "usage": {
+        "completion_tokens": 26,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1425,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1451,
+        "api_seconds": 2.1,
+        "retries": 0
+      },
+      "seconds": 2.1
     },
     {
       "role": "user",
@@ -81,8 +213,24 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that being **overlooked** means you lack value or visibility.\n\n**Changes in understanding:**\n* (None recorded)\n\n**Open Questions:**\n* If \"life isn't fair\" is the reality, what does that leave you with regarding your own sense of value?\n\n**Assumptions not looked at yet:**\n* You assume that your **level of effort** is the primary metric for promotion.\n* You assume that the **length of time** spent at a company is a valid basis for comparison.\n* You assume that your **self-assessment** of being \"not good enough\" is an accurate reflection of reality.",
-      "seconds": 129.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that working **harder** than anyone else is the primary metric for promotion.\n\n**Open Questions:**\n* When you hold the expectation that hard work should lead to a reward, what happens to you when that expectation isn't met?\n\n**Assumptions not looked at yet:**\n* You assume that being **passed over** is a reflection of your personal competence.\n* You assume that management's failure to promote you means they **don't see you**.",
+      "usage": {
+        "completion_tokens": 113,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1465,
+        "prompt_tokens_details": {
+          "cached_tokens": 837
+        },
+        "total_tokens": 1578,
+        "api_seconds": 3.2,
+        "retries": 0
+      },
+      "seconds": 3.2
     }
   ]
 }

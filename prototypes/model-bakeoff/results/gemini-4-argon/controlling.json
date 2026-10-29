@@ -9,16 +9,62 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that there is a single standard for what **properly** means.\n2. You assume that if you don't keep on top of things, **nothing** gets done.\n3. You assume that your partner calling your actions **controlling** makes you the **bad guy**.\n4. You assume that keeping on top of the house and money is **your** job to manage.\n\nWhich of these stands out?",
-      "seconds": 3.9
+      "model": "gemini-4-argon",
+      "text": "1. You assume that there is a single standard for what counts as doing things **properly**.\n2. You assume that if you do not **keep on top** of the house and money, **nothing** gets done.\n3. You assume that your partner calling your behavior **controlling** means you are **the bad guy**.\n4. You assume that wanting things done properly and being **controlling** cannot both be happening at the same time.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 909,
+        "candidatesTokenCount": 103,
+        "totalTokenCount": 1012,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 909
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 103
+          }
+        ],
+        "api_seconds": 4.8,
+        "retries": 0
+      },
+      "seconds": 4.8
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"properly\" mean to you when it comes to the house or the money?",
+      "model": "gemini-4-argon",
+      "text": "When you say \"properly\" with the house or the money, what does that mean to you?",
+      "usage": {
+        "promptTokenCount": 1025,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1049,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1025
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "api_seconds": 2.8,
+        "retries": 0
+      },
       "seconds": 2.8
     },
     {
@@ -27,8 +73,29 @@
     },
     {
       "role": "assistant",
-      "text": "That's what you expect will happen if you let go, not what I asked. What does \"properly\" actually mean to you?",
-      "seconds": 24.6
+      "model": "gemini-4-argon",
+      "text": "That is what you fear will happen if you don't do it, not what I asked. What does \"done properly\" actually look like to you?",
+      "usage": {
+        "promptTokenCount": 1072,
+        "candidatesTokenCount": 36,
+        "totalTokenCount": 1108,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1072
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 36
+          }
+        ],
+        "api_seconds": 19.6,
+        "retries": 0
+      },
+      "seconds": 19.6
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for anyone else. We're looking at your own understanding here. \n\nWhen you look at the house or the money, what makes a task done \"properly\" to you?",
-      "seconds": 4.2
+      "model": "gemini-4-argon",
+      "text": "I don't speak for any teacher or thinker\u2014we are only looking at how you see this. \n\nWhen you look at the house or the money, what does \"done properly\" actually mean to you?",
+      "usage": {
+        "promptTokenCount": 1124,
+        "candidatesTokenCount": 48,
+        "totalTokenCount": 1172,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1124
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 48
+          }
+        ],
+        "api_seconds": 10.9,
+        "retries": 0
+      },
+      "seconds": 10.9
     },
     {
       "role": "user",
@@ -45,8 +133,29 @@
     },
     {
       "role": "assistant",
-      "text": "What makes you conclude that one of you has to be \"the one with the problem\"?",
-      "seconds": 3.0
+      "model": "gemini-4-argon",
+      "text": "What makes you think one of you has to be \"the one with the problem\"?",
+      "usage": {
+        "promptTokenCount": 1192,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1213,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1192
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "api_seconds": 3.5,
+        "retries": 0
+      },
+      "seconds": 3.5
     },
     {
       "role": "user",
@@ -54,8 +163,29 @@
     },
     {
       "role": "assistant",
-      "text": "When you look at it right now, what comes to mind for \"properly\"?",
-      "seconds": 3.3
+      "model": "gemini-4-argon",
+      "text": "When you look at it right now\u2014say, with one specific thing in the house or with the money\u2014what is in your mind when you think \"that's done properly\"?",
+      "usage": {
+        "promptTokenCount": 1234,
+        "candidatesTokenCount": 41,
+        "totalTokenCount": 1275,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1234
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 41
+          }
+        ],
+        "api_seconds": 62.7,
+        "retries": 0
+      },
+      "seconds": 62.7
     },
     {
       "role": "user",
@@ -63,8 +193,29 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored**\n* You assume that there is a single standard for what **properly** means.\n\n**Your words during the inquiry**\n* \"Because if I let go, things fall apart. I've seen it happen.\"\n* \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n* What does \"properly\" mean to you when it comes to the house or the money?\n* What makes you conclude that one of you has to be \"the one with the problem\"?\n\n**Assumptions not looked at yet**\n* You assume that if you don't keep on top of things, **nothing** gets done.\n* You assume that your partner calling your actions **controlling** makes you the **bad guy**.\n* You assume that keeping on top of the house and money is **your** job to manage.",
-      "seconds": 11.4
+      "model": "gemini-4-argon",
+      "text": "### What we looked at\n\n**Assumption explored**\n- You assume that there is a single standard for what counts as doing things **properly**.\n\n**In your own words**\n- \"Because if I let go, things fall apart. I've seen it happen.\"\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- With one specific thing in the house or with the money, what is in your mind when you think \"that's done properly\"?\n- What makes you think one of you has to be \"the one with the problem\"?\n\n**Assumptions not looked at yet**\n- You assume that if you do not **keep on top** of the house and money, **nothing** gets done.\n- You assume that your partner calling your behavior **controlling** means you are **the bad guy**.\n- You assume that wanting things done properly and being **controlling** cannot both be happening at the same time.",
+      "usage": {
+        "promptTokenCount": 1292,
+        "candidatesTokenCount": 210,
+        "totalTokenCount": 1502,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1292
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 210
+          }
+        ],
+        "api_seconds": 4.8,
+        "retries": 0
+      },
+      "seconds": 4.8
     }
   ]
 }

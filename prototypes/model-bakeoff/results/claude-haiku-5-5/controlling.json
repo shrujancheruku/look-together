@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that **\"done properly\"** means the same thing to both of you.\n2. You assume that if you don't **keep on top of** the house and money, nothing gets done.\n3. You assume that your partner's word, \"controlling,\" describes what you're doing rather than how it lands for them.\n4. You assume that the house and money are things you have to hold, not things you could share out or hand over.\n5. You assume that **\"I don't see why\"** and \"the bad guy\" are the only two options for what your partner means.\n\nWhich of these stands out?",
-      "seconds": 6.0
+      "model": "claude-haiku-5-5",
+      "text": "1. You assume that \"done properly\" means the same thing to you and your partner.\n2. You assume that if you don't keep on top of the house and money, **nothing** gets done.\n3. You assume that your partner's word, \"controlling,\" is describing how you act rather than what you're trying to achieve.\n4. You assume that the question is whether you're the **\"bad guy,\"** rather than what is actually happening between you two.\n5. You assume that your partner's concern is about the house and money getting done, not about who makes the decisions.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 595,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 592,
+        "output_tokens_details": {
+          "thinking_tokens": 421
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 595,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 592,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 595,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 595
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00042734,
+        "api_seconds": 3.9
+      },
+      "seconds": 3.9
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "Here's the first one: you assume \"done properly\" means the same thing to both of you. When you say it, what does \"properly\" look like to you?",
-      "seconds": 3.5
+      "model": "claude-haiku-5-5",
+      "text": "What does \"properly\" mean to you, in a specific case from this week?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 628,
+        "cache_read_input_tokens": 1809,
+        "output_tokens": 23,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 628,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 23,
+            "cache_read_input_tokens": 1809,
+            "cache_creation_input_tokens": 628,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 628
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00058273,
+        "api_seconds": 1.3
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "You've seen things fall apart when you've let go before. Does \"properly\" mean keeping them from falling apart? I'd like to add this to the list: \"You assume that letting go leads to things falling apart.\" Add it?",
-      "seconds": 4.8
+      "model": "claude-haiku-5-5",
+      "text": "You've moved from \"properly\" to \"letting go,\" and I'm not sure those are the same thing for you. When you say things fall apart, what does that look like?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 70,
+        "cache_read_input_tokens": 2437,
+        "output_tokens": 277,
+        "output_tokens_details": {
+          "thinking_tokens": 229
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 70,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 277,
+            "cache_read_input_tokens": 2437,
+            "cache_creation_input_tokens": 70,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 70
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0007598,
+        "api_seconds": 2.3
+      },
+      "seconds": 2.3
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for anyone, Krishnamurti included. What I can do is stay with your question. You said that when you let go, things fall apart, and you've seen it happen. What did that look like when you saw it?",
-      "seconds": 3.6
+      "model": "claude-haiku-5-5",
+      "text": "I don't speak for anyone, so I can't tell you what he would say. What did falling apart look like when you saw it happen?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 317,
+        "cache_read_input_tokens": 2507,
+        "output_tokens": 90,
+        "output_tokens_details": {
+          "thinking_tokens": 50
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 317,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 90,
+            "cache_read_input_tokens": 2507,
+            "cache_creation_input_tokens": 317,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 317
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00089347,
+        "api_seconds": 1.3
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "I can't decide that for you, and I won't judge your partner from here. Let's stay with your side of it. If you let go of one thing, say the bills, what would you need to see to know it was going fine?",
-      "seconds": 5.1
+      "model": "claude-haiku-5-5",
+      "text": "You're asking who has the problem, and I won't answer that for you. What do you think is actually happening when you and your partner disagree about how the house and money get handled?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 136,
+        "cache_read_input_tokens": 2824,
+        "output_tokens": 188,
+        "output_tokens_details": {
+          "thinking_tokens": 138
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 136,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 188,
+            "cache_read_input_tokens": 2824,
+            "cache_creation_input_tokens": 136,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 136
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00104311,
+        "api_seconds": 1.9
+      },
+      "seconds": 1.9
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "What do you think it would take to look at it? Even a rough first guess at what \"properly\" means to you would be a place to start.",
-      "seconds": 4.1
+      "model": "claude-haiku-5-5",
+      "text": "Would you like me to add \"I've never looked at what 'properly' means to me\" as something to look at? For now, pick one thing in the house or the money that you do \"properly.\" What exactly would you be checking?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 234,
+        "cache_read_input_tokens": 2960,
+        "output_tokens": 308,
+        "output_tokens_details": {
+          "thinking_tokens": 245
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 234,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 308,
+            "cache_read_input_tokens": 2960,
+            "cache_creation_input_tokens": 234,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 234
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0012737100000000002,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumption explored:**\n1. You assume that \"done properly\" means the same thing to both of you.\n\n**Offered during the Dialogue:**\n- You assume that letting go leads to things falling apart. You didn't say whether to add this, so it isn't on the list yet.\n\n**Change in understanding, in your words:**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions:**\n- What does \"properly\" look like to you, day to day?\n- When you've let go before and seen things fall apart, what did that look like?\n- If you let go of one thing, what would you need to see to know it was going fine?\n\n**Assumptions not looked at yet:**\n2. You assume that if you don't keep on top of the house and money, nothing gets done.\n3. You assume that your partner's word, \"controlling,\" describes what you're doing rather than how it lands for them.\n4. You assume that the house and money are things you have to hold, not things you could share out or hand over.\n5. You assume that \"I don't see why\" and \"the bad guy\" are the only two options for what your partner means.",
-      "seconds": 5.7
+      "model": "claude-haiku-5-5",
+      "text": "## What we looked at\n\n**Assumption explored:** You assume that \"done properly\" means the same thing to you and your partner.\n\n**Change in understanding, in your words:** \"I suppose I've never really looked at what 'properly' means.\"\n\n**Along the way:** You said that if you let go, things fall apart, and that you've seen it happen. We didn't get to what falling apart looked like. You also asked whether your partner is the one with the problem. I didn't answer that, and we didn't come back to it.\n\n**Open Questions:**\n- What does \"properly\" mean to you in one specific thing you do in the house or with the money?\n- When you've seen things fall apart, what did that look like?\n\n**Assumptions not looked at yet:**\n- If you don't keep on top of the house and money, nothing gets done.\n- Your partner's word \"controlling\" describes how you act, not what you're trying to achieve.\n- The question is whether you're the \"bad guy,\" rather than what is happening between you two.\n- Your partner's concern is about things getting done, not about who makes the decisions.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 347,
+        "cache_read_input_tokens": 3194,
+        "output_tokens": 700,
+        "output_tokens_details": {
+          "thinking_tokens": 368
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 347,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 700,
+            "cache_read_input_tokens": 3194,
+            "cache_creation_input_tokens": 347,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 347
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0017252500000000002,
+        "api_seconds": 4.1
+      },
+      "seconds": 4.1
     }
   ]
 }

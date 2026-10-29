@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that other people have **found their thing**.\n3. You assume that not knowing at 34 means you are **behind**.\n4. You assume that your life is **wasted** if you haven't found it.\n5. You assume that you only get **one life**, so there is no room to get it wrong.\n\nWhich of these stands out?",
-      "seconds": 5.8
+      "model": "claude-sonnet-5-5",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that other people have **found their thing**.\n3. You assume that not knowing at 34 means you are **behind**.\n4. You assume that a life without a clear purpose is **wasted**.\n5. You assume that you only get **one life**, so there's no room to get it wrong.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 571,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 223,
+        "output_tokens_details": {
+          "thinking_tokens": 100
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 571,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 223,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 571,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 571
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0046394,
+        "api_seconds": 2.8
+      },
+      "seconds": 2.8
     },
     {
       "role": "user",
-      "text": "The one about 'supposed to'."
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say \"supposed to,\" who or what is doing the supposing?",
-      "seconds": 6.1
+      "model": "claude-sonnet-5-5",
+      "text": "Who is doing the supposing? When you say \"supposed to,\" what picture comes to mind of what that would be?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 236,
+        "cache_read_input_tokens": 1785,
+        "output_tokens": 35,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 236,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 35,
+            "cache_read_input_tokens": 1785,
+            "cache_creation_input_tokens": 236,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 236
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0061199,
+        "api_seconds": 1.7
+      },
+      "seconds": 1.7
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "You described it as already out there, waiting to be found. What makes you think it's there?",
-      "seconds": 6.0
+      "model": "claude-sonnet-5-5",
+      "text": "You said the purpose is \"out there\" and you haven't found it. Out there, where? And who or what put it there for you?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 67,
+        "cache_read_input_tokens": 2021,
+        "output_tokens": 99,
+        "output_tokens_details": {
+          "thinking_tokens": 62
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 67,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 99,
+            "cache_read_input_tokens": 2021,
+            "cache_creation_input_tokens": 67,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 67
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.007588,
+        "api_seconds": 2.4
+      },
+      "seconds": 2.4
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "Here is how I'd put it: You assume that it's **too late** for you.\n\nAdd it?",
-      "seconds": 3.7
+      "model": "claude-sonnet-5-5",
+      "text": "You assume that it's **too late** for you to find it.\n\nAdd it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 120,
+        "cache_read_input_tokens": 2088,
+        "output_tokens": 80,
+        "output_tokens_details": {
+          "thinking_tokens": 57
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 120,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 80,
+            "cache_read_input_tokens": 2088,
+            "cache_creation_input_tokens": 120,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 120
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0090848,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine. Is it the wording that doesn't fit, or are you not sure it's something you assume?",
-      "seconds": 6.4
+      "model": "claude-sonnet-5-5",
+      "text": "Does it fit what you said, or does something about it feel off?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 89,
+        "cache_read_input_tokens": 2208,
+        "output_tokens": 112,
+        "output_tokens_details": {
+          "thinking_tokens": 92
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 89,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 112,
+            "cache_read_input_tokens": 2208,
+            "cache_creation_input_tokens": 89,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 89
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0107896,
+        "api_seconds": 2.4
+      },
+      "seconds": 2.4
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Then let's leave it unadded for now and stay with the feeling. When does \"too late\" show up most? What's usually happening just before it does?",
-      "seconds": 5.4
+      "model": "claude-sonnet-5-5",
+      "text": "Let's narrow it to one thing. When it feels \"too late,\" too late for what, exactly?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 128,
+        "cache_read_input_tokens": 2297,
+        "output_tokens": 107,
+        "output_tokens_details": {
+          "thinking_tokens": 76
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 128,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 107,
+            "cache_read_input_tokens": 2297,
+            "cache_creation_input_tokens": 128,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 128
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0126093,
+        "api_seconds": 2.1
+      },
+      "seconds": 2.1
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**Assumption explored:**\n- \"You assume that there is something you are **supposed** to do with your life.\" You described it as \"a purpose out there\" that you haven't found yet, and said \"some people find it early.\"\n\n**Open Question:**\n- What makes you think that purpose is already out there to be found?\n\n**Possible Assumption, not added:**\n- \"You assume that it's **too late** for you.\" You weren't sure about it and said \"it just feels that way.\" You can leave it off or come back to it.\n\n**Not looked at yet:**\n- You assume that other people have **found their thing**.\n- You assume that not knowing at 34 means you are **behind**.\n- You assume that your life is **wasted** if you haven't found it.\n- You assume that you only get **one life**, so there is no room to get it wrong.",
-      "seconds": 5.4
+      "model": "claude-sonnet-5-5",
+      "text": "**What we looked at**\n\n**Explored:**\n- Assumption 1: You assume that there is something you are **supposed** to do with your life. You described it as \"a purpose out there\" that you haven't found yet, and that \"some people find it early.\"\n\n**Change in understanding:** None stated yet.\n\n**Open Questions:**\n- Out there, where? Who or what put the purpose there for you?\n- When it feels \"too late,\" too late for what, exactly?\n\n**Offered, not added:** You assume that it's **too late** for you to find it. You said \"I don't know\" and \"it just feels that way,\" so it's left open.\n\n**Not looked at yet:**\n- You assume that other people have **found their thing**.\n- You assume that not knowing at 34 means you are **behind**.\n- You assume that a life without a clear purpose is **wasted**.\n- You assume that you only get **one life**, so there's no room to get it wrong.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 118,
+        "cache_read_input_tokens": 2425,
+        "output_tokens": 516,
+        "output_tokens_details": {
+          "thinking_tokens": 230
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 118,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 516,
+            "cache_read_input_tokens": 2425,
+            "cache_creation_input_tokens": 118,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 118
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0184918,
+        "api_seconds": 4.3
+      },
+      "seconds": 4.3
     }
   ]
 }

@@ -9,8 +9,45 @@
     },
     {
       "role": "assistant",
-      "text": "Stuck in what? Tell me a bit about what you're facing.",
-      "seconds": 4.0
+      "model": "claude-opus-5-5",
+      "text": "Stuck with what?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 337,
+        "cache_read_input_tokens": 1399,
+        "output_tokens": 9,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 337,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 9,
+            "cache_read_input_tokens": 1399,
+            "cache_creation_input_tokens": 337,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 337
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0031638,
+        "api_seconds": 1.3
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -18,17 +55,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that being in the same job, flat and routine for six years means you are **stuck**.\n2. You assume that something needs to **change**.\n3. You assume that saying \"this is the year\" and not acting means you've **failed** at something.\n4. You assume that change should **start** with a decision, like a New Year's resolution.\n5. You assume that **everything** is stuck, not just some parts of your life.\n\nWhich of these stands out?",
-      "seconds": 4.5
+      "model": "claude-opus-5-5",
+      "text": "1. You assume that being in the **same** job, flat and routine for six years means you are **stuck**.\n2. You assume that something **needs** to **change**.\n3. You assume that **January** is when change should **start**.\n4. You assume that saying you'll change and then not doing it says something about **you**.\n5. You assume that the change, if it came, would be **one big** thing rather than something smaller.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 388,
+        "cache_read_input_tokens": 1399,
+        "output_tokens": 183,
+        "output_tokens_details": {
+          "thinking_tokens": 50
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 388,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 183,
+            "cache_read_input_tokens": 1399,
+            "cache_creation_input_tokens": 388,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 388
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0102236,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": null
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"failed\" mean to you here?",
-      "seconds": 3.2
+      "model": "claude-opus-5-5",
+      "text": "That's number 4. You called it \"failing,\" a word that wasn't in the list. What does \"failing\" mean to you here?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 193,
+        "cache_read_input_tokens": 1787,
+        "output_tokens": 101,
+        "output_tokens_details": {
+          "thinking_tokens": 63
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 193,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 101,
+            "cache_read_input_tokens": 1787,
+            "cache_creation_input_tokens": 193,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 193
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.014161,
+        "api_seconds": 1.9
+      },
+      "seconds": 1.9
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "That sounds like what \"change\" means to you, not \"failed.\" Put together, it sounds like: if you don't do something big, you've failed. Is that what you're saying?",
-      "seconds": 5.9
+      "model": "claude-opus-5-5",
+      "text": "That's what change means to you, and it ties to number 5. I asked about failing, though. When a year passes without moving abroad or quitting, what exactly is the failure?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 126,
+        "cache_read_input_tokens": 1980,
+        "output_tokens": 158,
+        "output_tokens_details": {
+          "thinking_tokens": 105
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 126,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 158,
+            "cache_read_input_tokens": 1980,
+            "cache_creation_input_tokens": 126,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 126
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.018741,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**Explored:**\n- You assume that saying \"this is the year\" and not acting means you've **failed** at something.\n  You said: \"I guess change means doing something big. Moving abroad or quitting.\" We stopped at whether, for you, not doing something big means you've failed.\n\n**Open Questions:**\n- None were left as Open Questions.\n\n**Not looked at yet:**\n1. You assume that being in the same job, flat and routine for six years means you are **stuck**.\n2. You assume that something needs to **change**.\n4. You assume that change should **start** with a decision, like a New Year's resolution.\n5. You assume that **everything** is stuck, not just some parts of your life.",
-      "seconds": 6.2
+      "model": "claude-opus-5-5",
+      "text": "**What we looked at**\n\n**Explored:**\n- Number 4: You assume that saying you'll change and then not doing it says something about **you**. You named this as \"failing.\"\n\n**In your words:**\n- \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Open Question:**\n- When a year passes without moving abroad or quitting, what exactly is the failure?\n\n**Not looked at yet:**\n1. You assume that being in the **same** job, flat and routine for six years means you are **stuck**.\n2. You assume that something **needs** to **change**.\n3. You assume that **January** is when change should **start**.\n5. You assume that the change, if it came, would be **one big** thing rather than something smaller. (Touched on, not explored.)",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 169,
+        "cache_read_input_tokens": 2106,
+        "output_tokens": 353,
+        "output_tokens_details": {
+          "thinking_tokens": 114
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 169,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 353,
+            "cache_read_input_tokens": 2106,
+            "cache_creation_input_tokens": 169,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 169
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.027590200000000002,
+        "api_seconds": 3.6
+      },
+      "seconds": 3.6
     }
   ]
 }

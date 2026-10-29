@@ -1,0 +1,228 @@
+{
+  "candidate": "hybrid-pro-breakdown-flash-dialogue",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume there is something you are **supposed** to do with your life.\n2. You assume that everyone around you has actually **found** their thing.\n3. You assume that not knowing what you are supposed to do is **wasting** your life.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 65,
+        "totalTokenCount": 1419,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 65
+          }
+        ],
+        "thoughtsTokenCount": 482,
+        "api_seconds": 6.8,
+        "retries": 0
+      },
+      "seconds": 6.8
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you say there is something you are \"supposed\" to do, where does that requirement come from?",
+      "usage": {
+        "promptTokenCount": 945,
+        "candidatesTokenCount": 22,
+        "totalTokenCount": 1239,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 945
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 22
+          }
+        ],
+        "thoughtsTokenCount": 272,
+        "api_seconds": 7.8,
+        "retries": 0
+      },
+      "seconds": 7.8
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "How would you know when you've found it?",
+      "usage": {
+        "promptTokenCount": 991,
+        "candidatesTokenCount": 11,
+        "totalTokenCount": 1345,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 991
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 11
+          }
+        ],
+        "thoughtsTokenCount": 343,
+        "api_seconds": 4.5,
+        "retries": 0
+      },
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "You assume that it is **too late** for you. \n\nAdd it?",
+      "usage": {
+        "promptTokenCount": 1019,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1257,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1019
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "thoughtsTokenCount": 221,
+        "api_seconds": 3.0,
+        "retries": 0
+      },
+      "seconds": 3.0
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We can leave it aside for now. \n\nComing back to the purpose you are supposed to find: how would you know when you've found it?",
+      "usage": {
+        "promptTokenCount": 1042,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1670,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1042
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "thoughtsTokenCount": 596,
+        "api_seconds": 6.8,
+        "retries": 0
+      },
+      "seconds": 6.8
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "If you don't know what finding it looks like, what tells you that you haven't found it yet?",
+      "usage": {
+        "promptTokenCount": 1086,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1525,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1086
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "thoughtsTokenCount": 415,
+        "api_seconds": 44.8,
+        "retries": 0
+      },
+      "seconds": 44.8
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume there is something you are **supposed** to do with your life.  \n  In your words: *\"Like there's a purpose out there and I just haven't found it yet.\"*\n\n**Open Questions**\n- If you don't know what finding that purpose looks like, what tells you that you haven't found it yet?\n\n**Assumptions not looked at yet**\n- You assume that everyone around you has actually **found** their thing.\n- You assume that not knowing what you are supposed to do is **wasting** your life.\n- You assume that it is **too late** for you.",
+      "usage": {
+        "promptTokenCount": 1117,
+        "candidatesTokenCount": 149,
+        "totalTokenCount": 1641,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1117
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 149
+          }
+        ],
+        "thoughtsTokenCount": 375,
+        "api_seconds": 12.6,
+        "retries": 0
+      },
+      "seconds": 12.6
+    }
+  ]
+}

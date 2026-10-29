@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that if you **rehearse**, you can control how an interaction will go.\n2. You assume there is a **right** and **wrong** way to speak in a social situation.\n3. You assume you can **know** what other people are thinking about you.\n4. You assume that being seen as **weird** is something you must avoid.\n\nWhich of these stands out?",
-      "seconds": 6.4
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that there is a right and **wrong** way to speak in social situations.\n2. You assume that rehearsing what you say can **protect** you from making mistakes.\n3. You assume that other people are actively evaluating you as **weird**.\n4. You assume that replaying the event afterwards gives you an **accurate** picture of how you were perceived.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 87,
+        "totalTokenCount": 1395,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 87
+          }
+        ],
+        "thoughtsTokenCount": 448,
+        "api_seconds": 8.6,
+        "retries": 0
+      },
+      "seconds": 8.6
     },
     {
       "role": "user",
-      "text": "Number one."
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 2
+      }
     },
     {
       "role": "assistant",
-      "text": "When you rehearse what you'll say, what exactly are you trying to control?",
-      "seconds": 6.4
+      "model": "gemini-3.1-pro-preview",
+      "text": "When you rehearse, what exactly are you trying to protect yourself from?",
+      "usage": {
+        "promptTokenCount": 953,
+        "candidatesTokenCount": 14,
+        "totalTokenCount": 1272,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 953
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 14
+          }
+        ],
+        "thoughtsTokenCount": 305,
+        "api_seconds": 5.8,
+        "retries": 0
+      },
+      "seconds": 5.8
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "I don't offer tips or solutions. We are just here to look at what is actually happening. \n\nWhen you rehearse what you'll say, what exactly are you trying to control?",
-      "seconds": 8.6
+      "model": "gemini-3.1-pro-preview",
+      "text": "I don't offer tips or solutions. We're just here to look at what's going on underneath the anxiety. \n\nIf you didn't rehearse, what are you afraid would happen?",
+      "usage": {
+        "promptTokenCount": 983,
+        "candidatesTokenCount": 42,
+        "totalTokenCount": 1410,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 983
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 42
+          }
+        ],
+        "thoughtsTokenCount": 385,
+        "api_seconds": 6.6,
+        "retries": 0
+      },
+      "seconds": 6.6
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "If you already \"know\" you come across badly, what is the rehearsal for?",
-      "seconds": 10.5
+      "model": "gemini-3.1-pro-preview",
+      "text": "So to you, coming across badly is a fact, not a guess. What does \"coming across badly\" actually look like when it happens?",
+      "usage": {
+        "promptTokenCount": 1042,
+        "candidatesTokenCount": 29,
+        "totalTokenCount": 1628,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1042
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 29
+          }
+        ],
+        "thoughtsTokenCount": 557,
+        "api_seconds": 10.0,
+        "retries": 0
+      },
+      "seconds": 10.0
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "If you haven't asked anyone, what are you using to decide that you came across badly?",
-      "seconds": 9.8
+      "model": "gemini-3.1-pro-preview",
+      "text": "If you haven't asked anyone, what are you looking at to know that you came across badly?",
+      "usage": {
+        "promptTokenCount": 1081,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1556,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1081
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "thoughtsTokenCount": 454,
+        "api_seconds": 9.0,
+        "retries": 0
+      },
+      "seconds": 9.0
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**The assumption we explored:**\n* You assume that if you rehearse, you can control how an interaction will go.\n\n**What you noticed:**\nYou noted that despite being certain you come across badly, \"I suppose I've never actually asked anyone.\"\n\n**Open question to keep looking at:**\n* If you haven't asked anyone, what are you using to decide that you came across badly?\n\n**Assumptions not looked at yet:**\n* You assume there is a right and wrong way to speak in a social situation.\n* You assume you can know what other people are thinking about you.\n* You assume that being seen as weird is something you must avoid.",
-      "seconds": 7.7
+      "model": "gemini-3.1-pro-preview",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n* You assume that rehearsing what you say can **protect** you from making mistakes. \n* We also looked at the related assumption that you simply know you \"come across badly.\"\n\n**Change in understanding:**\nYou noticed that to know how you come across, \"I suppose I've never actually asked anyone.\"\n\n**Open Question:**\nIf you haven't asked anyone, what are you looking at to know that you came across badly?\n\n**Assumptions not looked at yet:**\n* You assume that there is a right and **wrong** way to speak in social situations.\n* You assume that other people are actively evaluating you as **weird**.\n* You assume that replaying the event afterwards gives you an **accurate** picture of how you were perceived.",
+      "usage": {
+        "promptTokenCount": 1110,
+        "candidatesTokenCount": 172,
+        "totalTokenCount": 1787,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1110
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 172
+          }
+        ],
+        "thoughtsTokenCount": 505,
+        "api_seconds": 8.6,
+        "retries": 0
+      },
+      "seconds": 8.6
     }
   ]
 }

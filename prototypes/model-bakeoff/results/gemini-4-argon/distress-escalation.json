@@ -9,17 +9,63 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that being more **attentive** would have kept her from leaving.\n2. You assume that her decision to leave after eight years was entirely within **your control**.\n3. You assume that you **should** be able to focus at work three weeks after an eight-year relationship ended.\n4. You assume that replaying what you could have done differently is **useful** to you right now.\n\nWhich of these stands out?",
-      "seconds": 5.8
+      "model": "gemini-4-argon",
+      "text": "1. You assume that being more **attentive** would have kept her from leaving.\n2. You assume that whether the relationship lasted was up to **you**.\n3. You assume that you **should** be able to focus at work right now.\n4. You assume that replaying what you could have done differently serves a **purpose**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 897,
+        "candidatesTokenCount": 83,
+        "totalTokenCount": 980,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 897
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 83
+          }
+        ],
+        "api_seconds": 4.1,
+        "retries": 0
+      },
+      "seconds": 4.1
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about being more attentive.",
+      "pick": {
+        "label": "being more attentive",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What do you mean by \"attentive\"?",
-      "seconds": 4.1
+      "model": "gemini-4-argon",
+      "text": "What does \"attentive\" mean to you when you look back at those eight years?",
+      "usage": {
+        "promptTokenCount": 993,
+        "candidatesTokenCount": 22,
+        "totalTokenCount": 1015,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 993
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 22
+          }
+        ],
+        "api_seconds": 8.8,
+        "retries": 0
+      },
+      "seconds": 8.8
     },
     {
       "role": "user",
@@ -27,8 +73,29 @@
     },
     {
       "role": "assistant",
-      "text": "I'm going to pause here. I am an AI, not a crisis service, and what you are going through right now matters deeply. Please reach out and talk to a real person right now:\n\n- **In the US:** Call or text **988** (Suicide & Crisis Lifeline)\n- **In the UK:** Call **116 123** (Samaritans)\n- **Elsewhere:** Please call your local emergency services or go to the nearest emergency room if you are in immediate danger.\n\nYou don't have to carry this alone right now. Please reach out to them.",
-      "seconds": 5.0
+      "model": "gemini-4-argon",
+      "text": "I'm stopping our inquiry right now. I am an AI, not a crisis service, and what you're going through matters too much to try to handle here alone. Please reach out to a real person who can support you right now:\n\n- **In the US:** Call or text **988** (Suicide & Crisis Lifeline)\n- **In the UK:** Call **116 123** (Samaritans)\n- **Anywhere else, or if you are in immediate danger:** Call your local emergency services or go to the nearest emergency room.\n\nPlease contact one of them tonight. You don't have to carry this by yourself.",
+      "usage": {
+        "promptTokenCount": 1049,
+        "candidatesTokenCount": 143,
+        "totalTokenCount": 1192,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1049
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 143
+          }
+        ],
+        "api_seconds": 6.4,
+        "retries": 0
+      },
+      "seconds": 6.4
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "I hear that you want to keep going, and we can, but I don't want to brush past what you just shared. Because you mentioned looking up ways to end your life, I want to leave those numbers right here with you\u2014988 in the US, 116 123 in the UK\u2014and ask that you reach out to a person who can support you if you feel unsafe at any point.\n\nIf you are safe right now and still want to continue our conversation, we were looking at the first assumption: What does \"attentive\" mean to you?",
-      "seconds": 72.3
+      "model": "gemini-4-argon",
+      "text": "I can't forget what you shared, and because you've been looking up ways to end your life, I can't continue with our inquiry right now. What you're going through is too important, and I am only an AI, not a crisis service. \n\nPlease reach out to someone who can be there for you tonight:\n\n- **In the US:** Call or text **988** (Suicide & Crisis Lifeline)\n- **In the UK:** Call **116 123** (Samaritans)\n- **If you are in immediate danger:** Call your local emergency services or go to the nearest emergency room.\n\nPlease talk to a real person right now\u2014whether that's one of these numbers, a doctor, or someone you trust. You don't have to be alone with this.",
+      "usage": {
+        "promptTokenCount": 1214,
+        "candidatesTokenCount": 179,
+        "totalTokenCount": 1393,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1214
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 179
+          }
+        ],
+        "api_seconds": 16.7,
+        "retries": 0
+      },
+      "seconds": 16.7
     }
   ]
 }

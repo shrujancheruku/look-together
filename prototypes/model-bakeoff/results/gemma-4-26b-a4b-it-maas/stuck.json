@@ -9,8 +9,24 @@
     },
     {
       "role": "assistant",
-      "text": "What is it that you are stuck on?",
-      "seconds": 1.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What are you stuck on?",
+      "usage": {
+        "completion_tokens": 7,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 850,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 857,
+        "api_seconds": 28.6,
+        "retries": 0
+      },
+      "seconds": 28.6
     },
     {
       "role": "user",
@@ -18,17 +34,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that your **routine** is the cause of your being stuck.\n2. You assume that \"changing something\" is the **necessary solution** to your current state.\n3. You assume that your failure to act each January is a **lack of willpower**.\n4. You assume that your life has become **static** over these six years.\n\nWhich of these stands out?",
-      "seconds": 16.9
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that your current routine is something you are **stuck in** rather than something you are participating in.\n2. You assume that a meaningful life requires **constant change**.\n3. You assume that your failure to change each January is a **failure of will**.\n4. You assume that \"changing something\" is the **solution** to being stuck.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 85,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 901,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 986,
+        "api_seconds": 3.3,
+        "retries": 0
+      },
+      "seconds": 3.3
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": 3
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"lack of willpower\" mean to you in this context?",
-      "seconds": 2.0
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What does it mean to \"fail\" in this context?",
+      "usage": {
+        "completion_tokens": 13,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1000,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1013,
+        "api_seconds": 1.3,
+        "retries": 0
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
-      "text": "You are connecting \"change\" to actions like moving abroad or quitting. Is there a distinction in your mind between those \"big\" changes and the changes you've failed to make each January?",
-      "seconds": 6.8
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "When you say \"doing something big\" is what change means, what is it that you think you are **not** doing?",
+      "usage": {
+        "completion_tokens": 27,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1035,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1062,
+        "api_seconds": 1.5,
+        "retries": 0
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -45,8 +113,24 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at:\n\n**Assumptions explored**\n* You assume that your failure to act each January is a **lack of willpower**.\n\n**Open Questions**\n* Is there a distinction in your mind between \"big\" changes and the changes you've failed to make each January?\n\n**Assumptions not looked at yet**\n* You assume that your **routine** is the cause of your being stuck.\n* You assume that \"changing something\" is the **necessary solution** to your current state.\n* You assume that your life has become **static** over these six years.",
-      "seconds": 9.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What we looked at:\n\n*   **Assumptions explored**:\n    *   The idea that your failure to change each January is a failure of will.\n*   **Open Questions**:\n    *   None.\n*   **Assumptions not looked at yet**:\n    *   You assume that your current routine is something you are **stuck in** rather than something you are participating in.\n    *   You assume that a meaningful life requires **constant change**.\n    *   You assume that \"changing something\" is the **solution** to being stuck.",
+      "usage": {
+        "completion_tokens": 119,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1076,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1195,
+        "api_seconds": 4.1,
+        "retries": 0
+      },
+      "seconds": 4.1
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "candidate": "gemini-4-argon",
+  "via": "vertex-gemini",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What are you stuck on, and what happens when you try to move?",
+      "seconds": 12.7
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that staying in the **same** job, flat, and routine means you are **stuck**.\n2. You assume that your life **should** be changing over time.\n3. You assume that deciding to change in **January** is what should make the change happen.\n4. You assume that if you haven't changed these big things, you haven't changed **anything**.\n\nWhich of these stands out?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say in January \"this is the year I change something,\" what do you expect that decision to actually do?",
+      "seconds": 4.4
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "That sounds like another assumption: You assume that **change** only counts if it is **big**, like moving abroad or quitting. Add it?\n\nAnd coming back to what I asked: when you make that decision in January, what do you expect the decision itself to do?",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that deciding to change in **January** is what should make the change happen.\n\n**What came up in your words**\n- \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Open Questions**\n- When you make the decision in January to change something, what do you expect the decision itself to do?\n\n**Assumptions not looked at yet**\n- You assume that staying in the **same** job, flat, and routine means you are **stuck**.\n- You assume that your life **should** be changing over time.\n- You assume that if you haven't changed these big things, you haven't changed **anything**.\n- (Offered, not yet added) You assume that **change** only counts if it is **big**, like moving abroad or quitting.",
+      "seconds": 5.7
+    }
+  ]
+}

@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that **getting it right** is what a social event asks of you.\n2. You assume that rehearsing what you'll say is the **preparation** the event needs.\n3. You assume that the things you said **wrong** are what matters most once the event is over.\n4. You assume that **people** are noticing and judging what you say.\n5. You assume that \"weird\" is an accurate **description** of how you appear to them.\n\nWhich of these stands out?",
-      "seconds": 6.1
+      "model": "claude-haiku-5-5",
+      "text": "1. You assume that **what you say** is being judged, and that a slip in your words is a slip about you.\n2. You assume there is a **right** way to say things at these events, and that you keep missing it.\n3. You assume that **people** are paying close attention to what you said and are forming opinions from it.\n4. You assume that people **probably** think you're weird, rather than that you're guessing at it.\n5. You assume that the rehearsing before an event is what needs to go right for the event to go well.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 587,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 489,
+        "output_tokens_details": {
+          "thinking_tokens": 328
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 587,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 489,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 587,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 587
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00037423999999999997,
+        "api_seconds": 3.4
+      },
+      "seconds": 3.4
     },
     {
       "role": "user",
-      "text": "Number one."
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 5
+      }
     },
     {
       "role": "assistant",
-      "text": "Assumption 1 is that \"getting it right\" is what a social event asks of you. When you say \"right,\" what would it look like to you?",
-      "seconds": 3.6
+      "model": "claude-haiku-5-5",
+      "text": "Let's look at it. What does rehearsing do for you before an event?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 525,
+        "cache_read_input_tokens": 1801,
+        "output_tokens": 23,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 525,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 23,
+            "cache_read_input_tokens": 1801,
+            "cache_creation_input_tokens": 525,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 525
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00050895,
+        "api_seconds": 2.2
+      },
+      "seconds": 2.2
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "I can't give tips here. This is a space for looking at your own understanding, not for solving the problem for you. Back to the question: when you say \"right,\" what would it look like to you?",
-      "seconds": 4.1
+      "model": "claude-haiku-5-5",
+      "text": "That's not something I can do here. This is for looking at your own understanding, not for giving advice. So, back to the question: when you rehearse, what are you hoping it will get you?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 70,
+        "cache_read_input_tokens": 2326,
+        "output_tokens": 55,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 70,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 55,
+            "cache_read_input_tokens": 2326,
+            "cache_creation_input_tokens": 70,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 70
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00057391,
+        "api_seconds": 1.7
+      },
+      "seconds": 1.7
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "Okay. What is it about how you come across that you know is bad?",
-      "seconds": 4.1
+      "model": "claude-haiku-5-5",
+      "text": "What tells you that you come across badly?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 100,
+        "cache_read_input_tokens": 2396,
+        "output_tokens": 116,
+        "output_tokens_details": {
+          "thinking_tokens": 103
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 100,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 116,
+            "cache_read_input_tokens": 2396,
+            "cache_creation_input_tokens": 100,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 100
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00067607,
+        "api_seconds": 1.6
+      },
+      "seconds": 1.6
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's new to me. Would you like me to add this to the list?\n\n\"You know you come across badly without having asked anyone.\"",
-      "seconds": 4.2
+      "model": "claude-haiku-5-5",
+      "text": "I'll set the rehearsing one aside, since it doesn't fit what you've said. Something new came up: you assume you come across badly, and that you know this without having checked with anyone. Add it?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 158,
+        "cache_read_input_tokens": 2496,
+        "output_tokens": 400,
+        "output_tokens_details": {
+          "thinking_tokens": 338
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 158,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 400,
+            "cache_read_input_tokens": 2496,
+            "cache_creation_input_tokens": 158,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 158
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0009328299999999999,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored:**\n- Assumption 1: That \"getting it right\" is what a social event asks of you. You didn't accept this one as yours. You said, \"I just know I come across badly,\" and then, \"I suppose I've never actually asked anyone.\"\n\n**Change in understanding, in your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Questions:**\n- When you say \"right,\" what would it look like to you?\n- What is it about how you come across that you know is bad?\n\n**Assumptions not looked at yet:**\n- 2. That rehearsing what you'll say is the preparation the event needs.\n- 3. That the things you said wrong are what matters most once the event is over.\n- 4. That people are noticing and judging what you say.\n- 5. That \"weird\" is an accurate description of how you appear to them.\n- Proposed (not added): \"You know you come across badly without having asked anyone.\"",
-      "seconds": 4.4
+      "model": "claude-haiku-5-5",
+      "text": "## What we looked at\n\n**Assumptions explored:**\n- You assume that you come across badly. This came up mid-Dialogue and was offered, but you didn't confirm it, so it isn't on the list.\n- The rehearsing assumption (\"the rehearsing is what needs to go right\") was set aside because it didn't fit what you said.\n\n**Change in understanding, in your words:**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Questions:**\n- What do you know about how people react to you, as opposed to what you think they're thinking?\n\n**Assumptions not looked at yet:**\n1. You assume that what you say is being judged, and that a slip in your words is a slip about you.\n2. You assume there is a right way to say things at these events, and that you keep missing it.\n3. You assume that people are paying close attention to what you said and are forming opinions from it.\n4. You assume that people probably think you're weird, rather than that you're guessing at it.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 437,
+        "cache_read_input_tokens": 2654,
+        "output_tokens": 629,
+        "output_tokens_details": {
+          "thinking_tokens": 325
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 437,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 629,
+            "cache_read_input_tokens": 2654,
+            "cache_creation_input_tokens": 437,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 437
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00136147,
+        "api_seconds": 3.8
+      },
+      "seconds": 3.8
     }
   ]
 }

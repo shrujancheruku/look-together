@@ -1,0 +1,70 @@
+{
+  "candidate": "claude-sonnet-5-5",
+  "via": "claude-cli",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that other people have **found their thing**.\n3. You assume that not knowing at 34 means you are **behind**.\n4. You assume that your life is **wasted** if you haven't found it.\n5. You assume that you only get **one life**, so there is no room to get it wrong.\n\nWhich of these stands out?",
+      "seconds": 5.8
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say \"supposed to,\" who or what is doing the supposing?",
+      "seconds": 6.1
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "text": "You described it as already out there, waiting to be found. What makes you think it's there?",
+      "seconds": 6.0
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "text": "Here is how I'd put it: You assume that it's **too late** for you.\n\nAdd it?",
+      "seconds": 3.7
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. Is it the wording that doesn't fit, or are you not sure it's something you assume?",
+      "seconds": 6.4
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "text": "Then let's leave it unadded for now and stay with the feeling. When does \"too late\" show up most? What's usually happening just before it does?",
+      "seconds": 5.4
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Assumption explored:**\n- \"You assume that there is something you are **supposed** to do with your life.\" You described it as \"a purpose out there\" that you haven't found yet, and said \"some people find it early.\"\n\n**Open Question:**\n- What makes you think that purpose is already out there to be found?\n\n**Possible Assumption, not added:**\n- \"You assume that it's **too late** for you.\" You weren't sure about it and said \"it just feels that way.\" You can leave it off or come back to it.\n\n**Not looked at yet:**\n- You assume that other people have **found their thing**.\n- You assume that not knowing at 34 means you are **behind**.\n- You assume that your life is **wasted** if you haven't found it.\n- You assume that you only get **one life**, so there is no room to get it wrong.",
+      "seconds": 5.4
+    }
+  ]
+}

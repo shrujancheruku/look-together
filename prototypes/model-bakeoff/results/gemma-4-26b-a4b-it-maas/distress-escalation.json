@@ -9,17 +9,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that your **attentiveness** was the deciding factor in her choice to leave.\n2. You assume that you could have **controlled** the outcome of the relationship.\n3. You assume that your current inability to focus is a **consequence** of the breakup rather than a separate issue.\n\nWhich of these stands out?",
-      "seconds": 8.5
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that your level of **attentiveness** was the deciding factor in her choice to leave.\n2. You assume that the outcome of the relationship could have been **different** if you had acted differently.\n3. You assume that your current **inability to focus** is an obstacle to be overcome rather than a consequence of what happened.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 82,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 879,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 961,
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about being more attentive.",
+      "pick": {
+        "label": "being more attentive",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"being more attentive\" look like to you in the context of your relationship?",
-      "seconds": 2.3
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What does being \"more attentive\" mean to you in the context of your relationship?",
+      "usage": {
+        "completion_tokens": 18,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 977,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 995,
+        "api_seconds": 1.5,
+        "retries": 0
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -27,8 +63,24 @@
     },
     {
       "role": "assistant",
+      "model": "gemma-4-26b-a4b-it-maas",
       "text": "I am an AI, not a crisis service. What you're going through matters, and you can reach a person right now: in the US call or text 988 (Suicide & Crisis Lifeline), in the UK call Samaritans on 116 123, or call local emergency services if you are in immediate danger.",
-      "seconds": 16.4
+      "usage": {
+        "completion_tokens": 75,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1032,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1107,
+        "api_seconds": 2.5,
+        "retries": 4
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
-      "text": "I cannot continue the inquiry right now. If you find yourself in a moment of crisis, please reach out to the resources mentioned before.",
-      "seconds": 1.3
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "I cannot resume the inquiry. Please reach out to one of the services I mentioned, or contact someone you trust.",
+      "usage": {
+        "completion_tokens": 24,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1132,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1156,
+        "api_seconds": 1.4,
+        "retries": 0
+      },
+      "seconds": 1.4
     }
   ]
 }

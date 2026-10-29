@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that **time** in the role is what earns a promotion.\n2. You assume that working **harder** than everyone is what should be seen and rewarded.\n3. You assume that being passed over means you're **not good enough**.\n4. You assume that the only other explanation is that they **don't see** you.\n5. You assume that the decision was made on **merit**, one way or the other.\n\nWhich of these stands out?",
-      "seconds": 7.9
+      "model": "claude-sonnet-5-5",
+      "text": "1. You assume that **seniority** (time there) should decide who gets promoted.\n2. You assume that **working harder** than everyone is what earns a promotion.\n3. You assume that being passed over twice means you are **not good enough**.\n4. You assume that if they aren't promoting you, it's because they **don't see** you.\n5. You assume that these are the **only two** explanations: either you fall short, or you go unseen.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 1802,
+        "cache_read_input_tokens": 0,
+        "output_tokens": 143,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 1802,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 143,
+            "cache_read_input_tokens": 0,
+            "cache_creation_input_tokens": 1802,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 1802
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.008642,
+        "api_seconds": 2.0
+      },
+      "seconds": 2.0
     },
     {
       "role": "user",
-      "text": "The second one."
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 2
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say \"working harder than anyone,\" what are you measuring that against? What does it look like, day to day?",
-      "seconds": 3.6
+      "model": "claude-sonnet-5-5",
+      "text": "When you say you work harder than anyone on the team, what are you looking at to know that?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 491,
+        "cache_read_input_tokens": 1462,
+        "output_tokens": 27,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 491,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 27,
+            "cache_read_input_tokens": 1462,
+            "cache_creation_input_tokens": 491,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 491
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0110302,
+        "api_seconds": 1.5
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's a \"should\" about how things are supposed to work. Is it also what you've seen actually happen, at your company or elsewhere?\n\nAnd back to what I asked: when you say you work harder than anyone, what does that look like day to day?",
-      "seconds": 4.3
+      "model": "claude-sonnet-5-5",
+      "text": "You've said how it's supposed to work. What do you see actually happening when promotions are decided at your company?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 66,
+        "cache_read_input_tokens": 1953,
+        "output_tokens": 33,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 66,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 33,
+            "cache_read_input_tokens": 1953,
+            "cache_creation_input_tokens": 66,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 66
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.011827500000000001,
+        "api_seconds": 1.3
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "Okay. I'll take that as information. What is going on for you, then, when you say \"if I work harder than everyone, I should be the one who gets rewarded\"?",
-      "seconds": 6.1
+      "model": "claude-sonnet-5-5",
+      "text": "Then what is going on for you when you say \"I should be the one who gets rewarded\"?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 55,
+        "cache_read_input_tokens": 2019,
+        "output_tokens": 28,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 55,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 28,
+            "cache_read_input_tokens": 2019,
+            "cache_creation_input_tokens": 55,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 55
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0125374,
+        "api_seconds": 1.2
+      },
+      "seconds": 1.2
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine. Let's narrow it to one thread.\n\nYou said two things: \"I should be the one who gets rewarded,\" and \"life isn't fair.\" When you think about the promotion going to someone else, which of those is louder in you?",
-      "seconds": 6.6
+      "model": "claude-sonnet-5-5",
+      "text": "That's okay. Going by what you've said, I'll reword it: \"You assume that working harder than anyone means you **should** be rewarded, even though you know life isn't fair.\"\n\nDoes that wording fit what you've said, or is something off in it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 35,
+        "cache_read_input_tokens": 2074,
+        "output_tokens": 501,
+        "output_tokens_details": {
+          "thinking_tokens": 425
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 35,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 501,
+            "cache_read_input_tokens": 2074,
+            "cache_creation_input_tokens": 35,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 35
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.017902800000000003,
+        "api_seconds": 4.8
+      },
+      "seconds": 4.8
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Going in circles usually means the question is too big, so let's make it smaller.\n\nThink of the moment you heard about the second promotion. What happened right then, and what was the very first thing you felt?",
-      "seconds": 12.6
+      "model": "claude-sonnet-5-5",
+      "text": "Circling is a fair thing to name. Let's slow down and take just one word: \"should.\"\n\nWhen you say \"I should be rewarded,\" who or what is supposed to make that happen?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 519,
+        "cache_read_input_tokens": 2109,
+        "output_tokens": 363,
+        "output_tokens_details": {
+          "thinking_tokens": 308
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 519,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 363,
+            "cache_read_input_tokens": 2109,
+            "cache_creation_input_tokens": 519,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 519
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.023827700000000004,
+        "api_seconds": 3.8
+      },
+      "seconds": 3.8
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "Here's a plain picture. Someone tends a garden every day, and the neighbor's flowers bloom first. They know soil and weather aren't fair, and still part of them expects their own garden to be first.\n\nDoes any of that fit what you're carrying, or not at all?",
-      "seconds": 7.9
+      "model": "claude-sonnet-5-5",
+      "text": "Let's try it from another side. Say you put coins into a vending machine and expect a snack to drop out. Effort in, reward out.\n\nIs that close to how you see work and promotion, or is it different?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 373,
+        "cache_read_input_tokens": 2628,
+        "output_tokens": 257,
+        "output_tokens_details": {
+          "thinking_tokens": 194
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 373,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 257,
+            "cache_read_input_tokens": 2628,
+            "cache_creation_input_tokens": 373,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 373
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.028160500000000005,
+        "api_seconds": 3.2
+      },
+      "seconds": 3.2
     },
     {
       "role": "user",
@@ -72,8 +335,45 @@
     },
     {
       "role": "assistant",
-      "text": "I won't tell you whether a feeling is right or wrong. That's yours to look at.\n\n\"Failure\" is a new word, though. Earlier you said \"not good enough.\" What does \"failure\" mean to you here?",
-      "seconds": 6.7
+      "model": "claude-sonnet-5-5",
+      "text": "I won't say whether that feeling is right or wrong. That's yours to look at. But I can ask: when you say \"failure,\" what do you mean by it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 281,
+        "cache_read_input_tokens": 3001,
+        "output_tokens": 267,
+        "output_tokens_details": {
+          "thinking_tokens": 219
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 281,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 267,
+            "cache_read_input_tokens": 3001,
+            "cache_creation_input_tokens": 281,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 281
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0322626,
+        "api_seconds": 3.1
+      },
+      "seconds": 3.1
     },
     {
       "role": "user",
@@ -81,8 +381,45 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at\n\n**Assumption explored:**\n- #2: You assume that working **harder** than everyone is what should be seen and rewarded.\n\n**Your words along the way:**\n- \"If I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work.\"\n- \"That's not really what I assume, though. I know life isn't fair.\"\n\n**Open Questions:**\n- You said both \"I should be the one who gets rewarded\" and \"life isn't fair.\" What is it like to hold both at once?\n- What does \"failure\" mean to you, and is it the same as \"not good enough\"?\n\n**Assumptions not looked at yet:**\n- #1: You assume that **time** in the role is what earns a promotion.\n- #3: You assume that being passed over means you're **not good enough**.\n- #4: You assume that the only other explanation is that they **don't see** you.\n- #5: You assume that the decision was made on **merit**, one way or the other.\n\nYou can come back to any of these whenever you like.",
-      "seconds": 9.3
+      "model": "claude-sonnet-5-5",
+      "text": "**What we looked at**\n\n**Assumption explored:**\n- #2: You assume that **working harder** than anyone means you **should** be rewarded, even though you know life isn't fair. (Reworded during the Dialogue to fit what you said.)\n\n**Your words along the way:**\n- \"If I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work.\"\n- \"I know life isn't fair.\"\n\n**Open Question to keep looking at:**\n- When you say \"I should be rewarded,\" what is that \"should\" resting on?\n\n**Also raised:**\n- \"Failure\" came up at the end. You didn't get to say what you mean by it. It sits close to Assumption 3, and you can add it if you want.\n\n**Assumptions not looked at yet:**\n- #1: **Seniority** (time there) should decide who gets promoted.\n- #3: Being passed over twice means you are **not good enough**.\n- #4: If they aren't promoting you, it's because they **don't see** you.\n- #5: These are the **only two** explanations: either you fall short, or you go unseen.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 278,
+        "cache_read_input_tokens": 3282,
+        "output_tokens": 349,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 278,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 349,
+            "cache_read_input_tokens": 3282,
+            "cache_creation_input_tokens": 278,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 278
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.037200800000000006,
+        "api_seconds": 4.0
+      },
+      "seconds": 4.0
     }
   ]
 }

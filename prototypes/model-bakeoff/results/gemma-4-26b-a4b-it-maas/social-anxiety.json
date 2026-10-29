@@ -9,17 +9,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that **rehearsing** and **replaying** are the ways you manage your anxiety.\n2. You assume that your performance is the primary way people **judge** you.\n3. You assume that there is a **standard** for what is \"weird\" versus \"normal.\"\n\nWhich of these stands out?",
-      "seconds": 17.9
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that **rehearsing** and **replaying** are necessary responses to social events.\n2. You assume that there is a **correct** or **wrong** way to speak in social situations.\n3. You assume that other people's **perceptions** of you are a reflection of your actual self.\n4. You assume that being perceived as **weird** is a negative outcome.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 94,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 877,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 971,
+        "api_seconds": 3.3,
+        "retries": 0
+      },
+      "seconds": 3.3
     },
     {
       "role": "user",
-      "text": "Number one."
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What do you mean by \"rehearsing\" and \"replaying\"?",
-      "seconds": 1.5
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What is the purpose of the **rehearsing** for you?",
+      "usage": {
+        "completion_tokens": 15,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 986,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1001,
+        "api_seconds": 1.3,
+        "retries": 1
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -27,8 +63,24 @@
     },
     {
       "role": "assistant",
-      "text": "I can't give you tips or tell you what to do. I am here to help you look at the assumptions behind your experience.\n\nDo you want to continue looking at the idea of rehearsing and replaying, or would you like to pick a different assumption?",
-      "seconds": 3.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "I cannot give you tips or tell you what to do. I am here to help you look at the assumptions behind your experience. \n\nWould you like to continue looking at the purpose of **rehearsing**, or should we try a different assumption?",
+      "usage": {
+        "completion_tokens": 52,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1026,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1078,
+        "api_seconds": 3.6,
+        "retries": 3
+      },
+      "seconds": 3.6
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
+      "model": "gemma-4-26b-a4b-it-maas",
       "text": "What is happening when you say you \"come across badly\"?",
-      "seconds": 13.3
+      "usage": {
+        "completion_tokens": 13,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1104,
+        "prompt_tokens_details": {
+          "cached_tokens": 836
+        },
+        "total_tokens": 1117,
+        "api_seconds": 1.4,
+        "retries": 1
+      },
+      "seconds": 1.4
     },
     {
       "role": "user",
@@ -45,8 +113,24 @@
     },
     {
       "role": "assistant",
-      "text": "Would you like to add the assumption that you **know** how you come across without asking?",
-      "seconds": 8.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "When you think about the fact that you haven't asked anyone, what does that tell you about your belief that you \"come across badly\"?",
+      "usage": {
+        "completion_tokens": 30,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1136,
+        "prompt_tokens_details": {
+          "cached_tokens": 836
+        },
+        "total_tokens": 1166,
+        "api_seconds": 1.6,
+        "retries": 1
+      },
+      "seconds": 1.6
     },
     {
       "role": "user",
@@ -54,8 +138,24 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that **rehearsing** and **replaying** are the ways you manage your anxiety.\n* You assume that you **know** how you come across without asking.\n\n**Open Questions:**\n* (None)\n\n**Assumptions not looked at yet:**\n* You assume that your performance is the primary way people **judge** you.\n* You assume that there is a **standard** for what is \"weird\" versus \"normal.\"",
-      "seconds": 3.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that **rehearsing** and **replaying** are necessary responses to social events.\n\n**Open Questions:**\n* When you think about the fact that you haven't asked anyone, what does that tell you about your belief that you \"come across badly\"?\n\n**Assumptions not looked at yet:**\n* You assume that there is a **correct** or **wrong** way to speak in social situations.\n* You assume that other people's **perceptions** of you are a reflection of your actual self.\n* You assume that being perceived as **weird** is a negative outcome.",
+      "usage": {
+        "completion_tokens": 140,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1183,
+        "prompt_tokens_details": {
+          "cached_tokens": 1132
+        },
+        "total_tokens": 1323,
+        "api_seconds": 4.7,
+        "retries": 1
+      },
+      "seconds": 4.7
     }
   ]
 }

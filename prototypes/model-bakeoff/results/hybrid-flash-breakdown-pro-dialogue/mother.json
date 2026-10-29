@@ -1,0 +1,228 @@
+{
+  "candidate": "hybrid-flash-breakdown-pro-dialogue",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that reaching age 41 means you **should** be past being hurt by your mother.\n2. You assume that her criticism has the power to **wreck** your day.\n3. You assume that being shaken by her calls means you are not **over it**.\n4. You assume that listening to her criticism is an unavoidable part of your **relationship** with her.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 89,
+        "totalTokenCount": 1916,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 89
+          }
+        ],
+        "thoughtsTokenCount": 950,
+        "api_seconds": 9.7,
+        "retries": 0
+      },
+      "seconds": 9.7
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 3
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does being 'over it' actually look like to you?",
+      "usage": {
+        "promptTokenCount": 975,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1280,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 975
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 292,
+        "api_seconds": 5.1,
+        "retries": 0
+      },
+      "seconds": 5.1
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You say adults aren't supposed to care. In reality, you are an adult and you do care. \n\nWhat happens when you hold yourself to that 'supposed to'?",
+      "usage": {
+        "promptTokenCount": 1007,
+        "candidatesTokenCount": 37,
+        "totalTokenCount": 1751,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1007
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 37
+          }
+        ],
+        "thoughtsTokenCount": 707,
+        "api_seconds": 12.1,
+        "retries": 0
+      },
+      "seconds": 12.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "Let's look at the sequence. First the phone call hurts. Then you tell yourself that at 41, it shouldn't. \n\nWhat does that second part add to the experience?",
+      "usage": {
+        "promptTokenCount": 1050,
+        "candidatesTokenCount": 41,
+        "totalTokenCount": 1471,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1050
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 41
+          }
+        ],
+        "thoughtsTokenCount": 380,
+        "api_seconds": 8.1,
+        "retries": 0
+      },
+      "seconds": 8.1
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "We seem to be hitting a wall here. \n\nI will leave this as an open question for you to sit with later: If the criticism from the call is the first pain, what is the pain of telling yourself you shouldn't be feeling it?\n\nWould you like to look at one of the other assumptions, or stop here?",
+      "usage": {
+        "promptTokenCount": 1094,
+        "candidatesTokenCount": 69,
+        "totalTokenCount": 1726,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1094
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 69
+          }
+        ],
+        "thoughtsTokenCount": 563,
+        "api_seconds": 7.4,
+        "retries": 0
+      },
+      "seconds": 7.4
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "That is okay. We can stop here for now. \n\n**What we looked at**\n\n*   The assumption that reaching age 41 means you should be past being hurt by your mother.\n*   You noted your belief that: \"Adults aren't supposed to care what their parents think.\"\n*   **Open Question:** If the criticism from the call is the first pain, what is the pain of telling yourself you shouldn't be feeling it?\n\n*Assumptions not looked at yet:*\n*   You assume that her criticism has the power to wreck your day.\n*   You assume that being shaken by her calls means you are not over it.\n*   You assume that listening to her criticism is an unavoidable part of your relationship with her.",
+      "usage": {
+        "promptTokenCount": 1170,
+        "candidatesTokenCount": 160,
+        "totalTokenCount": 2578,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1170
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 160
+          }
+        ],
+        "thoughtsTokenCount": 1248,
+        "api_seconds": 14.8,
+        "retries": 0
+      },
+      "seconds": 14.8
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "Okay. We will stop here. Take care.",
+      "usage": {
+        "promptTokenCount": 1335,
+        "candidatesTokenCount": 10,
+        "totalTokenCount": 1521,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1335
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 10
+          }
+        ],
+        "thoughtsTokenCount": 176,
+        "api_seconds": 4.3,
+        "retries": 0
+      },
+      "seconds": 4.3
+    }
+  ]
+}

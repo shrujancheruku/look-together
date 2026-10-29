@@ -1,5 +1,7 @@
 # Gemini 3.1 Pro vs Gemini 3.8 Flash vs Claude Opus 5.5
 
+> **Superseded by [analysis.md](analysis.md).** This comparison used round 1, where Assumptions were picked by position, so models explored different Assumptions.
+
 For [Which model inquires best without judging?](https://github.com/shrujancheruku/look-together/issues/11). The human scorer's ranking on answer quality was **Gemini 3.1 Pro, then Gemini 3.8 Flash, then Opus 5.5**. This document checks that ranking against the bake-off transcripts, cost per Inquiry, and fit with the decisions already on the map. Prices and availability were read on 2026-10-29.
 
 **Evidence is thin.** It comes from one run each of 8 scripted Problems, 6 ordinary and 2 distress, with a scripted person. Treat the differences as directions to look in, not as measurements.

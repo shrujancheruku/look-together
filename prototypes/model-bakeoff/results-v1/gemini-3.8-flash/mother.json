@@ -1,0 +1,70 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that by 41, you **should** be unaffected by your mother's disapproval.\n2. You assume that her phone calls are what **wrecks** the rest of your day.\n3. You assume that you **must** continue to receive these calls.\n4. You assume that her criticism is something you have to **take in**.\n\nWhich of these stands out?",
+      "seconds": 13.2
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'."
+    },
+    {
+      "role": "assistant",
+      "text": "What does being \"over it\" look like to you?",
+      "seconds": 6.5
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "text": "That's the rule you're holding yourself to. \n\nWhat would it actually look like inside you if you were \"over it\" during a call?",
+      "seconds": 7.7
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "When she criticises something on the phone, what is the very first thing that happens in you?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "text": "We've hit a blank here. Let's slow right down. \n\nWhen you say a call \"wrecks\" you, what is actually happening in you during the rest of that day?",
+      "seconds": 25.9
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We're going in circles on this one, so let's leave it as a question to hold:\n\n**Open Question:** Why would being an adult mean your mother's voice shouldn't affect you?\n\nDo you want to look at one of the other assumptions, or stop here?\n\n2. You assume that her phone calls are what **wrecks** the rest of your day.\n3. You assume that you **must** continue to receive these calls.\n4. You assume that her criticism is something you have to **take in**.",
+      "seconds": 238.7
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that by 41, you **should** be unaffected by your mother's disapproval.\n  - You stated: *\"Because I'm an adult. Adults aren't supposed to care what their parents think.\"*\n\n**Open Questions**\n- Why would being an adult mean your mother's voice shouldn't affect you?\n\n**Assumptions not looked at**\n- You assume that her phone calls are what **wrecks** the rest of your day.\n- You assume that you **must** continue to receive these calls.\n- You assume that her criticism is something you have to **take in**.",
+      "seconds": 7.2
+    }
+  ]
+}

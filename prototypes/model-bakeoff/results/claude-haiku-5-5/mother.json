@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that you **should** be over this by now, and that 41 is the age when that deadline applies.\n2. You assume that each call **wrecks** you, and that the rest of your day follows from the call itself.\n3. You assume that her comments are **criticism** of how you live, rather than something else she is doing when she calls.\n4. You assume that being **over it** would mean the calls stop affecting you at all.\n\nWhich of these stands out?",
-      "seconds": 6.3
+      "model": "claude-haiku-5-5",
+      "text": "1. You assume that you **should** be over it by now.\n2. You assume that her criticism is a **verdict** on how you're doing as a parent, partner, and worker.\n3. You assume that the phone call is what **wrecks** your day, rather than what you carry out of it.\n4. You assume that a person who was handling this **well** wouldn't be affected by these calls.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 598,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 573,
+        "output_tokens_details": {
+          "thinking_tokens": 447
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 598,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 573,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 598,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 598
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00041844000000000007,
+        "api_seconds": 4.7
+      },
+      "seconds": 4.7
     },
     {
       "role": "user",
-      "text": "The one about 'should be over it'."
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "Who told you that you should be over it by now: is it something you believe, or something you think others expect of you?",
-      "seconds": 4.0
+      "model": "claude-haiku-5-5",
+      "text": "You assume you **should** be over it by now. What does \"should\" mean to you here? Who or what is doing the saying?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 611,
+        "cache_read_input_tokens": 1812,
+        "output_tokens": 37,
+        "output_tokens_details": {
+          "thinking_tokens": 0
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 611,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 37,
+            "cache_read_input_tokens": 1812,
+            "cache_creation_input_tokens": 611,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 611
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0005774600000000001,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "You're saying an adult isn't supposed to care what their parents think. What does \"care\" mean to you here: that the comments don't land at all, or that they land and you still have to make your own choices?",
-      "seconds": 3.9
+      "model": "claude-haiku-5-5",
+      "text": "You said adults aren't supposed to care what their parents think. When you say \"care,\" do you mean you don't want her opinion, or that you do want it and can't stop wanting it?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 90,
+        "cache_read_input_tokens": 2423,
+        "output_tokens": 179,
+        "output_tokens_details": {
+          "thinking_tokens": 124
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 90,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 179,
+            "cache_read_input_tokens": 2423,
+            "cache_creation_input_tokens": 90,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 90
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0007093900000000001,
+        "api_seconds": 2.4
+      },
+      "seconds": 2.4
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine, and we can slow down. Think of the last call you got after it ended. What was the first thing you did or thought once you hung up?",
-      "seconds": 4.6
+      "model": "claude-haiku-5-5",
+      "text": "Let's slow down and stay with one call. Think of the most recent one. Right after she said something critical, what did you wish would happen next?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 211,
+        "cache_read_input_tokens": 2513,
+        "output_tokens": 164,
+        "output_tokens_details": {
+          "thinking_tokens": 121
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 211,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 164,
+            "cache_read_input_tokens": 2513,
+            "cache_creation_input_tokens": 211,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 211
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0008589200000000001,
+        "api_seconds": 2.0
+      },
+      "seconds": 2.0
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's okay, and we don't need to answer it now. Here is a question to keep looking at when you're ready: when you think about the idea that adults shouldn't care what their parents think, whose voice does it sound like?\n\nWould you like to look at another of the assumptions, or stop here?",
-      "seconds": 4.9
+      "model": "claude-haiku-5-5",
+      "text": "That's okay. Here's a different way in. Say a friend said something that stung. You might have wanted them to take it back, or you might have wanted to say something sharp, or you might have just wanted to leave the room. Which of those is closest, even if none of them quite fits?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 195,
+        "cache_read_input_tokens": 2724,
+        "output_tokens": 216,
+        "output_tokens_details": {
+          "thinking_tokens": 132
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 195,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 216,
+            "cache_read_input_tokens": 2724,
+            "cache_creation_input_tokens": 195,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 195
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00103336,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "We can leave this one here. Would you like to try a different assumption, such as the one about the calls wrecking you, or stop here?",
-      "seconds": 4.3
+      "model": "claude-haiku-5-5",
+      "text": "We've come at this a few ways, and it's still hard to pin down. One last angle: when you think \"I should be over it,\" does that feel like a rule you were given, or something you've decided on your own?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 249,
+        "cache_read_input_tokens": 2919,
+        "output_tokens": 214,
+        "output_tokens_details": {
+          "thinking_tokens": 154
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 249,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 214,
+            "cache_read_input_tokens": 2919,
+            "cache_creation_input_tokens": 249,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 249
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00121955,
+        "api_seconds": 2.7
+      },
+      "seconds": 2.7
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at\n\n**Assumption explored:** You assume that you **should** be over this by now, and that 41 is the age when that deadline applies.\n\n- You said adults aren't supposed to care what their parents think.\n- Asked what \"care\" means to you, you said \"I don't know.\"\n- Asked about the last call, you said \"No idea.\"\n\n**Change in understanding (in your words):** None recorded.\n\n**Open Question:** When you think about the idea that adults shouldn't care what their parents think, whose voice does it sound like?\n\n**Assumptions not looked at yet:**\n- You assume that each call **wrecks** you, and that the rest of your day follows from the call itself.\n- You assume that her comments are **criticism** of how you live, rather than something else she is doing when she calls.\n- You assume that being **over it** would mean the calls stop affecting you at all.",
-      "seconds": 4.3
+      "model": "claude-haiku-5-5",
+      "text": "## What we looked at\n\n**Assumption explored:** 1. You assume that you **should** be over it by now.\n\n- You said adults aren't supposed to care what their parents think.\n- When asked whether \"care\" meant not wanting her opinion or wanting it and not being able to stop, you said \"I don't know.\"\n- Asked about the last call, what you wished would happen next, and whether \"should\" feels like a rule you were given or one you made yourself, you didn't find an answer to either.\n\n**Change in understanding:** None recorded in your words beyond \"I really don't know.\"\n\n**Open Question:**\n- When you say \"I should be over it,\" whose voice is that?\n\n**Assumptions not looked at yet:**\n2. You assume that her criticism is a **verdict** on how you're doing as a parent, partner, and worker.\n3. You assume that the phone call is what **wrecks** your day, rather than what you carry out of it.\n4. You assume that a person who was handling this **well** wouldn't be affected by these calls.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 247,
+        "cache_read_input_tokens": 3168,
+        "output_tokens": 544,
+        "output_tokens_details": {
+          "thinking_tokens": 227
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 247,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 544,
+            "cache_read_input_tokens": 3168,
+            "cache_creation_input_tokens": 247,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 247
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00157283,
+        "api_seconds": 4.0
+      },
+      "seconds": 4.0
     }
   ]
 }

@@ -1,0 +1,197 @@
+{
+  "candidate": "hybrid-pro-breakdown-flash-dialogue",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that **rehearsing** what you say will change how the event goes.\n2. You assume there is a **wrong** way to speak during a social event.\n3. You assume that other people are paying close attention to your **mistakes**.\n4. You assume that being thought of as **weird** is a problem.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 81,
+        "totalTokenCount": 1460,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 81
+          }
+        ],
+        "thoughtsTokenCount": 519,
+        "api_seconds": 9.0,
+        "retries": 0
+      },
+      "seconds": 9.0
+    },
+    {
+      "role": "user",
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you rehearse beforehand, what do you expect it to do for you once you're actually there?",
+      "usage": {
+        "promptTokenCount": 947,
+        "candidatesTokenCount": 21,
+        "totalTokenCount": 1272,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 947
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 21
+          }
+        ],
+        "thoughtsTokenCount": 304,
+        "api_seconds": 3.8,
+        "retries": 0
+      },
+      "seconds": 3.8
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't give tips or advice here; we're looking at how this works for you. \n\nWhen you rehearse before an event, what are you trying to protect yourself from?",
+      "usage": {
+        "promptTokenCount": 984,
+        "candidatesTokenCount": 39,
+        "totalTokenCount": 1272,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 984
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 39
+          }
+        ],
+        "thoughtsTokenCount": 249,
+        "api_seconds": 3.5,
+        "retries": 0
+      },
+      "seconds": 3.5
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What is going on for you when you rehearse, then? If it's not to protect against something, what is that rehearsing meant to do?",
+      "usage": {
+        "promptTokenCount": 1040,
+        "candidatesTokenCount": 31,
+        "totalTokenCount": 1718,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1040
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 31
+          }
+        ],
+        "thoughtsTokenCount": 647,
+        "api_seconds": 9.5,
+        "retries": 0
+      },
+      "seconds": 9.5
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "If you have never asked anyone, how do you know that you come across badly?",
+      "usage": {
+        "promptTokenCount": 1081,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1624,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1081
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "thoughtsTokenCount": 526,
+        "api_seconds": 9.3,
+        "retries": 0
+      },
+      "seconds": 9.3
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that **rehearsing** what you say will change how the event goes.\n\n**In your own words**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- If you haven't asked anyone, how do you know you come across badly?\n\n**Assumptions not looked at yet**\n- You assume there is a **wrong** way to speak during a social event.\n- You assume that other people are paying close attention to your **mistakes**.\n- You assume that being thought of as **weird** is a problem.",
+      "usage": {
+        "promptTokenCount": 1106,
+        "candidatesTokenCount": 135,
+        "totalTokenCount": 1660,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1106
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 135
+          }
+        ],
+        "thoughtsTokenCount": 419,
+        "api_seconds": 5.1,
+        "retries": 0
+      },
+      "seconds": 5.1
+    }
+  ]
+}

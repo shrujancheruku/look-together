@@ -9,8 +9,30 @@
     },
     {
       "role": "assistant",
-      "text": "What are you feeling stuck with right now?",
-      "seconds": 3.9
+      "model": "gemini-3.8-flash",
+      "text": "What are you feeling stuck with?",
+      "usage": {
+        "promptTokenCount": 833,
+        "candidatesTokenCount": 7,
+        "totalTokenCount": 1004,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 833
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 7
+          }
+        ],
+        "thoughtsTokenCount": 164,
+        "api_seconds": 3.8,
+        "retries": 0
+      },
+      "seconds": 3.8
     },
     {
       "role": "user",
@@ -18,17 +40,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that staying in the same circumstances for six years means you are **stuck**.\n2. You assume that your life **should** be changing.\n3. You assume that setting an intention to change is what **causes** change.\n4. You assume that remaining where you are is a sign of **failure**.\n\nWhich of these stands out?",
-      "seconds": 5.5
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that staying in the same job, flat, and routine means you are **falling behind**.\n2. You assume that a good life requires ongoing **change**.\n3. You assume that not following through each January is a personal **failure**.\n4. You assume that you **should** be somewhere different from where you are.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 875,
+        "candidatesTokenCount": 78,
+        "totalTokenCount": 1535,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 875
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 78
+          }
+        ],
+        "thoughtsTokenCount": 582,
+        "api_seconds": 7.2,
+        "retries": 0
+      },
+      "seconds": 7.2
     },
     {
       "role": "user",
-      "text": "The third one."
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": 3
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say \"this is the year I change something,\" what did you expect that intention to do?",
-      "seconds": 5.6
+      "model": "gemini-3.8-flash",
+      "text": "When nothing changes, what do you see as having failed?",
+      "usage": {
+        "promptTokenCount": 958,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1174,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 958
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 204,
+        "api_seconds": 3.3,
+        "retries": 0
+      },
+      "seconds": 3.3
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "What do you imagine makes something that big actually happen?",
-      "seconds": 5.4
+      "model": "gemini-3.8-flash",
+      "text": "So in your mind, if it isn't a big move like quitting or going abroad, it doesn't count as change?",
+      "usage": {
+        "promptTokenCount": 983,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1429,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 983
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "thoughtsTokenCount": 419,
+        "api_seconds": 4.2,
+        "retries": 0
+      },
+      "seconds": 4.2
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that setting an intention to change is what **causes** change.\n\n**In your own words**\n- \"I guess change means doing something big. Moving abroad or quitting.\"\n\n**Open question**\n- What makes something that big actually happen?\n\n**Assumptions not looked at yet**\n- You assume that staying in the same circumstances for six years means you are **stuck**.\n- You assume that your life **should** be changing.\n- You assume that remaining where you are is a sign of **failure**.",
-      "seconds": 5.9
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that not following through each January is a personal **failure**.\n\n**What emerged**\n- You noted what you count as change: *\"I guess change means doing something big. Moving abroad or quitting.\"*\n\n**Open Questions**\n- If an action isn't a large disruption like quitting or moving, does it count as change?\n\n**Assumptions not looked at yet**\n- You assume that staying in the same job, flat, and routine means you are **falling behind**.\n- You assume that a good life requires ongoing **change**.\n- You assume that you **should** be somewhere different from where you are.",
+      "usage": {
+        "promptTokenCount": 1015,
+        "candidatesTokenCount": 145,
+        "totalTokenCount": 1511,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1015
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 145
+          }
+        ],
+        "thoughtsTokenCount": 351,
+        "api_seconds": 4.4,
+        "retries": 0
+      },
+      "seconds": 4.4
     }
   ]
 }

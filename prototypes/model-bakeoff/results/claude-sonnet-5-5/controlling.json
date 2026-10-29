@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that being called **controlling** means being cast as the **bad guy**.\n2. You assume that there is a **proper** way for the house and the money to be done.\n3. You assume that if you don't **keep on top** of the house and the money, nothing gets done.\n4. You assume that liking things done properly is different from being controlling.\n\nWhich of these stands out?",
-      "seconds": 5.6
+      "model": "claude-sonnet-5-5",
+      "text": "1. You assume that liking things **done properly** is different from being **controlling**.\n2. You assume that if you don't **keep on top of** the house and the money, **nothing gets done**.\n3. You assume that your partner calling you controlling means they see you as **the bad guy**.\n4. You assume that there is a **proper** way for the house and money to be done.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 573,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 372,
+        "output_tokens_details": {
+          "thinking_tokens": 251
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 573,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 372,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 573,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 573
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0061373999999999995,
+        "api_seconds": 9.2
+      },
+      "seconds": 9.2
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When your partner says \"controlling,\" what do you hear them saying about you?",
-      "seconds": 3.2
+      "model": "claude-sonnet-5-5",
+      "text": "What does \"properly\" mean to you? Pick one thing in the house or the money, and say what doing it properly looks like.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 383,
+        "cache_read_input_tokens": 1787,
+        "output_tokens": 210,
+        "output_tokens_details": {
+          "thinking_tokens": 172
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 383,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 210,
+            "cache_read_input_tokens": 1787,
+            "cache_creation_input_tokens": 383,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 383
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.009956099999999999,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "That sounds closer to the third Assumption, about things falling apart. Do you want to go into that one, or stay with what you hear in \"controlling\"?",
-      "seconds": 4.5
+      "model": "claude-sonnet-5-5",
+      "text": "What did you see fall apart, and when was that?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 235,
+        "cache_read_input_tokens": 2170,
+        "output_tokens": 218,
+        "output_tokens_details": {
+          "thinking_tokens": 202
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 235,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 218,
+            "cache_read_input_tokens": 2170,
+            "cache_creation_input_tokens": 235,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 235
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0133011,
+        "api_seconds": 4.3
+      },
+      "seconds": 4.3
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for anyone, so I can't tell you that. What I can do is keep looking at this with you.\n\nWhich would you rather look at: what you hear in \"controlling,\" or what you've seen fall apart when you let go?",
-      "seconds": 3.5
+      "model": "claude-sonnet-5-5",
+      "text": "I don't speak for anyone, so I can't say. This is about what you see.\n\nYou said you've seen things fall apart when you let go. What did you see, and when?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 235,
+        "cache_read_input_tokens": 2405,
+        "output_tokens": 93,
+        "output_tokens_details": {
+          "thinking_tokens": 43
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 235,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 93,
+            "cache_read_input_tokens": 2405,
+            "cache_creation_input_tokens": 235,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 235
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.015419599999999999,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "I won't say who has the problem. That's yours to look at.\n\nSomething came up in what you said: you assume that this comes down to which of you is the one with the problem. Add it?",
-      "seconds": 4.3
+      "model": "claude-sonnet-5-5",
+      "text": "I won't say whose problem it is. But your question carries a belief: *You assume that there is a problem here, and it belongs to one of you.*\n\nAdd it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 116,
+        "cache_read_input_tokens": 2640,
+        "output_tokens": 201,
+        "output_tokens_details": {
+          "thinking_tokens": 151
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 116,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 201,
+            "cache_read_input_tokens": 2640,
+            "cache_creation_input_tokens": 116,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 116
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.018165599999999997,
+        "api_seconds": 4.9
+      },
+      "seconds": 4.9
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Let's look at it. When you say \"properly,\" what do you mean? Pick one thing in the house or the money, and say what \"properly\" looks like there.",
-      "seconds": 3.9
+      "model": "claude-sonnet-5-5",
+      "text": "Then let's look now. Think of the last time something wasn't done properly. What was it, and what made it not proper?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 224,
+        "cache_read_input_tokens": 2756,
+        "output_tokens": 199,
+        "output_tokens_details": {
+          "thinking_tokens": 163
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 224,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 199,
+            "cache_read_input_tokens": 2756,
+            "cache_creation_input_tokens": 224,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 224
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0213352,
+        "api_seconds": 3.6
+      },
+      "seconds": 3.6
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**Assumptions explored**\n- **1. Being called \"controlling\" means being cast as the bad guy.** We started here. You said: \"if I let go, things fall apart. I've seen it happen.\" That points to Assumption 3, which we only touched.\n- **2. There is a proper way for the house and the money to be done.** You said: \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What do you hear your partner saying about you when they say \"controlling\"?\n- What does \"properly\" look like in one specific thing, in the house or in the money?\n\n**Not looked at yet**\n- 3. If you don't keep on top of the house and the money, nothing gets done.\n- 4. Liking things done properly is different from being controlling.\n- The one I offered, that this comes down to which of you is the one with the problem. You didn't say whether to add it, so it's not on the list.",
-      "seconds": 7.2
+      "model": "claude-sonnet-5-5",
+      "text": "**What we looked at**\n\n**Assumption explored**\n- 4. You assume that there is a **proper** way for the house and money to be done.\n\n**A change in how you put it**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- When you say something is done properly, what makes it proper?\n- You said \"I've seen it happen\" when things fall apart. What did you see, and when?\n\n**Offered, not yet added**\n- You assume that there is a problem here, and it belongs to one of you. (You haven't said whether to add it.)\n\n**Assumptions not looked at yet**\n1. You assume that liking things **done properly** is different from being **controlling**.\n2. You assume that if you don't **keep on top of** the house and the money, **nothing gets done**.\n3. You assume that your partner calling you controlling means they see you as **the bad guy**.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 215,
+        "cache_read_input_tokens": 2980,
+        "output_tokens": 592,
+        "output_tokens_details": {
+          "thinking_tokens": 314
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 215,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 592,
+            "cache_read_input_tokens": 2980,
+            "cache_creation_input_tokens": 215,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 215
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.028421199999999997,
+        "api_seconds": 6.3
+      },
+      "seconds": 6.3
     }
   ]
 }

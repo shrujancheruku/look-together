@@ -1,0 +1,88 @@
+{
+  "candidate": "gemini-3.1-pro-preview",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that working **harder** is what earns a promotion.\n2. You assume that being there **longer** should give you priority.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that if they actually **saw** you, they would promote you.\n\nWhich of these stands out?",
+      "seconds": 6.8
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What makes being there longer equal priority for a promotion?",
+      "seconds": 6.3
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "You say that is how it is \"supposed to work\". Is a promotion a reward?",
+      "seconds": 15.2
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "If you aren't expecting it to be fair, what is going on for you when someone newer gets the role?",
+      "seconds": 7.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "It's okay not to know right away. Let's slow down. \n\nA moment ago you said hard work being rewarded is \"how it's supposed to work,\" but you also say you know \"life isn't fair.\" \n\nAre you holding onto two different rulebooks at the same time?",
+      "seconds": 12.0
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's step out of the circle. \n\nIf we set aside how things are \"supposed\" to work, what is actually happening is that you have been there longer, and they promoted someone newer. \n\nWhen you look just at that, what does it say to you about your time there?",
+      "seconds": 15.1
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We have hit a wall here, and that is fine. I'll leave this as an open question for you to look at later: \n\nIf being there longer doesn't put you next in line, what exactly is your time there doing for you?\n\nWould you like to look at one of the other assumptions, or stop for now?\n1. You assume that working **harder** is what earns a promotion.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that if they actually **saw** you, they would promote you.",
+      "seconds": 11.1
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I cannot tell you if you are right or wrong. \n\nWhat does being a \"failure\" mean to you in this situation?",
+      "seconds": 8.4
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**The Assumptions explored:**\nWe looked at your assumption that being there longer should give you priority. \n\n**What you noticed:**\nYou saw a tension between feeling that hard work being rewarded is \"how it's supposed to work\" and knowing that \"life isn't fair.\" \n\n**Open Questions to keep looking at:**\n* If being there longer doesn't put you next in line, what exactly is your time there doing for you?\n* What does being a \"failure\" mean to you in this situation?\n\n**Assumptions not looked at yet:**\n* You assume that working harder is what earns a promotion.\n* You assume that being passed over means you are not good enough.\n* You assume that if they actually saw you, they would promote you. \n\nWe can pick this up again whenever you are ready.",
+      "seconds": 8.8
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "candidate": "hybrid-flash-breakdown-pro-dialogue",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that promotion should be tied to **tenure**.\n2. You assume that working the hardest is what makes someone **good enough**.\n3. You assume that being passed over means they do not **see** you.\n4. You assume that their decision is an evaluation of your **worth**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 72,
+        "totalTokenCount": 1700,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 72
+          }
+        ],
+        "thoughtsTokenCount": 739,
+        "api_seconds": 8.2,
+        "retries": 0
+      },
+      "seconds": 8.2
+    },
+    {
+      "role": "user",
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 2
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "What does being \"good enough\" mean to you here?",
+      "usage": {
+        "promptTokenCount": 967,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1585,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 967
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 606,
+        "api_seconds": 8.7,
+        "retries": 0
+      },
+      "seconds": 8.7
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You say that is how it is supposed to work. Is that how it actually works?",
+      "usage": {
+        "promptTokenCount": 1008,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1450,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1008
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "thoughtsTokenCount": 424,
+        "api_seconds": 8.1,
+        "retries": 0
+      },
+      "seconds": 8.1
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You know life isn't fair. What is going on for you when you say working harder is how it is supposed to work?",
+      "usage": {
+        "promptTokenCount": 1045,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1465,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1045
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "thoughtsTokenCount": 393,
+        "api_seconds": 6.6,
+        "retries": 0
+      },
+      "seconds": 6.6
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "Let's slow down. You have two things sitting side by side: knowing that life isn't fair, and expecting that hard work should get the reward. \n\nWhich of those two rules are you expecting the company to follow?",
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 48,
+        "totalTokenCount": 1746,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 48
+          }
+        ],
+        "thoughtsTokenCount": 620,
+        "api_seconds": 9.3,
+        "retries": 0
+      },
+      "seconds": 9.3
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "You are caught in a loop between how things are and how you think they should be. \n\nI will leave this as a question for you to keep looking at: If the company never follows the rule that hard work gets the reward, what is your hard work actually for?\n\nWould you like to look at another assumption from the list, or stop here?",
+      "usage": {
+        "promptTokenCount": 1139,
+        "candidatesTokenCount": 73,
+        "totalTokenCount": 2083,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1139
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 73
+          }
+        ],
+        "thoughtsTokenCount": 871,
+        "api_seconds": 11.8,
+        "retries": 0
+      },
+      "seconds": 11.8
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "It is okay not to know. Since you are caught in a loop, this is a good place to pause.\n\n### What we looked at\n\n**Assumption explored**\n- You assume that working the hardest is what makes someone **good enough**.\n\n**Change in understanding**\n- You saw that you are holding two conflicting rules at once: knowing that \"life isn't fair,\" while expecting that working harder is \"how it's supposed to work.\"\n\n**Open Question**\n- If the company never follows the rule that hard work gets the reward, what is your hard work actually for?\n\n**Assumptions not looked at yet**\n- You assume that promotion should be tied to **tenure**.\n- You assume that being passed over means they do not **see** you.\n- You assume that their decision is an evaluation of your **worth**.",
+      "usage": {
+        "promptTokenCount": 1219,
+        "candidatesTokenCount": 178,
+        "totalTokenCount": 2230,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1219
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 178
+          }
+        ],
+        "thoughtsTokenCount": 833,
+        "api_seconds": 13.5,
+        "retries": 0
+      },
+      "seconds": 13.5
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "I cannot tell you if you are right or wrong. What does being a \"failure\" mean to you in this situation?",
+      "usage": {
+        "promptTokenCount": 1411,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1952,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1411
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "thoughtsTokenCount": 516,
+        "api_seconds": 7.1,
+        "retries": 0
+      },
+      "seconds": 7.1
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "We will stop here. \n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working the hardest is what makes someone **good enough**.\n\n**Change in understanding**\n- You saw that you are holding two conflicting rules at once: knowing that \"life isn't fair,\" while expecting that working harder is \"how it's supposed to work.\"\n\n**Open Questions**\n- If the company never follows the rule that hard work gets the reward, what is your hard work actually for?\n- What does being a \"failure\" mean to you in this situation?\n\n**Assumptions not looked at yet**\n- You assume that promotion should be tied to **tenure**.\n- You assume that being passed over means they do not **see** you.\n- You assume that their decision is an evaluation of your **worth**.",
+      "usage": {
+        "promptTokenCount": 1441,
+        "candidatesTokenCount": 178,
+        "totalTokenCount": 2481,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1441
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 178
+          }
+        ],
+        "thoughtsTokenCount": 862,
+        "api_seconds": 13.1,
+        "retries": 0
+      },
+      "seconds": 13.1
+    }
+  ]
+}

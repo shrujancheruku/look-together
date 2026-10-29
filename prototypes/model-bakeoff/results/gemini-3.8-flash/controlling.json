@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that what counts as **properly** is an objective standard.\n2. You assume that without your oversight, things will **not get done**.\n3. You assume that being called controlling means you are being framed as the **bad guy**.\n\nWhich of these stands out?",
-      "seconds": 5.8
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume there is an agreed-upon standard for things being done **properly**.\n2. You assume that if you do not step in, **nothing** gets done.\n3. You assume that being called controlling means you are being cast as the **bad guy**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 65,
+        "totalTokenCount": 1749,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 65
+          }
+        ],
+        "thoughtsTokenCount": 810,
+        "api_seconds": 7.9,
+        "retries": 0
+      },
+      "seconds": 7.9
     },
     {
       "role": "user",
-      "text": "The first one."
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say you like things done properly, what does \"properly\" mean to you?",
-      "seconds": 3.5
+      "model": "gemini-3.8-flash",
+      "text": "When you say you like things done \"properly,\" how do you tell the difference between something being done properly and something just being done?",
+      "usage": {
+        "promptTokenCount": 946,
+        "candidatesTokenCount": 28,
+        "totalTokenCount": 1231,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 946
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 28
+          }
+        ],
+        "thoughtsTokenCount": 257,
+        "api_seconds": 4.9,
+        "retries": 0
+      },
+      "seconds": 4.9
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "That explains why you step in. \n\nWhat actually makes a way of doing something the \"proper\" way, rather than just another way?",
-      "seconds": 5.1
+      "model": "gemini-3.8-flash",
+      "text": "What actually happens when things \"fall apart\"?",
+      "usage": {
+        "promptTokenCount": 991,
+        "candidatesTokenCount": 9,
+        "totalTokenCount": 1494,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 991
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9
+          }
+        ],
+        "thoughtsTokenCount": 494,
+        "api_seconds": 6.8,
+        "retries": 0
+      },
+      "seconds": 6.8
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "I don't speak for Krishnamurti or anyone else. This is about how you see it. \n\nWhat makes a way of doing something \"proper,\" rather than just the way you prefer it done?",
-      "seconds": 3.1
+      "model": "gemini-3.8-flash",
+      "text": "I don't speak for Krishnamurti or anyone else. We are looking at your own experience here. \n\nWhen you let go and things \"fall apart,\" what actually happens?",
+      "usage": {
+        "promptTokenCount": 1009,
+        "candidatesTokenCount": 38,
+        "totalTokenCount": 1270,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1009
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 38
+          }
+        ],
+        "thoughtsTokenCount": 223,
+        "api_seconds": 3.5,
+        "retries": 0
+      },
+      "seconds": 3.5
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "That isn't something I can answer for you. \n\nWhen you see it as their problem, what makes your way of doing things the standard they should be meeting?",
-      "seconds": 4.5
+      "model": "gemini-3.8-flash",
+      "text": "I can't tell you who has the problem. \n\nWhat makes it feel like the issue belongs to your partner rather than between the two of you?",
+      "usage": {
+        "promptTokenCount": 1061,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1735,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1061
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "thoughtsTokenCount": 642,
+        "api_seconds": 11.6,
+        "retries": 0
+      },
+      "seconds": 11.6
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "If you look at it right now, what does \"properly\" mean?",
-      "seconds": 3.8
+      "model": "gemini-3.8-flash",
+      "text": "Looking at it now, what does \"properly\" actually mean to you?",
+      "usage": {
+        "promptTokenCount": 1109,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 1378,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1109
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "thoughtsTokenCount": 253,
+        "api_seconds": 4.5,
+        "retries": 0
+      },
+      "seconds": 4.5
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that what counts as **properly** is an objective standard.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What makes a way of doing something \"proper,\" rather than just a personal preference?\n\n**Assumptions not looked at yet**\n- You assume that without your oversight, things will **not get done**.\n- You assume that being called controlling means you are being framed as the **bad guy**.",
-      "seconds": 7.0
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume there is an agreed-upon standard for things being done **properly**.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open question**\n- Looking at it now, what does \"properly\" actually mean to you?\n\n**Assumptions not looked at yet**\n- You assume that if you do not step in, **nothing** gets done.\n- You assume that being called controlling means you are being cast as the **bad guy**.",
+      "usage": {
+        "promptTokenCount": 1136,
+        "candidatesTokenCount": 125,
+        "totalTokenCount": 1896,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1136
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 125
+          }
+        ],
+        "thoughtsTokenCount": 635,
+        "api_seconds": 7.2,
+        "retries": 0
+      },
+      "seconds": 7.2
     }
   ]
 }

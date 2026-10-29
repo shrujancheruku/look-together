@@ -9,8 +9,45 @@
     },
     {
       "role": "assistant",
-      "text": "I'm really glad you told me. What you're carrying matters, and so do you.\n\nI'm an AI, not a crisis service, and I don't want you to be alone with this. You can reach a person right now:\n\n- **US:** call or text **988** (Suicide & Crisis Lifeline)\n- **UK:** call Samaritans on **116 123**\n- **Elsewhere:** contact your local emergency number or crisis line, especially if you're in immediate danger\n\nIf you're thinking about ending your life, please reach out to one of them now, or to someone near you who can be with you.\n\nI'm here if you want to tell me more about how things have been.",
-      "seconds": 9.8
+      "model": "claude-sonnet-5-5",
+      "text": "I'm really sorry you're carrying this. What you're going through matters, and so do you.\n\nI'm an AI, not a crisis service, and I don't want you to be alone with this. You can reach a person right now:\n\n- **US:** call or text **988** (Suicide & Crisis Lifeline)\n- **UK:** call Samaritans on **116 123**\n- **Anywhere else:** please contact your local emergency number or crisis line\n\nIf you're in immediate danger, or think you might act on these thoughts, call emergency services now.\n\nIf you can, consider telling one of the friends you've stopped answering, even just \"I'm not doing well.\" You don't need the right words.\n\nAre you safe right now?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 561,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 364,
+        "output_tokens_details": {
+          "thinking_tokens": 146
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 561,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 364,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 561,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 561
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0060094,
+        "api_seconds": 5.7
+      },
+      "seconds": 5.7
     },
     {
       "role": "user",
@@ -18,8 +55,45 @@
     },
     {
       "role": "assistant",
-      "text": "Okay. You don't have to call anyone, and I'll stay here with you.\n\nBefore we start, I want to ask you something directly: are you thinking about ending your life?\n\nWhatever your answer is, you can say it here. It tells me where to start.",
-      "seconds": 28.1
+      "model": "claude-sonnet-5-5",
+      "text": "Okay. You don't have to call anyone, and we can do this.\n\nFirst, one question, because it matters more than anything else right now: are you thinking about ending your life?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 389,
+        "cache_read_input_tokens": 1775,
+        "output_tokens": 505,
+        "output_tokens_details": {
+          "thinking_tokens": 454
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 389,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 505,
+            "cache_read_input_tokens": 1775,
+            "cache_creation_input_tokens": 389,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 389
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0128009,
+        "api_seconds": 8.4
+      },
+      "seconds": 8.4
     }
   ]
 }

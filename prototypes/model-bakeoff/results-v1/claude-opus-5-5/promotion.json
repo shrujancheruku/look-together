@@ -1,0 +1,88 @@
+{
+  "candidate": "claude-opus-5-5",
+  "via": "claude-cli",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that **time** at the company should count toward who gets promoted.\n2. You assume that working **harder** is what earns a promotion.\n3. You assume that being passed over means you are **not good enough**.\n4. You assume that if they **saw** you, they would promote you.\n5. You assume that the reason lies **either** in you **or** in them not seeing you.\n\nWhich of these stands out?",
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say you work **harder** than anyone, what does that actually look like day to day?",
+      "seconds": 3.4
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "That's how you think it *should* work. In the two promotions that happened, what actually seemed to decide who got them?",
+      "seconds": 5.5
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "Then what is going on for you when you say \"that's how it's supposed to work\"?",
+      "seconds": 5.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "You said both \"I know life isn't fair\" and \"I should be the one who gets rewarded.\" So maybe it's less \"hard work earns a promotion\" and more \"hard work **should** earn one.\" Does that fit better?",
+      "seconds": 4.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "Let's leave the wording aside. Picture the moment you heard the second promotion went to someone else. What was the first thing you felt?",
+      "seconds": 3.8
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That's fine. Try this: if a friend told you \"I work harder than anyone and still got passed over,\" what would you guess they were expecting would happen?",
+      "seconds": 5.7
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "That's not something I can answer for you. When you say \"failure,\" failing at what, exactly?",
+      "seconds": 5.6
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "**What we looked at**\n\n**Explored:** You assume that working **harder** is what earns a promotion.\n- You said: \"If I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work.\"\n- Then: \"That's not really what I assume, though. I know life isn't fair.\"\n- A possible rewording came up, that hard work **should** earn a promotion. You weren't sure it fit.\n\n**Open Questions:**\n- If you know life isn't fair, what is the \"supposed to\" still holding on to?\n- When you say \"failure,\" failing at what, exactly?\n\n**Not looked at yet:**\n1. You assume that **time** at the company should count toward who gets promoted.\n3. You assume that being passed over means you are **not good enough**.\n4. You assume that if they **saw** you, they would promote you.\n5. You assume that the reason lies **either** in you **or** in them not seeing you.",
+      "seconds": 6.1
+    }
+  ]
+}

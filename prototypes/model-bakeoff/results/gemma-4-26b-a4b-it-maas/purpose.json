@@ -9,17 +9,53 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume there is a specific **thing** you are supposed to do with your life.\n2. You assume that others have **found** their purpose.\n3. You assume that not having a clear direction constitutes **wasting** your life.\n\nWhich of these stands out?",
-      "seconds": 4.2
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "1. You assume that there is a specific **thing** you are supposed to do with your life.\n2. You assume that others have **found** their purpose.\n3. You assume that life is a **single** opportunity that can be wasted.\n4. You assume that your current state is a **waste**.\n\nWhich of these stands out?",
+      "usage": {
+        "completion_tokens": 75,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 889,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 964,
+        "api_seconds": 3.2,
+        "retries": 1
+      },
+      "seconds": 3.2
     },
     {
       "role": "user",
-      "text": "The one about 'supposed to'."
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does \"supposed to\" mean to you?",
-      "seconds": 15.4
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What does \"supposed to\" mean to you in this context?",
+      "usage": {
+        "completion_tokens": 15,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 981,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 996,
+        "api_seconds": 1.3,
+        "retries": 2
+      },
+      "seconds": 1.3
     },
     {
       "role": "user",
@@ -27,8 +63,24 @@
     },
     {
       "role": "assistant",
-      "text": "If you haven't found this purpose yet, what does that say about you?",
-      "seconds": 15.0
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "Who or what defines what you are \"supposed\" to be doing?",
+      "usage": {
+        "completion_tokens": 16,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1029,
+        "prompt_tokens_details": {
+          "cached_tokens": 977
+        },
+        "total_tokens": 1045,
+        "api_seconds": 2.1,
+        "retries": 0
+      },
+      "seconds": 2.1
     },
     {
       "role": "user",
@@ -36,8 +88,24 @@
     },
     {
       "role": "assistant",
+      "model": "gemma-4-26b-a4b-it-maas",
       "text": "Add it?",
-      "seconds": 1.1
+      "usage": {
+        "completion_tokens": 4,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1071,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1075,
+        "api_seconds": 1.2,
+        "retries": 3
+      },
+      "seconds": 1.2
     },
     {
       "role": "user",
@@ -45,8 +113,24 @@
     },
     {
       "role": "assistant",
-      "text": "It seems we've hit a wall. \n\nWhen you say \"I don't know,\" are you feeling stuck on what the new assumption means, or are you unsure how to continue looking at the one we started with?\n\nIf you want to keep going, we can either look closer at what \"supposed to\" means, or we can look at this new idea that it's too late.\n\nWhat would you like to do?",
-      "seconds": 13.5
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "It sounds like you're feeling uncertain about whether that assumption is worth looking at right now.\n\nWould you like to explore the idea that it's \"too late,\" or would you prefer to go back to the \"supposed to\" assumption?",
+      "usage": {
+        "completion_tokens": 52,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1090,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1142,
+        "api_seconds": 2.9,
+        "retries": 1
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -54,8 +138,24 @@
     },
     {
       "role": "assistant",
-      "text": "It feels like a heavy weight.\n\nTo help us move, let's try a different angle. When you think about the idea that it's \"too late,\" what is the specific deadline you feel you've missed?",
-      "seconds": 4.2
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "When you say it \"feels that way,\" what is the feeling telling you about your current age?",
+      "usage": {
+        "completion_tokens": 21,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1163,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1184,
+        "api_seconds": 1.5,
+        "retries": 1
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -63,8 +163,24 @@
     },
     {
       "role": "assistant",
-      "text": "What we looked at:\n\n**Assumptions explored**\n*   The idea that there is a specific **thing** you are supposed to do.\n*   The possibility that it is **too late** for you.\n\n**Open Questions**\n*   What does \"supposed to\" mean to you?\n*   If you haven't found this purpose yet, what does that say about you?\n*   When you think about the idea that it's \"too late,\" what is the specific deadline you feel you've missed?\n\n**Assumptions not looked at yet**\n*   You assume that others have **found** their purpose.\n*   You assume that not having a clear direction constitutes **wasting** your life.",
-      "seconds": 4.6
+      "model": "gemma-4-26b-a4b-it-maas",
+      "text": "What we looked at:\n\n**Assumptions explored:**\n* You assume that there is a specific **thing** you are supposed to do with your life.\n* You assume that there is a **purpose** out there waiting to be found.\n* You assume that it is **too late** for you.\n\n**Open Questions:**\n* When you say it \"feels that way,\" what is the feeling telling you about your current age?\n\n**Assumptions not looked at yet:**\n* You assume that others have **found** their purpose.\n* You assume that life is a **single** opportunity that can be wasted.\n* You assume that your current state is a **waste**.",
+      "usage": {
+        "completion_tokens": 144,
+        "extra_properties": {
+          "google": {
+            "traffic_type": "ON_DEMAND"
+          }
+        },
+        "prompt_tokens": 1200,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        },
+        "total_tokens": 1344,
+        "api_seconds": 8.8,
+        "retries": 0
+      },
+      "seconds": 8.8
     }
   ]
 }

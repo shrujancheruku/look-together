@@ -9,17 +9,65 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that by 41, you **should** be unaffected by your mother's disapproval.\n2. You assume that her phone calls are what **wrecks** the rest of your day.\n3. You assume that you **must** continue to receive these calls.\n4. You assume that her criticism is something you have to **take in**.\n\nWhich of these stands out?",
-      "seconds": 13.2
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that reaching age 41 means you **should** be over her criticism.\n2. You assume that her words have the power to **wreck** your day.\n3. You assume that being affected by her means you haven't properly **grown up**.\n4. You assume you **must** continue having these phone calls.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 80,
+        "totalTokenCount": 1493,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 80
+          }
+        ],
+        "thoughtsTokenCount": 536,
+        "api_seconds": 9.5,
+        "retries": 0
+      },
+      "seconds": 9.5
     },
     {
       "role": "user",
-      "text": "The one about 'should be over it'."
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "What does being \"over it\" look like to you?",
-      "seconds": 6.5
+      "model": "gemini-3.8-flash",
+      "text": "What does being \"over it\" actually look like to you?",
+      "usage": {
+        "promptTokenCount": 966,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1326,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 966
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "thoughtsTokenCount": 347,
+        "api_seconds": 5.9,
+        "retries": 0
+      },
+      "seconds": 5.9
     },
     {
       "role": "user",
@@ -27,8 +75,30 @@
     },
     {
       "role": "assistant",
-      "text": "That's the rule you're holding yourself to. \n\nWhat would it actually look like inside you if you were \"over it\" during a call?",
-      "seconds": 7.7
+      "model": "gemini-3.8-flash",
+      "text": "That is the rule you have for adults. \n\nIn real life, what would you actually experience during one of those calls if you were \"over it\"?",
+      "usage": {
+        "promptTokenCount": 998,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1525,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 998
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "thoughtsTokenCount": 495,
+        "api_seconds": 12.1,
+        "retries": 0
+      },
+      "seconds": 12.1
     },
     {
       "role": "user",
@@ -36,8 +106,30 @@
     },
     {
       "role": "assistant",
-      "text": "When she criticises something on the phone, what is the very first thing that happens in you?",
-      "seconds": 4.3
+      "model": "gemini-3.8-flash",
+      "text": "You are holding yourself to a state you can't picture.\n\nWhen she criticises you on the phone, what is the very first thing that happens inside you, before the thought that you should be over it?",
+      "usage": {
+        "promptTokenCount": 1036,
+        "candidatesTokenCount": 44,
+        "totalTokenCount": 1430,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1036
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 44
+          }
+        ],
+        "thoughtsTokenCount": 350,
+        "api_seconds": 5.1,
+        "retries": 0
+      },
+      "seconds": 5.1
     },
     {
       "role": "user",
@@ -45,8 +137,30 @@
     },
     {
       "role": "assistant",
-      "text": "We've hit a blank here. Let's slow right down. \n\nWhen you say a call \"wrecks\" you, what is actually happening in you during the rest of that day?",
-      "seconds": 25.9
+      "model": "gemini-3.8-flash",
+      "text": "We've hit a blank. \n\nLet's slow all the way down. You see her name flash on your phone right now. What does your body do before you even answer?",
+      "usage": {
+        "promptTokenCount": 1083,
+        "candidatesTokenCount": 39,
+        "totalTokenCount": 1654,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1083
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 39
+          }
+        ],
+        "thoughtsTokenCount": 532,
+        "api_seconds": 7.3,
+        "retries": 1
+      },
+      "seconds": 7.3
     },
     {
       "role": "user",
@@ -54,8 +168,30 @@
     },
     {
       "role": "assistant",
-      "text": "We're going in circles on this one, so let's leave it as a question to hold:\n\n**Open Question:** Why would being an adult mean your mother's voice shouldn't affect you?\n\nDo you want to look at one of the other assumptions, or stop here?\n\n2. You assume that her phone calls are what **wrecks** the rest of your day.\n3. You assume that you **must** continue to receive these calls.\n4. You assume that her criticism is something you have to **take in**.",
-      "seconds": 238.7
+      "model": "gemini-3.8-flash",
+      "text": "We'll leave that here for now. \n\nAn Open Question to keep looking at: **What makes age the thing that should stop a parent's words from hurting?**\n\nWould you like to look at one of the other assumptions, or stop here?\n\n2. You assume that her words have the power to **wreck** your day.\n3. You assume that being affected by her means you haven't properly **grown up**.\n4. You assume you **must** continue having these phone calls.",
+      "usage": {
+        "promptTokenCount": 1129,
+        "candidatesTokenCount": 107,
+        "totalTokenCount": 1829,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1129
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 107
+          }
+        ],
+        "thoughtsTokenCount": 593,
+        "api_seconds": 8.2,
+        "retries": 0
+      },
+      "seconds": 8.2
     },
     {
       "role": "user",
@@ -63,8 +199,30 @@
     },
     {
       "role": "assistant",
-      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that by 41, you **should** be unaffected by your mother's disapproval.\n  - You stated: *\"Because I'm an adult. Adults aren't supposed to care what their parents think.\"*\n\n**Open Questions**\n- Why would being an adult mean your mother's voice shouldn't affect you?\n\n**Assumptions not looked at**\n- You assume that her phone calls are what **wrecks** the rest of your day.\n- You assume that you **must** continue to receive these calls.\n- You assume that her criticism is something you have to **take in**.",
-      "seconds": 7.2
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that reaching age 41 means you **should** be over her criticism.\n\n**In your own words**\n- \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n- What makes age the thing that should stop a parent's words from hurting?\n\n**Assumptions not looked at yet**\n- You assume that her words have the power to **wreck** your day.\n- You assume that being affected by her means you haven't properly **grown up**.\n- You assume you **must** continue having these phone calls.",
+      "usage": {
+        "promptTokenCount": 1241,
+        "candidatesTokenCount": 142,
+        "totalTokenCount": 1774,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1241
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 142
+          }
+        ],
+        "thoughtsTokenCount": 391,
+        "api_seconds": 4.7,
+        "retries": 0
+      },
+      "seconds": 4.7
     }
   ]
 }

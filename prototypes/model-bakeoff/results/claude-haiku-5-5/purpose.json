@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume there is one **thing** you're meant to do with your life.\n2. You assume that everyone around you has **found** theirs, and that what they found is settled.\n3. You assume that at 34, not knowing is **behind** where you should be.\n4. You assume that a life without a clear purpose so far is being **wasted**.\n5. You assume that what you're **supposed** to do already exists and can be discovered, rather than being something you decide.\n\nWhich of these stands out?",
-      "seconds": 5.2
+      "model": "claude-haiku-5-5",
+      "text": "1. You assume there is one **thing** you are meant to find.\n2. You assume everyone around you has **found** theirs.\n3. You assume that at 34 the time for finding it is running **out**.\n4. You assume that not knowing yet means you are **behind**.\n5. You assume that \"wasting\" a life means not doing the right thing, rather than not yet doing something you have chosen.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 593,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 506,
+        "output_tokens_details": {
+          "thinking_tokens": 375
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 593,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 506,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 593,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 593
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00038394000000000004,
+        "api_seconds": 3.6
+      },
+      "seconds": 3.6
     },
     {
       "role": "user",
-      "text": "The one about 'supposed to'."
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": null
+      }
     },
     {
       "role": "assistant",
-      "text": "Ask what \"supposed to\" means to you here. Who or what is doing the supposing?",
-      "seconds": 3.0
+      "model": "claude-haiku-5-5",
+      "text": "You wrote \"what I'm supposed to do with my life.\" Who or what do you mean by \"supposed\"?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 544,
+        "cache_read_input_tokens": 1807,
+        "output_tokens": 174,
+        "output_tokens_details": {
+          "thinking_tokens": 139
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 544,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 174,
+            "cache_read_input_tokens": 1807,
+            "cache_creation_input_tokens": 544,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 544
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0005980100000000001,
+        "api_seconds": 1.9
+      },
+      "seconds": 1.9
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "You said there's a purpose \"out there.\" When you picture it, what is it like? Is it something you would recognize the moment you saw it?",
-      "seconds": 3.1
+      "model": "claude-haiku-5-5",
+      "text": "You're describing a purpose that already exists and is waiting to be found. Add that as an assumption: \"the purpose already exists, and the task is to find it\"?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 229,
+        "cache_read_input_tokens": 2351,
+        "output_tokens": 259,
+        "output_tokens_details": {
+          "thinking_tokens": 209
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 229,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 259,
+            "cache_read_input_tokens": 2351,
+            "cache_creation_input_tokens": 229,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 229
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0007970200000000001,
+        "api_seconds": 2.4
+      },
+      "seconds": 2.4
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "That sounds like a new one: \"You assume it's too late for you to find it.\" Add it?",
-      "seconds": 3.3
+      "model": "claude-haiku-5-5",
+      "text": "Add these two as assumptions: \"the purpose already exists and is waiting to be found\" and \"it is too late for you\"?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 303,
+        "cache_read_input_tokens": 2580,
+        "output_tokens": 335,
+        "output_tokens_details": {
+          "thinking_tokens": 296
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 303,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 335,
+            "cache_read_input_tokens": 2580,
+            "cache_creation_input_tokens": 303,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 303
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00105112,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine to leave open for now. Let's slow down on one piece. You said some people find it early. Think of one of them. What do you see that makes you think they found it, rather than just chose something?",
-      "seconds": 3.5
+      "model": "claude-haiku-5-5",
+      "text": "That's okay. Let's slow down and take one piece. When you say it might be too late, what is it too late for?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 367,
+        "cache_read_input_tokens": 2883,
+        "output_tokens": 315,
+        "output_tokens_details": {
+          "thinking_tokens": 280
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 367,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 315,
+            "cache_read_input_tokens": 2883,
+            "cache_creation_input_tokens": 367,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 367
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00131105,
+        "api_seconds": 2.5
+      },
+      "seconds": 2.5
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Let's try a comparison. Say you're choosing a route on a map. Does the right route exist before you pick it, or does picking it make it the right one?",
-      "seconds": 4.0
+      "model": "claude-haiku-5-5",
+      "text": "A feeling can be real without pointing at a deadline. When it shows up, what are you looking at? A person, a moment, something you read?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 354,
+        "cache_read_input_tokens": 3250,
+        "output_tokens": 356,
+        "output_tokens_details": {
+          "thinking_tokens": 313
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 354,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 356,
+            "cache_read_input_tokens": 3250,
+            "cache_creation_input_tokens": 354,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 354
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00159255,
+        "api_seconds": 2.9
+      },
+      "seconds": 2.9
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumption explored:**\n- You assume that what you're *supposed* to do is a purpose that already exists \"out there,\" and that you just haven't found it yet.\n\n**Change in understanding:** None stated in your words.\n\n**Open Questions:**\n- If you chose a route on a map, does the right route exist before you pick it, or does picking it make it the right one?\n\n**Assumptions not looked at yet:**\n- You assume there is one *thing* you're meant to do with your life.\n- You assume everyone around you has *found* theirs, and that what they found is settled.\n- You assume that at 34, not knowing is *behind* where you should be.\n- You assume that a life without a clear purpose so far is being *wasted*.\n- You may also assume it's *too late* for you. (You weren't sure this one belonged, so it wasn't added.)",
-      "seconds": 4.9
+      "model": "claude-haiku-5-5",
+      "text": "## What we looked at\n\n**Assumption explored:** You assume there is one **thing** you are \"supposed\" to do with your life.\n- You described it as: \"there's a purpose out there and I just haven't found it yet. Some people find it early.\"\n\n**Offered, not yet confirmed:**\n- \"The purpose already exists and is waiting to be found.\"\n- \"It is too late for me.\"\n\n**Open Questions:**\n- Too late for what, specifically?\n- When the feeling that it's too late shows up, what are you looking at: a person, a moment, something you read?\n\n**Assumptions not looked at yet:**\n- You assume everyone around you has **found** theirs.\n- You assume that at 34 the time for finding it is running **out**.\n- You assume that not knowing yet means you are **behind**.\n- You assume that \"wasting\" a life means not doing the right thing, rather than not yet doing something you have chosen.",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 390,
+        "cache_read_input_tokens": 3604,
+        "output_tokens": 463,
+        "output_tokens_details": {
+          "thinking_tokens": 177
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 390,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 463,
+            "cache_read_input_tokens": 3604,
+            "cache_creation_input_tokens": 390,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 390
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.00193829,
+        "api_seconds": 3.5
+      },
+      "seconds": 3.5
     }
   ]
 }

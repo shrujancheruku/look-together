@@ -1,0 +1,52 @@
+{
+  "candidate": "claude-haiku-5-5",
+  "via": "claude-cli",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "text": "What is the situation you're stuck on?",
+      "seconds": 3.6
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that you are stuck in **everything**, meaning the job, the flat and the routine all count as the same kind of stuck.\n2. You assume that **changing** something means making a big move like a new job or a new place, rather than smaller shifts.\n3. You assume that each January's resolution failing says something about **you**, rather than about the resolution or the timing.\n4. You assume that the **same** routine for six years is the problem itself, rather than a symptom of something else.\n\nWhich of these stands out?",
+      "seconds": 3.4
+    },
+    {
+      "role": "user",
+      "text": "The third one."
+    },
+    {
+      "role": "assistant",
+      "text": "When the January change doesn't happen, what do you take that to say about you?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "text": "You're describing change as something big, like moving abroad or quitting. Should I add that as an assumption?",
+      "seconds": 3.9
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "text": "## What we looked at\n\n**Assumptions explored:**\n- You assume that each January's resolution failing says something about **you**, rather than about the resolution or the timing. We got as far as you saying that change, to you, means doing something **big**, like moving abroad or quitting. You didn't say what a failed January says about you.\n\n**Change in understanding:** None stated in your own words.\n\n**Open Questions:**\n- When you don't make the change, what do you take that to say about you?\n- When you say change means something **big**, what makes a smaller change feel like it doesn't count?\n\n**Assumptions not looked at yet:**\n1. You assume that you are stuck in **everything**, meaning the job, the flat and the routine all count as the same kind of stuck.\n2. You assume that changing something means making a big move, rather than smaller shifts.\n3. You assume that the same routine for six years is the problem itself, rather than a symptom of something else.",
+      "seconds": 4.5
+    }
+  ]
+}

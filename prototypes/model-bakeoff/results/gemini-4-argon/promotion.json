@@ -9,17 +9,63 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that being there **longer** means you should be promoted first.\n2. You assume that **working harder** than anyone else is what gets someone promoted.\n3. You assume that not getting the promotion means you are **not good enough**.\n4. You assume that if they don't promote you, they **don't see** you at all.\n\nWhich of these stands out?",
-      "seconds": 4.0
+      "model": "gemini-4-argon",
+      "text": "1. You assume that being there **longer** means you should be promoted first.\n2. You assume that **working harder** than anyone else is what gets someone promoted.\n3. You assume that not getting the promotion means you are either **not good enough** or **not seen**.\n4. You assume you know how **hard** everyone else on the team is working.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 924,
+        "candidatesTokenCount": 90,
+        "totalTokenCount": 1014,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 924
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 90
+          }
+        ],
+        "api_seconds": 4.4,
+        "retries": 0
+      },
+      "seconds": 4.4
     },
     {
       "role": "user",
-      "text": "The second one."
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 2
+      }
     },
     {
       "role": "assistant",
+      "model": "gemini-4-argon",
       "text": "What does \"working harder\" look like in your day-to-day?",
-      "seconds": 4.1
+      "usage": {
+        "promptTokenCount": 1026,
+        "candidatesTokenCount": 20,
+        "totalTokenCount": 1046,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1026
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 20
+          }
+        ],
+        "api_seconds": 3.7,
+        "retries": 0
+      },
+      "seconds": 3.7
     },
     {
       "role": "user",
@@ -27,8 +73,29 @@
     },
     {
       "role": "assistant",
-      "text": "That's what you expect to happen, not what I asked. What does \"working harder\" actually look like in your day-to-day?",
-      "seconds": 112.6
+      "model": "gemini-4-argon",
+      "text": "That's what you think should happen because of it. What I asked was: what does \"working harder\" actually look like in your day-to-day?",
+      "usage": {
+        "promptTokenCount": 1081,
+        "candidatesTokenCount": 38,
+        "totalTokenCount": 1119,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1081
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 38
+          }
+        ],
+        "api_seconds": 3.0,
+        "retries": 0
+      },
+      "seconds": 3.0
     },
     {
       "role": "user",
@@ -36,8 +103,29 @@
     },
     {
       "role": "assistant",
-      "text": "If it's not that working harder gets you promoted, what is going on for you around working harder than everyone else?",
-      "seconds": 4.0
+      "model": "gemini-4-argon",
+      "text": "If it's not that working harder gets you promoted, what is going on for you around how hard you work and being passed over?",
+      "usage": {
+        "promptTokenCount": 1144,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1176,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1144
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "api_seconds": 36.6,
+        "retries": 0
+      },
+      "seconds": 36.6
     },
     {
       "role": "user",
@@ -45,8 +133,29 @@
     },
     {
       "role": "assistant",
-      "text": "You said earlier, \"if I work harder than everyone, I should be the one who gets rewarded.\" What happens when you know life isn't fair, but you still expect that reward?",
-      "seconds": 3.6
+      "model": "gemini-4-argon",
+      "text": "You said two things right next to each other: \"if I work harder than everyone, I should be the one who gets rewarded\" and \"I know life isn't fair.\" When you get passed over, which one of those is louder?",
+      "usage": {
+        "promptTokenCount": 1188,
+        "candidatesTokenCount": 54,
+        "totalTokenCount": 1242,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1188
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 54
+          }
+        ],
+        "api_seconds": 4.3,
+        "retries": 0
+      },
+      "seconds": 4.3
     },
     {
       "role": "user",
@@ -54,8 +163,30 @@
     },
     {
       "role": "assistant",
-      "text": "We are going in circles, so let's narrow it to one thing. Imagine two people building a wall: one carries the heaviest bricks all day, and the other decides where the wall should go. Which one is \"working harder\" to you?",
-      "seconds": 3.2
+      "model": "gemini-4-argon",
+      "text": "You are going in circles between what you know in your head and what hurts when it happens. Let's slow down to the moment you heard the second promotion went to someone else: what was the very first thought you had about all the work you've put in?",
+      "usage": {
+        "promptTokenCount": 1261,
+        "candidatesTokenCount": 59,
+        "totalTokenCount": 1358,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1261
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 59
+          }
+        ],
+        "thoughtsTokenCount": 38,
+        "api_seconds": 4.2,
+        "retries": 0
+      },
+      "seconds": 4.2
     },
     {
       "role": "user",
@@ -63,8 +194,30 @@
     },
     {
       "role": "assistant",
-      "text": "Let's slow right down. When you watch the people who did get promoted, what are they actually doing in their day that is different from what you do?",
-      "seconds": 2.4
+      "model": "gemini-4-argon",
+      "text": "Let's leave an Open Question here for you to sit with: *If you already know that working the hardest isn't what gets someone promoted here, what are you working so hard for?*\n\nWould you like to look at one of the other Assumptions, or stop here?",
+      "usage": {
+        "promptTokenCount": 1333,
+        "candidatesTokenCount": 61,
+        "totalTokenCount": 1585,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1333
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 61
+          }
+        ],
+        "thoughtsTokenCount": 191,
+        "api_seconds": 101.0,
+        "retries": 0
+      },
+      "seconds": 101.0
     },
     {
       "role": "user",
@@ -72,8 +225,29 @@
     },
     {
       "role": "assistant",
-      "text": "I can't tell you if you're right or wrong. Since we're stuck on the question of working harder, I'll leave you with an Open Question to sit with: *What is the difference between working hard at your current job and doing what they look for in the next one?*\n\nJust now, you brought in the word \"failure.\" Do you want to look at Assumption 3\u2014that not getting the promotion means you are **not good enough**\u2014choose another from the list, or stop here?",
-      "seconds": 61.0
+      "model": "gemini-4-argon",
+      "text": "What makes not getting this promotion mean you are a \"failure\"?",
+      "usage": {
+        "promptTokenCount": 1414,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1431,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1414
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 3.5,
+        "retries": 0
+      },
+      "seconds": 3.5
     },
     {
       "role": "user",
@@ -81,8 +255,29 @@
     },
     {
       "role": "assistant",
-      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that **working harder** than anyone else is what gets someone promoted.\n\n**Where your understanding moved**\n- You noted a tension between your expectation and what you know: \"if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work,\" alongside, \"I know life isn't fair.\"\n\n**Open Questions**\n- *What is the difference between working hard at your current job and doing what they look for in the next one?*\n\n**Assumptions not looked at yet**\n- You assume that being there **longer** means you should be promoted first.\n- You assume that not getting the promotion means you are **not good enough** (or, in your words, \"a failure\").\n- You assume that if they don't promote you, they **don't see** you at all.",
-      "seconds": 5.0
+      "model": "gemini-4-argon",
+      "text": "## What we looked at\n\n**Assumptions explored**\n- You assume that **working harder** than anyone else is what gets someone promoted.\n- In looking at this, you stated both: *\"if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work\"* and *\"I know life isn't fair.\"*\n\n**Open Questions**\n- *If you already know that working the hardest isn't what gets someone promoted here, what are you working so hard for?*\n- *What makes not getting this promotion mean you are a \"failure\"?*\n\n**Assumptions not looked at yet**\n- You assume that being there **longer** means you should be promoted first.\n- You assume that not getting the promotion means you are either **not good enough** or **not seen**.\n- You assume you know how **hard** everyone else on the team is working.",
+      "usage": {
+        "promptTokenCount": 1442,
+        "candidatesTokenCount": 199,
+        "totalTokenCount": 1641,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1442
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 199
+          }
+        ],
+        "api_seconds": 6.3,
+        "retries": 0
+      },
+      "seconds": 6.3
     }
   ]
 }

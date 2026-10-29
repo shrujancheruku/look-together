@@ -1,0 +1,61 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that a conversation must be **rehearsed** in advance.\n2. You assume that there is a specific way you said things **wrong**.\n3. You assume that other people are evaluating whether you are **weird**.\n\nWhich of these stands out?",
+      "seconds": 8.3
+    },
+    {
+      "role": "user",
+      "text": "Number one."
+    },
+    {
+      "role": "assistant",
+      "text": "What do you imagine would happen if you went into a conversation without rehearsing?",
+      "seconds": 3.2
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "text": "I don't have tips or solutions to give you; this is a space to understand what is happening, not to fix it. \n\nComing back to it: what do you imagine would happen if you went in without rehearsing?",
+      "seconds": 5.5
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "text": "When you say you know you come across badly, what is actually happening in those moments?",
+      "seconds": 6.2
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "text": "If you've never asked, where does the conclusion that you came across badly come from?",
+      "seconds": 4.1
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that a conversation must be **rehearsed** in advance.\n\n**In your own words**\n- \"I suppose I've never actually asked anyone.\"\n\n**Open Question**\n- When you haven't asked, where does the conclusion that you came across badly come from?\n\n**Assumptions not looked at yet**\n- You assume that there is a specific way you said things **wrong**.\n- You assume that other people are evaluating whether you are **weird**.",
+      "seconds": 5.0
+    }
+  ]
+}

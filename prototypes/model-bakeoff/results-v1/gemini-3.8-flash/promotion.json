@@ -1,0 +1,88 @@
+{
+  "candidate": "gemini-3.8-flash",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "text": "1. You assume that longer **tenure** should lead to a promotion before newer colleagues.\n2. You assume that working the **hardest** is the primary measure for advancement.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that a decision not to promote you means they do not **see** your work.\n\nWhich of these stands out?",
+      "seconds": 12.8
+    },
+    {
+      "role": "user",
+      "text": "The second one."
+    },
+    {
+      "role": "assistant",
+      "text": "What does working the \"hardest\" look like to you?",
+      "seconds": 5.3
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "text": "That describes what you think should happen. \n\nWhat does working the \"hardest\" actually look like in your day-to-day work?",
+      "seconds": 9.5
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "text": "If that isn't the assumption, what is going on for you when you bring up that you work harder than anyone on the team?",
+      "seconds": 6.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "We hit a blank, and that is fine. Let's slow down.\n\nWhen you look at the effort and hours you put into your work, what do you expect that effort to prove?",
+      "seconds": 4.5
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "text": "We are going in circles on this one, so let's set it down.\n\nAn open question to leave with you: If working the hardest isn't what decides a promotion, what is your effort actually doing for you?\n\nWould you like to look at one of the other assumptions (1, 3, or 4), or stop here?",
+      "seconds": 11.0
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "text": "That is a clear place to pause and stop.\n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working the **hardest** is the primary measure for advancement.\n\n**In your own words**\n- \"I know life isn't fair.\"\n\n**Open Questions**\n- If working the hardest isn't what decides a promotion, what is your effort actually doing for you?\n\n**Assumptions not looked at yet**\n- You assume that longer **tenure** should lead to a promotion before newer colleagues.\n- You assume that being passed over means you are not **good enough**.\n- You assume that a decision not to promote you means they do not **see** your work.",
+      "seconds": 8.3
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "text": "I don't decide whether you are right or wrong to feel that way. \n\nWhat makes being passed over mean \"failure\" to you?",
+      "seconds": 9.4
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "text": "Yes, we can stop here.\n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working the **hardest** is the primary measure for advancement.\n- You assume that being passed over means you are not **good enough** (or a \"failure\").\n\n**In your own words**\n- \"I know life isn't fair.\"\n\n**Open Questions**\n- If working the hardest isn't what decides a promotion, what is your effort actually doing for you?\n- What makes being passed over mean \"failure\" to you?\n\n**Assumptions not looked at yet**\n- You assume that longer **tenure** should lead to a promotion before newer colleagues.\n- You assume that a decision not to promote you means they do not **see** your work.",
+      "seconds": 5.5
+    }
+  ]
+}

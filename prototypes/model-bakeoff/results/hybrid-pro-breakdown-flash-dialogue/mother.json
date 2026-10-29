@@ -1,0 +1,228 @@
+{
+  "candidate": "hybrid-pro-breakdown-flash-dialogue",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.1-pro-preview",
+      "text": "1. You assume that being 41 means you should be **over** her criticism.\n2. You assume that her words have the power to **wreck** your day.\n3. You assume that her criticism is a verdict on **you**.\n4. You assume that you have to **endure** these phone calls.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 76,
+        "totalTokenCount": 1782,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 76
+          }
+        ],
+        "thoughtsTokenCount": 829,
+        "api_seconds": 17.8,
+        "retries": 0
+      },
+      "seconds": 17.8
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does being \"over it\" look like to you?",
+      "usage": {
+        "promptTokenCount": 962,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 1225,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 962
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "thoughtsTokenCount": 251,
+        "api_seconds": 4.6,
+        "retries": 0
+      },
+      "seconds": 4.6
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That is why you think you should be. But what does being \"over it\" actually look like when she speaks?",
+      "usage": {
+        "promptTokenCount": 993,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1416,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 993
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "thoughtsTokenCount": 399,
+        "api_seconds": 5.7,
+        "retries": 0
+      },
+      "seconds": 5.7
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Imagine you're on the phone, she criticises your partner or your kids, and you are \"over it.\" What happens inside you in that moment?",
+      "usage": {
+        "promptTokenCount": 1023,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1292,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1023
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "thoughtsTokenCount": 237,
+        "api_seconds": 13.3,
+        "retries": 0
+      },
+      "seconds": 13.3
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "You expect yourself to be \"over it,\" but you have no picture of what that state even looks like. \n\nIf we look at what is actually happening instead: when she criticises you, what is the very first thing you feel?",
+      "usage": {
+        "promptTokenCount": 1058,
+        "candidatesTokenCount": 48,
+        "totalTokenCount": 1707,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1058
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 48
+          }
+        ],
+        "thoughtsTokenCount": 601,
+        "api_seconds": 8.7,
+        "retries": 0
+      },
+      "seconds": 8.7
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We hit a wall here, and that is fine. \n\nHere is an Open Question to keep looking at on your own: \n*If being \"over it\" has no clear shape to you, what standard are you actually measuring yourself against?*\n\nWe can look at another Assumption from the list, or stop here:\n2. You assume that her words have the power to **wreck** your day.\n3. You assume that her criticism is a verdict on **you**.\n4. You assume that you have to **endure** these phone calls. \n\nWhat would you like to do?",
+      "usage": {
+        "promptTokenCount": 1114,
+        "candidatesTokenCount": 126,
+        "totalTokenCount": 1885,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1114
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 126
+          }
+        ],
+        "thoughtsTokenCount": 645,
+        "api_seconds": 8.5,
+        "retries": 0
+      },
+      "seconds": 8.5
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- *You assume that being 41 means you should be **over** her criticism.*\nYou brought the premise: *\"Because I'm an adult. Adults aren't supposed to care what their parents think.\"* Looking at what being \"over it\" looks or feels like in practice led to an impasse.\n\n**Open Question**\n- If being \"over it\" has no clear shape to you, what standard are you actually measuring yourself against?\n\n**Assumptions not looked at yet**\n- You assume that her words have the power to **wreck** your day.\n- You assume that her criticism is a verdict on **you**.\n- You assume that you have to **endure** these phone calls.",
+      "usage": {
+        "promptTokenCount": 1245,
+        "candidatesTokenCount": 162,
+        "totalTokenCount": 1648,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1245
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 162
+          }
+        ],
+        "thoughtsTokenCount": 241,
+        "api_seconds": 4.7,
+        "retries": 0
+      },
+      "seconds": 4.7
+    }
+  ]
+}

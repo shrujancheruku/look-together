@@ -9,17 +9,95 @@
     },
     {
       "role": "assistant",
-      "text": "1. You assume that your mother criticises **everything** you do.\n2. You assume that at 41 you **should** be over it by now.\n3. You assume that being **over it** would mean her words no longer affect you.\n4. You assume that the call itself is what **wrecks** the rest of your day.\n\nWhich of these stands out?",
-      "seconds": 7.6
+      "model": "claude-sonnet-5-5",
+      "text": "1. You assume that being 41 means you **should** be over this by now.\n2. You assume that your mother **criticises everything** you do, with no exceptions.\n3. You assume that her criticism says something about whether your job, your partner and your parenting are **good enough**.\n4. You assume that what she says on the call is what **wrecks** the rest of your day.\n\nWhich of these stands out?",
+      "usage": {
+        "input_tokens": 2,
+        "cache_creation_input_tokens": 578,
+        "cache_read_input_tokens": 1214,
+        "output_tokens": 393,
+        "output_tokens_details": {
+          "thinking_tokens": 272
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 578,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 393,
+            "cache_read_input_tokens": 1214,
+            "cache_creation_input_tokens": 578,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 578
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0063674,
+        "api_seconds": 3.7
+      },
+      "seconds": 3.7
     },
     {
       "role": "user",
-      "text": "The one about 'should be over it'."
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 1
+      }
     },
     {
       "role": "assistant",
-      "text": "When you say \"should,\" whose rule is that? Where did you pick it up?",
-      "seconds": 6.2
+      "model": "claude-sonnet-5-5",
+      "text": "When you say \"over it,\" what would that look like? What would be different on the call, or after it?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 406,
+        "cache_read_input_tokens": 1792,
+        "output_tokens": 79,
+        "output_tokens_details": {
+          "thinking_tokens": 52
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 406,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 79,
+            "cache_read_input_tokens": 1792,
+            "cache_creation_input_tokens": 406,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 406
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0089686,
+        "api_seconds": 1.5
+      },
+      "seconds": 1.5
     },
     {
       "role": "user",
@@ -27,8 +105,45 @@
     },
     {
       "role": "assistant",
-      "text": "Two things may be packed into \"care\" there. Is it caring what she thinks, or being hit hard when she says it? Which one do you mean?",
-      "seconds": 7.1
+      "model": "claude-sonnet-5-5",
+      "text": "That's a rule about what adults are supposed to do. Before that, what does \"care\" mean in it? What does caring what your mother thinks look like for you, on those calls?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 109,
+        "cache_read_input_tokens": 2198,
+        "output_tokens": 375,
+        "output_tokens_details": {
+          "thinking_tokens": 322
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 109,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 375,
+            "cache_read_input_tokens": 2198,
+            "cache_creation_input_tokens": 109,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 109
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.0133824,
+        "api_seconds": 4.3
+      },
+      "seconds": 4.3
     },
     {
       "role": "user",
@@ -36,8 +151,45 @@
     },
     {
       "role": "assistant",
-      "text": "That's fine. Let's slow down and take just one call, the most recent one. What was the moment in it that hit you?",
-      "seconds": 5.5
+      "model": "claude-sonnet-5-5",
+      "text": "That's a big question, so let's make it smaller. Think of the last call. Right after she said something critical, what did you notice in yourself?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 384,
+        "cache_read_input_tokens": 2307,
+        "output_tokens": 108,
+        "output_tokens_details": {
+          "thinking_tokens": 65
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 384,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 108,
+            "cache_read_input_tokens": 2307,
+            "cache_creation_input_tokens": 384,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 384
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.016237099999999997,
+        "api_seconds": 2.1
+      },
+      "seconds": 2.1
     },
     {
       "role": "user",
@@ -45,8 +197,45 @@
     },
     {
       "role": "assistant",
-      "text": "Maybe it's a blur, and I'm asking you to pick through it. Try something smaller: when her name comes up on your phone, what's the first thing you notice?",
-      "seconds": 8.5
+      "model": "claude-sonnet-5-5",
+      "text": "Two blank answers in a row. Maybe it all happens too fast to catch in the moment. So let's look at the after instead. Later that day, when the call is still with you, what do you find yourself thinking or doing?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 116,
+        "cache_read_input_tokens": 2691,
+        "output_tokens": 310,
+        "output_tokens_details": {
+          "thinking_tokens": 242
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 116,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 310,
+            "cache_read_input_tokens": 2691,
+            "cache_creation_input_tokens": 116,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 116
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.020078199999999997,
+        "api_seconds": 3.8
+      },
+      "seconds": 3.8
     },
     {
       "role": "user",
@@ -54,8 +243,45 @@
     },
     {
       "role": "assistant",
-      "text": "Sometimes people can't say what hit them in the moment, only that they feel tender afterwards, like a bruise you didn't see happen. Is it anything like that for you, or different?",
-      "seconds": 10.5
+      "model": "claude-sonnet-5-5",
+      "text": "Let's try it another way. Say there's a sign on a door: \"No one should feel cold in here.\" You walk in and you're cold. The sign says one thing, your body says another.\n\nIs there anything like that for you, a gap between \"adults aren't supposed to care\" and what actually happens after her calls?",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 320,
+        "cache_read_input_tokens": 2807,
+        "output_tokens": 450,
+        "output_tokens_details": {
+          "thinking_tokens": 357
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 320,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 450,
+            "cache_read_input_tokens": 2807,
+            "cache_creation_input_tokens": 320,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 320
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.026146899999999997,
+        "api_seconds": 5.2
+      },
+      "seconds": 5.2
     },
     {
       "role": "user",
@@ -63,8 +289,45 @@
     },
     {
       "role": "assistant",
-      "text": "**What we looked at**\n\n**Explored:** \"You assume that at 41 you **should** be over it by now.\"\n- You put the \"should\" down to being an adult: \"Adults aren't supposed to care what their parents think.\"\n- When asked what \"care\" meant, and what stood out in a call or when her name appears, you said \"I don't know\" and \"No idea.\" No shift in understanding came up, and that's what's here.\n\n**Open Question to keep looking at:** When you say adults aren't supposed to \"care,\" do you mean caring what she thinks, or being hit hard when she says it? Are those the same thing for you?\n\n**Not looked at yet:**\n- You assume that your mother criticises **everything** you do.\n- You assume that being **over it** would mean her words no longer affect you.\n- You assume that the call itself is what **wrecks** the rest of your day.\n\nYou can come back to any of these whenever you like.",
-      "seconds": 9.5
+      "model": "claude-sonnet-5-5",
+      "text": "**What we looked at**\n\n**Explored:**\n- \"You assume that being 41 means you **should** be over this by now.\" You said it comes down to this: \"Adults aren't supposed to care what their parents think.\" When I asked what \"care\" means there, and what happens for you during and after the calls, you said you didn't know.\n\n**Change in understanding:** None stated.\n\n**Open Question to keep looking at:** When you picture being \"over it,\" what exactly would be gone, and what would still be there?\n\n**Not looked at yet:**\n- You assume that your mother **criticises everything** you do, with no exceptions.\n- You assume that her criticism says something about whether your job, your partner and your parenting are **good enough**.\n- You assume that what she says on the call is what **wrecks** the rest of your day.",
+      "usage": {
+        "input_tokens": 4,
+        "cache_creation_input_tokens": 460,
+        "cache_read_input_tokens": 3127,
+        "output_tokens": 424,
+        "output_tokens_details": {
+          "thinking_tokens": 177
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 460,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 4,
+            "output_tokens": 424,
+            "cache_read_input_tokens": 3127,
+            "cache_creation_input_tokens": 460,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 460
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null,
+        "total_cost_usd": 0.032547599999999996,
+        "api_seconds": 4.0
+      },
+      "seconds": 4.0
     }
   ]
 }
