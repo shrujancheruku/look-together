@@ -1,4 +1,4 @@
-# look-together
+# Look Together
 
 An app for examining one's own understanding of life, inspired by the approach of Jiddu Krishnamurti: no lessons or set path, only inquiry into what a person brings.
 
