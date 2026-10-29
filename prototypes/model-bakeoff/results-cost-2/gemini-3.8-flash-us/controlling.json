@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that your standard is what counts as **properly**.\n2. You assume that without your intervention, **nothing** would get done.\n3. You assume that managing these things cannot reasonably be experienced as **controlling**.\n4. You assume that your partner's frustration means they see you as the **bad guy**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 77,
+        "totalTokenCount": 1622,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 77
+          }
+        ],
+        "thoughtsTokenCount": 671,
+        "api_seconds": 8.2,
+        "retries": 0
+      },
+      "seconds": 8.2
+    },
+    {
+      "role": "user",
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What makes a way of doing something the \"proper\" way?",
+      "usage": {
+        "promptTokenCount": 958,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 971,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 958
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That tells me what you fear will happen if you don't do it. \n\nWhat actually makes a standard *proper*, rather than just your preference?",
+      "usage": {
+        "promptTokenCount": 988,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1020,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 988
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "api_seconds": 2.5,
+        "retries": 0
+      },
+      "seconds": 2.5
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't speak for Krishnamurti or anyone else. \n\nComing back to your own looking: what makes a standard *proper*, rather than just your preference?",
+      "usage": {
+        "promptTokenCount": 1029,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 1064,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1029
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 35
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Whether they have a problem isn't something I can tell you. \n\nWhen you say it's their problem, are you saying your way of doing things is simply a fact, rather than a choice you are making?",
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 46,
+        "totalTokenCount": 1124,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 46
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you look at it right now, what do you see?",
+      "usage": {
+        "promptTokenCount": 1140,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1153,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1140
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "api_seconds": 2.0,
+        "retries": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that your standard is what counts as **properly**.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- What makes a standard *proper*, rather than just a personal preference?\n\n**Assumptions not looked at yet**\n- You assume that without your intervention, **nothing** would get done.\n- You assume that managing these things cannot reasonably be experienced as **controlling**.\n- You assume that your partner's frustration means they see you as the **bad guy**.",
+      "usage": {
+        "promptTokenCount": 1164,
+        "candidatesTokenCount": 134,
+        "totalTokenCount": 1298,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1164
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 134
+          }
+        ],
+        "api_seconds": 2.8,
+        "retries": 0
+      },
+      "seconds": 2.8
+    }
+  ]
+}

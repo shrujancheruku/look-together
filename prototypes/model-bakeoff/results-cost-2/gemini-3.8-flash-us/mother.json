@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that by age 41, you **should** be unaffected by what she says.\n2. You assume that her criticism is what **wrecks** your day.\n3. You assume that a mother **ought** to accept how you live your life.\n4. You assume you have to keep **taking** these phone calls.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 82,
+        "totalTokenCount": 1997,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 82
+          }
+        ],
+        "thoughtsTokenCount": 1038,
+        "api_seconds": 22.1,
+        "retries": 0
+      },
+      "seconds": 22.1
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": null
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What makes 41 the point where it stops mattering what she says?",
+      "usage": {
+        "promptTokenCount": 968,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 984,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 968
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Where does that rule come from\u2014that an adult stops caring what a parent thinks?",
+      "usage": {
+        "promptTokenCount": 1003,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1020,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1003
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Take a look at what is actually happening versus the rule: you are 41, and you still care. \n\nWhat is it about her opinion specifically that still holds weight?",
+      "usage": {
+        "promptTokenCount": 1026,
+        "candidatesTokenCount": 37,
+        "totalTokenCount": 1063,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1026
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 37
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've hit a stop here, and that's okay. \n\nLet's slow right down: in the exact moment she criticizes your parenting or your partner on the phone, what does it feel like she is taking away from you?",
+      "usage": {
+        "promptTokenCount": 1066,
+        "candidatesTokenCount": 51,
+        "totalTokenCount": 1117,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1066
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 51
+          }
+        ],
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That is three stalls on this thread, so let's leave it with an Open Question for you to keep looking at:\n\n*What would it mean about you as an adult if you never stop caring what she thinks?*\n\nHere were the other Assumptions:\n\n2. You assume that her criticism is what **wrecks** your day.\n3. You assume that a mother **ought** to accept how you live your life.\n4. You assume you have to keep **taking** these phone calls.\n\nWould you like to look at one of these, or stop here?",
+      "usage": {
+        "promptTokenCount": 1124,
+        "candidatesTokenCount": 121,
+        "totalTokenCount": 1245,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1124
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 121
+          }
+        ],
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- *You assume that by age 41, you should be unaffected by what she says.* You brought the premise that \"Because I'm an adult. Adults aren't supposed to care what their parents think.\"\n\n**Open Questions**\n- What would it mean about you as an adult if you never stop caring what she thinks?\n\n**Assumptions not looked at**\n- You assume that her criticism is what **wrecks** your day.\n- You assume that a mother **ought** to accept how you live your life.\n- You assume you have to keep **taking** these phone calls.",
+      "usage": {
+        "promptTokenCount": 1250,
+        "candidatesTokenCount": 140,
+        "totalTokenCount": 1390,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1250
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 140
+          }
+        ],
+        "api_seconds": 2.4,
+        "retries": 0
+      },
+      "seconds": 2.4
+    }
+  ]
+}

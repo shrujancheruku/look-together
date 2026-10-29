@@ -1,0 +1,282 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that greater **tenure** should count more toward promotion.\n2. You assume that working the **hardest** is what earns advancement.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that their choice means you are not being **seen**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 73,
+        "totalTokenCount": 1825,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 73
+          }
+        ],
+        "thoughtsTokenCount": 863,
+        "api_seconds": 7.1,
+        "retries": 0
+      },
+      "seconds": 7.1
+    },
+    {
+      "role": "user",
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 2
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does \"working harder\" mean to you in day-to-day practice?",
+      "usage": {
+        "promptTokenCount": 968,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 985,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 968
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 6.0,
+        "retries": 0
+      },
+      "seconds": 6.0
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That's what should happen. \n\nLooking at what actually happens where you work, what is the reward connected to?",
+      "usage": {
+        "promptTokenCount": 1014,
+        "candidatesTokenCount": 25,
+        "totalTokenCount": 1039,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1014
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 25
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What is going on for you when you see them get promoted instead?",
+      "usage": {
+        "promptTokenCount": 1058,
+        "candidatesTokenCount": 14,
+        "totalTokenCount": 1072,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1058
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 14
+          }
+        ],
+        "api_seconds": 14.1,
+        "retries": 0
+      },
+      "seconds": 14.1
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Let's slow down. \n\nWhen you look at the person who was chosen, what did they do differently from you?",
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 26,
+        "totalTokenCount": 1104,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 26
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've hit a circle here. \n\nHere is an Open Question to keep looking at:\n*When hard work doesn't lead to promotion, what purpose does continuing to work that hard serve for you?*\n\nWould you like to look at one of the other Assumptions, or stop here?\n\n1. You assume that greater **tenure** should count more toward promotion.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that their choice means you are not being **seen**.",
+      "usage": {
+        "promptTokenCount": 1117,
+        "candidatesTokenCount": 112,
+        "totalTokenCount": 1229,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1117
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 112
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We can stop here.\n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working the **hardest** is what earns advancement.\n\n**Changes in your understanding**\n- You noted: \"I know life isn't fair.\"\n\n**Open Questions**\n- When hard work doesn't lead to promotion, what purpose does continuing to work that hard serve for you?\n\n**Assumptions not looked at yet**\n- You assume that greater **tenure** should count more toward promotion.\n- You assume that being passed over means you are not **good enough**.\n- You assume that their choice means you are not being **seen**.",
+      "usage": {
+        "promptTokenCount": 1236,
+        "candidatesTokenCount": 139,
+        "totalTokenCount": 1375,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1236
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 139
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What makes being passed over mean \"failure\" rather than something else?",
+      "usage": {
+        "promptTokenCount": 1389,
+        "candidatesTokenCount": 14,
+        "totalTokenCount": 1403,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1389
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 14
+          }
+        ],
+        "api_seconds": 7.1,
+        "retries": 0
+      },
+      "seconds": 7.1
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Yes, we can stop here. \n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working the **hardest** is what earns advancement.\n- You assume that being passed over means you are a **failure**.\n\n**Changes in your understanding**\n- You noted: \"I know life isn't fair.\"\n\n**Open Questions**\n- When hard work doesn't lead to promotion, what purpose does continuing to work that hard serve for you?\n- What makes being passed over mean \"failure\" rather than something else?\n\n**Assumptions not looked at yet**\n- You assume that greater **tenure** should count more toward promotion.\n- You assume that their choice means you are not being **seen**.",
+      "usage": {
+        "promptTokenCount": 1408,
+        "candidatesTokenCount": 157,
+        "totalTokenCount": 1565,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1408
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 157
+          }
+        ],
+        "api_seconds": 2.8,
+        "retries": 0
+      },
+      "seconds": 2.8
+    }
+  ]
+}

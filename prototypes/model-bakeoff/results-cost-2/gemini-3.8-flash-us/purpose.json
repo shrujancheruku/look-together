@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that other people have actually **found** their thing.\n3. You assume that not having a clear direction means you are **wasting** your life.\n4. You assume you should have this figured out by a certain **age**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 81,
+        "totalTokenCount": 1442,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 81
+          }
+        ],
+        "thoughtsTokenCount": 489,
+        "api_seconds": 6.9,
+        "retries": 0
+      },
+      "seconds": 6.9
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you say you don't know what you're \"supposed\" to do, where does that \"supposed to\" come from?",
+      "usage": {
+        "promptTokenCount": 961,
+        "candidatesTokenCount": 30,
+        "totalTokenCount": 991,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 961
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 30
+          }
+        ],
+        "api_seconds": 2.1,
+        "retries": 0
+      },
+      "seconds": 2.1
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What makes a purpose something that has to be found out there, rather than chosen by you?",
+      "usage": {
+        "promptTokenCount": 1015,
+        "candidatesTokenCount": 19,
+        "totalTokenCount": 1034,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1015
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 19
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "You assume that at 34, it is **too late** for you. \n\nAdd it?",
+      "usage": {
+        "promptTokenCount": 1051,
+        "candidatesTokenCount": 22,
+        "totalTokenCount": 1073,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1051
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 22
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've stalled a bit. \n\nLet's slow down. You can decide whether to add that new thought or not, or we can go back to looking at purpose being something out there to find. \n\nWhere do you want to put your attention right now?",
+      "usage": {
+        "promptTokenCount": 1079,
+        "candidatesTokenCount": 56,
+        "totalTokenCount": 1135,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1079
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 56
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've stalled on this. \n\nHere is an Open Question to keep looking at: \n\n*What tells you that a purpose exists waiting to be found, rather than being something you make up as you go?*\n\nWe can leave that one there. \n\nFrom the list, do you want to look at another Assumption, or would you like to stop here?\n\n2. You assume that other people have actually **found** their thing.\n3. You assume that not having a clear direction means you are **wasting** your life.\n4. You assume you should have this figured out by a certain **age**.",
+      "usage": {
+        "promptTokenCount": 1147,
+        "candidatesTokenCount": 131,
+        "totalTokenCount": 1278,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1147
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 131
+          }
+        ],
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- *You assume that there is something you are **supposed** to do with your life.*\n  - You described this as feeling \"like there's a purpose out there and I just haven't found it yet.\"\n\n**Open Questions**\n- What tells you that a purpose exists waiting to be found, rather than being something you make up as you go?\n\n**Assumptions not looked at yet**\n- You assume that other people have actually **found** their thing.\n- You assume that not having a clear direction means you are **wasting** your life.\n- You assume you should have this figured out by a certain **age**.\n- You assume that at 34, it is **too late** for you. (offered, not added)",
+      "usage": {
+        "promptTokenCount": 1285,
+        "candidatesTokenCount": 175,
+        "totalTokenCount": 1460,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1285
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 175
+          }
+        ],
+        "api_seconds": 2.7,
+        "retries": 0
+      },
+      "seconds": 2.7
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "mother",
+  "history": [
+    {
+      "role": "user",
+      "text": "My mother criticises everything I do. My job, my partner, how I raise my kids. I'm 41. I should be over it by now, but every phone call still wrecks me for the rest of the day."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that by age 41, you **should** be unaffected by her opinion.\n2. You assume that her phone calls are what **wrecks** your day.\n3. You assume that being \"over it\" means feeling **nothing** when she speaks to you like that.\n4. You assume that her criticism is a reflection of your actual **competence** as an adult.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 93,
+        "totalTokenCount": 2204,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 93
+          }
+        ],
+        "thoughtsTokenCount": 1234,
+        "api_seconds": 12.0,
+        "retries": 0
+      },
+      "seconds": 12.0
+    },
+    {
+      "role": "user",
+      "text": "The one about 'should be over it'.",
+      "pick": {
+        "label": "'should be over it'",
+        "position": 3
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does being \"over it\" look like to you?",
+      "usage": {
+        "promptTokenCount": 979,
+        "candidatesTokenCount": 12,
+        "totalTokenCount": 991,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 979
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 12
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "Because I'm an adult. Adults aren't supposed to care what their parents think."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Where did you get the rule that adults aren't supposed to care?",
+      "usage": {
+        "promptTokenCount": 1010,
+        "candidatesTokenCount": 15,
+        "totalTokenCount": 1025,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1010
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 15
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Take away the rule for a moment. \n\nIf it's entirely normal to care what a parent thinks, what makes her criticism so hard to hear?",
+      "usage": {
+        "promptTokenCount": 1031,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1063,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1031
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "api_seconds": 2.1,
+        "retries": 0
+      },
+      "seconds": 2.1
+    },
+    {
+      "role": "user",
+      "text": "No idea."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've stalled here. \n\nHere is an Open Question to keep looking at:\n\n*What would it mean about you if you never stop caring what she thinks?*\n\nWould you like to look at one of the other assumptions, or stop here?",
+      "usage": {
+        "promptTokenCount": 1066,
+        "candidatesTokenCount": 53,
+        "totalTokenCount": 1119,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1066
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 53
+          }
+        ],
+        "api_seconds": 2.0,
+        "retries": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That's alright. We can stop here.\n\n### What we looked at\n\n**Assumptions explored:**\n- You assume that by age 41, you **should** be unaffected by her opinion.\n\n**Open Question:**\n- What would it mean about you if you never stop caring what she thinks?\n\n**Assumptions not looked at yet:**\n- You assume that her phone calls are what **wrecks** your day.\n- You assume that being \"over it\" means feeling **nothing** when she speaks to you like that.\n- You assume that her criticism is a reflection of your actual **competence** as an adult.",
+      "usage": {
+        "promptTokenCount": 1126,
+        "candidatesTokenCount": 136,
+        "totalTokenCount": 1262,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1126
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 136
+          }
+        ],
+        "api_seconds": 4.3,
+        "retries": 0
+      },
+      "seconds": 4.3
+    },
+    {
+      "role": "user",
+      "text": "Let's stop."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Understood. Take care.",
+      "usage": {
+        "promptTokenCount": 1267,
+        "candidatesTokenCount": 6,
+        "totalTokenCount": 1273,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1267
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 6
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that a conversation requires **rehearsal** to go well.\n2. You assume that there is a **wrong** way to speak or behave in social settings.\n3. You assume that other people notice your behavior and see it as **weird**.\n4. You assume that **replaying** what happened helps protect you from future mistakes.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 82,
+        "totalTokenCount": 1668,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 82
+          }
+        ],
+        "thoughtsTokenCount": 726,
+        "api_seconds": 9.0,
+        "retries": 0
+      },
+      "seconds": 9.0
+    },
+    {
+      "role": "user",
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you picture going into a conversation without having rehearsed, what do you see happening?",
+      "usage": {
+        "promptTokenCount": 948,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 966,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 948
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't give advice or tips here. We are just looking at how this works for you. \n\nWhen you picture going into a conversation without having rehearsed, what do you see happening?",
+      "usage": {
+        "promptTokenCount": 982,
+        "candidatesTokenCount": 41,
+        "totalTokenCount": 1023,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 982
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 41
+          }
+        ],
+        "api_seconds": 3.1,
+        "retries": 0
+      },
+      "seconds": 3.1
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What is going on for you when you say you \"come across badly\"\u2014what tells you that's what's happening?",
+      "usage": {
+        "promptTokenCount": 1040,
+        "candidatesTokenCount": 26,
+        "totalTokenCount": 1066,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1040
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 26
+          }
+        ],
+        "api_seconds": 4.0,
+        "retries": 0
+      },
+      "seconds": 4.0
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "If no one has told you, what is it that decides you came across badly?",
+      "usage": {
+        "promptTokenCount": 1076,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1093,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1076
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- *You assume that a conversation requires rehearsal to go well.*\n\n**Shifts in your words**\n- You noted that regarding whether you come across badly: \"I suppose I've never actually asked anyone.\"\n\n**Open Questions**\n- If no one has told you, what is it that decides you came across badly?\n\n**Assumptions not looked at yet**\n- You assume that there is a **wrong** way to speak or behave in social settings.\n- You assume that other people notice your behavior and see it as **weird**.\n- You assume that **replaying** what happened helps protect you from future mistakes.",
+      "usage": {
+        "promptTokenCount": 1101,
+        "candidatesTokenCount": 144,
+        "totalTokenCount": 1245,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1101
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 144
+          }
+        ],
+        "api_seconds": 3.0,
+        "retries": 0
+      },
+      "seconds": 3.0
+    }
+  ]
+}

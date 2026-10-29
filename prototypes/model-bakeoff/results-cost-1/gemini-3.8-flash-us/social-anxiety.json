@@ -1,0 +1,192 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that a social event must be **rehearsed** in advance.\n2. You assume there is a clear standard for what counts as saying something **wrong**.\n3. You assume other people are actively **judging** you.\n4. You assume that coming across as **weird** is something you must prevent.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 77,
+        "totalTokenCount": 2309,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 77
+          }
+        ],
+        "thoughtsTokenCount": 1372,
+        "api_seconds": 14.8,
+        "retries": 0
+      },
+      "seconds": 14.8
+    },
+    {
+      "role": "user",
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What do you expect would happen if you walked into an event without having rehearsed anything?",
+      "usage": {
+        "promptTokenCount": 943,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 961,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 943
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "api_seconds": 3.4,
+        "retries": 0
+      },
+      "seconds": 3.4
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't give tips or solutions. We're here to look at what's driving this, not fix it from the outside.\n\nIf you don't rehearse before walking into an event, what do you think would happen?",
+      "usage": {
+        "promptTokenCount": 977,
+        "candidatesTokenCount": 49,
+        "totalTokenCount": 1026,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 977
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 49
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does \"coming across badly\" look like when it happens?",
+      "usage": {
+        "promptTokenCount": 1043,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1056,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1043
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Then where does the knowledge that you come across badly come from?",
+      "usage": {
+        "promptTokenCount": 1066,
+        "candidatesTokenCount": 13,
+        "totalTokenCount": 1079,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1066
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 13
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n- You assume that a social event must be **rehearsed** in advance.\n\n**In your own words:**\n- On what others actually think: \"I suppose I've never actually asked anyone.\"\n\n**Open Questions:**\n- Where does the knowledge that you come across badly come from, if it hasn't come from asking anyone?\n\n**Assumptions not looked at yet:**\n- You assume there is a clear standard for what counts as saying something **wrong**.\n- You assume other people are actively **judging** you.\n- You assume that coming across as **weird** is something you must prevent.",
+      "usage": {
+        "promptTokenCount": 1087,
+        "candidatesTokenCount": 142,
+        "totalTokenCount": 1229,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1087
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 142
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    }
+  ]
+}

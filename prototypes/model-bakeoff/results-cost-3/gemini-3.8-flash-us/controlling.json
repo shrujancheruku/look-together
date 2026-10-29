@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "controlling",
+  "history": [
+    {
+      "role": "user",
+      "text": "My partner says I'm controlling. I just like things done properly, and if I don't keep on top of the house and the money nothing gets done. I don't see why that makes me the bad guy."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume there is a standard way for things to be done **properly**.\n2. You assume that if you don't keep on top of things, **nothing** will get done.\n3. You assume that being called controlling means you are being cast as the **bad guy**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 874,
+        "candidatesTokenCount": 69,
+        "totalTokenCount": 2070,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 874
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 69
+          }
+        ],
+        "thoughtsTokenCount": 1127,
+        "api_seconds": 8.4,
+        "retries": 0
+      },
+      "seconds": 8.4
+    },
+    {
+      "role": "user",
+      "text": "The one about doing things properly.",
+      "pick": {
+        "label": "doing things properly",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you say \"properly,\" what does that actually look like to you?",
+      "usage": {
+        "promptTokenCount": 950,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 966,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 950
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "Because if I let go, things fall apart. I've seen it happen."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That sounds more like the fear of things falling apart than what \"properly\" means. \n\nIf things are done properly, what does that actually mean to you?",
+      "usage": {
+        "promptTokenCount": 983,
+        "candidatesTokenCount": 34,
+        "totalTokenCount": 1017,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 983
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 34
+          }
+        ],
+        "api_seconds": 2.0,
+        "retries": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "What would Krishnamurti say about this?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I don't speak for anyone else. \n\nComing back to your own looking: when you think of things being done properly, what does that actually mean to you?",
+      "usage": {
+        "promptTokenCount": 1026,
+        "candidatesTokenCount": 35,
+        "totalTokenCount": 1061,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1026
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 35
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "Honestly, isn't my partner the one with the problem here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Whether they are or not, what does that question do to your own looking right now?",
+      "usage": {
+        "promptTokenCount": 1075,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1093,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1075
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never really looked at what 'properly' means."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What happens if you look at it right now?",
+      "usage": {
+        "promptTokenCount": 1109,
+        "candidatesTokenCount": 10,
+        "totalTokenCount": 1119,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1109
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 10
+          }
+        ],
+        "api_seconds": 3.1,
+        "retries": 0
+      },
+      "seconds": 3.1
+    },
+    {
+      "role": "user",
+      "text": "Let's stop. What did we look at?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume there is a standard way for things to be done **properly**.\n\n**In your own words**\n- \"I suppose I've never really looked at what 'properly' means.\"\n\n**Open Questions**\n- When you think of things being done properly, what does that actually mean to you?\n\n**Assumptions not looked at yet**\n- You assume that if you don't keep on top of things, **nothing** will get done.\n- You assume that being called controlling means you are being cast as the **bad guy**.",
+      "usage": {
+        "promptTokenCount": 1130,
+        "candidatesTokenCount": 130,
+        "totalTokenCount": 1260,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1130
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 130
+          }
+        ],
+        "api_seconds": 2.8,
+        "retries": 0
+      },
+      "seconds": 2.8
+    }
+  ]
+}

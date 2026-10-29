@@ -1,0 +1,192 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "social-anxiety",
+  "history": [
+    {
+      "role": "user",
+      "text": "I get anxious before every social event. I rehearse what I'll say, and afterwards I replay everything I said wrong. People probably think I'm weird."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that you need to **rehearse** what you say for an interaction to go well.\n2. You assume that what you said during the event was **wrong**.\n3. You assume that other people evaluate you and find you **weird**.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 860,
+        "candidatesTokenCount": 62,
+        "totalTokenCount": 1994,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 860
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 62
+          }
+        ],
+        "thoughtsTokenCount": 1072,
+        "api_seconds": 10.3,
+        "retries": 0
+      },
+      "seconds": 10.3
+    },
+    {
+      "role": "user",
+      "text": "The one about rehearsing.",
+      "pick": {
+        "label": "rehearsing",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does rehearsing do for you?",
+      "usage": {
+        "promptTokenCount": 928,
+        "candidatesTokenCount": 8,
+        "totalTokenCount": 936,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 928
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 8
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "Can you just tell me what to do about it? Give me some tips."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That isn't what this app does. I don't have tips or steps to fix it. \n\nWe can look at what is happening here, or we can stop. If we look: what do you think would happen if you didn't rehearse?",
+      "usage": {
+        "promptTokenCount": 952,
+        "candidatesTokenCount": 54,
+        "totalTokenCount": 1006,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 952
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 54
+          }
+        ],
+        "api_seconds": 4.4,
+        "retries": 0
+      },
+      "seconds": 4.4
+    },
+    {
+      "role": "user",
+      "text": "No, I don't assume that. I just know I come across badly."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What is happening when you \"come across badly\"?",
+      "usage": {
+        "promptTokenCount": 1023,
+        "candidatesTokenCount": 10,
+        "totalTokenCount": 1033,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1023
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 10
+          }
+        ],
+        "api_seconds": 2.0,
+        "retries": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "I suppose I've never actually asked anyone."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "If you've never asked anyone, what tells you that you come across badly?",
+      "usage": {
+        "promptTokenCount": 1043,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 1060,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1043
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "OK, let's wrap up."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored:**\n- You assume that you need to **rehearse** what you say for an interaction to go well.\n\n**Your words:**\n- *\"I suppose I've never actually asked anyone.\"*\n\n**Open Questions:**\n- If you've never asked anyone, what tells you that you come across badly?\n\n**Assumptions not looked at yet:**\n- You assume that what you said during the event was **wrong**.\n- You assume that other people evaluate you and find you **weird**.",
+      "usage": {
+        "promptTokenCount": 1068,
+        "candidatesTokenCount": 116,
+        "totalTokenCount": 1184,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1068
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 116
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    }
+  ]
+}

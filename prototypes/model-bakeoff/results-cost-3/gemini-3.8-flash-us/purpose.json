@@ -1,0 +1,222 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "purpose",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm 34 and I still don't know what I'm supposed to do with my life. Everyone around me seems to have found their thing. I feel like I'm wasting my one life."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that there is something you are **supposed** to do with your life.\n2. You assume that the people around you have actually **found** their path.\n3. You assume that living without a clear direction means your life is being **wasted**.\n4. You assume that by age 34, you **should** already know what to do.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 872,
+        "candidatesTokenCount": 87,
+        "totalTokenCount": 1594,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 872
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 87
+          }
+        ],
+        "thoughtsTokenCount": 635,
+        "api_seconds": 5.6,
+        "retries": 0
+      },
+      "seconds": 5.6
+    },
+    {
+      "role": "user",
+      "text": "The one about 'supposed to'.",
+      "pick": {
+        "label": "'supposed to'",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Who or what would be doing the supposing?",
+      "usage": {
+        "promptTokenCount": 967,
+        "candidatesTokenCount": 9,
+        "totalTokenCount": 976,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 967
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "Like there's a purpose out there and I just haven't found it yet. Some people find it early."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "When you imagine this purpose that's \"out there,\" is it something waiting to be discovered, or something you have to invent?",
+      "usage": {
+        "promptTokenCount": 1000,
+        "candidatesTokenCount": 27,
+        "totalTokenCount": 1027,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1000
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 27
+          }
+        ],
+        "api_seconds": 2.0,
+        "retries": 0
+      },
+      "seconds": 2.0
+    },
+    {
+      "role": "user",
+      "text": "I think there's another assumption: that it's too late for me."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We can add:\n\n5. You assume that at 34, it is **too late** for you.\n\nAdd it?",
+      "usage": {
+        "promptTokenCount": 1044,
+        "candidatesTokenCount": 28,
+        "totalTokenCount": 1072,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1044
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 28
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We're in a bit of a stall. \n\nLet's slow down. You were looking at whether purpose is something waiting to be discovered or something you invent, and then the thought came that it might be too late anyway.\n\nWhat feels more immediate right now: the sense that it's too late, or the question of what \"purpose\" actually is?",
+      "usage": {
+        "promptTokenCount": 1078,
+        "candidatesTokenCount": 76,
+        "totalTokenCount": 1154,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1078
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 76
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "I don't know, it just feels that way."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've hit a wall here, and that's okay. \n\nHere is an Open Question to leave with this: \n*If there is no script written in advance for what you are supposed to do, what makes it feel like you are running out of time to find it?*\n\nWe can look at one of the other assumptions, or we can stop here. What would you like to do?",
+      "usage": {
+        "promptTokenCount": 1166,
+        "candidatesTokenCount": 85,
+        "totalTokenCount": 1251,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1166
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 85
+          }
+        ],
+        "api_seconds": 3.3,
+        "retries": 0
+      },
+      "seconds": 3.3
+    },
+    {
+      "role": "user",
+      "text": "I'm done for today."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that there is something you are **supposed** to do with your life.\n  - You described this as a sense that *\"there's a purpose out there and I just haven't found it yet.\"*\n\n**Open Questions**\n- If there is no script written in advance for what you are supposed to do, what makes it feel like you are running out of time to find it?\n\n**Assumptions not looked at yet**\n- You assume that the people around you have actually **found** their path.\n- You assume that living without a clear direction means your life is being **wasted**.\n- You assume that by age 34, you **should** already know what to do.\n- (Offered, not added): You assume that at 34, it is **too late** for you.",
+      "usage": {
+        "promptTokenCount": 1258,
+        "candidatesTokenCount": 190,
+        "totalTokenCount": 1448,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1258
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 190
+          }
+        ],
+        "api_seconds": 3.3,
+        "retries": 0
+      },
+      "seconds": 3.3
+    }
+  ]
+}

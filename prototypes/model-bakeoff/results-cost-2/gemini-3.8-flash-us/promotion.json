@@ -1,0 +1,282 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "promotion",
+  "history": [
+    {
+      "role": "user",
+      "text": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that working **harder** should result in getting promoted.\n2. You assume that having spent more **time** on the team should give you priority over newer colleagues.\n3. You assume that being passed over means you are not **good enough**.\n4. You assume that not being chosen means they do not truly **see** you.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 889,
+        "candidatesTokenCount": 82,
+        "totalTokenCount": 1899,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 889
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 82
+          }
+        ],
+        "thoughtsTokenCount": 928,
+        "api_seconds": 7.7,
+        "retries": 0
+      },
+      "seconds": 7.7
+    },
+    {
+      "role": "user",
+      "text": "The one about working harder.",
+      "pick": {
+        "label": "working harder",
+        "position": 1
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What does working harder mean to you in your day-to-day work?",
+      "usage": {
+        "promptTokenCount": 977,
+        "candidatesTokenCount": 16,
+        "totalTokenCount": 993,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 977
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 16
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    },
+    {
+      "role": "user",
+      "text": "Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That is what you feel should happen. \n\nWhat does \"working harder\" actually look like in practice for you?",
+      "usage": {
+        "promptTokenCount": 1022,
+        "candidatesTokenCount": 24,
+        "totalTokenCount": 1046,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1022
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 24
+          }
+        ],
+        "api_seconds": 2.3,
+        "retries": 0
+      },
+      "seconds": 2.3
+    },
+    {
+      "role": "user",
+      "text": "That's not really what I assume, though. I know life isn't fair."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What is going on for you when you say you work harder than anyone on the team?",
+      "usage": {
+        "promptTokenCount": 1065,
+        "candidatesTokenCount": 18,
+        "totalTokenCount": 1083,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1065
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 18
+          }
+        ],
+        "api_seconds": 1.7,
+        "retries": 0
+      },
+      "seconds": 1.7
+    },
+    {
+      "role": "user",
+      "text": "I don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We've hit a stop here. \n\nLet's leave this with an Open Question: What is the work you are actually doing day-to-day, and what is the promotion actually selecting for?\n\nWould you like to look at another Assumption from the list, or stop here?",
+      "usage": {
+        "promptTokenCount": 1089,
+        "candidatesTokenCount": 60,
+        "totalTokenCount": 1149,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1089
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 60
+          }
+        ],
+        "api_seconds": 3.4,
+        "retries": 0
+      },
+      "seconds": 3.4
+    },
+    {
+      "role": "user",
+      "text": "I don't know. I keep going round in circles."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "We can pause here and look at what we've touched on so far. \n\n### What we looked at\n\n**Assumptions explored**\n- You assume that working **harder** should result in getting promoted.\n\n**Shifts in your words**\n- From: \"Well, if I work harder than everyone, I should be the one who gets rewarded. That's how it's supposed to work.\"\n- To: \"That's not really what I assume, though. I know life isn't fair.\"\n\n**Open Questions**\n- What is the work you are actually doing day-to-day, and what is the promotion actually selecting for?\n\n**Assumptions not looked at yet**\n- You assume that having spent more **time** on the team should give you priority over newer colleagues.\n- You assume that being passed over means you are not **good enough**.\n- You assume that not being chosen means they do not truly **see** you.\n\nWe can leave it here for now, or you can pick one of the remaining ones whenever you feel ready.",
+      "usage": {
+        "promptTokenCount": 1162,
+        "candidatesTokenCount": 229,
+        "totalTokenCount": 1391,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1162
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 229
+          }
+        ],
+        "api_seconds": 7.3,
+        "retries": 0
+      },
+      "seconds": 7.3
+    },
+    {
+      "role": "user",
+      "text": "I really don't know."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "That's okay. When you're spinning in circles, pushing further usually doesn't help. \n\nLet's stop here. You can take a break, let things settle, and come back to this whenever you want to look again.",
+      "usage": {
+        "promptTokenCount": 1398,
+        "candidatesTokenCount": 51,
+        "totalTokenCount": 1449,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1398
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 51
+          }
+        ],
+        "api_seconds": 3.7,
+        "retries": 0
+      },
+      "seconds": 3.7
+    },
+    {
+      "role": "user",
+      "text": "Just tell me honestly, am I right to feel like a failure?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "I can't tell you whether you are right or wrong. \n\nWhen you say \"failure,\" what specifically makes that the word that fits for you?",
+      "usage": {
+        "promptTokenCount": 1463,
+        "candidatesTokenCount": 32,
+        "totalTokenCount": 1495,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1463
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 32
+          }
+        ],
+        "api_seconds": 5.0,
+        "retries": 0
+      },
+      "seconds": 5.0
+    },
+    {
+      "role": "user",
+      "text": "Can we stop here?"
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "Yes. We're stopped. Take care of yourself, and come back whenever you wish.",
+      "usage": {
+        "promptTokenCount": 1500,
+        "candidatesTokenCount": 19,
+        "totalTokenCount": 1519,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1500
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 19
+          }
+        ],
+        "api_seconds": 2.2,
+        "retries": 0
+      },
+      "seconds": 2.2
+    }
+  ]
+}

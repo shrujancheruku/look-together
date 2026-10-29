@@ -1,0 +1,163 @@
+{
+  "candidate": "gemini-3.8-flash-us",
+  "via": "vertex-gemini",
+  "problem": "stuck",
+  "history": [
+    {
+      "role": "user",
+      "text": "I'm just stuck."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What are you feeling stuck with right now?",
+      "usage": {
+        "promptTokenCount": 833,
+        "candidatesTokenCount": 9,
+        "totalTokenCount": 1261,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 833
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9
+          }
+        ],
+        "thoughtsTokenCount": 419,
+        "api_seconds": 5.4,
+        "retries": 0
+      },
+      "seconds": 5.4
+    },
+    {
+      "role": "user",
+      "text": "Stuck in everything. Same job, same flat, same routine for six years. Every January I say this is the year I change something and then I don't."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "1. You assume that staying in the same routine for six years means you are **stuck**.\n2. You assume that you **should** change your life.\n3. You assume that not following through on your January intention is a **failure**.\n4. You assume that a different life would be **better** than this one.\n\nWhich of these stands out?",
+      "usage": {
+        "promptTokenCount": 877,
+        "candidatesTokenCount": 77,
+        "totalTokenCount": 1763,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 877
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 77
+          }
+        ],
+        "thoughtsTokenCount": 809,
+        "api_seconds": 9.6,
+        "retries": 0
+      },
+      "seconds": 9.6
+    },
+    {
+      "role": "user",
+      "text": "The one about failing.",
+      "pick": {
+        "label": "failing",
+        "position": 3
+      }
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "What makes not changing a failure to you?",
+      "usage": {
+        "promptTokenCount": 959,
+        "candidatesTokenCount": 9,
+        "totalTokenCount": 968,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 959
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 9
+          }
+        ],
+        "api_seconds": 1.9,
+        "retries": 0
+      },
+      "seconds": 1.9
+    },
+    {
+      "role": "user",
+      "text": "I guess change means doing something big. Moving abroad or quitting."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "You assume that change only counts if it is **big**. \n\nAdd it?",
+      "usage": {
+        "promptTokenCount": 981,
+        "candidatesTokenCount": 17,
+        "totalTokenCount": 998,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 981
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 17
+          }
+        ],
+        "api_seconds": 1.8,
+        "retries": 0
+      },
+      "seconds": 1.8
+    },
+    {
+      "role": "user",
+      "text": "Stop there, please."
+    },
+    {
+      "role": "assistant",
+      "model": "gemini-3.8-flash",
+      "text": "### What we looked at\n\n**Assumptions explored**\n- You assume that not following through on your January intention is a **failure**.\n  - In looking at this, you noted: *\"change means doing something big. Moving abroad or quitting.\"*\n\n**Open Questions**\n- Does change only count if it is big?\n\n**Assumptions not looked at yet**\n- You assume that staying in the same routine for six years means you are **stuck**.\n- You assume that you **should** change your life.\n- You assume that a different life would be **better** than this one.",
+      "usage": {
+        "promptTokenCount": 1003,
+        "candidatesTokenCount": 127,
+        "totalTokenCount": 1130,
+        "trafficType": "ON_DEMAND",
+        "promptTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 1003
+          }
+        ],
+        "candidatesTokensDetails": [
+          {
+            "modality": "TEXT",
+            "tokenCount": 127
+          }
+        ],
+        "api_seconds": 2.4,
+        "retries": 0
+      },
+      "seconds": 2.4
+    }
+  ]
+}

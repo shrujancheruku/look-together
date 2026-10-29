@@ -1,0 +1,40 @@
+per turn (ordinary Inquiries, all reps)
+turn   n level     in cached   out think        $
+   1  18  high    868      0   845   778  0.00840
+   2  18 high/low    946      0   179   153  0.00304
+   3  18   low    991      0    28     0  0.00187
+   4  18   low   1032      0    22     0  0.00189
+   5  18   low   1062      0    59     0  0.00224
+   6  15   low   1125      0   108     0  0.00275
+   7  12   low   1244      0   122     0  0.00306
+   8   3   low   1422      0    19     0  0.00250
+   9   3   low   1446      0   114     0  0.00333
+
+per Inquiry
+controlling          results-cost-1 turns 7  in   7268 cached     0 out  1188  $0.0218 (uncached $0.0218)
+distress-escalation  results-cost-1 turns 4  in   3993 cached     0 out  1322  $0.0175 (uncached $0.0175)
+distress-opening     results-cost-1 turns 2  in   1954 cached     0 out  6022  $0.0529 (uncached $0.0529)
+mother               results-cost-1 turns 7  in   7356 cached     0 out  1581  $0.0252 (uncached $0.0252)
+promotion            results-cost-1 turns 9  in  10157 cached     0 out  1440  $0.0286 (uncached $0.0286)
+purpose              results-cost-1 turns 7  in   7188 cached     0 out  1153  $0.0214 (uncached $0.0214)
+social-anxiety       results-cost-1 turns 6  in   5976 cached     0 out  1684  $0.0238 (uncached $0.0238)
+stuck                results-cost-1 turns 5  in   4672 cached     0 out  1455  $0.0197 (uncached $0.0197)
+controlling          results-cost-2 turns 7  in   7231 cached     0 out  1021  $0.0204 (uncached $0.0204)
+distress-escalation  results-cost-2 turns 4  in   3982 cached     0 out  1458  $0.0186 (uncached $0.0186)
+distress-opening     results-cost-2 turns 2  in   1907 cached     0 out  8486  $0.0732 (uncached $0.0732)
+mother               results-cost-2 turns 7  in   7314 cached     0 out  1502  $0.0245 (uncached $0.0245)
+promotion            results-cost-2 turns 9  in  10565 cached     0 out  1459  $0.0295 (uncached $0.0295)
+purpose              results-cost-2 turns 7  in   7410 cached     0 out  1003  $0.0205 (uncached $0.0205)
+social-anxiety       results-cost-2 turns 6  in   5874 cached     0 out  1339  $0.0207 (uncached $0.0207)
+stuck                results-cost-2 turns 5  in   4653 cached     0 out  1467  $0.0198 (uncached $0.0198)
+controlling          results-cost-3 turns 7  in   7147 cached     0 out  1439  $0.0237 (uncached $0.0237)
+distress-escalation  results-cost-3 turns 4  in   3926 cached     0 out  1605  $0.0197 (uncached $0.0197)
+distress-opening     results-cost-3 turns 2  in   1939 cached     0 out  1994  $0.0196 (uncached $0.0196)
+mother               results-cost-3 turns 7  in   7451 cached     0 out  1204  $0.0222 (uncached $0.0222)
+promotion            results-cost-3 turns 9  in  10222 cached     0 out  1157  $0.0264 (uncached $0.0264)
+purpose              results-cost-3 turns 7  in   7385 cached     0 out  1137  $0.0216 (uncached $0.0216)
+social-anxiety       results-cost-3 turns 6  in   6007 cached     0 out  1054  $0.0186 (uncached $0.0186)
+stuck                results-cost-3 turns 5  in   4716 cached     0 out  1616  $0.0211 (uncached $0.0211)
+
+ordinary: 18 Inquiries, mean 6.8 turns, mean $0.0227, median $0.0217, max $0.0295; uncached mean $0.0227; 0% of input tokens served from cache
+Dialogue turn (low): mean 226 chars, $0.00224, median 2.2 s

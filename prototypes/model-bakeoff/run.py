@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).parent
-PROJECT = "issho-dev-512213"
+PROJECT = "look-together"  # the only Google Cloud project for this app
 SYSTEM = (HERE / "system-prompt.md").read_text()
 PROBLEMS = json.loads((HERE / "problems.json").read_text())
 RESULTS = HERE / os.environ.get("BAKEOFF_RESULTS", "results")
@@ -23,6 +23,8 @@ CANDIDATES = [
     # Hybrids: the first model answers until the Breakdown appears, the second holds the Dialogue
     {"id": "hybrid-pro-breakdown-flash-dialogue", "via": "vertex-gemini", "breakdown": "gemini-3.1-pro-preview", "dialogue": "gemini-3.8-flash"},
     {"id": "hybrid-flash-breakdown-pro-dialogue", "via": "vertex-gemini", "breakdown": "gemini-3.8-flash", "dialogue": "gemini-3.1-pro-preview"},
+    # The launch setup: pinned us endpoint, high thinking until the Breakdown appears, low for the Dialogue
+    {"id": "gemini-3.8-flash-us", "via": "vertex-gemini", "model": "gemini-3.8-flash", "location": "us", "thinking": ("high", "low")},
 ]
 NUMBERED = re.compile(r"^\s*\**(\d+)[.)]\s+(.*)$", re.M)
 
@@ -52,10 +54,13 @@ def post(url, body, tries=8):
             raise RuntimeError(f"{e.code} {e.read()[:300]!r}")
 
 
-def gemini_turn(model, history):
+def gemini_turn(model, history, location="global", thinking=None):
     contents = [{"role": "user" if m["role"] == "user" else "model", "parts": [{"text": m["text"]}]} for m in history]
-    d = post(f"https://aiplatform.googleapis.com/v1/projects/{PROJECT}/locations/global/publishers/google/models/{model}:generateContent",
-             {"systemInstruction": {"parts": [{"text": SYSTEM}]}, "contents": contents})
+    host = "aiplatform.googleapis.com" if location == "global" else f"aiplatform.{location}.rep.googleapis.com"
+    body = {"systemInstruction": {"parts": [{"text": SYSTEM}]}, "contents": contents}
+    if thinking:
+        body["generationConfig"] = {"thinkingConfig": {"thinkingLevel": thinking}}
+    d = post(f"https://{host}/v1/projects/{PROJECT}/locations/{location}/publishers/google/models/{model}:generateContent", body)
     parts = d["candidates"][0].get("content", {}).get("parts", [])
     return "".join(p.get("text", "") for p in parts if not p.get("thought")), {
         **d.get("usageMetadata", {}), "api_seconds": d["_seconds"], "retries": d["_retries"]}
@@ -115,14 +120,15 @@ def run_one(cand, prob):
             else:
                 user["text"] = turn
             history.append(user)
-            model = cand["id"]
+            model = cand.get("model", cand["id"])
             if "breakdown" in cand:
                 model = cand["dialogue"] if breakdown else cand["breakdown"]
             t0 = time.time()
             if cli:
                 reply, usage = cli.turn(history)
             elif cand["via"] == "vertex-gemini":
-                reply, usage = gemini_turn(model, history)
+                thinking = cand.get("thinking") and cand["thinking"][1 if breakdown else 0]
+                reply, usage = gemini_turn(model, history, cand.get("location", "global"), thinking)
             else:
                 reply, usage = openai_turn(model, history)
             if breakdown is None and len(NUMBERED.findall(reply)) >= 3:
