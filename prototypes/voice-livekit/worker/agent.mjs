@@ -9,7 +9,7 @@ import { ReadableStream } from 'node:stream/web';
 import { GoogleAuth } from 'google-auth-library';
 import speech from '@google-cloud/speech';
 import { AudioFrame } from '@livekit/rtc-node';
-import { cli, defineAgent, ServerOptions, stt, VADEventType, voice } from '@livekit/agents';
+import { cli, defineAgent, llm, ServerOptions, stt, tts, VADEventType, voice } from '@livekit/agents';
 import * as silero from '@livekit/agents-plugin-silero';
 
 const PROJECT = process.env.GOOGLE_CLOUD_PROJECT ?? 'look-together';
@@ -33,10 +33,15 @@ async function synthesize(text) {
   return new Int16Array(buf.buffer, buf.byteOffset, buf.length >> 1);
 }
 
+// The session only runs a node when it has a model of that kind, so these stand in; the overridden nodes do the work.
+class NodeStt extends stt.STT { constructor() { super({ streaming: true, interimResults: true }); } label = 'google.stt-v2'; get provider() { return 'google'; } stream() { throw new Error('unused'); } async _recognize() { throw new Error('unused'); } }
+class NodeLlm extends llm.LLM { label() { return 'turn-api'; } get model() { return 'gemini-3.8-flash'; } chat() { throw new Error('unused'); } }
+class NodeTts extends tts.TTS { constructor() { super(TTS_RATE, 1, { streaming: false }); } label = 'google.chirp3'; get provider() { return 'google'; } synthesize() { throw new Error('unused'); } stream() { throw new Error('unused'); } }
+
 class ProtoAgent extends voice.Agent {
   constructor({ vad, room, marks }) {
     super({ instructions: 'unused: the turn API holds the prompt' });
-    this.vad = vad; this.room = room; this.marks = marks;
+    this.gateVad = vad; this.room = room; this.marks = marks;
     this.hasBreakdown = false;
     this.onDone = () => {};
   }
@@ -48,7 +53,7 @@ class ProtoAgent extends voice.Agent {
   // VAD opens a Cloud STT stream at the first speech; pauses don't close it. Done half-closes it and the final transcript
   // follows, so the turn is the person's to end.
   async sttNode(audio) {
-    const vadStream = this.vad.stream();
+    const vadStream = this.gateVad.stream();
     const preroll = [];
     let rate = 0, open = null;
     const events = [];
@@ -165,6 +170,7 @@ export default defineAgent({
     });
     const session = new voice.AgentSession({
       vad: ctx.proc.userData.vad,
+      stt: new NodeStt(), llm: new NodeLlm(), tts: new NodeTts(),
       turnHandling: {
         turnDetection: 'stt', // our sttNode only ends the turn on Done; don't add any wait
         endpointing: { minDelay: 0, maxDelay: 0 },
