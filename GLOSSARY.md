@@ -25,8 +25,16 @@ The question in a Breakdown that pokes at one Assumption without stating it. The
 _Avoid_: Prompt, opening question
 
 **Dialogue**:
-The back-and-forth that follows the Breakdown, in which the person explores their reaction to and understanding of the Assumptions.
+The back-and-forth that follows the Breakdown, in which the person explores their reaction to and understanding of the Assumptions, one Path at a time.
 _Avoid_: Chat, conversation, coaching
+
+**Path**:
+The part of a Dialogue that follows one Probe, from the person choosing it to its end. A Path runs one way, without branches; the person can leave it and come back, and can read back over it.
+_Avoid_: Thread, branch, tree
+
+**Reflection**:
+What a person gives the app at each step of a Path, written or dictated, then reviewed and edited before they choose to submit it. Until then it is not part of the Dialogue.
+_Avoid_: Message, answer, reply, turn
 
 **Open Question**:
 A question handed back to the person, deliberately unanswered, when a Dialogue can find no further angle of questioning.
