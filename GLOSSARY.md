@@ -5,7 +5,7 @@ An app for examining one's own understanding of life, inspired by the approach o
 ## Language
 
 **Problem**:
-What a person brings to an Inquiry, in their own words: something in their life they have to face and understand, not something the app promises to solve.
+What a person brings to an Inquiry, in their own words (reworded only when they say yes to a rewording): something in their life they have to face and understand, not something the app promises to solve.
 _Avoid_: Concern, issue, topic
 
 **Inquiry**:
@@ -17,8 +17,12 @@ A belief underneath what a person has said that they haven't examined. Assumptio
 _Avoid_: Belief, error, misconception
 
 **Breakdown**:
-The structured set of Assumptions drawn out of a person's opening input at the start of an Inquiry.
+The structured set of Assumptions drawn out of a person's opening input at the start of an Inquiry, each shown to them as a Probe.
 _Avoid_: Analysis, diagnosis, report
+
+**Probe**:
+The question in a Breakdown that pokes at one Assumption without stating it. The Dialogue on that Assumption starts from it.
+_Avoid_: Prompt, opening question
 
 **Dialogue**:
 The back-and-forth that follows the Breakdown, in which the person explores their reaction to and understanding of the Assumptions.
