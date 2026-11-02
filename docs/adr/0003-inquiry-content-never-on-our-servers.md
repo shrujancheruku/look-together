@@ -1,3 +1,5 @@
 # Inquiry content never stays on our servers
 
 Privacy is the app's headline value, and Inquiries are likely special-category data. So in the MVP an Inquiry's content lives only on the person's device: the backend is stateless (the device sends the conversation so far with each turn), audio is never stored, and our servers keep only a closed list of metadata (a pseudonymous install id with usage counters, crisis-referral counts with no identifiers, and content-scrubbed operational logs). There are no accounts and no sync, and the web keeps nothing beyond the open tab. We give up recovery and cross-device access: a lost device loses its Inquiries, and the person is told so upfront and can export their Recaps. Opt-in cloud storage is post-MVP, and must keep content unreadable to us (end-to-end encrypted, with a recoverable key) rather than reverse this decision.
+
+_Partly superseded by [ADR 0006](0006-sign-in-is-required-and-knows-nothing-of-inquiries.md): the MVP now requires sign-in, so the closed list holds an Account record and the meters are keyed to it. Inquiry content still never stays on our servers, and nothing about an Inquiry is joined to an Account._
