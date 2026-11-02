@@ -1,7 +1,8 @@
 // PROTOTYPE, throwaway. Answers "How fast is a spoken turn over LiveKit on native, and does barge-in work on speakerphone?"
 // (https://github.com/shrujancheruku/look-together/issues/31).
-// Stands in for the backend: POST /turn streams one Gemini 3.8 Flash reply (on `us`) as plain text; GET /token hands a
-// phone a LiveKit token for a fresh room with the voice worker dispatched into it. Stateless: history comes in each call.
+// Stands in for the backend: POST /turn returns one whole Gemini 3.8 Flash reply (on `us`) as {reply, distress, events},
+// as the app-owned Inquiry (#33) has it, plus how long the model took; GET /token hands a phone a LiveKit token for a
+// fresh room with the voice worker dispatched into it. Stateless: history comes in each call.
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { randomUUID } from 'node:crypto';
@@ -15,8 +16,18 @@ const LLM_URL = `https://aiplatform.us.rep.googleapis.com/v1/projects/${PROJECT}
 const PORT = Number(process.env.PORT ?? 8080);
 const { LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET } = process.env;
 
-// Same prompt as the browser prototype, so the two measurements compare like for like.
-const SYSTEM = readFileSync(new URL('../../voice-dialogue/system-prompt.md', import.meta.url), 'utf8') + readFileSync(new URL('voice-addendum.md', import.meta.url), 'utf8');
+// The browser prototype's prompt, so the latency compares like for like, with the voice addendum swapped for structured output.
+const SYSTEM = readFileSync(new URL('../../voice-dialogue/system-prompt.md', import.meta.url), 'utf8') + readFileSync(new URL('structured-addendum.md', import.meta.url), 'utf8');
+
+// Rough stand-in for the turn output in #33: the spoken reply, the model's distress flag, and events the screen applies.
+const SCHEMA = {
+  type: 'OBJECT', required: ['reply', 'distress', 'events'], propertyOrdering: ['events', 'distress', 'reply'],
+  properties: {
+    events: { type: 'ARRAY', items: { type: 'OBJECT', required: ['type'], properties: { type: { type: 'STRING', enum: ['breakdown_item', 'pick', 'add', 'reword', 'open_question', 'recap_item'] }, n: { type: 'INTEGER' }, text: { type: 'STRING' } } } },
+    distress: { type: 'BOOLEAN' },
+    reply: { type: 'STRING' },
+  },
+};
 
 const auth = new GoogleAuth({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
 
@@ -31,12 +42,11 @@ async function turn(req, res) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM }] },
       contents: messages.map(m => ({ role: m.role, parts: [{ text: m.text }] })),
-      generationConfig: { thinkingConfig: { thinkingLevel: thinking } },
+      generationConfig: { thinkingConfig: { thinkingLevel: thinking }, responseMimeType: 'application/json', responseSchema: SCHEMA },
     }),
   });
   if (!r.ok) { res.writeHead(502).end(`LLM ${r.status}: ${(await r.text()).slice(0, 300)}`); return; }
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  let pending = '', first = 0;
+  let pending = '', out = '', first = 0;
   for await (const chunk of r.body) {
     pending += Buffer.from(chunk).toString('utf8');
     let i;
@@ -46,11 +56,15 @@ async function turn(req, res) {
       if (!l.startsWith('data:')) continue;
       const d = JSON.parse(l.slice(5));
       const text = (d.candidates?.[0]?.content?.parts ?? []).filter(p => !p.thought).map(p => p.text ?? '').join('');
-      if (text) { first ||= Date.now() - t0; res.write(text); }
+      if (text) { first ||= Date.now() - t0; out += text; }
     }
   }
-  res.end();
-  console.log(`turn thinking=${thinking} firstToken=${first}ms total=${Date.now() - t0}ms`);
+  // the reply is held back until the whole object has arrived and parsed, as the reducer needs it before anything is said
+  const total = Date.now() - t0;
+  let parsed;
+  try { parsed = JSON.parse(out); } catch { res.writeHead(502).end(`bad JSON: ${out.slice(0, 300)}`); return; }
+  res.writeHead(200, { 'Content-Type': 'application/json' }).end(JSON.stringify({ ...parsed, timing: { firstTokenMs: first, wholeMs: total } }));
+  console.log(`turn thinking=${thinking} firstToken=${first}ms whole=${total}ms events=${parsed.events?.length ?? 0}`);
 }
 
 async function token(res, url) {

@@ -2,15 +2,15 @@
 
 Answers [How fast is a spoken turn over LiveKit on native, and does barge-in work on speakerphone?](https://github.com/shrujancheruku/look-together/issues/31). Not production code; never merge.
 
-One VM in `us-central1` (project `look-together`) runs self-hosted LiveKit, a LiveKit Agents for Node worker and a stub turn API, behind Caddy at `https://<ip>.sslip.io`. The worker gates a Cloud STT v2 `long` stream with Silero VAD (800 ms of silence, like the browser prototype), asks the turn API for a Gemini 3.8 Flash reply on `us` (high thinking for the Breakdown, low after), and speaks it with Chirp 3 HD per sentence on the `us` endpoint. Card and Recap lines go to the phone as data, never spoken.
+One VM in `us-central1` (project `look-together`) runs self-hosted LiveKit, a LiveKit Agents for Node worker and a stub turn API, behind Caddy at `https://<ip>.sslip.io`. Since [Who drives an Inquiry…](https://github.com/shrujancheruku/look-together/issues/33), the person ends their own turn: Silero VAD opens a Cloud STT v2 `long` stream at the first speech, pauses don't close it, and a **Done** tap (a data message) half-closes it. The worker then asks the turn API for one whole `{reply, distress, events}` from Gemini 3.8 Flash on `us` (high thinking for the Breakdown, low after; prompt in `server/structured-addendum.md`), sends the events to the phone as cards, and speaks `reply` with Chirp 3 HD, every sentence synthesized at once, on the `us` endpoint. All timings run from Done; `model first→whole` shows what waiting for the whole reply costs over streaming. VAD still drives barge-in.
 
 | Path | What |
 |---|---|
 | `infra/up.sh`, `infra/down.sh` | Create / delete the VM, IP, firewall rule and service account |
 | `server/turn.mjs` | Turn API (`POST /turn`) and phone tokens (`GET /token`) |
 | `worker/agent.mjs` | The voice worker; logs and sends each turn's timings |
-| `loadtest/load.mjs` | N bots speaking at once from this Mac; times end of speech to audible reply |
-| `app/` | Expo app (Android APK via EAS): talk, toggle speakerphone, read timings |
+| `loadtest/load.mjs` | N bots speaking at once from this Mac, each sending Done 300 ms after its line; times Done to audible reply |
+| `app/` | Expo app (Android APK via EAS): talk, tap Done, toggle speakerphone, read timings |
 
 ## Run
 
@@ -21,9 +21,11 @@ cd app && npx eas-cli build -p android --profile proto   # install the APK from 
 ./infra/down.sh                                # when done
 ```
 
-## Status (2026-11-01): built, not yet run
+## Status (2026-11-02): updated for Done and whole replies, not yet run on the VM
 
 Paused before any measurement; to be picked up before implementation starts. Nothing is deployed and no Google Cloud resources exist beyond the enabled Compute Engine API.
+
+Smoke test of the turn shape from a Mac (one sample each, straight to Vertex on `us`): the Breakdown came back as `breakdown_item` events in 12.4 s on high thinking; a Dialogue turn came back whole (`pick` + reply) in 3.2 s on low. The APK needs rebuilding for the Done button.
 
 Learned while building:
 

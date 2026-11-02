@@ -1,8 +1,9 @@
 // PROTOTYPE, throwaway. Answers "How fast is a spoken turn over LiveKit on native, and does barge-in work on speakerphone?"
 // (https://github.com/shrujancheruku/look-together/issues/31).
-// LiveKit Agents for Node worker: phone audio -> Silero VAD gates a Cloud STT v2 `long` stream (us) -> the turn API
-// (Gemini 3.8 Flash on us) -> Cloud TTS Chirp 3 HD per sentence (us) -> phone. Card and Recap lines go to the phone as
-// data, never spoken. Every turn's timings go to the phone and the log. Nothing is stored.
+// LiveKit Agents for Node worker: phone audio -> Silero VAD opens a Cloud STT v2 `long` stream (us), which stays open
+// until the person taps Done (#33) -> the turn API returns a whole {reply, distress, events} from Gemini 3.8 Flash on us
+// -> Cloud TTS Chirp 3 HD per sentence (us) -> phone. Events go to the phone as data, never spoken. Every turn's timings,
+// measured from Done, go to the phone and the log. Nothing is stored.
 import { fileURLToPath } from 'node:url';
 import { ReadableStream } from 'node:stream/web';
 import { GoogleAuth } from 'google-auth-library';
@@ -14,7 +15,7 @@ import * as silero from '@livekit/agents-plugin-silero';
 const PROJECT = process.env.GOOGLE_CLOUD_PROJECT ?? 'look-together';
 const TURN_URL = process.env.TURN_URL ?? 'http://localhost:8080/turn';
 const VOICE = 'en-US-Chirp3-HD-Charon';
-const SILENCE_MS = 800; // same silence wait as the browser prototype
+const SILENCE_MS = 800; // VAD's silence wait; only matters for barge-in now that Done ends the turn
 const TTS_RATE = 24000;
 
 const auth = new GoogleAuth({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
@@ -32,22 +33,20 @@ async function synthesize(text) {
   return new Int16Array(buf.buffer, buf.byteOffset, buf.length >> 1);
 }
 
-// Card tags, added/reworded Assumptions, the Breakdown list and the Recap stay on screen; everything else is spoken.
-const STRUCTURAL = /^(\d+\.\s|\+ |~\d+ |# |- )/;
-
 class ProtoAgent extends voice.Agent {
   constructor({ vad, room, marks }) {
     super({ instructions: 'unused: the turn API holds the prompt' });
     this.vad = vad; this.room = room; this.marks = marks;
     this.hasBreakdown = false;
+    this.onDone = () => {};
   }
 
   send(msg) {
     this.room.localParticipant?.publishData(new TextEncoder().encode(JSON.stringify(msg)), { reliable: true, topic: 'proto' }).catch(() => {});
   }
 
-  // VAD opens a Cloud STT stream at speech start and half-closes it after 800 ms of silence, as the browser prototype did,
-  // so the final transcript arrives ~0.35 s later instead of waiting on Google's own endpointing.
+  // VAD opens a Cloud STT stream at the first speech; pauses don't close it. Done half-closes it and the final transcript
+  // follows, so the turn is the person's to end.
   async sttNode(audio) {
     const vadStream = this.vad.stream();
     const preroll = [];
@@ -64,7 +63,7 @@ class ProtoAgent extends voice.Agent {
       s.on('data', d => {
         for (const res of d.results ?? []) {
           const t = res.alternatives?.[0]?.transcript ?? '';
-          if (res.isFinal) { st.text += t; st.interim = ''; } else st.interim = t;
+          if (res.isFinal) { st.text += (st.text ? ' ' : '') + t.trim(); st.interim = ''; } else st.interim = t;
         }
         this.send({ type: 'interim', text: (st.text + st.interim).trim() });
       });
@@ -84,18 +83,22 @@ class ProtoAgent extends voice.Agent {
         if (ev.type === VADEventType.START_OF_SPEECH && !open) {
           open = startStt();
           emit({ type: stt.SpeechEventType.START_OF_SPEECH });
-        } else if (ev.type === VADEventType.END_OF_SPEECH && open) {
-          const st = open; open = null;
-          const vadEnd = Date.now();
-          st.s.end();
-          await Promise.race([st.ended, new Promise(r => setTimeout(r, 2500))]);
-          const text = (st.text + st.interim).trim();
-          Object.assign(this.marks, { speechEnd: vadEnd - SILENCE_MS, vadEnd, sttFinal: Date.now() });
-          if (text) emit({ type: stt.SpeechEventType.FINAL_TRANSCRIPT, alternatives: [{ language: 'en-US', text, startTime: 0, endTime: 0, confidence: 1 }] });
-          emit({ type: stt.SpeechEventType.END_OF_SPEECH });
         }
       }
     })();
+
+    this.onDone = async () => {
+      const doneAt = Date.now();
+      if (!open) { this.send({ type: 'log', text: 'Done with nothing heard' }); return; }
+      const st = open; open = null;
+      st.s.end();
+      await Promise.race([st.ended, new Promise(r => setTimeout(r, 2500))]);
+      const text = (st.text + st.interim).trim();
+      for (const k of Object.keys(this.marks)) delete this.marks[k];
+      Object.assign(this.marks, { done: doneAt, sttFinal: Date.now() });
+      if (text) emit({ type: stt.SpeechEventType.FINAL_TRANSCRIPT, alternatives: [{ language: 'en-US', text, startTime: 0, endTime: 0, confidence: 1 }] });
+      emit({ type: stt.SpeechEventType.END_OF_SPEECH });
+    };
 
     (async () => {
       for await (const f of audio) {
@@ -125,44 +128,22 @@ class ProtoAgent extends voice.Agent {
     const r = await fetch(TURN_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages, thinking }) });
     if (!r.ok) throw new Error(`turn API ${r.status}: ${await r.text()}`);
     this.hasBreakdown = true;
-    const marks = this.marks;
-    const dec = new TextDecoder();
-    return ReadableStream.from((async function* () {
-      for await (const c of r.body) { marks.firstToken ??= Date.now(); yield dec.decode(c, { stream: true }); }
-    })());
+    const out = await r.json();
+    Object.assign(this.marks, { replyWhole: Date.now(), modelFirstTokenMs: out.timing.firstTokenMs, modelWholeMs: out.timing.wholeMs });
+    for (const e of out.events ?? []) this.send({ type: 'event', event: e });
+    if (out.distress) this.send({ type: 'event', event: { type: 'distress' } });
+    return ReadableStream.from((async function* () { yield out.reply; })());
   }
 
+  // The reply arrives whole: synthesize every sentence at once and play them in order.
   async ttsNode(text) {
     const self = this;
     return ReadableStream.from((async function* () {
-      let buf = '';
-      const queue = []; // synth promises, started as soon as each sentence is complete and played in order
-      const flush = (final) => {
-        const lines = buf.split('\n');
-        buf = final ? '' : lines.pop();
-        for (let line of lines) {
-          line = line.trim();
-          if (!line) continue;
-          const tag = line.match(/^\[A(\d+)\]\s*/);
-          if (tag) { self.send({ type: 'pick', n: Number(tag[1]) }); line = line.slice(tag[0].length); }
-          if (STRUCTURAL.test(line)) { self.send({ type: 'display', text: line }); continue; }
-          for (const s of line.match(/[^.!?]+[.!?]+["')]*\s*|[^.!?]+$/g) ?? []) if (s.trim()) queue.push(synthesize(s.trim()));
-        }
-      };
-      const it = text[Symbol.asyncIterator]();
-      let next = it.next();
-      for (;;) {
-        // keep reading text while earlier sentences synthesize and play
-        while (queue.length === 0) {
-          const { value, done } = await next;
-          if (done) { flush(true); break; }
-          buf += value; next = it.next();
-          // a line ends, or a sentence ends mid-line: speak what's complete so far
-          if (buf.includes('\n')) flush(false);
-          else { const m = buf.match(/^(?!\d+\.\s|\+ |~\d+ |# |- |\[A)[\s\S]*?[.!?]["')]*\s+/); if (m) { buf = buf.slice(m[0].length); queue.push(synthesize(m[0].trim())); } }
-        }
-        if (queue.length === 0) return;
-        const pcm = await queue.shift();
+      let all = '';
+      for await (const t of text) all += t;
+      const queue = (all.match(/[^.!?]+[.!?]+["')]*\s*|[^.!?]+$/g) ?? []).map(x => x.trim()).filter(Boolean).map(synthesize);
+      for (const p of queue) {
+        const pcm = await p;
         self.marks.firstAudio ??= Date.now();
         for (let i = 0; i < pcm.length; i += 480) {
           const chunk = pcm.slice(i, i + 480);
@@ -179,10 +160,13 @@ export default defineAgent({
     await ctx.connect();
     const marks = {};
     const agent = new ProtoAgent({ vad: ctx.proc.userData.vad, room: ctx.room, marks });
+    ctx.room.on('dataReceived', (payload, _p, _k, topic) => {
+      if (topic === 'proto' && JSON.parse(new TextDecoder().decode(payload)).type === 'done') agent.onDone();
+    });
     const session = new voice.AgentSession({
       vad: ctx.proc.userData.vad,
       turnHandling: {
-        turnDetection: 'stt', // our sttNode already waited out the silence; don't add more
+        turnDetection: 'stt', // our sttNode only ends the turn on Done; don't add any wait
         endpointing: { minDelay: 0, maxDelay: 0 },
         interruption: { enabled: true, mode: 'vad', minDuration: 500 },
       },
@@ -190,10 +174,11 @@ export default defineAgent({
     let turnNo = 0;
     session.on(voice.AgentSessionEventTypes.AgentStateChanged, ev => {
       agent.send({ type: 'agent-state', state: ev.newState });
-      if (ev.newState === 'speaking' && marks.speechEnd) {
+      if (ev.newState === 'speaking' && marks.done) {
         const m = { ...marks, speaking: Date.now() };
-        const rel = k => (m[k] ? m[k] - m.speechEnd : null);
-        const t = { type: 'turn', n: ++turnNo, thinking: m.thinking, sttFinalMs: rel('sttFinal'), firstTokenMs: rel('firstToken'), firstAudioMs: rel('firstAudio'), speakingMs: rel('speaking') };
+        const rel = k => (m[k] ? m[k] - m.done : null);
+        // all from Done; modelFirstTokenMs/modelWholeMs are the model's own, so whole - first is what waiting for the whole reply costs
+        const t = { type: 'turn', n: ++turnNo, thinking: m.thinking, sttFinalMs: rel('sttFinal'), replyWholeMs: rel('replyWhole'), firstAudioMs: rel('firstAudio'), speakingMs: rel('speaking'), modelFirstTokenMs: m.modelFirstTokenMs, modelWholeMs: m.modelWholeMs };
         console.log(JSON.stringify({ room: ctx.room.name, ...t }));
         agent.send(t);
         for (const k of Object.keys(marks)) delete marks[k];

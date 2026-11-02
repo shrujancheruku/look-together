@@ -1,6 +1,6 @@
 // PROTOTYPE, throwaway. Part of https://github.com/shrujancheruku/look-together/issues/31.
 // Runs N spoken Inquiries at once against the VM: each bot joins its own room, says a Problem and then a few Dialogue
-// replies (macOS `say` audio), and times the end of its speech to the first audible audio back from the worker.
+// replies (macOS `say` audio), sends Done after each, and times Done to the first audible audio back from the worker.
 // Run: pnpm load https://<ip>.sslip.io 1 5 10 20   (one round per concurrency level)
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
@@ -72,7 +72,9 @@ async function bot(id) {
     firstLoudAfter = null; speechEnd = 0;
     speaking = frames;
     while (speaking.length) await sleep(10);
-    speechEnd = Date.now();
+    await sleep(300); // a person's pause before tapping Done
+    await room.localParticipant.publishData(new TextEncoder().encode(JSON.stringify({ type: 'done' })), { reliable: true, topic: 'proto' });
+    speechEnd = Date.now(); // really Done
     const deadline = speechEnd + 30000;
     while (firstLoudAfter === null && Date.now() < deadline) await sleep(20);
     turns.push({ turn: i + 1, thinking: i === 0 ? 'high' : 'low', heardMs: firstLoudAfter ? firstLoudAfter - speechEnd : null });
@@ -95,7 +97,8 @@ for (const n of levels.map(Number)) {
     concurrent: n, errors: results.filter(r => r.error).map(r => r.error), missedTurns: dialogue.length - heard.length,
     dialogueHeardMs: { p50: pct(heard, 0.5), p90: pct(heard, 0.9), max: Math.max(...heard) },
     breakdownHeardMs: { p50: pct(breakdown, 0.5) },
-    workerMedianMsFromSpeechEnd: { sttFinal: med('sttFinalMs'), firstToken: med('firstTokenMs'), firstAudio: med('firstAudioMs'), speaking: med('speakingMs') },
+    workerMedianMsFromDone: { sttFinal: med('sttFinalMs'), replyWhole: med('replyWholeMs'), firstAudio: med('firstAudioMs'), speaking: med('speakingMs') },
+    modelMedianMs: { firstToken: med('modelFirstTokenMs'), whole: med('modelWholeMs') },
     roundSec: Math.round((Date.now() - t0) / 1000),
   }));
 }
