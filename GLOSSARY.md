@@ -17,8 +17,12 @@ A belief underneath what a person has said that they haven't examined. Assumptio
 _Avoid_: Belief, error, misconception
 
 **Breakdown**:
-The structured set of Assumptions drawn out of a person's opening input at the start of an Inquiry.
+The structured set of Assumptions drawn out of a person's opening input at the start of an Inquiry, each shown to them as a Probe.
 _Avoid_: Analysis, diagnosis, report
+
+**Probe**:
+The question in a Breakdown that pokes at one Assumption without stating it. The Dialogue on that Assumption starts from it.
+_Avoid_: Prompt, opening question
 
 **Dialogue**:
 The back-and-forth that follows the Breakdown, in which the person explores their reaction to and understanding of the Assumptions.
