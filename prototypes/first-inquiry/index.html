@@ -193,11 +193,26 @@
   .gpool .ab { height:58%; display:flex; flex-direction:column; justify-content:flex-end; padding:0 30px 26px; background:linear-gradient(var(--sky1),var(--sky2)); }
   .gpool .bl { flex:1; background:linear-gradient(var(--wat1),var(--wat2)); border-top:1px solid var(--rip); display:flex; flex-direction:column; align-items:center; padding-top:30px; gap:10px; color:var(--wink); }
   .gpool h1 { font-size:24px; }
-  .flow { display:flex; align-items:flex-start; margin:18px -8px 4px; }
-  .fstep { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; font-size:12px; line-height:1.25; }
-  .fstep .fg { height:34px; display:grid; place-items:end center; margin-bottom:4px; }
-  .fstep b { font-weight:500; font-size:12.5px; } .fstep span { color:var(--mut); font-size:11px; }
-  .farrow { font-style:normal; color:var(--mut); padding-top:10px; }
+  .flow { display:flex; align-items:flex-start; margin:4px -8px 0; }
+  .fstep { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; line-height:1.25; opacity:.22; filter:grayscale(1); transition:opacity .8s ease, filter .8s ease, transform .8s ease; }
+  .fstep.lit { opacity:.75; filter:none; } .fstep.cur { opacity:1; transform:translateY(-2px); }
+  .fstep .fg { height:36px; display:grid; place-items:end center; margin-bottom:4px; }
+  .fstep b { font-weight:500; font-size:11.5px; }
+  .farrow { font-style:normal; color:var(--mut); padding-top:12px; opacity:.3; transition:opacity .8s; } .farrow.lit { opacity:.8; }
+  .wglyph { position:absolute; left:0; right:0; top:calc(var(--wl) - 60px); z-index:5; display:flex; flex-direction:column; align-items:center; pointer-events:none; animation:emerge 1.2s cubic-bezier(.3,.7,.3,1) both; }
+  .wglyph .wg { height:60px; display:flex; align-items:flex-end; }
+  .wglyph .wr { transform:scaleY(-.6); transform-origin:top; opacity:.2; filter:blur(1.5px); }
+  @keyframes emerge { from { opacity:0; transform:translateY(26px) scale(.85); } 60% { opacity:1; } }
+  /* the Recap: one segment per Assumption looked at */
+  .rseg { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; margin:0 0 14px; overflow:hidden; backdrop-filter:blur(6px); }
+  .rseg .rtop { padding:12px 16px 10px; }
+  .rseg .rlab { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--wmut); margin-bottom:4px; }
+  .rseg .chip { border:1px solid var(--glassB); border-radius:10px; padding:1px 8px; font-size:11.5px; }
+  .rseg .rprem { font:400 17px/1.4 "Newsreader",serif; margin:0; }
+  .rseg .rq { border-top:1px solid var(--rip); padding:10px 16px 12px; background:linear-gradient(rgba(110,151,160,.3),transparent); }
+  #app.evening .rseg .rq { background:linear-gradient(rgba(106,74,68,.45),transparent); }
+  .rseg .rq p { margin:0; } .rseg .rq .rlab { margin-bottom:2px; }
+  .rseg .rquote { font:italic 16px/1.5 "Newsreader",serif; }
   .signbtn { width:100%; margin:5px 0; padding:12px; }
   #side .gl { padding:6px 8px; border-radius:8px; margin:2px 0; font-size:12.5px; } #side .gl.cur { background:#e3eedb; } #side .gl.done { opacity:.5; }
   #side .gl b { display:block; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#666; }
@@ -360,7 +375,7 @@ const GUIDE = {
     target: '.pobj[data-act=finish]', place: 'above' },
   recap: { at: 'The Recap', title: 'Your Recap',
     text: 'This is what you looked at, in your own words. It isn\'t a verdict. It stays on this device, and you can come back to it from home.',
-    target: '.below .pair', place: 'below' },
+    target: '.below .rseg', place: 'below' },
 };
 const VARIANTS = { B: 'Leaf note (chosen)', A: 'Inline line', C: 'Still pool card' };
 function guideKey() { // which explanation belongs to what's on screen now
@@ -411,21 +426,43 @@ function poolCard() { // variant C: a short card on still water before the step
 // ---------- the intro, before sign-in and before any model call ----------
 const ORIGIN = 'Inspired by the way J. Krishnamurti asked questions.';
 const originLine = where => S.origin === where ? `<p class="small mut" style="margin-top:14px">${ORIGIN}</p>` : '';
-// the whole of an Inquiry at a glance, drawn as the lily it grows into: pad, ripples, brook, flower
-const FLOW = [
-  [() => padGlyph(7, 40), 'Bring a Problem', 'whatever you\'re facing'],
-  [() => `<svg width="40" height="25" viewBox="0 0 40 25">${[6, 11, 16].map((r, k) => `<ellipse cx="20" cy="13" rx="${r + 2}" ry="${(r + 2) * .45}" fill="none" stroke="var(--ink)" stroke-width="1" opacity="${.7 - k * .2}"/>`).join('')}</svg>`, 'See what\'s beneath', 'Probes ask about it'],
-  [() => `<svg width="40" height="25" viewBox="0 0 40 25"><path d="M2 18C10 4 18 22 26 10S36 6 38 8" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/><circle cx="14" cy="13" r="2" fill="var(--ink)" opacity=".6"/><circle cx="30" cy="9" r="2" fill="var(--ink)" opacity=".6"/></svg>`, 'Follow a Path', 'answer in your own words'],
-  [() => flowerGlyph(34), 'Keep a Recap', 'what you looked at'],
+// the welcome walks through a whole Inquiry one beat at a time, growing the lily it becomes: pad, ripples, brook, flower
+const GLYPH = {
+  pad: w => padGlyph(7, w),
+  ripples: w => `<svg width="${w}" height="${w * .62}" viewBox="0 0 40 25">${[6, 11, 16].map((r, k) => `<ellipse cx="20" cy="13" rx="${r + 2}" ry="${(r + 2) * .45}" fill="none" stroke="var(--ink)" stroke-width="${1.2 * 40 / w + .4}" opacity="${.7 - k * .2}"/>`).join('')}</svg>`,
+  brook: w => `<svg width="${w}" height="${w * .62}" viewBox="0 0 40 25"><path d="M2 18C10 4 18 22 26 10S36 6 38 8" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/><circle cx="14" cy="13" r="2" fill="var(--ink)" opacity=".6"/><circle cx="30" cy="9" r="2" fill="var(--ink)" opacity=".6"/></svg>`,
+  flower: w => flowerGlyph(w),
+};
+const BEATS = [
+  { h: 'Welcome. We\'re glad you\'re here.', p: 'Look Together is a quiet place to look at your own thinking. Let\'s walk through how it works.', g: null },
+  { step: 'Bring a Problem', h: 'You start with what you\'re facing.', p: 'Something in your life, in your own words. It isn\'t here to be fixed, just looked at.', g: 'pad' },
+  { step: 'See what\'s beneath', h: 'Then we look underneath it.', p: 'The app draws out what you might be taking for granted, and asks a gentle question about each. These questions are Probes.', g: 'ripples' },
+  { step: 'Follow a Path', h: 'You follow a Path.', p: 'Pick the Probe that catches you, and follow it one question at a time, answering in your own words.', g: 'brook' },
+  { step: 'Keep a Recap', h: 'And keep what you saw.', p: 'When you\'re ready, you finish with a Recap of what you looked at, kept on your device, just for you.', g: 'flower' },
+  { h: 'No judging, ever.', p: 'It won\'t tell you what\'s right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours.', g: null, last: true },
 ];
-const flowDiagram = () => `<div class="flow">${FLOW.map(([g, t, s], k) => `<div class="fstep"><div class="fg">${g()}</div><b>${t}</b><span>${s}</span></div>${k < FLOW.length - 1 ? '<i class="farrow">›</i>' : ''}`).join('')}</div>`;
+function welcome() {
+  const b = S.wb, B = BEATS[b], mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : 'fadein';
+  const steps = BEATS.filter(x => x.step);
+  // the strip at the top grows step by step: what's been met so far is lit
+  const strip = `<div class="flow">${steps.map((x, k) => { const lit = k + 1 <= b, cur = k + 1 === b;
+    return `<div class="fstep ${lit ? 'lit' : ''} ${cur ? 'cur' : ''}"><div class="fg">${GLYPH[x.g](cur ? 36 : 28)}</div><b>${x.step}</b></div>${k < steps.length - 1 ? `<i class="farrow ${b > k + 1 ? 'lit' : ''}">›</i>` : ''}`; }).join('')}</div>`;
+  return { wl: '64%',
+    above: `${topbar(b ? backBtn('introBack', 'Back') : '', b && !B.last ? `<button class="link small mut" data-act="welcomeEnd">Skip</button>` : '')}<div class="pad" style="padding:0 26px">${b ? strip : ''}</div>
+      <div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px ${B.g || B.last ? 84 : 22}px"><div class="${mv}"><h1>${B.h}</h1><p class="read" style="font-size:18px;margin:0">${B.p}</p>${B.last ? originLine('intro') : ''}</div></div>`,
+    below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${B.last ? 'Go on' : b ? 'Next' : 'Show me'}</button>
+      <div class="dotsrow" style="margin-top:22px">${BEATS.map((_, k) => `<i class="${k === b ? 'on' : ''}"></i>`).join('')}</div><p class="small mut" style="margin-top:14px">${b ? '' : 'Swipe, scroll or tap'}</p></div>`,
+    // the glyph for this beat rises out of the water onto the waterline
+    extra: B.g ? `<div class="wglyph"><div class="wg">${GLYPH[B.g](96)}</div><div class="wr">${GLYPH[B.g](96)}</div></div>` : B.last ? `<div class="wglyph"><div class="wg">${lotus(70, true)}</div></div>` : '' };
+}
 const INTRO = [
-  () => ({ h: 'Welcome. We\'re glad you\'re here.', p: 'Look Together is a quiet place to look at your own thinking. It won\'t judge you or tell you what\'s right. It simply gives you a way to slow down, examine your thoughts, and see what lies underneath them.', pre: flowDiagram(), extra: originLine('intro'), btn: 'Go on' }),
+  null, // the welcome, drawn by welcome()
   () => ({ h: 'Before we begin, one thing to know.', p: 'You\'ll be talking with an AI, not a person. It\'s here to help you reflect, but it isn\'t therapy, and it isn\'t a crisis service. If things ever feel like too much, Help is always at the top of an Inquiry.', extra: `<button class="link small mut" data-act="help" style="margin-top:8px;align-self:flex-start">Need help now?</button>`, btn: 'I understand' }),
   () => ({ h: 'What you write stays with you.', p: 'Your Inquiries are kept on this device, encrypted. We never see them, and each Inquiry starts fresh, without reading the ones before. You can delete anything, any time.', extra: '', btn: 'Go on' }),
 ];
 function intro() {
-  const n = S.intro, s = INTRO[n]();
+  const n = S.intro; if (n === 0) return welcome();
+  const s = INTRO[n]();
   return { wl: s.pre ? '72%' : '58%',
     above: `${topbar(n ? backBtn('introBack', 'Back') : '')}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px 22px"><h1>${s.h}</h1><p class="read" style="font-size:17px;margin:0">${s.p}</p>${s.pre || ''}${s.extra}</div>`,
     below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${s.btn}</button>
@@ -460,7 +497,7 @@ function seed() {
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
     variant: VARIANTS[q.get('variant')] ? q.get('variant') : 'B', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
-    intro: 0, guiding: true, skipNote: false, done: new Set(), inlineShown: null,
+    intro: 0, wb: 0, guiding: true, skipNote: false, done: new Set(), inlineShown: null,
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
 }
@@ -551,7 +588,9 @@ function recap() {
   return { wl: g || (S.variant === 'B' && guideKey() === 'recap') ? '36%' : '22%',
     above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0">${g}</div><div class="pad row" style="padding-top:0;align-items:flex-end">${flowerGlyph(40)}<div><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div></div>`,
     below: `<div class="scroll pad" style="padding-top:18px">
-      ${looked.map(p => `<div class="pair"><div class="pq" style="color:var(--wink)">${PS[p.id].premise} <span class="small" style="opacity:.75">· ${W.outcome(PS[p.id].outcome)}</span></div><div class="pl"></div>${PS[p.id].quote ? `<div class="pr">“${PS[p.id].quote}”</div>` : '<div class="pr" style="opacity:.6">—</div>'}</div>`).join('')}
+      <h3 style="margin-top:0">Assumptions</h3>
+      ${looked.map((p, k) => `<div class="rseg"><div class="rtop"><div class="rlab">Assumption ${k + 1}<span class="chip">${W.outcome(PS[p.id].outcome)}</span></div><p class="rprem">${PS[p.id].premise}</p></div>
+        <div class="rq"><div class="rlab">In your words</div>${PS[p.id].quote ? `<p class="rquote">“${PS[p.id].quote}”</p>` : '<p class="rquote" style="opacity:.6">Nothing quoted</p>'}</div></div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
       ${notYet.length ? `<h3>Not looked at yet</h3>${notYet.map(p => `<p style="opacity:.75">${PS[p.id].probe}</p>`).join('')}` : ''}
       <h3>Was this worth your time?</h3><div class="row">${['Yes', 'Not sure', 'No'].map(w => `<button class="${i.worth === w ? 'pri' : ''}" data-act="worth" data-w="${w}">${w}</button>`).join('')}</div>
@@ -715,7 +754,7 @@ function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: 
 function jump(v) {
   Object.assign(S, { sheet: null, path: null, vi: 0, readAll: false, kb: false, leafNote: false });
   if (v === 'splash' || v === 'intro' || v === 'first') { // start over as a first-time person
-    Object.assign(S, { today: null, todayDone: false, guiding: true, done: new Set(), inlineShown: null, intro: 0 });
+    Object.assign(S, { today: null, todayDone: false, guiding: true, done: new Set(), inlineShown: null, intro: 0, wb: Math.min(+new URLSearchParams(location.search).get('wb') || 0, BEATS.length - 1) });
     return go(v === 'first' ? 'home' : v); }
   if (v === 'home') return go(v);
   if (v === 'new') { S.today = null; S.todayDone = false; return go('problem'); }
@@ -748,7 +787,7 @@ document.addEventListener('click', e => {
     if (p === 'soften') { S.soften = !S.soften; render(); }
     if (p === 'vprev') cycleVariant(-1); if (p === 'vnext') cycleVariant(1);
     if (p === 'reset') { const { season, still, logo, variant, origin } = S; S = seed(); Object.assign(S, { season, still, logo, variant, origin, screen: 'intro' }); render(); } return; }
-  if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('intro', { intro: 0 }), S.still ? 0 : 500); }
+  if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('intro', { intro: 0, wb: 0 }), S.still ? 0 : 500); }
   const el = e.target.closest('[data-act]');
   if (!el) { // a tap on open water ripples
     const a = document.getElementById('app'); if (!a.contains(e.target) || e.target.closest('textarea,.kbd,.sheet,.plain')) return;
@@ -766,8 +805,9 @@ document.addEventListener('click', e => {
     submit: () => submit(kind), finish: () => { rippleAt(); inq().status = 'ended'; setTimeout(() => go('recap'), 350); }, worth: () => { inq().worth = el.dataset.w; render(); },
     mic: () => { S.dictating = !S.dictating; if (!S.dictating) { if (kind === 'problem') S.problemDraft += (S.problemDraft ? ' ' : '') + PROBLEM; else S.draft += (S.draft ? ' ' : '') + SAMPLE; } render(); },
     help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
-    introNext: () => S.intro < INTRO.length - 1 ? go('intro', { intro: S.intro + 1 }) : go('signin'),
-    introBack: () => S.screen === 'signin' ? go('intro', { intro: INTRO.length - 1 }) : go('intro', { intro: Math.max(0, S.intro - 1) }),
+    introNext: () => welcomeStep(1) || (S.intro < INTRO.length - 1 ? go('intro', { intro: S.intro + 1 }) : go('signin')),
+    introBack: () => welcomeStep(-1) || (S.screen === 'signin' ? go('intro', { intro: INTRO.length - 1 }) : go('intro', { intro: Math.max(0, S.intro - 1), wb: S.intro === 1 ? BEATS.length - 1 : S.wb })),
+    welcomeEnd: () => { S.wb = BEATS.length - 1; S.dir = 'next'; render(); },
     signedIn: () => go('home'),
     gotIt: () => { S.done.add(el.dataset.k); render(); },
     skipGuide: () => { S.guiding = false; S.inlineShown = null; S.skipNote = true; render(); }, skipNoteOk: () => { S.skipNote = false; render(); },
@@ -775,11 +815,21 @@ document.addEventListener('click', e => {
   }[a] || (() => {}))();
 });
 
+function welcomeStep(d) { // moves within the welcome's beats; false once past either end
+  if (S.screen !== 'intro' || S.intro !== 0) return false;
+  const nb = S.wb + d; if (nb < 0 || nb >= BEATS.length) return false;
+  S.wb = nb; S.dir = d > 0 ? 'next' : 'prev'; render(); return true;
+}
+let wheelAt = 0;
+document.addEventListener('wheel', e => { if (S.screen !== 'intro' || S.intro || !document.getElementById('app').contains(e.target)) return;
+  e.preventDefault(); const t = performance.now(); if (t - wheelAt < 700 || Math.abs(e.deltaY) < 8) return; wheelAt = t; welcomeStep(e.deltaY > 0 ? 1 : -1); }, { passive: false });
 // swipe between steps on the Path, but not from the screen edges (the system Back gesture lives there)
 let sw = null;
 document.addEventListener('pointerdown', e => { const a = document.getElementById('app'), r = a.getBoundingClientRect(), x = e.clientX - r.left;
-  if (S.screen === 'path' && !S.readAll && a.contains(e.target) && !e.target.closest('textarea,button') && x > 28 && x < r.width - 28) sw = { x: e.clientX, y: e.clientY }; });
-document.addEventListener('pointerup', e => { if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null;
+  if (S.screen === 'intro' && !S.intro && a.contains(e.target) && !e.target.closest('button')) sw = { x: e.clientX, y: e.clientY, welcome: true };
+  else if (S.screen === 'path' && !S.readAll && a.contains(e.target) && !e.target.closest('textarea,button') && x > 28 && x < r.width - 28) sw = { x: e.clientX, y: e.clientY }; });
+document.addEventListener('pointerup', e => { if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y, sw0 = sw; sw = null;
+  if (sw0.welcome) { if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) welcomeStep(dx < 0 ? 1 : -1); else if (Math.abs(dy) > 50) welcomeStep(dy < 0 ? 1 : -1); return; }
   if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { const b = document.querySelector(`.stepnav button[data-act=${dx < 0 ? 'next' : 'prev'}]`); if (b && !b.disabled) b.click(); } });
 
 // the variant switcher: ← → cycle (but never while typing), and the URL keeps the choice
