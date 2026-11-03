@@ -33,7 +33,8 @@ Planning. Nothing is built yet beyond throwaway prototypes. The route to an MVP 
 GLOSSARY.md       # domain language: Problem, Inquiry, Assumption, Breakdown, Probe, Path, Reflection, Recap...
 docs/
 ├── adr/          # decisions that are hard to reverse
-└── agents/       # how agent skills use the issue tracker, labels and domain docs
+├── agents/       # how agent skills use the issue tracker, labels and domain docs
+└── privacy/      # the closed list: everything we keep, count or let others see
 prototypes/       # throwaway prototypes that answered design questions
 ```
 
