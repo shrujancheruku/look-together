@@ -106,6 +106,12 @@
 "use strict";
 // ---------- the four directions ----------
 const V = {
+  k: { name: "Chosen kit", blurb: "The decision on issue #70: Soft hi-bit at the highest density (320 across on every device), with full-colour, fully hue-shifted 5-step ramps.",
+    density: 320,
+    palette: { steps: 5, sky: 7, chroma: 1, hue: 1, label: "5-step, full colour" },
+    line: { trees: "selective", interactive: "coloured", tex: 2, reeds: true, label: "selective" },
+    light: { dither: "light", glow: 1, mist: 1, rays: false, motes: true, glints: 1, label: "glow + mist" },
+    motion: { waterFps: 8, cycleFps: 5, spriteFps: 3, cloud: 1.5, bob: true, drift: false, amp: 1, label: "8 fps water" } },
   a: { name: "Soft hi-bit", blurb: "The proposed default: fine detail, hue-shifted 5-step ramps, coloured outlines only on the pieces you touch, dithering only in light and mist, quiet palette-cycled water.",
     density: 288,
     palette: { steps: 5, sky: 7, chroma: .85, hue: .8, label: "5-step, warm-shifted" },
@@ -193,7 +199,7 @@ function rowT([L, C, h], row) {
 const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
 
 // ---------- state ----------
-const st = { v: "a", over: {}, season: "spring", row: "normal", mode: "full", words: true, panel: false };
+const st = { v: "k", over: {}, season: "spring", row: "normal", mode: "full", words: true, panel: false };
 try { Object.assign(st, JSON.parse(localStorage.getItem("pond-style-kit") || "{}")); } catch {}
 const hashKey = location.hash.slice(1).toLowerCase();
 if (V[hashKey]) st.v = hashKey;
