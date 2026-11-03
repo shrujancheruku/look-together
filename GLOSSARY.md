@@ -48,6 +48,10 @@ _Avoid_: Summary, results, takeaways, report
 The app leaving an Inquiry because the person may be at risk, to point them to people who can help. An Inquiry that has been stepped out of never resumes.
 _Avoid_: Escalation, intervention, crisis mode
 
+**Report**:
+A person telling Look Together that something the app wrote broke how it should reply, by reason. With their explicit choice, it can include that one exchange.
+_Avoid_: Flag, complaint, feedback
+
 **Account**:
 Who a person is to Look Together: what they sign in with, so their daily allowance follows them across devices. It knows nothing of their Inquiries, which stay on the device they were held on.
 _Avoid_: Profile, user, member
