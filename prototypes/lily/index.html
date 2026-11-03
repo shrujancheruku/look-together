@@ -1,0 +1,553 @@
+<title>Lily Generator</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  PROTOTYPE (throwaway, never merge): answers "What does a lily grown from an Inquiry look like, and
+  how is it generated?" (issue #74). Three generators, switchable with the bottom bar (‹ ›, arrow keys,
+  or #a / #b / #c):
+    A  Scattered - everything generated: pads land around the Problem's pad by seeded rejection
+                   sampling; pad size, oval, notch, tone and the flower's petals all vary.
+    B  Composed  - hand-made parts: a small kit of pad sprites and one drawn flower, placed on one of
+                   four hand-composed slot plans; the seed only picks the plan, the mirror and the sprites.
+    C  Rosette   - generated but ordered: pads follow the golden angle out from the Problem's pad in
+                   Probe order, notches facing the heart; one flower form, colour from the seed.
+  Every lily is built in integer maths from the records and a seed, drawn at art resolution in the
+  chosen kit's palette (issue #70), and hashed so the same input always gives the same pixels.
+  The sine table is computed at load here; the real generator ships it as a constant.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  /* Layout: a dark workbench (single look by choice); the lily large on the left, controls on the right, many seeds below. The chrome uses an ink the scene never uses. */
+  :root {
+    --chrome: #15171d; --chrome-2: #20232c; --line: #343846; --bench: #0d0e12;
+    --ink: #eef0f4; --muted: #a2a8b6; --accent: #e9c47e; --accent-ink: #1b1610; --warn: #f08f7a;
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  body { background: var(--bench); color: var(--ink); font-family: var(--body); }
+  #wrap { max-width: 1180px; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px;
+    padding-block: 22px 110px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  header h1 { font: 500 28px/1.15 var(--display); margin: 0 0 6px; text-wrap: balance; }
+  header p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.5; max-width: 72ch; }
+  .eyebrow { font: 700 12px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  #top { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; }
+  #view { flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+  #canvasBox { background: #000; border-radius: 12px; outline: 1px solid var(--line); overflow: hidden; line-height: 0; align-self: flex-start; max-width: 100%; }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; max-width: 100%; }
+  #cap { font: 12px/1.45 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  #side { flex: 1 1 340px; min-width: 0; background: var(--chrome); border: 1px solid var(--line); border-radius: 12px; padding: 16px; box-sizing: border-box; }
+  h2 { font: 700 12px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 18px 0 10px; }
+  #side h2:first-child { margin-top: 0; }
+  .row { display: grid; grid-template-columns: 84px 1fr; gap: 8px; align-items: start; margin-bottom: 8px; }
+  .row > span { font-size: 13px; color: var(--muted); padding-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .chip { font: 600 13px var(--body); color: var(--ink); background: var(--chrome-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .chip:disabled { opacity: .4; cursor: default; }
+  .chip:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  input[type=text] { font: 13px var(--mono); background: var(--chrome-2); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; width: 9.5em; }
+  .note { font-size: 13px; color: var(--muted); line-height: 1.45; margin: 4px 0 0; }
+  .problem { font: 500 15px/1.4 var(--display); color: var(--ink); background: var(--chrome-2); border-radius: 8px; padding: 8px 10px; margin: 0; }
+  #stats { font: 12px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: pre-wrap; margin: 0; overflow-x: auto; }
+  #stats b { color: var(--ink); font-weight: 600; }
+  #stats .bad { color: var(--warn); }
+  #lower { display: flex; flex-wrap: wrap; gap: 22px; }
+  #lower > section { flex: 1 1 340px; min-width: 0; }
+  ol, ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  li { margin-bottom: 7px; }
+  li b { color: var(--ink); }
+  #gridHead { display: flex; flex-wrap: wrap; gap: 10px; align-items: baseline; justify-content: space-between; }
+  #gridHead p { margin: 0; color: var(--muted); font-size: 14px; }
+  #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .cell { background: var(--chrome); border: 1px solid var(--line); border-radius: 10px; padding: 6px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; color: var(--ink); font: inherit; text-align: left; }
+  .cell canvas { width: 100%; height: auto; border-radius: 6px; }
+  .cell span { font: 11px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .cell.flag { border-color: var(--warn); }
+  .cell.flag span { color: var(--warn); }
+  #bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+    display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: var(--chrome); border: 1px solid var(--line);
+    box-shadow: 0 6px 24px rgba(0,0,0,.45); max-width: calc(100% - 24px); }
+  #bar button { font: 600 14px/1 var(--body); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 10px 12px; cursor: pointer; }
+  #bar button:hover { background: var(--chrome-2); }
+  #bar #label { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-inline: 6px; font: 600 14px var(--body); }
+  #bar #label b { color: var(--accent); margin-right: 6px; }
+</style>
+
+<div id="wrap">
+  <header>
+    <div class="eyebrow">Prototype · issue #74 · throwaway</div>
+    <h1 id="vname"></h1>
+    <p id="vblurb"></p>
+  </header>
+  <div id="top">
+    <div id="view">
+      <div id="canvasBox"><canvas id="main" aria-label="Today's lily, drawn from the Inquiry's records"></canvas></div>
+      <div id="cap"></div>
+      <div class="chips" id="stages" role="group" aria-label="Moment in the Inquiry"></div>
+      <div class="chips">
+        <button class="chip" id="cue" type="button">Play this moment's cue</button>
+        <button class="chip" id="newSeed" type="button">New seed</button>
+      </div>
+    </div>
+    <aside id="side">
+      <h2>The Inquiry's records</h2>
+      <p class="problem" id="problemText"></p>
+      <div class="row" style="margin-top:10px"><span>Probes</span><div class="chips" id="probes"></div></div>
+      <div class="row"><span>"Add it?" pads</span><div class="chips" id="added"></div></div>
+      <div class="row"><span>Days idle</span><div><input id="days" type="range" min="0" max="7" step="1" value="0" aria-label="Days since last activity"><p class="note" id="daysNote"></p></div></div>
+      <h2>Seed</h2>
+      <div class="row"><span>Source</span><div class="chips" id="seedSrc"></div></div>
+      <div class="row"><span>Seed</span><div class="chips"><input id="seed" type="text" spellcheck="false" aria-label="Seed (hex)"><button class="chip" id="reword" type="button">Reword the Problem</button></div></div>
+      <p class="note" id="seedNote"></p>
+      <h2>World</h2>
+      <div class="row"><span>Season</span><div class="chips" id="season"></div></div>
+      <div class="row"><span>Palette row</span><div class="chips" id="prow"></div></div>
+      <div class="row"><span>Motion</span><div class="chips" id="motion"></div></div>
+      <h2>State</h2>
+      <pre id="stats"></pre>
+    </aside>
+  </div>
+  <section>
+    <div id="gridHead">
+      <h2>Many seeds, same moment</h2>
+      <p id="gridNote"></p>
+      <button class="chip" id="moreSeeds" type="button">Next 24 seeds</button>
+    </div>
+    <div id="grid"></div>
+  </section>
+  <div id="lower">
+    <section><h2>What varies, what stays fixed</h2><ul id="varies"></ul></section>
+    <section><h2>Rule sheet if this variant wins</h2><ol id="rules"></ol></section>
+  </div>
+</div>
+<div id="bar" role="toolbar" aria-label="Prototype switcher">
+  <button id="prev" type="button" aria-label="Previous variant">‹</button>
+  <span id="label"></span>
+  <button id="next" type="button" aria-label="Next variant">›</button>
+</div>
+
+<script id="engine">
+"use strict";
+// ================= palette: the chosen kit (issue #70), 12-step full colour =================
+const RAMPS = ["water", "glint", "light", "pad", "padY", "padB", "flower", "flowerW", "flowerG"];
+const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
+const SEASONS = {
+  spring: { name: "Spring morning", ramps: {
+      water: { L: [.52, .80], C: [.06, .05], H: [232, 205], fixed: 1 }, glint: { L: [.86, 1], C: [.03, .005], H: [220, 95], fixed: 1 },
+      light: { L: [.80, .97], C: [.12, .06], H: [80, 95], fixed: 1 }, pad: { L: [.30, .82], C: [.07, .15], H: [168, 118] },
+      padY: { L: [.40, .88], C: [.08, .13], H: [100, 82] }, padB: { L: [.28, .66], C: [.05, .08], H: [48, 66] },
+      flower: { L: [.50, .96], C: [.12, .04], H: [350, 375] }, flowerW: { L: [.58, .99], C: [.04, .008], H: [265, 95] },
+      flowerG: { L: [.55, .96], C: [.11, .10], H: [65, 96] } } },
+  autumn: { name: "Autumn evening", ramps: {
+      water: { L: [.16, .34], C: [.04, .05], H: [282, 298], fixed: 1 }, glint: { L: [.72, .97], C: [.09, .03], H: [60, 92], fixed: 1 },
+      light: { L: [.78, .96], C: [.12, .06], H: [75, 92], fixed: 1 }, pad: { L: [.20, .60], C: [.05, .09], H: [152, 108] },
+      padY: { L: [.28, .70], C: [.07, .11], H: [90, 72] }, padB: { L: [.20, .48], C: [.04, .06], H: [38, 55] },
+      flower: { L: [.42, .90], C: [.11, .05], H: [345, 375] }, flowerW: { L: [.46, .93], C: [.04, .02], H: [300, 85] },
+      flowerG: { L: [.45, .90], C: [.10, .11], H: [55, 90] } } },
+};
+function oklch(L, C, h) {
+  const a = C * Math.cos(h * Math.PI / 180), b = C * Math.sin(h * Math.PI / 180);
+  const l_ = L + .3963377774 * a + .2158037573 * b, m_ = L - .1055613458 * a - .0638541728 * b, s_ = L - .0894841775 * a - 1.291485548 * b;
+  const l = l_ ** 3, m = m_ ** 3, s = s_ ** 3;
+  const f = (x) => { x = Math.max(0, Math.min(1, x)); return Math.round(255 * (x <= .0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - .055)); };
+  return [f(4.0767416621 * l - 3.3077115913 * m + .2309699292 * s), f(-1.2684380046 * l + 2.6097574011 * m - .3413193965 * s), f(-.0041960863 * l - .7034186147 * m + 1.707614701 * s)];
+}
+const lerp = (a, b, t) => a + (b - a) * t;
+const N = RAMPS.map((n) => n === "glint" ? 4 : n === "light" ? 3 : 12);
+function rampLch(spec, n) {
+  const out = [];
+  for (let s = 0; s < n; s++) { const t = n === 1 ? 1 : s / (n - 1); out.push([lerp(spec.L[0], spec.L[1], t), lerp(spec.C[0], spec.C[1], t), lerp(spec.H[0], spec.H[1], t)]); }
+  return out;
+}
+function rowT([L, C, h], row) {
+  if (row === "still") return [L * .88 + .07, C * .7, h];
+  if (row === "stepout") return [.5 + (L - .5) * .45, C * .2, h];
+  return [L, C, h];
+}
+const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
+const code = (r, s) => r * 32 + s;
+const TR = 65535;
+function makeLUT(season, row) {
+  const LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
+  RAMPS.forEach((name, r) => rampLch(SEASONS[season].ramps[name], N[r]).forEach((c, s) => { LUT[code(r, s)] = pack(oklch(...rowT(c, row))); }));
+  return LUT;
+}
+
+// ================= integer helpers: no floats reach the pixels =================
+const SIN = Int32Array.from({ length: 256 }, (_, i) => Math.round(Math.sin(i * Math.PI / 128) * 1024)); // a constant table in the real generator
+const sin = (a) => SIN[a & 255], cos = (a) => SIN[(a + 64) & 255];
+function mix(a, b) { let h = Math.imul(a ^ (b + 0x9e3779b9 | 0), 0x85ebca6b); h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35); h ^= h >>> 16; return h >>> 0; }
+function stream(seed, i) { let s = mix(seed, i) | 0; return (n) => { s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) % n; }; }
+function isqrt(n) { let x = 0; while ((x + 1) * (x + 1) <= n) x++; return x; }
+const clampI = (v, a, b) => v < a ? a : v > b ? b : v;
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+const bay = (x, y) => BAYER[(y & 3) * 4 + (x & 3)];
+function fnv(text) { let h = 0x811c9dc5; for (let i = 0; i < text.length; i++) h = Math.imul(h ^ text.charCodeAt(i), 16777619); return h >>> 0; }
+function hashBuf(buf) { let h = 0x811c9dc5; for (let i = 0; i < buf.length; i++) { h = Math.imul(h ^ (buf[i] & 255), 16777619); h = Math.imul(h ^ (buf[i] >>> 8), 16777619); } return (h >>> 0).toString(16).padStart(8, "0"); }
+// separation in the pond's own plane (y is squashed about 2:1 by the view)
+const apart = (a, b, f) => { const dx = a.x - b.x, dy = (a.y - b.y) * 2, d = (a.rx + b.rx) * f; return dx * dx + dy * dy >= (d * d) / 10000; };
+
+// ================= the three generators =================
+// Each takes the seed and the counts and returns pads in record order: [0] the Problem, then one per
+// Probe, then one per accepted "Add it?" offer. Pad i depends only on the seed and pads before it,
+// so a lily never rearranges as it grows.
+const AREA = { x: 52, y: 26 };
+function inBounds(p) { return Math.abs(p.x) + p.rx <= AREA.x && Math.abs(p.y) + p.ry <= AREA.y; }
+function ring(seed, pads, p, i, f) { // fallback and rosette placement: golden angle, pushed outward until clear
+  const base = mix(seed, 991) & 255;
+  for (let d = 12 + 3 * i, k = 0; k < 24; d += 2, k++) {
+    const a = base + i * 98;
+    p.x = (cos(a) * d) >> 10; p.y = (sin(a) * d) >> 11;
+    if (pads.every((q) => apart(p, q, f)) && inBounds(p)) return k;
+  }
+  return -1;
+}
+const GEN = {
+  a: { key: "a", name: "Scattered", version: "lily-a/1",
+    blurb: "Everything is generated. Pads land around the Problem's pad by seeded rejection sampling, each touching the cluster. Pad size, oval, notch, tone and the flower's petals and colour all vary by seed.",
+    layout(seed, nP, nA) {
+      const pads = [], guard = { tries: 0, fallbacks: 0 };
+      for (let i = 0; i < 1 + nP + nA; i++) {
+        const r = stream(seed, i), kind = i === 0 ? "problem" : i <= nP ? "probe" : "added";
+        const rx = kind === "problem" ? 12 + r(3) : kind === "probe" ? 8 + r(5) : 7 + r(3);
+        const p = { i, kind, rx, ry: Math.max(3, (rx * (40 + r(9))) / 100 | 0), notch: r(256), nw: 10 + r(6), tone: r(3) - 1, vein: rx >= 9, phase: r(4), x: 0, y: 0 };
+        if (i > 0) {
+          let ok = false;
+          for (let t = 0; t < 32 && !ok; t++) {
+            guard.tries++;
+            const q = pads[r(pads.length)], a = r(256), d = ((q.rx + p.rx) * (85 + r(30))) / 100 | 0;
+            p.x = q.x + ((cos(a) * d) >> 10); p.y = q.y + ((sin(a) * d) >> 11);
+            ok = inBounds(p) && pads.every((o) => apart(p, o, 82));
+          }
+          if (!ok) { guard.fallbacks++; ring(seed, pads, p, i, 82); }
+        }
+        pads.push(p);
+      }
+      return { pads, guard };
+    },
+    flower(seed) { const r = stream(seed, 777); return { kind: "drawn", petals: 6 + r(3), size: 8 + r(2), rot: r(256), ramp: [R.flower, R.flowerW, R.flowerG][r(3)] }; },
+    varies: ["<b>Pads:</b> count from the records; size (Problem 12–14, Probe 8–12, added 7–9 art px across the half-width), oval, notch angle and width, tone ±1 step, place in the cluster.",
+      "<b>Flower:</b> 6–8 petals, size 8–9, turn, and colour from three ramps (pink, white, gold) in the season's palette.",
+      "<b>Fixed:</b> the palette rows, outline in each part's darkest step, light from the upper left, the flower always on the Problem's pad.",
+      "<b>Hand-drawn:</b> nothing. Every pixel comes from code."],
+    rules: ["<b>Generated lily.</b> A versioned generator (<code>lily-a/1</code>) builds pads and flower from the records and a seed in integer maths; CI compares the index data byte for byte.",
+      "<b>Placement:</b> each new pad tries up to 32 seeded spots touching the cluster and clear of every pad; failing that, it takes the next golden-angle spot. Earlier pads never move.",
+      "<b>Variation:</b> as listed; no variation ever depends on a count, a time or an outcome.",
+      "<b>Risk:</b> widest variety, so the calm check matters most; watch the grid for clumps and strays."] },
+  b: { key: "b", name: "Composed", version: "lily-b/1",
+    blurb: "Hand-made parts on hand-made plans. A small kit of pad sprites (three sizes, two notches each) and one drawn flower sit on one of four composed slot plans. The seed picks the plan, the mirror and which sprite fills each slot.",
+    PLANS: [
+      [[0, 0, "L"], [-22, -5, "M"], [20, -7, "M"], [-14, 9, "S"], [24, 6, "M"], [-34, 3, "S"], [6, 13, "S"], [36, -2, "S"], [-6, -13, "S"]],
+      [[0, 0, "L"], [21, 4, "M"], [-20, -6, "M"], [-2, -13, "S"], [8, 12, "S"], [-28, 8, "S"], [38, -4, "S"], [30, 13, "S"], [-40, -4, "S"]],
+      [[0, 0, "L"], [-21, 3, "M"], [19, -6, "M"], [3, 13, "S"], [-10, -12, "S"], [34, 4, "S"], [-36, -5, "S"], [22, 12, "S"], [-24, 13, "S"]],
+      [[0, 0, "L"], [18, 7, "M"], [-19, 5, "M"], [-6, -12, "M"], [16, -11, "S"], [-34, -3, "S"], [34, 0, "S"], [2, 14, "S"], [-26, 14, "S"]]],
+    KIT: { L: [[13, 6, 40], [13, 6, 200]], M: [[10, 4, 60], [10, 4, 170]], S: [[8, 3, 30], [8, 3, 220]] },
+    layout(seed, nP, nA) {
+      const plan = this.PLANS[seed % 4], flip = (seed >>> 2) & 1, pads = [];
+      for (let i = 0; i < 1 + nP + nA; i++) {
+        const [x, y, size] = plan[i], v = mix(seed, i) & 1, [rx, ry, notch] = this.KIT[size][v];
+        pads.push({ i, kind: i === 0 ? "problem" : i <= nP ? "probe" : "added", x: flip ? -x : x, y, rx, ry, notch: flip ? (128 - notch) & 255 : notch, nw: 18, tone: 0, vein: true, phase: (i * 3) & 3, sprite: size + v });
+      }
+      return { pads, guard: { tries: 0, fallbacks: 0 } };
+    },
+    flower() { return { kind: "sprite", ramp: R.flower }; },
+    varies: ["<b>Pads:</b> count from the records; each slot's size is fixed by the plan, and the seed picks one of two sprites for it (notch one way or the other).",
+      "<b>Plan:</b> one of four composed slot plans, mirrored or not: 8 arrangements in all.",
+      "<b>Flower:</b> one drawn flower, one colour. Every Recap flower looks the same.",
+      "<b>Hand-drawn:</b> the six pad sprites, the flower, its closed form and the bud; the plans are placed by hand too."],
+    rules: ["<b>Kit lily.</b> An artist draws 6 pad sprites, an open and a closed flower and a bud as indexed sprites; 4 slot plans hold up to 9 pads.",
+      "<b>The seed</b> picks plan, mirror and sprite per slot; nothing else varies, so every lily is pre-approved.",
+      "<b>Limit:</b> 9 pads (Problem + 5 Probes + 3 added). More slots need more drawing.",
+      "<b>Risk:</b> lilies on the same pond start to look alike; 8 arrangements across a week of Recaps will repeat."] },
+  c: { key: "c", name: "Rosette", version: "lily-c/1",
+    blurb: "Generated, but ordered like a real plant. Pads follow the golden angle out from the Problem's pad in Probe order, a little smaller each time, every notch facing the heart. One flower form; its colour comes from the seed.",
+    layout(seed, nP, nA) {
+      const pads = [], guard = { tries: 0, fallbacks: 0 };
+      for (let i = 0; i < 1 + nP + nA; i++) {
+        const r = stream(seed, i), kind = i === 0 ? "problem" : i <= nP ? "probe" : "added";
+        const rx = kind === "problem" ? 14 : Math.max(7, 12 - (i >> 1) + r(2) - (kind === "added" ? 1 : 0));
+        const p = { i, kind, rx, ry: Math.max(3, (rx * 44) / 100 | 0), notch: 0, nw: 16, tone: r(3) - 1, vein: rx >= 9, phase: r(4), x: 0, y: 0 };
+        if (i > 0) { const k = ring(seed, pads, p, i, 80); guard.tries += Math.max(0, k); if (k < 0) guard.fallbacks++; }
+        const a = (mix(seed, 991) & 255) + i * 98;
+        p.notch = i === 0 ? (mix(seed, 5) & 255) : (a + 128) & 255;
+        pads.push(p);
+      }
+      return { pads, guard };
+    },
+    flower(seed) { return { kind: "drawn", petals: 8, size: 9, rot: mix(seed, 9) & 31, ramp: [R.flower, R.flowerW, R.flowerG][mix(seed, 777) % 3] }; },
+    varies: ["<b>Pads:</b> count from the records; the spiral's starting turn, small size jitter (±1) and tone ±1 step.",
+      "<b>Order:</b> fixed by the records. The first Probe sits nearest the Problem, the last added pad furthest out; each notch faces the Problem's pad.",
+      "<b>Flower:</b> one form (8 petals, size 9); colour from three ramps by seed.",
+      "<b>Hand-drawn:</b> nothing; the rosette rule does the composing."],
+    rules: ["<b>Rosette lily.</b> Pad i sits at golden angle × i from a seeded start, distance growing with i, pushed outward only until clear.",
+      "<b>Sizes</b> step down gently along the spiral (14 for the Problem, then 12 → 7), never by anything the person did.",
+      "<b>Variation:</b> the turn, ±1 size, tone and flower colour. Every lily reads as the same plant.",
+      "<b>Risk:</b> the order could read as a sequence the person moved through; the spiral follows Probe order, which is the Breakdown's, not the person's."] },
+};
+const KEYS = ["a", "b", "c"];
+
+// ================= drawing at art resolution =================
+const W = 136, H = 76, CX = 68, CY = 44;
+const PETAL_OPEN = ["...P.P.P...", "..PpPpPpP..", ".PpPpcpPpP.", "PpPpcccpPpP", ".pPpPpPpPp.", "..ppppppp.."];
+const PETAL_CLOSED = ["..P..", ".PpP.", ".PpP.", "PpPpP", ".ppp."];
+const BUD = [".P.", "PpP", "PpP", ".p.", ".s."];
+function put(lay, x, y, c, t, rm) {
+  if (x < 0 || y < 0 || x >= W || y >= H) return;
+  if (t < 8 && rm && bay(x, y) >= t * 2) return; // Reduce Motion: 8-step dither dissolve
+  lay[y * W + x] = c;
+}
+function drawPad(lay, p, ramp, ox, oy, t, rm) {
+  let rx = p.rx, ry = p.ry;
+  if (t < 8 && !rm) { rx = Math.max(2, (rx * (2 + t * 6 / 8)) / 8 | 0); ry = Math.max(1, (ry * (2 + t * 6 / 8)) / 8 | 0); } // unfurl
+  const e1x = cos(p.notch - p.nw), e1y = sin(p.notch - p.nw), e2x = cos(p.notch + p.nw), e2y = sin(p.notch + p.nw), dx0 = cos(p.notch), dy0 = sin(p.notch);
+  const inside = (x, y) => {
+    if (x * x * ry * ry + y * y * rx * rx > rx * rx * ry * ry) return false;
+    if (Math.abs(x) + Math.abs(y) <= 1) return true;
+    const px = x * ry, py = y * rx; // undo the squash before testing the notch wedge
+    return !(e1x * py - e1y * px >= 0 && px * e2y - py * e2x >= 0 && px * dx0 + py * dy0 > 0);
+  };
+  const veins = new Set();
+  if (p.vein && rx >= 8) for (const v of [128, 92, 164]) for (let s = 2; s < rx - 1; s++) {
+    const a = p.notch + v; veins.add(((cos(a) * s) >> 10) + "," + Math.trunc((sin(a) * s * ry) / (rx * 1024)));
+  }
+  for (let y = -ry; y <= ry; y++) for (let x = -rx; x <= rx; x++) {
+    if (!inside(x, y)) continue;
+    let s = 6 + p.tone + Math.trunc(((-x * ry - y * rx * 2) * 4) / (rx * ry * 2));
+    s = clampI(s, 2, 10);
+    if (veins.has(x + "," + y)) s = Math.max(1, s - 2);
+    if (!inside(x - 1, y - 1) && inside(x + 1, y + 1)) s = 10;
+    if (!inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1)) s = 0;
+    put(lay, ox + x, oy + y, code(ramp, s), t, rm);
+  }
+}
+function drawRows(lay, rows, map, ox, oy, t, rm) {
+  const h = rows.length, w = rows[0].length;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const c = map[rows[y][x]]; if (c !== undefined) put(lay, ox + x - (w >> 1), oy + y - h + 1, c, t, rm); }
+}
+function drawFlower(lay, f, ox, oy, open, t, rm) {
+  const nf = N[f.ramp], map = { P: code(f.ramp, nf - 2), p: code(f.ramp, nf - 6), c: code(R.light, 1), s: code(R.pad, 4) };
+  if (!open || (t < 4 && !rm)) { drawRows(lay, PETAL_CLOSED, map, ox, oy + 1, 8, false); return; }
+  if (f.kind === "sprite") { drawRows(lay, PETAL_OPEN, map, ox, oy + 1, t, rm); return; }
+  const size = t < 8 && !rm ? Math.max(3, (f.size * (4 + t) / 12) | 0) : f.size, own = new Map();
+  const petal = (cx, cy, px, py, s) => { for (let y = -py; y <= py; y++) for (let x = -px; x <= px; x++) if (x * x * py * py + y * y * px * px <= px * px * py * py) own.set((cx + x) + "," + (cy + y), s); };
+  const ring1 = [], ring2 = [];
+  for (let j = 0; j < f.petals; j++) ring1.push((f.rot + ((j * 256) / f.petals | 0)) & 255);
+  for (let j = 0; j < f.petals; j++) ring2.push((f.rot + (((j * 2 + 1) * 128) / f.petals | 0)) & 255);
+  const pr = Math.max(1, (size * 45) / 100 | 0), pq = Math.max(1, (size * 26) / 100 | 0);
+  for (const a of ring1.sort((u, v) => sin(u) - sin(v))) petal((cos(a) * size) >> 11, (sin(a) * size) >> 12, pr, pq, clampI(nf - 5 + ((sin(a) * 3) >> 10), 2, nf - 2));
+  for (const a of ring2.sort((u, v) => sin(u) - sin(v))) petal((cos(a) * size) >> 12, ((sin(a) * size) >> 13) - 2, Math.max(1, pr - 1), pq, clampI(nf - 3 + ((sin(a) * 2) >> 10), 3, nf - 1));
+  for (const [k, s] of own) {
+    const [x, y] = k.split(",").map(Number);
+    const edge = !own.has((x - 1) + "," + y) || !own.has((x + 1) + "," + y) || !own.has(x + "," + (y + 1));
+    put(lay, ox + x, oy + y, code(f.ramp, edge && s < nf - 2 ? 2 : s), t, rm);
+  }
+  put(lay, ox, oy - 2, code(R.light, 2), t, rm); put(lay, ox + 1, oy - 2, code(R.light, 1), t, rm); put(lay, ox, oy - 3, code(R.light, 1), t, rm);
+}
+// the stage: what the records say exists at this moment of the Inquiry
+const STAGES = [
+  { key: "begin", label: "Begin", note: "The Problem's pad only, while the Breakdown is made." },
+  { key: "breakdown", label: "Breakdown lands", note: "One pad per Probe." },
+  { key: "offer", label: '"Add it?" offer', note: "A bud on the waterline, where its pad would unfurl." },
+  { key: "accepted", label: "Offer accepted", note: "The bud unfurled into a pad." },
+  { key: "recap", label: "Recap", note: "The flower opens on the Problem's pad. Ageing stops." },
+  { key: "closed", label: "Older Recap", note: "Between visits, the flower closes. This is how it sits bottom-left on home." },
+];
+function recordsFor(st) {
+  const s = st.stage, k = STAGES.findIndex((x) => x.key === s);
+  const nP = k >= 1 ? st.probes : 0;
+  const nA = s === "accepted" ? Math.max(1, st.added) : k >= 4 ? st.added : 0;
+  return { probes: nP, added: nA, offer: s === "offer", recap: k >= 4, closed: s === "closed", daysIdle: k >= 4 ? 0 : st.days };
+}
+function build(gen, seed, rec) {
+  const L = gen.layout(seed, rec.probes, rec.added);
+  const bud = rec.offer ? gen.layout(seed, rec.probes, rec.added + 1).pads.at(-1) : null;
+  return { ...L, bud, flower: rec.recap ? gen.flower(seed) : null };
+}
+function ageRamp(p, days) {
+  const h = mix(p.i, 31) % 3, lead = p.kind === "problem" ? 1 : 0;
+  if (days >= 6 + (h & 1) - lead) return R.padB;
+  if (days >= 3 + h - lead) return R.padY;
+  return R.pad;
+}
+// compose one frame into an index buffer; cue = { what: "pads" | "flower", from, t } animates the newest parts
+function compose(lily, rec, o = {}) {
+  const buf = new Uint16Array(W * H), lay = new Uint16Array(W * H).fill(TR), rm = !!o.reduce, cue = o.cue;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const v = ((y * 80) / H | 0) + bay(x, y); // water: deeper towards the bottom, ordered dither through depth
+    buf[y * W + x] = code(R.water, clampI(8 - (v >> 4), 3, 8));
+  }
+  for (let k = 0; k < 9; k++) { // a few static glints, palette-cycled at render time
+    const gx = (mix(4242, k) % (W - 12)) + 4, gy = (mix(77, k) % (H - 6)) + 3, len = 3 + mix(9, k) % 5;
+    for (let j = 0; j < len; j++) buf[gy * W + gx + j] = code(R.glint, (j + k) & 3);
+  }
+  const bobY = (p) => o.bob ? (((o.tick3 + p.phase) & 3) >= 2 ? 1 : 0) : 0;
+  const pads = lily.pads.slice().sort((a, b) => a.y - b.y || a.i - b.i);
+  for (const p of pads) {
+    const fresh = cue && cue.what === "pads" && p.i >= cue.from, t = fresh ? cue.t : 8;
+    drawPad(lay, p, ageRamp(p, rec.daysIdle), CX + p.x, CY + p.y + bobY(p), t, rm);
+  }
+  if (lily.bud) {
+    const b = lily.bud, t = cue && cue.what === "bud" ? cue.t : 8, map = { P: code(R.flower, 8), p: code(R.flower, 5), s: code(R.pad, 4) };
+    drawRows(lay, BUD, map, CX + b.x, CY + b.y + bobY(b), t, rm);
+    for (let j = -2; j <= 2; j++) put(lay, CX + b.x + j, CY + b.y + 1, code(R.water, 10), t, rm);
+  }
+  if (lily.flower) {
+    const p0 = lily.pads[0], t = cue && cue.what === "flower" ? cue.t : 8;
+    drawFlower(lay, lily.flower, CX + p0.x - 2, CY + p0.y - 1 + bobY(p0), !rec.closed, t, rm);
+  }
+  for (let y = H - 2; y >= 0; y--) for (let x = W - 2; x >= 0; x--) { // a 1-px shadow on the water under every part
+    const i = y * W + x, j = i + W + 1;
+    if (lay[i] !== TR && lay[j] === TR) buf[j] = code(R.water, 0);
+  }
+  for (let i = 0; i < W * H; i++) if (lay[i] !== TR) buf[i] = lay[i];
+  return buf;
+}
+function paint(ctx, buf, LUT, cyc) {
+  const img = ctx.createImageData(W, H), px = new Uint32Array(img.data.buffer), g = R.glint * 32;
+  for (let i = 0; i < buf.length; i++) { let c = buf[i]; if (c >= g && c < g + 4) c = g + ((c - g + cyc) & 3); px[i] = LUT[c]; }
+  ctx.putImageData(img, 0, 0);
+}
+</script>
+
+<script id="ui">
+"use strict";
+const $ = (id) => document.getElementById(id);
+const PROBLEMS = [
+  "I keep saying yes to work I don't want, and then I resent everyone for it.",
+  "I say yes to work I don't want, then resent the people who asked.",
+  "Why do I agree to things I don't want to do, and then feel bitter?",
+];
+const st = { v: "a", stage: "breakdown", probes: 4, added: 1, days: 0, seedSrc: "stored", seed: 0x5eed0a74, problem: 0,
+  season: "spring", row: "normal", motion: "on", gridBase: 1 };
+try { const h = location.hash.slice(1); if (KEYS.includes(h)) st.v = h; } catch (e) {}
+const LUTS = {};
+const lut = () => LUTS[st.season + st.row] ??= makeLUT(st.season, st.row);
+const seedOf = () => st.seedSrc === "stored" ? st.seed >>> 0 : fnv(PROBLEMS[st.problem]);
+const hex = (n) => (n >>> 0).toString(16).padStart(8, "0");
+
+function chips(el, items, get, set) {
+  el.innerHTML = "";
+  for (const [val, label, dis] of items) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = label; b.disabled = !!dis;
+    b.setAttribute("aria-pressed", String(get() === val));
+    b.onclick = () => { set(val); render(); };
+    el.append(b);
+  }
+}
+const main = $("main"), mctx = main.getContext("2d");
+main.width = W; main.height = H;
+function fitMain() {
+  const avail = Math.min($("view").clientWidth || 520, 680), s = Math.max(1, Math.floor(avail / W));
+  main.style.width = W * s + "px"; main.style.height = H * s + "px";
+  return s;
+}
+let cue = null, cueStart = 0, scale = 1;
+function frameOpts(now) {
+  const moving = st.motion === "on" && st.row === "normal";
+  return { reduce: st.motion === "reduce", bob: moving, tick3: Math.floor(now / 333), cyc: st.row === "still" || st.motion === "off" ? 0 : Math.floor(now / (st.motion === "reduce" ? 400 : 200)), cue };
+}
+function drawMain(now) {
+  const gen = GEN[st.v], rec = recordsFor(st), lily = build(gen, seedOf(), rec), o = frameOpts(now);
+  paint(mctx, compose(lily, rec, o), lut(), o.cyc);
+}
+function statsHtml() {
+  const gen = GEN[st.v], seed = seedOf(), rec = recordsFor(st), lily = build(gen, seed, rec);
+  const still = compose(lily, rec), h = hashBuf(still), h2 = hashBuf(compose(build(gen, seed, rec), rec));
+  // does the lily keep its earlier pads as it grows? compare with the next stage's layout
+  const bigger = gen.layout(seed, st.probes, 3).pads, same = lily.pads.every((p, i) => p.x === bigger[i].x && p.y === bigger[i].y && p.rx === bigger[i].rx);
+  const used = lily.pads.length, clipped = lily.pads.filter((p) => !inBounds(p)).length;
+  const lines = [
+    `<b>records in</b>  problem pad 1 · probes ${rec.probes} · added ${rec.added}${rec.offer ? " · offer open" : ""}${rec.recap ? rec.closed ? " · recap (older)" : " · recap" : ""} · days idle ${rec.daysIdle}`,
+    `<b>seed</b>        ${hex(seed)} (${st.seedSrc === "stored" ? "stored with the Inquiry" : "from the Problem's words"})`,
+    `<b>generator</b>   ${gen.version}`,
+    `<b>pads</b>        ${used}${lily.bud ? " + bud" : ""}${lily.flower ? (rec.closed ? " + closed flower" : " + flower") : ""}`,
+    ...lily.pads.map((p) => `  ${String(p.i).padStart(2)} ${p.kind.padEnd(7)} x${String(p.x).padStart(4)} y${String(p.y).padStart(4)} rx${String(p.rx).padStart(3)} notch${String(p.notch).padStart(4)}${p.sprite ? " sprite " + p.sprite : ""}  ${{ [R.pad]: "green", [R.padY]: "yellow", [R.padB]: "brown" }[ageRamp(p, rec.daysIdle)]}`),
+    lily.flower ? `<b>flower</b>      ${lily.flower.kind === "sprite" ? "drawn sprite" : lily.flower.petals + " petals, size " + lily.flower.size} · ${RAMPS[lily.flower.ramp]}` : `<b>flower</b>      none yet`,
+    `<b>guard</b>       tries ${lily.guard.tries} · fallbacks <span class="${lily.guard.fallbacks ? "bad" : ""}">${lily.guard.fallbacks}</span> · outside the area <span class="${clipped ? "bad" : ""}">${clipped}</span>`,
+    `<b>stable</b>      earlier pads unchanged when 3 more are added: ${same ? "yes" : '<span class="bad">no</span>'}`,
+    `<b>index hash</b>  ${h} · rebuilt ${h2} ${h === h2 ? "(same)" : '<span class="bad">(differs)</span>'}`,
+  ];
+  return lines.join("\n");
+}
+function renderGrid() {
+  const grid = $("grid"), gen = GEN[st.v], rec = recordsFor(st), L = lut();
+  grid.innerHTML = ""; let flagged = 0;
+  for (let k = 0; k < 24; k++) {
+    const seed = mix(st.gridBase, k), lily = build(gen, seed, rec), bad = lily.guard.fallbacks > 0 || lily.pads.some((p) => !inBounds(p));
+    if (bad) flagged++;
+    const b = document.createElement("button"); b.type = "button"; b.className = "cell" + (bad ? " flag" : "");
+    const c = document.createElement("canvas"); c.width = W; c.height = H;
+    paint(c.getContext("2d"), compose(lily, rec), L, 0);
+    const s = document.createElement("span"); s.textContent = hex(seed) + (bad ? " · fallback" : "");
+    b.append(c, s); b.setAttribute("aria-label", "Use seed " + hex(seed));
+    b.onclick = () => { st.seedSrc = "stored"; st.seed = seed; render(); window.scrollTo({ top: 0, behavior: "smooth" }); };
+    grid.append(b);
+  }
+  $("gridNote").textContent = `${STAGES.find((s) => s.key === st.stage).label}, ${rec.probes} Probes, ${rec.added} added. ${flagged ? flagged + " of 24 needed the fallback." : "None of 24 needed the fallback."} Tap one to look closer.`;
+}
+function render() {
+  const gen = GEN[st.v];
+  try { history.replaceState(null, "", "#" + st.v); } catch (e) {}
+  $("vname").textContent = `${st.v.toUpperCase()} · ${gen.name}`;
+  $("vblurb").textContent = gen.blurb;
+  $("label").innerHTML = `<b>${st.v.toUpperCase()}</b>${gen.name}`;
+  chips($("stages"), STAGES.map((s) => [s.key, s.label]), () => st.stage, (v) => { st.stage = v; cue = null; });
+  chips($("probes"), [[3, "3"], [4, "4"], [5, "5"]], () => st.probes, (v) => st.probes = v);
+  chips($("added"), [[0, "0"], [1, "1"], [2, "2"], [3, "3"]], () => st.added, (v) => st.added = v);
+  chips($("seedSrc"), [["stored", "Stored random"], ["text", "Problem's words"]], () => st.seedSrc, (v) => st.seedSrc = v);
+  chips($("season"), [["spring", "Spring morning"], ["autumn", "Autumn evening"]], () => st.season, (v) => st.season = v);
+  chips($("prow"), [["normal", "Normal"], ["still", "Still water"], ["stepout", "Step-out"]], () => st.row, (v) => st.row = v);
+  chips($("motion"), [["on", "Moving"], ["reduce", "Reduce Motion"], ["off", "Frozen"]], () => st.motion, (v) => st.motion = v);
+  const rec = recordsFor(st), k = STAGES.findIndex((s) => s.key === st.stage);
+  $("problemText").textContent = "“" + PROBLEMS[st.problem] + "”";
+  $("days").value = st.days; $("days").disabled = k >= 4;
+  $("daysNote").textContent = k >= 4 ? "A Recap stops ageing." : ["Fresh.", "Fresh.", "Fresh.", "Some pads turn yellow.", "Yellowing.", "Mostly yellow.", "Edges turn brown.", "Last day before it ends with no Recap."][st.days];
+  $("seed").value = hex(seedOf()); $("seed").disabled = st.seedSrc !== "stored";
+  $("seedNote").textContent = st.seedSrc === "stored"
+    ? "A random 32-bit number made at Begin and kept only with the Inquiry on the device. Rewording the Problem changes nothing."
+    : "The seed is a hash of the Problem's words, so rewording the Problem regrows the lily. Try it.";
+  $("cap").textContent = `${W} × ${H} art px at ×${scale} · ${STAGES[k].note}${rec.added && k >= 3 ? ` ${rec.added} added.` : ""}`;
+  $("stats").innerHTML = statsHtml();
+  $("varies").innerHTML = gen.varies.map((s) => `<li>${s}</li>`).join("");
+  $("rules").innerHTML = gen.rules.map((s) => `<li>${s}</li>`).join("");
+  $("cue").disabled = !["begin", "breakdown", "offer", "accepted", "recap"].includes(st.stage);
+  renderGrid();
+  scale = fitMain(); dirty = true;
+}
+$("days").oninput = (e) => { st.days = +e.target.value; render(); };
+$("seed").onchange = (e) => { const n = parseInt(e.target.value, 16); if (!Number.isNaN(n)) st.seed = n >>> 0; render(); };
+$("reword").onclick = () => { st.problem = (st.problem + 1) % PROBLEMS.length; render(); };
+$("newSeed").onclick = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); st.seedSrc = "stored"; st.seed = a[0]; render(); };
+$("moreSeeds").onclick = () => { st.gridBase++; renderGrid(); };
+$("cue").onclick = () => {
+  const rec = recordsFor(st);
+  cue = st.stage === "recap" ? { what: "flower", t: 0 } : st.stage === "offer" ? { what: "bud", t: 0 }
+    : st.stage === "accepted" ? { what: "pads", from: 1 + rec.probes + rec.added - 1, t: 0 }
+    : st.stage === "begin" ? { what: "pads", from: 0, t: 0 } : { what: "pads", from: 1, t: 0 };
+  if (st.row === "still") cue = null; // Still water: no cues, only the end state
+  cueStart = performance.now(); dirty = true;
+};
+const go = (d) => { st.v = KEYS[(KEYS.indexOf(st.v) + d + KEYS.length) % KEYS.length]; cue = null; render(); };
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1);
+document.addEventListener("keydown", (e) => {
+  if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+  if (e.key === "ArrowLeft") go(-1); if (e.key === "ArrowRight") go(1);
+});
+window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (KEYS.includes(h) && h !== st.v) { st.v = h; render(); } });
+window.addEventListener("resize", () => { scale = fitMain(); });
+let dirty = true, lastKey = "";
+function loop(now) {
+  if (cue) { cue.t = Math.min(8, Math.floor((now - cueStart) / 125)); if (cue.t >= 8) { cue = null; } dirty = true; } // 8 fps, 1 s
+  const o = frameOpts(now), key = o.tick3 + ":" + o.cyc;
+  if (st.motion !== "off" && key !== lastKey) { lastKey = key; dirty = true; }
+  if (dirty) { dirty = false; drawMain(now); }
+  requestAnimationFrame(loop);
+}
+render();
+requestAnimationFrame(loop);
+</script>
