@@ -106,11 +106,11 @@
 "use strict";
 // ---------- the four directions ----------
 const V = {
-  k: { name: "Chosen kit", blurb: "The decision on issue #70: Soft hi-bit at the highest density (320 across on every device), with full-colour, fully hue-shifted 5-step ramps.",
+  k: { name: "Chosen kit", blurb: "The decision on issue #70: Soft hi-bit at the highest density (320 across on every device), with full-colour, fully hue-shifted 12-step ramps and Luminous light (rich glows, mist layers, light shafts).",
     density: 320,
-    palette: { steps: 5, sky: 7, chroma: 1, hue: 1, label: "5-step, full colour" },
+    palette: { steps: 12, sky: 16, chroma: 1, hue: 1, label: "12-step, full colour" },
     line: { trees: "selective", interactive: "coloured", tex: 2, reeds: true, label: "selective" },
-    light: { dither: "light", glow: 1, mist: 1, rays: false, motes: true, glints: 1, label: "glow + mist" },
+    light: { dither: "rich", glow: 2, mist: 2, rays: true, motes: true, glints: 1.2, label: "shafts + haze" },
     motion: { waterFps: 8, cycleFps: 5, spriteFps: 3, cloud: 1.5, bob: true, drift: false, amp: 1, label: "8 fps water" } },
   a: { name: "Soft hi-bit", blurb: "The proposed default: fine detail, hue-shifted 5-step ramps, coloured outlines only on the pieces you touch, dithering only in light and mist, quiet palette-cycled water.",
     density: 288,
