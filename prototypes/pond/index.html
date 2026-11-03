@@ -9,15 +9,19 @@
   on map #1), round 4. Brainstorm material, not decisions. Everything floats on one pool in a forest. One rule
   throughout: the app's words sit ABOVE the waterline, the person's BELOW it (always upright).
     - Opening: still sky reflected, a drop falls, the ripples bring up the wordmark.
-    - Home: a pond in a forest. Trees sway and drop the odd leaf. The two controls are things found on a pond,
-      three ways to compare (?controls=boat|lily|stones): a moored rowboat and a flowering lily pad, two lily pads,
-      or stepping stones. Settings top left; the primary action bottom right, its label written on the object.
-    - Probe list: Probes above, the person's Problem below; Finish Inquiry is the same bottom-right object.
+    - Home: a pond in a forest. Trees sway and drop the odd leaf. Settings is a moored rowboat top left; the
+      primary action is a flowering lily pad bottom right, its label written on the pad.
+    - An Inquiry is a lily: the Problem is its pad, the Paths its stem, the Recap its flower. Each Inquiry on
+      home shows how far it has grown.
+    - Probe list: Probes above, the person's Problem below; Finish Inquiry is the same bottom-right lily pad.
     - Path: a meandering brook runs through the water, babbling round stones, and you walk along it step by step
-      (‹ › or swipe). The waterline sits high so the keyboard grows into the space below with little movement.
-    - Recap: the brook quietens and opens into a still pool.
+      (‹ › or swipe). Submitting a Reflection skims a stone down the brook. The Path never moves when the
+      keyboard opens: the keyboard slides over the empty water at the bottom.
+    - Recap: the brook quietens and opens into a still pool, and the lily flowers.
+    - The AI notice shows once, at the start of each Inquiry (EU AI Act Art. 50), and once more if the model
+      signals softening; there is no label on every screen.
     - Help and the Step-out still the water: no motion, no metaphor.
-  Logo options (?logo=leaf|ripples|sun|pad). Voice warms along the current Path and when the model signals
+  Logo options (?logo=lily|lilysun|lilyripples). Voice warms along the current Path and when the model signals
   softening ("model: softening" in the bar).
   ANIMATION IS PLACEHOLDER. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits
   between snappy and calm.
@@ -76,7 +80,6 @@
   @keyframes bob { 50% { transform:translateY(3px) rotate(-.3deg); } }
   #app.still .float, #app.still .pobj .bobber, #app.still .pobj .ring, #app.still .sway, #app.still .creek .babble { animation:none !important; }
   .badge { font:italic 14px "Newsreader",serif; white-space:nowrap; }
-  #app.kb .hide-kb { display:none; }
 
   /* forest behind the wordmark, and its reflection */
   .trees { position:absolute; left:0; right:0; z-index:2; pointer-events:none; }
@@ -107,7 +110,6 @@
 
   /* Path halves */
   .q { font:400 22px/1.4 "Newsreader",serif; }
-  #app.kb .q { font-size:18px; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .r { font:400 18px/1.5 "Newsreader",serif; }
   .premise { font:italic 15px "Newsreader",serif; color:var(--wmut); margin-bottom:10px; }
   .stepnav { position:absolute; left:0; right:0; top:calc(var(--wl) - 17px); z-index:6; display:flex; align-items:center; padding:0 8px; pointer-events:none; }
@@ -117,11 +119,13 @@
   .dotsrow i.end { border-radius:1px; transform:rotate(45deg); } .dotsrow i.end.on { transform:rotate(45deg) scale(1.4); }
   .fromR { animation:fromR .7s ease both; } .fromL { animation:fromL .7s ease both; }
   @keyframes fromR { from { opacity:0; transform:translateX(28px); } } @keyframes fromL { from { opacity:0; transform:translateX(-28px); } }
-  textarea.ref { width:100%; flex:1; min-height:80px; background:none; border:none; outline:none; resize:none; color:var(--wink); font:18px/1.5 "Newsreader",serif; padding:0; }
+  textarea.ref { width:100%; height:150px; background:none; border:none; outline:none; resize:none; color:var(--wink); font:18px/1.5 "Newsreader",serif; padding:0; }
   textarea.ref::placeholder { color:var(--wmut); }
-  .ctrl { display:flex; align-items:center; gap:10px; padding:8px 22px 26px; }
-  #app.kb .ctrl { padding-bottom:10px; }
-  #app.kb .below { padding-bottom:280px; }
+  .ctrl { display:flex; align-items:center; gap:10px; padding:6px 22px 0; }
+  .kbd { transform:translateY(100%); transition:transform .32s cubic-bezier(.3,.7,.3,1); display:grid !important; }
+  #app.kb .kbd { transform:none; }
+  .skim { position:absolute; z-index:8; width:12px; height:5px; border-radius:50%; background:#6f716b; box-shadow:0 1px 0 rgba(255,255,255,.4) inset; }
+  .stage { flex:none; display:block; }
   .ailabel { font-variant:small-caps; letter-spacing:.06em; font-size:13px; }
   .mic { width:42px; height:42px; padding:0; border-radius:50%; display:flex; align-items:center; justify-content:center; }
   .mic.on { background:var(--acc); }
@@ -149,9 +153,8 @@
   .plain { position:absolute; inset:0; z-index:20; background:var(--still); padding:70px 24px 24px; }
   #app.evening .plain { color:var(--wink); }
 
-  .kbd { position:absolute; left:0; right:0; bottom:0; height:280px; background:#d1d3d9; z-index:30; display:none; padding:8px 4px; }
+  .kbd { position:absolute; left:0; right:0; bottom:0; height:280px; background:#d1d3d9; z-index:30; padding:8px 4px; grid-template-columns:repeat(10,1fr); grid-auto-rows:44px; gap:8px 5px; }
   #app.evening .kbd { background:#2b2b2f; }
-  #app.kb .kbd { display:grid; grid-template-columns:repeat(10,1fr); grid-auto-rows:44px; gap:8px 5px; }
   .kbd b { background:#fff; border-radius:5px; box-shadow:0 1px 0 #888; } #app.evening .kbd b { background:#555; }
   .kbd .done { grid-column:span 3; font:500 14px system-ui; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#123; }
   #app.evening .kbd .done { color:#eee; }
@@ -201,8 +204,15 @@ const rowboat = w => `<svg width="${w}" height="${w * .5}" viewBox="0 0 90 45">
   <line x1="62" y1="22" x2="84" y2="38" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/></svg>`;
 const stone = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 100 40" preserveAspectRatio="none"><ellipse cx="50" cy="22" rx="48" ry="17" fill="var(--stone)"/><ellipse cx="48" cy="18" rx="44" ry="13" fill="var(--stoneT)"/></svg>`;
 
+// an Inquiry is a lily: 0 = just the pad (the Problem), 1 = a stem with a bud (Paths walked), 2 = in flower (the Recap)
+function lilyStage(stage, w = 34) {
+  const st = stage ? `<path d="M30 40Q28 28 31 ${stage === 2 ? 19 : 16}" stroke="#4f7a3a" stroke-width="1.6" fill="none"/>` : '';
+  const top = stage === 1 ? `<ellipse cx="31" cy="12" rx="3.6" ry="6.5" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8"/>`
+    : stage === 2 ? [-60, -30, 0, 30, 60].map(a => `<ellipse cx="31" cy="10" rx="3.6" ry="9" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".7" transform="rotate(${a} 31 19)"/>`).join('') + '<circle cx="31" cy="16" r="2.2" fill="#f1cf5b"/>' : '';
+  return `<svg class="stage" width="${w}" height="${w * .83}" viewBox="0 0 60 50"><g transform="translate(6 33) scale(.48 .2)"><path d="${PAD_PATH}" fill="var(--pad)" stroke="var(--padR)" stroke-width="4"/></g>${st}${top}</svg>`;
+}
 function pondButton({ role, label, act, style, dry }) {
-  const prim = role === 'primary', kind = S.controls;
+  const prim = role === 'primary', kind = 'boat';
   let obj, on = '', under = '';
   if (kind === 'stones') { obj = prim ? stone(170, 66) : stone(92, 38); on = label; }
   else if (kind === 'boat' && !prim) { obj = rowboat(78); under = label; }
@@ -215,33 +225,29 @@ function pondButton({ role, label, act, style, dry }) {
 }
 
 // ---------- logos: each draws "Look" above a waterline and "Together" upright below it ----------
-const PAL = { morning: { ink: '#1f2e36', leaf: '#7fa65a', v: '#4f7a3a', line: '#ffffff', sun: '#f0bf5e', pad: '#5d8f45' }, evening: { ink: '#f4eadc', leaf: '#c8692e', v: '#7d3a17', line: '#ffd6aa', sun: '#f6e6c8', pad: '#7d7a34' } };
-const TG = (c, still, x = 150, size = 46, anchor = 'middle') => `<g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="${x}" y="128" text-anchor="${anchor}" font-family="Newsreader,serif" font-size="${size}" fill="${c.ink}">Together</text>`;
-const LINE = (c, x1 = 40, x2 = 260) => `<line x1="${x1}" y1="80" x2="${x2}" y2="80" stroke="${c.line}" stroke-opacity=".7"/>`;
+const PAL = { morning: { ink: '#1f2e36', line: '#ffffff', sun: '#f0bf5e', pad: '#5d8f45', padR: '#3f6e30', rip: '#ffffff' }, evening: { ink: '#f4eadc', line: '#ffd6aa', sun: '#f6e6c8', pad: '#7d7a34', padR: '#4c4a1c', rip: '#ffd9b0' } };
+const TG = (c, still) => `<g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="108" y="124" font-family="Newsreader,serif" font-size="40" fill="${c.ink}">Together</text></g>`;
+const LOOK = (c, still, art) => `<g class="lk" ${still ? 'style="opacity:1"' : ''}>${art}<text x="108" y="66" font-family="Newsreader,serif" font-size="48" fill="${c.ink}">Look</text></g>`;
+// a lily on the waterline: the pad seen at an angle, the flower above it, its reflection faint below
+const lotusPetals = (cx, by, k, o = 1) => [-62, -31, 0, 31, 62].map(a => `<ellipse cx="${cx}" cy="${by - 11 * k}" rx="${4.6 * k}" ry="${11.5 * k}" fill="#f6c3cf" stroke="#e38ba2" stroke-width="${.8 * k}" opacity="${o}" transform="rotate(${a} ${cx} ${by})"/>`).join('') + `<circle cx="${cx}" cy="${by - 3 * k}" r="${3 * k}" fill="#f1cf5b" opacity="${o}"/>`;
+const padAt = (c, cx, y, w) => `<g transform="translate(${cx - w / 2} ${y - w * .12}) scale(${w / 100} ${w * .24 / 100})"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${c.padR}" stroke-width="4"/></g>`;
+const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) + `<g transform="translate(0 ${2 * y}) scale(1 -1)" opacity=".28">${lotusPetals(cx, y - 2 * k, k)}</g>`;
+const sunArt = (c, cx, y, k) => `<circle cx="${cx + 4 * k}" cy="${y - 34 * k}" r="${17 * k}" fill="${c.sun}"/>` + [[14, 40], [22, 30], [30, 20], [38, 10]].map(([dy, w], n) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="${c.sun}" stroke-width="${3 * k}" stroke-linecap="round" opacity="${.8 - n * .17}"/>`).join('');
+const rippleArt = (c, cx, y, k) => [36, 47, 58].map((r, n) => `<ellipse cx="${cx}" cy="${y}" rx="${r * k}" ry="${r * .26 * k}" fill="none" stroke="${c.rip}" stroke-width="${(1.4 - n * .35) * k}" opacity="${.85 - n * .25}"/>`).join('');
 const LOGOS = {
-  leaf: { name: 'Leaf on the water', mark(c, still) {
-    const leaf = `<path d="M222 78C227 66 240 61 256 62C254 72 244 79 222 78Z" fill="${c.leaf}"/><path d="M224 77C234 72 243 67 254 63" stroke="${c.v}" stroke-width="1.2" fill="none"/>`;
-    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="150" y="62" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Look</text>${leaf}</g>${LINE(c)}${TG(c, still)}<g transform="translate(0 160) scale(1 -1)" opacity=".5">${leaf}</g></g>`; },
-    icon: (c, e) => `<path d="M26 56C33 38 52 30 76 31C73 46 58 57 26 56Z" fill="${c.leaf}"/><path d="M26 56C33 74 52 82 76 81C73 66 58 55 26 56Z" fill="${c.leaf}" opacity=".35"/>` },
-  ripples: { name: 'Two ripples meeting', mark(c, still) { // the two o's of Look are two drops' ripples, overlapping
-    const o = (cx, k) => `<circle cx="${cx}" cy="49" r="12.5" fill="none" stroke="${c.ink}" stroke-width="3.6"/><circle cx="${cx}" cy="49" r="19" fill="none" stroke="${c.ink}" stroke-width="1" opacity=".35"/><circle cx="${cx}" cy="49" r="25" fill="none" stroke="${c.ink}" stroke-width=".7" opacity="${.18 * k}"/>`;
-    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="125" y="62" text-anchor="end" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">L</text>${o(139, 1)}${o(166, 1)}<text x="181" y="62" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">k</text></g>${LINE(c)}${TG(c, still)}</g>`; },
-    icon: (c, e) => [[38, 0], [62, 0]].map(([x]) => [9, 17, 25, 33].map((r, k) => `<ellipse cx="${x}" cy="70" rx="${r}" ry="${r * .4}" fill="none" stroke="${e ? '#ffd9b0' : '#ffffff'}" stroke-width="${2.4 - k * .5}" opacity="${1 - k * .22}"/>`).join('') + `<circle cx="${x}" cy="70" r="2.5" fill="${e ? '#ffd9b0' : '#fff'}"/>`).join(''), full: true },
-  sun: { name: 'Sun (or moon) and its reflection', mark(c, still) {
-    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><circle cx="70" cy="52" r="20" fill="${c.sun}"/><text x="108" y="66" font-family="Newsreader,serif" font-size="48" fill="${c.ink}">Look</text></g>${LINE(c, 30, 270)}
-      ${TG(c, still, 108, 40, 'start')}${[[92, 38], [100, 30], [108, 20], [116, 10]].map(([y, w], k) => `<line x1="${70 - w / 2}" y1="${y}" x2="${70 + w / 2}" y2="${y}" stroke="${c.sun}" stroke-width="3" stroke-linecap="round" opacity="${.85 - k * .18}"/>`).join('')}</g>`; },
-    icon: (c, e) => `<circle cx="50" cy="38" r="15" fill="${c.sun}"/>${[[63, 30], [70, 24], [77, 16], [84, 8]].map(([y, w], k) => `<line x1="${50 - w / 2}" y1="${y}" x2="${50 + w / 2}" y2="${y}" stroke="${c.sun}" stroke-width="3.2" stroke-linecap="round" opacity="${.9 - k * .2}"/>`).join('')}` },
-  pad: { name: 'Lily pad for an o', mark(c, still) { // the first o of Look is a lily pad from above, a lotus beside it
-    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="125" y="62" text-anchor="end" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">L</text>
-      <g transform="translate(126 36) scale(.27)"><path d="${PAD_PATH}" fill="${c.pad}"/></g><text x="153" y="62" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">ok</text></g>${LINE(c)}${TG(c, still)}</g>`; },
-    icon: (c, e) => `<g transform="translate(14 46) scale(.72 .34)"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${e ? '#4c4a1c' : '#3f6e30'}" stroke-width="3"/></g><g transform="translate(40 30)">${[-45, -15, 15, 45].map(a => `<ellipse cx="10" cy="12" rx="4" ry="11" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 10 22)"/>`).join('')}</g>` },
+  lily: { name: 'Lily on the water', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => lilyArt(c, 50, 58, 1.25) },
+  lilysun: { name: 'Lily with the sun (or moon)', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + sunArt(c, 64, 80, 1) + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => sunArt(c, 50, 60, 1.1) + lilyArt(c, 50, 60, 1.2) },
+  lilyripples: { name: 'Lily with ripples', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + rippleArt(c, 64, 80, .9) + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => rippleArt(c, 50, 60, .95) + lilyArt(c, 50, 60, 1.2) },
 };
-function wordmark(w, sn, still, logo = S.logo) { return `<svg width="${w}" viewBox="0 0 300 160">${LOGOS[logo].mark(PAL[sn], still).replace(/<\/g>$/, '</g>')}</svg>`; }
+function wordmark(w, sn, still, logo = S.logo) { return `<svg width="${w}" viewBox="0 0 300 160">${LOGOS[logo].mark(PAL[sn], still)}</svg>`; }
 function appIcon(s, sn, logo = S.logo) {
   const e = sn === 'evening', id = 'g' + s + sn + logo, L = LOGOS[logo];
   return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><defs><linearGradient id="${id}s" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#1e1a32' : '#c9dfec'}"/><stop offset="1" stop-color="${e ? '#c07a4c' : '#f7efe0'}"/></linearGradient>
     <linearGradient id="${id}w" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#6a4a44' : '#dfe8de'}"/><stop offset="1" stop-color="${e ? '#14142a' : '#6e97a0'}"/></linearGradient><clipPath id="${id}c"><rect width="100" height="100" rx="22"/></clipPath></defs>
-    <g clip-path="url(#${id}c)">${L.full ? `<rect width="100" height="100" fill="url(#${id}w)"/>` : `<rect width="100" height="56" fill="url(#${id}s)"/><rect y="56" width="100" height="44" fill="url(#${id}w)"/><line x1="0" y1="56" x2="100" y2="56" stroke="#fff" stroke-opacity=".6"/>`}${L.icon(PAL[sn], e)}</g></svg>`;
+    <g clip-path="url(#${id}c)"><rect width="100" height="60" fill="url(#${id}s)"/><rect y="60" width="100" height="40" fill="url(#${id}w)"/><line x1="0" y1="60" x2="100" y2="60" stroke="#fff" stroke-opacity=".6"/>${L.icon(PAL[sn])}</g></svg>`;
 }
 const IC = { back: '<path d="M15 5l-7 7 7 7"/>', l: '<path d="M15 5l-7 7 7 7"/>', r: '<path d="M9 5l7 7-7 7"/>', mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
   stop: '<rect x="7" y="7" width="10" height="10"/>', more: '<circle cx="5" cy="12" r=".7"/><circle cx="12" cy="12" r=".7"/><circle cx="19" cy="12" r=".7"/>' };
@@ -280,7 +286,7 @@ const W = {
   reflPh: () => V('As it comes.', 'Take your time.', 'Take all the time you need.'),
   notFit: () => V('Doesn\'t fit', 'This doesn\'t fit me', 'This doesn\'t sound like me'),
   under: () => V('Underneath:', 'Underneath this:', 'What might be underneath:'),
-  sent: () => V('Sent on Submit.', 'Nothing is sent until you tap Submit.', 'Nothing goes anywhere until you tap Submit.'),
+  sent: () => V('Sent on Submit.', 'Sent only when you tap Submit.', 'Nothing goes until you tap Submit.'),
   ended: () => V('Ended. Read only.', 'This Path has ended. You can read it back.', 'This Path has ended. It\'s here whenever you want to read it back.'),
   toProbes: () => V('Back to the Probes', 'Back to your Probes'), // a button: stays short even when the voice is warm
   finish: () => V('Go on, or finish.', 'You can keep going, or finish here.', 'You can keep going, or let it rest and finish here.'),
@@ -307,10 +313,10 @@ const SAMPLE = 'I think I\'m scared that if I stop being the reliable one, nobod
 function seed() {
   const q = new URLSearchParams(location.search);
   return { season: q.get('season') || 'auto', still: false, soften: false,
-    controls: ['boat', 'lily', 'stones'].includes(q.get('controls')) ? q.get('controls') : 'boat', logo: LOGOS[q.get('logo')] ? q.get('logo') : 'leaf',
+    logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lily', noticeAgain: false,
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
-    unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5 }, { problem: 'I keep putting off calling my father.', days: 2 }],
+    unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5, stage: 1 }, { problem: 'I keep putting off calling my father.', days: 2, stage: 0 }],
     past: [{ problem: 'I can\'t stop comparing myself to my brother.', day: 'Mon 2 Nov' }, { problem: 'I feel like I\'m wasting my life.', day: 'Thu 29 Oct' }] };
 }
 let S = seed();
@@ -321,7 +327,7 @@ const probe = () => inq().probes.find(p => p.id === S.path);
 function steps(p) { const s = PS[p.id], n = p.status === 'looked' ? s.qs.length : p.pos + 1;
   return Array.from({ length: n }, (_, k) => ({ q: k === 0 ? s.probe : s.qs[k], r: k < p.pos ? s.rs[k] : null })); }
 
-// ---------- screens: each returns { wl, kbWl?, above, below, extra } ----------
+// ---------- screens: each returns { wl, above, below, extra } ----------
 const topbar = (l = '', r = '') => `<div class="topbar"><div class="s">${l}</div><div class="s r">${r}</div></div>`;
 const backBtn = (a, label) => `<button class="back" data-act="${a}">${ic('back')}${label}</button>`;
 const helpBtn = () => `<button class="help" data-act="help">Help</button>`;
@@ -335,9 +341,9 @@ function home() {
   return { wl: '27%',
     above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(51px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
     below: `<div class="scroll pad" style="padding-top:64px;padding-bottom:150px">
-      ${live ? `<div class="card tap float" data-act="resume"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div>` : ''}
-      <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start"><span>${LEAF(22, -20, leafColour(u.days))}</span><p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
-      <h3>Recaps</h3>${S.past.map(p => `<div class="card tap"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div>`).join('')}</div>`,
+      ${live ? `<div class="card tap float row" data-act="resume" style="align-items:flex-start">${lilyStage(inq().probes.some(p => p.status === 'looked') ? 1 : 0)}<div class="grow"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div></div>` : ''}
+      <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start">${lilyStage(u.stage)}<p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
+      <h3>Recaps</h3>${S.past.map(p => `<div class="card tap row" style="align-items:flex-start">${lilyStage(2)}<div class="grow"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div></div>`).join('')}</div>`,
     extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
       ${pondButton({ role: 'secondary', label: 'Settings', act: 'settings', style: 'left:12px;top:calc(var(--wl) + 4px)' })}
       ${pondButton({ role: 'primary', label: S.todayDone ? 'Next at 15:40' : 'New Inquiry', act: 'newLeaf', style: 'right:14px;bottom:30px', dry: S.todayDone })}
@@ -346,14 +352,14 @@ function home() {
 
 function writeHalf(kind) {
   const v = kind === 'problem' ? S.problemDraft : S.draft, ph = kind === 'problem' ? W.problemPh() : W.reflPh();
-  return `<div class="pad grow" style="display:flex;flex-direction:column;padding-top:20px"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea><p class="small mut" style="margin:0">${W.sent()}</p></div>
+  return `<div class="pad" style="padding-top:18px;padding-bottom:0"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea></div>
     <div class="ctrl"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
-    <span class="ailabel">ai · not therapy</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div>`;
+    <span class="small mut">${W.sent()}</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div>`;
 }
 
 function problem() {
-  return { wl: '36%', kbWl: '30%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:16px"><p class="small mut hide-kb" style="margin-top:0">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut hide-kb" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
+  return { wl: '36%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:16px"><p class="small mut" style="margin-top:0">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
     below: writeHalf('problem') };
 }
 function probes() {
@@ -361,7 +367,7 @@ function probes() {
   return { wl: '64%',
     above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 4px">${W.pick()}</p>
       ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:17px;margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}</div>`,
-    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><p class="small mut" style="margin:8px 0 2px">Your Problem</p><p class="r" style="font-size:17px">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
+    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><div class="row" style="margin:8px 0 2px">${lilyStage(any ? 1 : 0, 30)}<p class="small mut" style="margin:0">Your Problem</p></div><p class="r" style="font-size:17px">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
     extra: any ? pondButton({ role: 'primary', label: 'Finish Inquiry', act: 'finish', style: 'right:14px;bottom:30px' }) : '' };
 }
 function path() {
@@ -382,10 +388,10 @@ function path() {
       below: `<div class="pad ${mv}" style="padding-top:26px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:16px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
   const offer = vi === 1 && s.offer ? (p.offered ? `<p class="small mut">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>`
     : `<div class="card offer">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Yes</button><button data-act="offer" data-a="no">No</button></div></div>`) : '';
-  return { wl: offer && !p.offered ? '48%' : '36%', kbWl: '30%',
-    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px">
-      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
-      ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div>`,
+  return { wl: '36%', // fixed, so the keyboard never moves anything
+    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;padding-bottom:26px;overflow-y:auto;min-height:0"><div style="margin-top:auto">
+      ${S.soften && writing ? '<p class="small mut" style="margin:0 0 8px">A reminder: this is an AI, not a person or a therapist.</p>' : ''}<div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
+      ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div></div>`,
     below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:22px"><p class="premise">${W.under()} ${s.premise}</p></div>` : '')
       + (p.pending ? `<div class="pad" style="padding-top:26px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
         : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:26px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
@@ -394,7 +400,7 @@ function path() {
 function recap() {
   const i = inq(), looked = i.probes.filter(p => p.status === 'looked'), notYet = i.probes.filter(p => p.status !== 'looked'), oqs = looked.map(p => PS[p.id].openq).filter(Boolean);
   return { wl: '22%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0"><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div>`,
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad row" style="padding-top:0;align-items:flex-end">${lilyStage(2, 44)}<div><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div></div>`,
     below: `<div class="scroll pad" style="padding-top:18px">
       ${looked.map(p => `<div class="pair"><div class="pq" style="color:var(--wink)">${PS[p.id].premise} <span class="small" style="opacity:.75">· ${W.outcome(PS[p.id].outcome)}</span></div><div class="pl"></div>${PS[p.id].quote ? `<div class="pr">“${PS[p.id].quote}”</div>` : '<div class="pr" style="opacity:.6">—</div>'}</div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
@@ -416,7 +422,7 @@ function render() {
   if (S.screen === 'stepout') sc = { wl: '100%', above: '', below: '', extra: `<div class="plain"><h1>Let's stop here.</h1><p>This is an AI, and it can't help with this the way a person can. It isn't a crisis service.</p><p>If you might be in danger, please reach out now:</p>${contacts}<p class="small" style="margin-top:14px">This Inquiry won't carry on.</p><button data-act="home" style="margin-top:10px">Close</button></div>` };
   else sc = { splash, home, problem, probes, path, recap, settings: settingsScreen }[S.screen]();
   S.sc = sc;
-  app.style.setProperty('--wl', S.kb && sc.kbWl ? sc.kbWl : sc.wl);
+  app.style.setProperty('--wl', sc.wl);
   const sheet = S.sheet === 'help' ? `<div class="scrim"><div class="sheet"><h1 style="font-size:22px">Paused</h1><p>Nothing is lost. If you'd like to talk to someone now:</p>${contacts}<button class="pri" data-act="closeSheet" style="width:100%;margin-top:8px">Back to my Inquiry</button></div></div>` : '';
   document.getElementById('ui').innerHTML = `<div class="layer"><div class="above">${sc.above}</div><div class="below">${sc.below}</div></div>${sc.extra || ''}${sheet}
     <div class="kbd">${'<b></b>'.repeat(27)}<span class="done kbdone">done</span></div>`;
@@ -432,15 +438,14 @@ function renderSide() {
   const sn = season(), bg = sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0';
   document.getElementById('side').innerHTML = `<div class="box"><h4>Logo options · click to use</h4><div class="logos">${Object.keys(LOGOS).map(k => `<div class="${S.logo === k ? 'on' : ''}" data-logo="${k}"><div style="background:linear-gradient(${bg});display:flex;justify-content:center">${wordmark(140, sn, true, k)}</div><span>${LOGOS[k].name}</span></div>`).join('')}</div></div>
     <div class="box"><h4>App icons · ${sn}</h4><div class="row" style="align-items:flex-end;flex-wrap:wrap">${Object.keys(LOGOS).map(k => appIcon(k === S.logo ? 62 : 46, sn, k)).join('')}${appIcon(30, sn)}</div></div>
-    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. A pond in a forest on home, a brook you walk along on a Path, a pool again at the Recap. Help and the Step-out still the water.</div>
+    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. A pond in a forest on home, a brook you walk along on a Path, a pool again at the Recap. An Inquiry is a lily: pad (Problem), stem (Paths), flower (Recap). Help and the Step-out still the water.</div>
     <div class="box"><h4>Not yet</h4>Animation is placeholder. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits between snappy and calm.</div>
-    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>controls: ${S.controls} · logo: ${S.logo}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
+    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>logo: ${S.logo}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
 }
 function renderProto() {
   const sel = (p, opts, cur) => `<select data-p="${p}">${opts.map(([v, l]) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
   document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span>
     ${sel('season', [['auto', 'auto'], ['morning', 'morning'], ['evening', 'evening']], S.season)}
-    ${sel('controls', [['boat', 'controls: rowboat + lily'], ['lily', 'controls: lily pads'], ['stones', 'controls: stones']], S.controls)}
     ${sel('logo', Object.keys(LOGOS).map(k => [k, 'logo: ' + k]), S.logo)}
     <button data-p="soften" class="${S.soften ? 'on' : ''}">model: ${S.soften ? 'softening' : 'neutral'}</button>
     <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
@@ -479,6 +484,19 @@ function drop(then, x = 195) {
   const d = document.createElement('div'); d.className = 'drop'; d.style.left = x + 'px'; app.appendChild(d);
   d.animate([{ top: '-20px' }, { top: (y - 8) + 'px' }], { duration: 650, easing: 'cubic-bezier(.5,0,1,1)' }).onfinish = () => { d.remove(); ripple(x, y); then(); };
 }
+function skim(then) { // a flat stone skips down the brook, forward, and sinks
+  if (S.still) return then();
+  const app = document.getElementById('app'), base = wlPx() + 150, hops = [[-20, 0], [90, 6], [170, 10], [232, 13], [276, 15], [306, 16]];
+  const st = document.createElement('div'); st.className = 'skim'; st.style.left = '0px'; st.style.top = base + 'px'; app.appendChild(st);
+  // arcs between hops: lift halfway through each segment
+  const kf = []; for (let k = 0; k < hops.length - 1; k++) { const [x0, y0] = hops[k], [x1, y1] = hops[k + 1], lift = 22 / (k + 1);
+    kf.push({ transform: `translate(${x0}px,${y0}px)`, offset: k / (hops.length - 1) }, { transform: `translate(${(x0 + x1) / 2}px,${(y0 + y1) / 2 - lift}px)`, offset: (k + .5) / (hops.length - 1) }); }
+  kf.push({ transform: `translate(${hops.at(-1)[0]}px,${hops.at(-1)[1]}px)`, offset: 1 });
+  const dur = 1700;
+  hops.slice(1).forEach(([x, dy], k) => setTimeout(() => ripple(x + 6, base + dy + 3, k === hops.length - 2 ? 3 : 1), dur * (k + 1) / (hops.length - 1)));
+  st.animate(kf, { duration: dur, easing: 'cubic-bezier(.2,.5,.4,1)', fill: 'forwards' }).onfinish = () => {
+    st.animate([{ opacity: 1 }, { opacity: 0, transform: `translate(${hops.at(-1)[0]}px,${hops.at(-1)[1] + 8}px)` }], { duration: 400, fill: 'forwards' }).onfinish = () => st.remove(); then(); };
+}
 function playSplash() {
   setTimeout(() => drop(() => { const mk = document.getElementById('mark'); if (!mk) return; mk.classList.add('show'); waveDown(18, 2600); }), S.still ? 0 : 700);
 }
@@ -504,11 +522,10 @@ function startLeafFall() { // now and then a leaf comes off a tree and drifts do
   }, 1200);
 }
 
-// ---------- keyboard (faked): the waterline sits high already, so it moves only a little ----------
+// ---------- keyboard (faked): it slides over the empty water; nothing on screen moves ----------
 function setKb(on) {
   if (S.kb === on) return; S.kb = on; const app = document.getElementById('app');
   app.classList.toggle('kb', on);
-  if (S.sc.kbWl) app.style.setProperty('--wl', on ? S.sc.kbWl : S.sc.wl);
   renderSide();
 }
 document.addEventListener('focusin', e => { if (e.target.matches('textarea.ref')) setKb(true); });
@@ -527,12 +544,12 @@ function submit(kind) {
   S.busy = true; if (document.activeElement) document.activeElement.blur(); S.kb = false;
   if (kind === 'problem') { render(); return drop(() => setTimeout(() => { S.busy = false; newToday(false); S.problemDraft = ''; S.screen = 'probes'; render(); }, 600)); }
   if (/hurt myself|end it|kill/i.test(v)) { S.busy = false; S.draft = ''; S.screen = 'stepout'; S.path = null; return render(); }
-  const p = probe(); p.pending = v; render(); // the Reflection settles below while the reply is awaited
-  drop(() => setTimeout(() => {
+  const p = probe(); p.pending = v; render(); // the Reflection settles below while a stone skims down the brook
+  skim(() => setTimeout(() => {
     const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.busy = false;
     if (p.pos >= s.qs.length) p.status = 'looked';
     const st = steps(p); S.vi = p.status === 'looked' ? st.length : st.length - 1; S.justReplied = true; S.dir = 'next'; render();
-  }, 700));
+  }, 300));
 }
 function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: false, readAll: false, kb: false }, x); render(); }
 function jump(v) {
@@ -557,7 +574,6 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const p = e.target.dataset.p;
   if (p === 'season') { S.season = e.target.value; render(); }
-  if (p === 'controls') { S.controls = e.target.value; render(); }
   if (p === 'logo') { S.logo = e.target.value; render(); }
   if (p === 'jump') jump(e.target.value);
 });
@@ -567,7 +583,7 @@ document.addEventListener('click', e => {
   if (pb) { const p = pb.dataset.p;
     if (p === 'still') { S.still = !S.still; brookTo(S.screen === 'path' ? 1 : 0, 300); render(); }
     if (p === 'soften') { S.soften = !S.soften; render(); }
-    if (p === 'reset') { const { season, still, controls, logo } = S; S = seed(); Object.assign(S, { season, still, controls, logo, screen: 'home' }); render(); } return; }
+    if (p === 'reset') { const { season, still, logo } = S; S = seed(); Object.assign(S, { season, still, logo, screen: 'home' }); render(); } return; }
   if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('home'), S.still ? 0 : 500); }
   const el = e.target.closest('[data-act]');
   if (!el) { // a tap on open water ripples
