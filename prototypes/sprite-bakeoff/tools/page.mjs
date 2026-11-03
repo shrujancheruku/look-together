@@ -19,6 +19,11 @@ const NOTES = {
   6: "Nano Banana 2.1, the cheap model. It kept the one-row layout and came closest to the sizes, but its edges are softer and it turned the second dragonfly frame 90°.",
 };
 const ROWS = [["padL", "Large lily pad"], ["padS", "Small lily pad"], ["flower", "Open flower"], ["koi", "Koi"], ["dfly", "Dragonfly, 2 frames"]];
+import sharpLib from "sharp";
+const tRes = fs.existsSync("out/template-results.json") ? JSON.parse(fs.readFileSync("out/template-results.json")) : {};
+const tRuns = runsLog.filter((r) => r.variant === "template");
+const thumbs = {};
+for (const r of tRuns) thumbs[r.n] = "data:image/jpeg;base64," + (await sharpLib(`out/raw-${r.n}.png`).resize(720).jpeg({ quality: 80 }).toBuffer()).toString("base64");
 const kit = { padL: "out/kit-padL.png", padS: "out/kit-padS.png", flower: "out/kit-flower.png" };
 const cost = runsLog.reduce((a, r) => a + PRICE[r.model ?? "gemini-3-pro-image"], 0);
 
@@ -92,6 +97,11 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   .pane img { image-rendering: pixelated; image-rendering: crisp-edges; max-width: none; display: block; }
   .flip { display: grid; } .flip .f { grid-area: 1 / 1; } .flip .f1 { visibility: hidden; }
   body.frame2 .flip .f0 { visibility: hidden; } body.frame2 .flip .f1 { visibility: visible; }
+  .tgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 16px; }
+  .tgrid figure { margin: 0; display: grid; gap: 8px; align-content: start; min-width: 0; }
+  .tgrid .sheet { width: 100%; height: auto; border-radius: 6px; }
+  .tgrid figcaption { color: var(--muted); font-size: 13px; } .tgrid figcaption b { color: var(--ink); }
+  .strip .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; justify-content: center; }
   .none { color: var(--muted); font-size: 13px; font-style: italic; }
   dl { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; margin: 0; font: 12px/1.6 var(--mono); font-variant-numeric: tabular-nums; }
   dt { color: var(--muted); } dd { margin: 0; } dd em { font-style: normal; color: var(--bad); }
@@ -104,7 +114,7 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
 <main>
   <header class="lede">
     <h2>Which AI tool draws the sprite kit best?</h2>
-    <h1>Gemini plus pixelify, six runs</h1>
+    <h1>Gemini plus pixelify: style yes, size no</h1>
     <p>The same test set each time: a large and a small lily pad, the open flower, the koi and a 2-frame dragonfly, asked for in the chosen style with the kit's own pad, flower and ramps as the reference. Each sheet is pixelified, cut into sprites and snapped to that sprite's ramps. Retro Diffusion and PixelLab passed the terms gate but are not tested yet.</p>
   </header>
 
@@ -122,6 +132,12 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   </div>
 
   <div class="scroll">${grid}</div>
+
+  <section class="finding">
+    <h2>Second try: an exact-size template</h2>
+    <p>Each run got a layout template beside the style reference: a 132 × 56 grid of 24 px cells with one box per sprite at exactly its size in art pixels, and the instruction to paint one art pixel per cell. Nano Banana 2.1 followed it in <b>1 of 4</b> runs, and 3 Pro Image in <b>1 of 3</b>. Even where a sprite landed in its box, the model's pixel grid didn't line up with the cells, and at 18 × 8 and 13 × 9 the koi and dragonfly come back as noise. Only the large pad holds up.</p>
+  </section>
+  <div class="tgrid">${tRuns.map((r) => `<figure><img class="sheet" src="${thumbs[r.n]}" alt="Run ${r.n} as returned" width="720" height="305"><figcaption><b>Run ${r.n}</b> · ${model(r.n) === "gemini-3-pro-image" ? "3 Pro Image" : "Nano Banana 2.1"} · ${tRes[r.n] ? "read cell by cell below" : "ignored the template"}</figcaption>${tRes[r.n] ? `<div class="pane strip"><span class="tag">read cell by cell, snapped, at true size</span><div class="row">${SLOTS.map((sl) => pix(`out/t${r.n}-${sl.id}-snap.png`, 6, `${sl.label}, run ${r.n}`)).join("")}</div></div>` : ""}</figure>`).join("")}</div>
 
   <section>
     <h2>How to read a cell</h2>

@@ -164,5 +164,179 @@
    ],
    "thoughtsTokenCount": 2328
   }
+ },
+ {
+  "n": 7,
+  "model": "gemini-nano-banana-2.1",
+  "variant": "template",
+  "secs": 57.127,
+  "usage": {
+   "promptTokenCount": 2596,
+   "candidatesTokenCount": 1680,
+   "totalTokenCount": 6660,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 2240
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1680
+    }
+   ],
+   "thoughtsTokenCount": 2384
+  }
+ },
+ {
+  "n": 8,
+  "model": "gemini-nano-banana-2.1",
+  "variant": "template",
+  "secs": 49.666,
+  "usage": {
+   "promptTokenCount": 2596,
+   "candidatesTokenCount": 1680,
+   "totalTokenCount": 6649,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    },
+    {
+     "modality": "IMAGE",
+     "tokenCount": 2240
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1680
+    }
+   ],
+   "thoughtsTokenCount": 2373
+  }
+ },
+ {
+  "n": 9,
+  "model": "gemini-3-pro-image",
+  "variant": "template",
+  "secs": 28.846,
+  "usage": {
+   "promptTokenCount": 1476,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2948,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 352
+  }
+ },
+ {
+  "n": 10,
+  "model": "gemini-nano-banana-2.1",
+  "variant": "template",
+  "secs": 42.427,
+  "usage": {
+   "promptTokenCount": 2596,
+   "candidatesTokenCount": 1680,
+   "totalTokenCount": 5536,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 2240
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1680
+    }
+   ],
+   "thoughtsTokenCount": 1260
+  }
+ },
+ {
+  "n": 11,
+  "model": "gemini-3-pro-image",
+  "variant": "template",
+  "secs": 34.065,
+  "usage": {
+   "promptTokenCount": 1476,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 3002,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 406
+  }
+ },
+ {
+  "n": 12,
+  "model": "gemini-3-pro-image",
+  "variant": "template",
+  "secs": 32.191,
+  "usage": {
+   "promptTokenCount": 1476,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2970,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 374
+  }
  }
 ]

@@ -19,7 +19,23 @@ No text, no labels, no swatches, no shadows, no water, no ground.`;
 // Variant "canvas": name the whole canvas in art pixels, which kept scale in the pond-skia prototype.
 const CANVAS = PROMPT.replace("Every sprite is drawn at a tiny size in art pixels and then upscaled 12x with nearest-neighbour, so every art pixel is a crisp 12x12 block, the same block size for every sprite.",
   "The whole image is a small 132 x 56 pixel canvas upscaled 24x with nearest-neighbour, so every art pixel is a crisp 24x24 block. The sprites are tiny on that canvas: together they fill well under the canvas width, with most of the canvas left empty magenta. Count the art pixels: each sprite must be exactly the size given, no larger.");
-const prompt = process.argv[3] === "canvas" ? CANVAS : PROMPT;
+// Variant "template": a second image fixes every sprite's footprint cell by cell (tools/template.mjs).
+const TEMPLATE = `Pixel art sprites for a calm pond game. Two images are attached.
+
+Image 1 is the style reference: soft hi-bit pixel art, light from the upper left, a one-pixel coloured outline in the darkest colour of each sprite's own ramp (never black), no anti-aliasing, no blur, no dithering inside shapes. Use only colours from its swatch rows.
+
+Image 2 is the layout template, and your output must match it exactly: the same 3168 x 1344 size and the same grid of 24 x 24 pixel cells. Every cell is one art pixel and must be one flat colour. The six light grey boxes are the sprites' footprints. Paint each sprite inside its box so that it touches all four sides of the box and nothing goes outside it. Everything outside the boxes, and any part of a box the sprite does not cover, becomes solid flat pure magenta (#FF00FF). Remove the grid lines and the grey.
+
+The boxes, left to right:
+1. A large lily pad seen from slightly above: an oval with a notch, green ramp.
+2. A small lily pad, the same style.
+3. A pink water lily flower in full bloom seen from slightly above, pink ramp with a pale yellow centre.
+4. A koi seen from directly above, swimming right, orange with white patches.
+5. A dragonfly seen from directly above, wings spread flat, blue-green body with pale glassy wings.
+6. The same dragonfly in the next wing-beat frame: identical body in the same place, wings swept back.
+No text, no labels, no swatches, no shadows, no water.`;
+const prompt = { canvas: CANVAS, template: TEMPLATE }[process.argv[3]] ?? PROMPT;
+const extra = process.argv[3] === "template" ? [{ inlineData: { mimeType: "image/png", data: fs.readFileSync("out/template.png").toString("base64") } }] : [];
 const token = execSync("gcloud auth print-access-token").toString().trim();
 const url = `https://aiplatform.googleapis.com/v1/projects/look-together/locations/global/publishers/google/models/${process.env.MODEL ?? "gemini-3-pro-image"}:generateContent`;
 const ref = fs.readFileSync("out/ref.png").toString("base64");
@@ -30,7 +46,7 @@ await Promise.all(Array.from({ length: runs }, async () => {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", "x-goog-user-project": "look-together" },
     body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ inlineData: { mimeType: "image/png", data: ref } }, { text: prompt }] }],
+      contents: [{ role: "user", parts: [{ inlineData: { mimeType: "image/png", data: ref } }, ...extra, { text: prompt }] }],
       generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "21:9", imageSize: "2K" } },
     }),
   });
