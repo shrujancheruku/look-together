@@ -7,6 +7,8 @@ import { useFrameCallback, useSharedValue } from "react-native-reanimated";
 import { Pond, cardRects, type Config, type Glass } from "./src/Pond";
 import { PixelPond } from "./src/PixelPond";
 import { SETS } from "./src/sets";
+import { indexExactness } from "./src/indexTest";
+import { useImage } from "@shopify/react-native-skia";
 
 const SKIA = process.env.EXPO_PUBLIC_SKIA ?? "v2";
 const AUTOBENCH = process.env.EXPO_PUBLIC_AUTOBENCH === "1";
@@ -31,10 +33,13 @@ const BENCH: [string, Partial<Config>][] = [
   ["pixel ×4 @30", { set: 2, glass: "skia4" }],
   ["pixel ×4 @30, 48 leaves", { set: 2, glass: "skia4", sprites: 48 }],
   ["pixel ×4 uncapped", { set: 2, glass: "skia4", artFps: 0 }],
+  ["pixel offscreen ×4 @30", { set: 3, glass: "skia4" }],
+  ["pixel offscreen ×4 @30, 48", { set: 3, glass: "skia4", sprites: 48 }],
+  ["pixel offscreen ×4 uncapped", { set: 3, glass: "skia4", artFps: 0 }],
 ];
 const WARMUP = 2500, MEASURE = 6000;
 
-type Stats = { fps: number; p50: number; p95: number; jank: number; draws: number; vsync: number };
+type Stats = { fps: number; p50: number; p95: number; jank: number; draws: number; vsync: number; ms: number };
 
 export default function App() {
   const { width: w, height: h } = useWindowDimensions();
@@ -47,6 +52,7 @@ export default function App() {
   const [hud, setHud] = useState(true);
   const [bench, setBench] = useState<{ i: number; rows: (Stats & { label: string })[] } | null>(null);
   const draws = useSharedValue(0);
+  const work = useSharedValue(0); // ms spent rendering the offscreen world, summed over draws
   const hist = useSharedValue<number[]>(new Array(BINS).fill(0));
 
   // Every UI-thread frame. Skia's Android and iOS views draw on this thread, so a slow scene
@@ -64,9 +70,10 @@ export default function App() {
     for (let i = 0; i < BINS; i++) { acc += a[i]; if (!p50 && acc >= n * 0.5) p50 = i; if (!p95 && acc >= n * 0.95) { p95 = i; break; } }
     const vsync = Math.max(mode, 1);
     const jank = a.reduce((s, x, i) => s + (i > vsync * 1.5 ? x : 0), 0) / n;
-    const out = { fps: Math.round((n * 1000) / ms), p50, p95, jank: Math.round(jank * 1000) / 10, draws: Math.round((draws.value * 1000) / ms), vsync };
+    const out = { fps: Math.round((n * 1000) / ms), p50, p95, jank: Math.round(jank * 1000) / 10, draws: Math.round((draws.value * 1000) / ms), vsync, ms: draws.value ? Math.round((work.value / draws.value) * 100) / 100 : 0 };
     hist.value = new Array(BINS).fill(0);
     draws.value = 0;
+    work.value = 0;
     return out;
   };
 
@@ -80,7 +87,7 @@ export default function App() {
   useEffect(() => {
     if (!bench) return;
     if (bench.i >= BENCH.length) {
-      console.log(`BENCH_DONE ${JSON.stringify({ skia: SKIA, os: Platform.OS, w, h, rows: bench.rows })}`);
+      console.log(`BENCH_DONE ${JSON.stringify({ skia: SKIA, os: Platform.OS, w, h, index, rows: bench.rows })}`);
       if (AUTOBENCH && Platform.OS === "android") setTimeout(() => BackHandler.exitApp(), 1000); // ends a Test Lab Game Loop run
       return;
     }
@@ -95,13 +102,24 @@ export default function App() {
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [bench?.i]);
 
+  // Do index images reach a shader with exact 0–255 values? (greyscale PNG and red channel of RGB)
+  const grey = useImage(require("./assets/sets/pixel/index-grey.png"));
+  const rgb = useImage(require("./assets/sets/pixel/index-rgb.png"));
+  const [index, setIndex] = useState<{ grey: ReturnType<typeof indexExactness>; rgb: ReturnType<typeof indexExactness> } | null>(null);
+  useEffect(() => {
+    if (!grey || !rgb || index) return;
+    const r = { grey: indexExactness(grey), rgb: indexExactness(rgb) };
+    console.log(`INDEX ${JSON.stringify({ skia: SKIA, os: Platform.OS, ...r })}`);
+    setIndex(r);
+  }, [grey, rgb]);
+
   const autostarted = useRef(false);
   useEffect(() => {
     if (AUTOBENCH && !autostarted.current) { autostarted.current = true; setTimeout(() => setBench({ i: 0, rows: [] }), 3000); }
   }, []);
 
   const set = (p: Partial<Config>) => setCfg((c) => ({ ...c, ...p }));
-  const layerMB = Math.round((SETS[cfg.set].width * SETS[cfg.set].height * 4 * (SETS[cfg.set].kind === "pixel" ? 1 : 5)) / 1e5) / 10;
+  const layerMB = Math.round((SETS[cfg.set].width * SETS[cfg.set].height * 4 * (SETS[cfg.set].kind ? 1 : 5)) / 1e5) / 10;
   const cards = cardRects(w, h, cfg.glass);
   const ink = cfg.season === "spring" ? "#1f2e36" : "#f4eadc";
   const halo = cfg.season === "spring" ? "rgba(255,255,255,0.9)" : "rgba(20,16,36,0.9)";
@@ -109,8 +127,8 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#000" }}>
-      {SETS[cfg.set].kind === "pixel"
-        ? <PixelPond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} />
+      {SETS[cfg.set].kind
+        ? <PixelPond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} work={work} offscreen={SETS[cfg.set].kind === "pixel-off"} />
         : <Pond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} />}
 
       {cards.map((c, i) => (
@@ -127,7 +145,8 @@ export default function App() {
         <View pointerEvents="none" style={{ position: "absolute", top: 44, right: 8, backgroundColor: "rgba(0,0,0,0.7)", padding: 8, borderRadius: 8 }}>
           <Text style={{ color: "#fff", fontFamily: Platform.select({ ios: "Menlo", default: "monospace" }), fontSize: 11 }}>
             {`skia ${SKIA} · ${Platform.OS}\n`}
-            {stats ? `UI ${stats.fps} fps (vsync ${stats.vsync} ms)\np50 ${stats.p50} ms · p95 ${stats.p95} ms\njank ${stats.jank}%\nart draws ${stats.draws}/s\n` : "…\n"}
+            {stats ? `UI ${stats.fps} fps (vsync ${stats.vsync} ms)\np50 ${stats.p50} ms · p95 ${stats.p95} ms\njank ${stats.jank}%\nart draws ${stats.draws}/s${stats.ms ? ` · ${stats.ms} ms each` : ""}\n` : "…\n"}
+            {index ? `index grey ${index.grey.exact}/256 · rgb ${index.rgb.exact}/256\n` : ""}
             {`layers ≈ ${layerMB} MB decoded`}
             {bench ? `\nbench ${Math.min(bench.i + 1, BENCH.length)}/${BENCH.length}: ${BENCH[Math.min(bench.i, BENCH.length - 1)][0]}` : ""}
           </Text>
@@ -137,8 +156,8 @@ export default function App() {
       {bench && bench.i >= BENCH.length ? (
         <ScrollView style={{ position: "absolute", left: 8, right: 8, top: 160, bottom: 120, backgroundColor: "rgba(0,0,0,0.85)", borderRadius: 8, padding: 10 }}>
           <Text selectable style={{ color: "#fff", fontFamily: Platform.select({ ios: "Menlo", default: "monospace" }), fontSize: 11 }}>
-            {`step                     fps  p50 p95 jank% draws\n`}
-            {bench.rows.map((r) => `${r.label.padEnd(24)} ${String(r.fps).padStart(4)} ${String(r.p50).padStart(4)} ${String(r.p95).padStart(3)} ${String(r.jank).padStart(5)} ${String(r.draws).padStart(5)}`).join("\n")}
+            {`step                         fps  p50 p95 jank% draws   ms\n`}
+            {bench.rows.map((r) => `${r.label.padEnd(28)} ${String(r.fps).padStart(4)} ${String(r.p50).padStart(4)} ${String(r.p95).padStart(3)} ${String(r.jank).padStart(5)} ${String(r.draws).padStart(5)} ${String(r.ms).padStart(5)}`).join("\n")}
           </Text>
         </ScrollView>
       ) : null}
