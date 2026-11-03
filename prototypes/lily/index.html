@@ -368,9 +368,9 @@ function build(gen, seed, rec) {
   return { ...L, bud, flower: rec.recap ? gen.flower(seed) : null };
 }
 function ageRamp(p, days) {
-  const h = mix(p.i, 31) % 3, lead = p.kind === "problem" ? 1 : 0;
-  if (days >= 6 + (h & 1) - lead) return R.padB;
-  if (days >= 3 + h - lead) return R.padY;
+  const h = mix(p.i, 31) % 4, lead = p.kind === "problem" ? 1 : 0;
+  if (days >= 7) return R.padB; // brown only on the last day
+  if (days >= 3 + h - lead) return R.padY; // mostly yellow by day 6
   return R.pad;
 }
 // compose one frame into an index buffer; cue = { what: "pads" | "flower", from, t } animates the newest parts
@@ -506,7 +506,7 @@ function render() {
   const rec = recordsFor(st), k = STAGES.findIndex((s) => s.key === st.stage);
   $("problemText").textContent = "“" + PROBLEMS[st.problem] + "”";
   $("days").value = st.days; $("days").disabled = k >= 4;
-  $("daysNote").textContent = k >= 4 ? "A Recap stops ageing." : ["Fresh.", "Fresh.", "Fresh.", "Some pads turn yellow.", "Yellowing.", "Mostly yellow.", "Edges turn brown.", "Last day before it ends with no Recap."][st.days];
+  $("daysNote").textContent = k >= 4 ? "A Recap stops ageing." : ["Fresh.", "Fresh.", "Fresh.", "Some pads turn yellow.", "Yellowing.", "Yellowing.", "Mostly yellow.", "Brown: the last day before it ends with no Recap."][st.days];
   $("seed").value = hex(seedOf()); $("seed").disabled = st.seedSrc !== "stored";
   $("seedNote").textContent = st.seedSrc === "stored"
     ? "A random 32-bit number made at Begin and kept only with the Inquiry on the device. Rewording the Problem changes nothing."
