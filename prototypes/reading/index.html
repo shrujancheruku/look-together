@@ -1,0 +1,1029 @@
+<title>Pond Reading Surfaces</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  PROTOTYPE (throwaway, never merge): answers "How does text sit over the pixel world so long reading
+  stays comfortable?" (issue #72). Four ways for words to sit on the Shoreline world (issue #71),
+  switchable with the bottom bar (‹ ›, arrow keys, or #a / #b / #c / #d):
+    A  Halo on the art       - words straight on the world, soft halo, firm where a block falls short; frost only on cards.
+    B  Pixel-frost panels    - every group of words on a pane of frost drawn in art pixels.
+    C  Mist around the words - no panels; the world goes misty behind each group on its own palette row.
+    D  Picture above the page - on reading screens the world is a band at the top; words sit on a plain page.
+  Reading mode (what quiets the world, and how) is set separately in the panel and applies to every variant.
+  Each text block's contrast is measured live against the pixels behind it (worst 5%), as the CI render would.
+  The world engine is copied from prototypes/pond-world (prototype/pond-world). Copy is mock content.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  /* Layout: a dark workbench; one device on the stage, the controls, state and contrast readout in a side panel. The chrome uses an ink the scene never uses. */
+  :root {
+    --chrome: #15171d; --chrome-2: #20232c; --line: #343846; --bench: #0d0e12;
+    --ink: #eef0f4; --muted: #a2a8b6; --accent: #e9c47e; --accent-ink: #1b1610;
+    --pass: #8fd6a4; --warn: #f0c36a; --fail: #ff8a80;
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bench); color: var(--ink); font-family: var(--body); overflow: hidden; }
+  #app { height: 100%; display: flex; }
+  #stage { position: relative; flex: 1 1 auto; min-width: 0; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .devCap { font: 12px/1.35 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; text-align: center; padding-inline: 16px; }
+  .devCap b { color: var(--ink); font-family: var(--body); font-weight: 700; }
+  .devBox { position: relative; overflow: hidden; border-radius: 14px; outline: 1px solid var(--line); background: #000; flex: none; }
+  .dev { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; }
+  .dev canvas { position: absolute; left: 0; top: 0; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .layer { position: absolute; inset: 0; }
+  .deco { pointer-events: none; }
+
+  /* ---- the scene's words: the type scale from issue #58, times the system text size ---- */
+  .dev { --ts: 1; }
+  .dev.spring { --sink: #1f2f37; --halo: rgba(246,251,255,.92); --halo-soft: rgba(246,251,255,.55); --plate: #f4f6f1; }
+  .dev.autumn { --sink: #fbeedd; --halo: rgba(29,23,48,.92); --halo-soft: rgba(29,23,48,.55); --plate: #1d1a2e; }
+  .ov { color: var(--sink); }
+  .ov p { margin: 0; }
+  .app, .q, .rd, .t28 { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 500; }
+  .t28 { font-size: calc(28px * var(--ts)); line-height: 1.2; }
+  .q { font-size: calc(22px * var(--ts)); line-height: 1.3; text-wrap: pretty; }
+  .rd { font-size: calc(18px * var(--ts)); line-height: 1.45; }
+  .per { font-family: var(--body); font-size: calc(16px * var(--ts)); line-height: 1.55; }
+  .ctl { font: 600 calc(14px * var(--ts))/1.3 var(--body); }
+  .cap { font: 700 calc(12px * var(--ts))/1.3 var(--body); letter-spacing: .07em; text-transform: uppercase; }
+  .it { font-style: italic; }
+  .blk { display: block; width: fit-content; max-width: 100%; }
+  .halo { text-shadow: 0 0 3px var(--halo), 0 0 9px var(--halo-soft); }
+  .halo.firm { text-shadow: 0 0 1px var(--halo), 0 0 1px var(--halo), 0 0 2px var(--halo), 0 0 3px var(--halo), 0 0 6px var(--halo), 0 0 12px var(--halo-soft); }
+  .top { position: absolute; left: 14px; right: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .top .g { padding: 6px 10px; }
+  .col { position: absolute; left: 0; right: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+  .col::-webkit-scrollbar { display: none; }
+  .inner { max-width: 34em; margin: 0 auto; padding: 0 20px 16px; display: flex; flex-direction: column; }
+  .g { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .wlgap { flex: none; height: 28px; }
+  .rule { flex: none; height: 1px; margin: 14px 14px; background: currentColor; opacity: .35; }
+  .card .cwl { height: 1px; background: currentColor; opacity: .3; margin-block: 2px; }
+  .cardMore { align-self: flex-end; }
+  .composer { position: absolute; left: 12px; right: 12px; overflow-y: auto; gap: 10px; }
+  .composer .row2 { display: flex; justify-content: space-between; align-items: center; }
+  .btn { border-radius: 999px; padding: 6px 14px; outline: 1.5px solid currentColor; }
+  .lineC .card, .lineC .composer { outline: 1px solid color-mix(in srgb, currentColor 35%, transparent); }
+  .hc .btn, .hc .top .g, .hc .composer { outline: 2px solid currentColor; }
+  .kb { position: absolute; left: 0; right: 0; bottom: 0; background: #2d3138; padding: 10px 6px 0; display: grid; grid-template-rows: repeat(4, 1fr); gap: 10px; box-sizing: border-box; }
+  .kb i { display: block; border-radius: 6px; background: repeating-linear-gradient(90deg, #5a5f69 0 calc(10% - 6px), transparent calc(10% - 6px) 10%); }
+  .inset { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(255,90,90,.35) 0 6px, rgba(255,90,90,.1) 6px 12px); }
+  .island { position: absolute; left: 50%; transform: translateX(-50%); background: #000; border-radius: 20px; }
+  .badge { position: absolute; transform: translate(-100%, -55%); font: 700 10px/1 var(--mono); padding: 3px 5px; border-radius: 4px; background: var(--chrome); border: 1px solid; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .badge.pass { color: var(--pass); border-color: var(--pass); } .badge.firm { color: var(--warn); border-color: var(--warn); } .badge.fail { color: var(--fail); border-color: var(--fail); }
+
+  /* ---- switcher ---- */
+  #bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+    display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: var(--chrome); border: 1px solid var(--line);
+    box-shadow: 0 6px 24px rgba(0,0,0,.45); max-width: calc(100% - 24px); }
+  #bar button { font: 600 14px/1 var(--body); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 10px 12px; cursor: pointer; }
+  #bar button:hover, #bar button:focus-visible { background: var(--chrome-2); outline: none; }
+  #bar #label { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-inline: 6px; font: 600 14px var(--body); }
+  #bar #label b { color: var(--accent); margin-right: 6px; }
+  #bar #panelBtn { background: var(--accent); color: var(--accent-ink); }
+
+  /* ---- panel ---- */
+  #panel { flex: 0 0 400px; height: 100%; overflow-y: auto; background: var(--chrome); border-left: 1px solid var(--line); box-sizing: border-box;
+    padding-block: 20px 96px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  #panel h1 { font: 500 22px/1.2 var(--display); margin: 0 0 6px; text-wrap: balance; }
+  #panel h2 { font: 700 12px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
+  #panel p { margin: 0 0 8px; color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 62ch; }
+  .prow { display: grid; grid-template-columns: 92px 1fr; gap: 8px; align-items: start; margin-bottom: 8px; }
+  .prow > span { font-size: 13px; color: var(--muted); padding-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .chip { font: 600 13px var(--body); color: var(--ink); background: var(--chrome-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #stats { font: 12px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: pre-wrap; margin: 0; }
+  #stats b { color: var(--ink); font-weight: 600; }
+  table.ct { border-collapse: collapse; font: 12px/1.5 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; width: 100%; }
+  table.ct td, table.ct th { padding: 2px 8px 2px 0; text-align: left; vertical-align: top; }
+  table.ct th { color: var(--ink); font-weight: 600; }
+  table.ct td:first-child { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pass { color: var(--pass); } .firmT { color: var(--warn); } .fail { color: var(--fail); }
+  #rules { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  #rules li { margin-bottom: 8px; }
+  #rules b { color: var(--ink); }
+
+  @media (max-width: 820px) {
+    #app { display: block; }
+    #stage { height: 100%; }
+    #panel { position: fixed; left: 0; right: 0; bottom: 0; height: auto; max-height: 60%; z-index: 15; border-left: 0; border-top: 1px solid var(--line);
+      border-radius: 16px 16px 0 0; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (min-width: 821px) { #panelBtn { display: none; } }
+</style>
+
+<div id="app">
+  <main id="stage" aria-label="Device preview of the pond world with its words">
+    <div class="devCap" id="cap"></div>
+    <div class="devBox" id="box"></div>
+  </main>
+  <aside id="panel">
+    <h1 id="vname"></h1>
+    <p id="vblurb"></p>
+    <h2>Screen</h2>
+    <div id="screens"></div>
+    <h2>Reading mode</h2>
+    <p>What quiets the world, and what quiet means. Applies to every variant; the variant adds its own change on top.</p>
+    <div id="reading"></div>
+    <h2>The person's settings</h2>
+    <div id="person"></div>
+    <h2>State</h2>
+    <pre id="stats"></pre>
+    <h2>Contrast, worst 5% of the pixels behind each block</h2>
+    <p>Pass: ≥4.5:1 (≥3:1 for large text) against the art, or a firm halo whose inner colour passes (issue #56). Amber means the block only passes because it got a firm halo.</p>
+    <div style="overflow-x:auto"><table class="ct" id="ctTable"></table></div>
+    <h2>Rule sheet if this variant wins</h2>
+    <ol id="rules"></ol>
+  </aside>
+</div>
+<div id="bar" role="toolbar" aria-label="Prototype switcher">
+  <button id="prev" type="button" aria-label="Previous variant">‹</button>
+  <span id="label"></span>
+  <button id="next" type="button" aria-label="Next variant">›</button>
+  <button id="panelBtn" type="button" aria-expanded="true">Panel</button>
+</div>
+
+<script id="engine">
+"use strict";
+// ================= engine: pure, no DOM =================
+// ---------- palette: the chosen kit (issue #70), 12-step full colour, sky 16 ----------
+const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone"];
+const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
+const PAL = { steps: 12, sky: 16, chroma: 1, hue: 1 };
+const SEASONS = {
+  spring: { name: "Spring morning", ramps: {
+      sky: { L: [.72, .95], C: [.09, .03], H: [238, 205], fixed: 1 }, cloud: { L: [.80, .99], C: [.035, .008], H: [245, 250], fixed: 1 },
+      far: { L: [.62, .76], C: [.05, .04], H: [205, 175] }, leafA: { L: [.36, .80], C: [.08, .14], H: [170, 118] },
+      leafB: { L: [.56, .93], C: [.09, .06], H: [352, 380] }, leafC: { L: [.48, .86], C: [.10, .15], H: [150, 108] },
+      trunk: { L: [.30, .52], C: [.05, .06], H: [25, 55] }, grass: { L: [.42, .82], C: [.09, .15], H: [160, 112] },
+      water: { L: [.52, .80], C: [.06, .05], H: [232, 205], fixed: 1 }, glint: { L: [.86, 1], C: [.03, .005], H: [220, 95], fixed: 1 },
+      light: { L: [.86, .99], C: [.05, .03], H: [85, 95], fixed: 1 }, pad: { L: [.38, .80], C: [.09, .15], H: [165, 118] },
+      flower: { L: [.62, .95], C: [.11, .05], H: [350, 375] }, mist: { L: [.90, .97], C: [.015, .01], H: [230, 220], fixed: 1 },
+      stone: { L: [.40, .84], C: [.02, .03], H: [250, 215] } },
+    refl: { L: .70, mix: .22, dark: .02 }, moon: false,
+    ink: "#1f2f37", halo: "rgba(246,251,255,.9)", inkBelow: "#1c2a33" },
+  autumn: { name: "Autumn evening", ramps: {
+      sky: { L: [.24, .80], C: [.07, .13], H: [285, 415], fixed: 1 }, cloud: { L: [.42, .80], C: [.09, .12], H: [320, 410] },
+      far: { L: [.30, .40], C: [.05, .05], H: [300, 330] }, leafA: { L: [.38, .80], C: [.12, .16], H: [28, 72] },
+      leafB: { L: [.32, .66], C: [.12, .15], H: [12, 38] }, leafC: { L: [.48, .88], C: [.10, .15], H: [58, 98] },
+      trunk: { L: [.20, .38], C: [.04, .05], H: [10, 40] }, grass: { L: [.30, .66], C: [.07, .11], H: [45, 85] },
+      water: { L: [.16, .34], C: [.04, .05], H: [282, 298], fixed: 1 }, glint: { L: [.72, .97], C: [.09, .03], H: [60, 92], fixed: 1 },
+      light: { L: [.84, .99], C: [.06, .03], H: [85, 95], fixed: 1 }, pad: { L: [.26, .58], C: [.05, .09], H: [150, 108] },
+      flower: { L: [.55, .90], C: [.10, .05], H: [345, 375] }, mist: { L: [.42, .52], C: [.03, .03], H: [300, 310], fixed: 1 },
+      stone: { L: [.22, .54], C: [.02, .03], H: [300, 330] } },
+    refl: { L: .25, mix: .35, dark: .06 }, moon: true,
+    ink: "#fbeedd", halo: "rgba(29,23,48,.92)", inkBelow: "#f3e6d6" },
+};
+function oklch(L, C, h) {
+  const a = C * Math.cos(h * Math.PI / 180), b = C * Math.sin(h * Math.PI / 180);
+  const l_ = L + .3963377774 * a + .2158037573 * b, m_ = L - .1055613458 * a - .0638541728 * b, s_ = L - .0894841775 * a - 1.291485548 * b;
+  const l = l_ ** 3, m = m_ ** 3, s = s_ ** 3;
+  const f = (x) => { x = Math.max(0, Math.min(1, x)); return Math.round(255 * (x <= .0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - .055)); };
+  return [f(4.0767416621 * l - 3.3077115913 * m + .2309699292 * s), f(-1.2684380046 * l + 2.6097574011 * m - .3413193965 * s), f(-.0041960863 * l - .7034186147 * m + 1.707614701 * s)];
+}
+const lerp = (a, b, t) => a + (b - a) * t;
+function stepsFor(name) {
+  switch (name) {
+    case "sky": return PAL.sky; case "glint": return 4; case "light": return 3; case "mist": return 2; case "stone": return 8;
+    case "far": return PAL.steps - 2; case "trunk": return 4; default: return PAL.steps;
+  }
+}
+const N = RAMPS.map(stepsFor);
+function rampLch(spec, n) {
+  const out = [], mid = (spec.H[0] + spec.H[1]) / 2;
+  for (let s = 0; s < n; s++) {
+    const t = n === 1 ? 1 : s / (n - 1);
+    let h = lerp(spec.H[0], spec.H[1], t);
+    if (!spec.fixed) h = mid + (h - mid) * PAL.hue;
+    out.push([lerp(spec.L[0], spec.L[1], t), lerp(spec.C[0], spec.C[1], t) * PAL.chroma, h]);
+  }
+  return out;
+}
+function rowT([L, C, h], row) {
+  if (row === "still") return [L * .88 + .07, C * .7, h];
+  if (row === "stepout") return [.5 + (L - .5) * .45, C * .2, h];
+  return [L, C, h];
+}
+const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
+function makeLUT(season, row) {
+  const sea = SEASONS[season], LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
+  RAMPS.forEach((name, r) => rampLch(sea.ramps[name], N[r]).forEach((c, s) => {
+    LUT[code(r, s)] = pack(oklch(...rowT(c, row)));
+    LUT[code(r, s) + 16] = pack(oklch(...rowT([c[0] * (1 - sea.refl.mix) + sea.refl.L * sea.refl.mix - sea.refl.dark, c[1] * .75, c[2]], row)));
+  }));
+  return LUT;
+}
+
+// ---------- helpers ----------
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+const bay = (x, y) => (BAYER[(y & 3) * 4 + (x & 3)] + .5) / 16;
+function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hash2 = (x, y, s = 0) => { let h = (x * 374761393 + y * 668265263 + s * 982451653) | 0; h = Math.imul(h ^ h >>> 13, 1274126177); return ((h ^ h >>> 16) >>> 0) / 4294967296; };
+const code = (r, s) => r * 32 + s; // +16 is the same step seen in the water
+const TR = 65535;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+function quant(v, n, x, y) { // rich ordered dithering, as in the chosen kit
+  v = clamp(v, 0, 1) * (n - 1);
+  const fl = Math.floor(v);
+  return clamp(bay(x, y) < v - fl ? fl + 1 : fl, 0, n - 1);
+}
+const U = 1.25; // feature scale: the kit's trees at 320 art pixels across
+
+// ---------- world building primitives ----------
+function newWorld(W, H, seed) {
+  return { W, H, land: new Uint16Array(W * H).fill(TR), body: new Uint8Array(W * H), bodies: [null],
+    sprites: [], falls: [], glints: [], marks: [], rand: rng(seed) };
+}
+function farTrees(g, x0, x1, base) {
+  const { W, land, rand } = g, nf = N[R.far], top = new Float32Array(W).fill(1e9);
+  for (let c = x0 - 12 * U; c < x1 + 12 * U; c += (5 + rand() * 6) * U) {
+    const r = (8 + rand() * 9) * U, cy = base - U * (24 + rand() * 16);
+    for (let x = Math.max(x0, Math.floor(c - r)); x < Math.min(x1, c + r); x++) top[x] = Math.min(top[x], cy - Math.sqrt(Math.max(0, r * r - (x + .5 - c) ** 2)));
+  }
+  for (let x = x0; x < x1; x++) for (let y = Math.max(0, Math.round(top[x])); y < base; y++) {
+    const d = y - top[x];
+    land[y * W + x] = code(R.far, d < 1.5 ? nf - 1 : d < 6 * U ? nf - 2 : 0);
+  }
+}
+function mist(g, x0, x1, base) {
+  const { W, land } = g, c = base - 8 * U, hh = 7 * U * 1.4;
+  for (let y = Math.max(0, Math.floor(c - hh)); y < base; y++) for (let x = x0; x < x1; x++) {
+    const p = (1 - Math.abs(y - c) / hh);
+    if (p > 0 && bay(x, y) < p && land[y * W + x] !== TR) land[y * W + x] = code(R.mist, p > .45 ? 1 : 0);
+  }
+}
+const LEAF = [R.leafA, R.leafA, R.leafC, R.leafB];
+function tree(g, cx, cy, Rr, ramp, base) {
+  const { W, land, rand } = g, tw = Math.max(1, Math.round(2 * U * Math.max(1, Rr / 30))), nt = N[R.trunk];
+  for (let y = Math.round(cy + Rr * .3); y < base - 2; y++) for (let x = Math.round(cx - tw / 2); x < Math.round(cx - tw / 2) + tw; x++)
+    if (x >= 0 && x < W && y >= 0) land[y * W + x] = code(R.trunk, x === Math.round(cx - tw / 2) && tw > 1 ? nt - 2 : 0);
+  const lobes = [{ x: cx, y: cy, r: Rr * .72, z: Rr * .15 }];
+  const m = 6 + Math.floor(rand() * 3);
+  for (let j = 0; j < m; j++) { const a = rand() * Math.PI * 2, d = Rr * (.35 + rand() * .25); lobes.push({ x: cx + Math.cos(a) * d * 1.15, y: cy + Math.sin(a) * d * .85, r: Rr * (.4 + rand() * .22), z: 0 }); }
+  const bx = Math.floor(cx - Rr * 1.5), by = Math.floor(cy - Rr * 1.3), bw = Math.ceil(Rr * 3), bh = Math.ceil(Rr * 2.6);
+  const mask = new Int16Array(bw * bh).fill(-1);
+  for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+    let best = -1, bi = -1;
+    for (let li = 0; li < lobes.length; li++) { const l = lobes[li], dx = bx + x + .5 - l.x, dy = by + y + .5 - l.y, d2 = dx * dx + dy * dy; if (d2 < l.r * l.r) { const z = l.z + Math.sqrt(l.r * l.r - d2); if (z > best) { best = z; bi = li; } } }
+    mask[y * bw + x] = bi;
+  }
+  const nl = N[ramp], inside = (x, y) => x >= 0 && y >= 0 && x < bw && y < bh && mask[y * bw + x] >= 0;
+  for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+    const li = mask[y * bw + x];
+    if (li < 0) continue;
+    const X = bx + x, Y = by + y;
+    if (X < 0 || X >= W || Y < 0 || Y >= base) continue;
+    const l = lobes[li], dx = (X + .5 - l.x) / l.r, dy = (Y + .5 - l.y) / l.r, nz = Math.sqrt(Math.max(0, 1 - dx * dx - dy * dy));
+    let v = .5 + .5 * (-dx * .55 - dy * .65 + nz * .55);
+    v += (hash2(X >> 1, Y >> 1, 5) - .5) * .45;
+    v -= Math.max(0, (Y - cy) / Rr) * .35;
+    let s = 1 + Math.round(clamp(v, 0, 1) * (nl - 2));
+    if (!inside(x, y + 1) || !inside(x + 1, y)) s = 0; else if (!inside(x, y - 1) || !inside(x - 1, y)) s = nl - 1;
+    land[Y * g.W + X] = code(ramp, s);
+  }
+}
+function treeRow(g, x0, x1, base, o = {}) {
+  const sc = o.scale ?? 1, rand = g.rand, inGap = (x, gap) => gap && x > gap[0] && x < gap[1];
+  if (o.back !== false) for (let c = x0 - 10 * U; c < x1 + 10 * U; c += 36 * U * sc * (o.dense ?? 1)) {
+    const cx = c + rand() * 20 * U * sc, Rr = (18 + rand() * 8) * U * sc;
+    if (cx < x0 - 4 || cx > x1 + 4 || inGap(cx, o.gapBack)) continue;
+    tree(g, cx, base - 8 * U - Rr * .8 - rand() * 8 * U, Rr, LEAF[Math.floor(rand() * 4)], base);
+  }
+  if (o.front !== false) for (let c = x0; c < x1; c += 54 * U * sc * (o.dense ?? 1)) {
+    const cx = c + rand() * 27 * U * sc, Rr = (22 + rand() * 10) * U * sc;
+    if (cx > x1 + 4 || inGap(cx, o.gapFront)) continue;
+    tree(g, cx, base - 5 * U - Rr * .6 + (o.drop ?? 0), Rr, LEAF[Math.floor(rand() * 4)], base);
+  }
+}
+function bank(g, x0, x1, wy) {
+  const { W, land } = g, ng = N[R.grass];
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
+    const top = wy - Math.round(U * (4 + 1.5 * Math.sin(x * .12) + hash2(x, 3) * 1.2));
+    for (let y = top; y < wy; y++) land[y * W + x] = y === wy - 1 ? code(R.trunk, 0) : code(R.grass, y === top ? ng - 1 : hash2(x >> 1, y, 9) > .5 ? ng - 2 : ng - 3);
+    if (hash2(x, 1) > .82) for (let j = 1; j <= 1 + Math.floor(hash2(x, 2) * 2); j++) land[(top - j) * W + x] = code(R.grass, ng - 1 - (j > 1 ? 1 : 0));
+  }
+}
+function water(g, x0, x1, y0, bottom) { // bottom: number or (x) => y
+  const { W, land, body } = g, id = g.bodies.length, bot = typeof bottom === "function" ? bottom : () => bottom;
+  let y1 = y0;
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) { const b = Math.min(g.H, Math.round(bot(x))); y1 = Math.max(y1, b); for (let y = y0; y < b; y++) { land[y * W + x] = TR; body[y * W + x] = id; } }
+  g.bodies.push({ x0, x1, y0, y1, fd: Math.min(260, y1 - y0) });
+  return id;
+}
+function ground(g, x0, x1, topFn, y1, kind = "grass") { // land in front: the near bank, ledges; clears water under it
+  const { W, land, body } = g, ng = N[R.grass], nt = N[R.trunk], ns = N[R.stone];
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
+    const top = Math.round(topFn(x) + Math.sin(x * .21) * 1.5 + hash2(x, 11) * 1.4);
+    for (let y = Math.max(0, top); y < Math.min(g.H, y1); y++) {
+      const d = y - top, i = y * W + x;
+      body[i] = 0;
+      if (kind === "rock") {
+        let v = .62 + (hash2(x >> 2, y >> 2, 21) - .5) * .5 - Math.min(1, d / 120) * .3;
+        if (hash2(x >> 3, y >> 1, 23) > .93) v -= .35; // cracks
+        land[i] = d < 2 ? code(R.grass, ng - 1 - d) : code(R.stone, Math.round(clamp(v, 0, 1) * (ns - 1)));
+      } else land[i] = d === 0 ? code(R.grass, ng - 1) : d < 6 ? code(R.grass, hash2(x >> 1, y, 9) > .5 ? ng - 3 : ng - 4) : code(R.trunk, d < 9 ? 2 : hash2(x >> 1, y >> 1, 4) > .7 ? 1 : 0);
+    }
+  }
+}
+function sky(g, y0, y1, sun, moon) {
+  const { W, land, body, rand } = g, n = N[R.sky];
+  for (let y = y0; y < y1; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x;
+    if (land[i] !== TR || body[i]) continue;
+    let v = (y - y0) / (y1 - y0 - 1);
+    const ds = Math.hypot(x - sun.x, (y - sun.y) * 1.4) / sun.r;
+    if (ds < 1) v += (1 - ds) ** 2 * sun.s;
+    if (moon) { const dm = Math.hypot(x - moon.x, y - moon.y) / (moon.r * 3.4); if (dm < 1) v += (1 - dm) ** 2 * .6; }
+    land[i] = code(R.sky, quant(v, n, x, y));
+  }
+  if (moon) for (let y = -moon.r; y <= moon.r; y++) for (let x = -moon.r; x <= moon.r; x++) {
+    if (Math.hypot(x, y) > moon.r) continue;
+    const i = (moon.y + y) * W + moon.x + x;
+    if (land[i] >= code(R.sky, 0) && land[i] < code(R.sky, 16)) land[i] = code(R.light, (x + y) / moon.r > .7 || hash2((x + 99) >> 1, (y + 99) >> 1, 7) > .78 ? 1 : 2);
+  }
+  // clouds, baked into the sky (no drift in this prototype)
+  const nc = N[R.cloud];
+  for (let i = 0; i < Math.round(W / 140); i++) {
+    const cx = rand() * W, base = y0 + (y1 - y0) * (.12 + rand() * .45), w = 50 + rand() * 50;
+    if (!g.spring) {
+      const h = 2 + rand() * 2.5;
+      for (let y = Math.floor(base - h); y <= base + h; y++) for (let x = Math.floor(cx - w); x <= cx + w; x++) {
+        if (x < 0 || x >= W || ((x - cx) / w) ** 2 + ((y - base) / h) ** 2 > 1) continue;
+        const j = y * W + x; if (land[j] < code(R.sky, 0) || land[j] >= code(R.sky, 16)) continue;
+        land[j] = code(R.cloud, quant(((y - base) / h + 1) / 2 * .7 + (base - y0) / (y1 - y0) * .35, nc, x, y));
+      }
+      continue;
+    }
+    const m = 4 + Math.floor(rand() * 3), lobes = [];
+    for (let j = 0; j < m; j++) { const t = j / (m - 1), r = w * (.13 + .12 * Math.sin(t * Math.PI) + rand() * .04); lobes.push({ x: cx - w / 2 + t * w, y: base - r * .35, r }); }
+    for (let y = Math.floor(base - w * .4); y <= base; y++) for (let x = Math.floor(cx - w); x <= cx + w; x++) {
+      if (x < 0 || x >= W || y < 0) continue;
+      let best = -1, nx = 0, ny = 0;
+      for (const l of lobes) { const dx = (x + .5 - l.x) / l.r, dy = (y + .5 - l.y) / l.r, d2 = dx * dx + dy * dy; if (d2 < 1) { const z = Math.sqrt(1 - d2) * l.r; if (z > best) { best = z; nx = dx; ny = dy; } } }
+      const j = y * W + x;
+      if (best < 0 || land[j] < code(R.sky, 0) || land[j] >= code(R.sky, 16)) continue;
+      land[j] = code(R.cloud, quant(y >= base - 1 ? .05 : .55 - ny * .35 - nx * .12, nc, x, y));
+    }
+  }
+}
+// sprites: lists of [dx, dy, code], drawn every frame
+function padPx(rx, notch, age = 0) {
+  const ry = Math.max(2, Math.round(rx * .42)), np = N[R.pad], px = [];
+  const inside = (x, y) => { const e2 = (x / rx) ** 2 + (y / ry) ** 2; if (e2 > 1) return false; let a = Math.atan2(y / ry, x / rx) - notch; a = Math.atan2(Math.sin(a), Math.cos(a)); return !(Math.abs(a) < .28 && e2 > .02); };
+  for (let x = -rx + 1; x < rx; x++) { let yb = -1; for (let y = ry; y >= -ry; y--) if (inside(x, y)) { yb = y; break; } if (yb >= 0) px.push([x, yb + 1, code(R.water, 0)]); }
+  for (let y = -ry; y <= ry; y++) for (let x = -rx; x <= rx; x++) {
+    if (!inside(x, y)) continue;
+    let v = .6 - (y / ry) * .25 - (x / rx) * .1 + (hash2(x >> 1, y >> 1, 13) - .5) * .25 - age * .12;
+    let s = 1 + Math.round(clamp(v, 0, 1) * (np - 2));
+    const a = Math.atan2(y / ry, x / rx);
+    if (Math.abs(Math.sin((a - notch) * 3.5)) < .12 && (x / rx) ** 2 + (y / ry) ** 2 > .05) s = Math.max(1, s - 1);
+    if (!inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1)) s = 0;
+    px.push([x, y, code(age > 2 ? R.grass : R.pad, age > 2 ? Math.max(0, s - 3) : s)]);
+  }
+  return { px, ry };
+}
+function rowsPx(rows, map) {
+  const px = [], h = rows.length, w = rows[0].length;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const c = map[rows[y][x]]; if (c !== undefined) px.push([x - (w >> 1), y - h + 1, c]); }
+  return px;
+}
+const FLOWER = ["...P.P...", "..PpPpP..", ".PpPcPpP.", "PpPpPpPpP", ".ppPpPpp.", "...ppp..."];
+const BIGFLOWER = ["....P.P....", "...PpPpP...", "..PpPPPpP..", ".PpPpcPpPp.", "PpPpPcPpPpP", ".PppPpPppP.", "..ppppppp..", "....ppp...."];
+const BUD = ["..P..", ".PpP.", ".pPp.", "..p.."];
+const BOAT = ["..o...................", "...o..................", ".TTTTTTTTTTTTTTTTTTTT.", "TttttttttttttttttttttT", ".tTTTTTTTTTTTTTTTTTTt.", "..dddddddddddddddddd..", "....dddddddddddddd...."];
+function flowerMap() { const nf = N[R.flower]; return { P: code(R.flower, nf - 1), p: code(R.flower, nf - 4), c: code(R.light, 2) }; }
+function pad(g, x, y, rx, o = {}) {
+  const { px, ry } = padPx(rx, o.notch ?? g.rand() * 6, o.age ?? 0);
+  const all = px.slice();
+  if (o.flower) {
+    const rows = o.flower === "big" ? BIGFLOWER : o.flower === "bud" ? BUD : FLOWER;
+    for (const [dx, dy, c] of rowsPx(rows, flowerMap())) all.push([dx - Math.round(rx * .15), dy - Math.round(ry * .2), c]);
+  }
+  g.sprites.push({ x, y, px: all, bob: true, i: g.sprites.length });
+}
+function stone(g, x, y, rx) {
+  const ry = Math.max(2, Math.round(rx * .45)), ns = N[R.stone], px = [];
+  for (let yy = -ry; yy <= 1; yy++) for (let xx = -rx; xx <= rx; xx++) {
+    if ((xx / rx) ** 2 + (yy / ry) ** 2 > 1) continue;
+    const top = (xx / rx) ** 2 + ((yy - 1) / ry) ** 2 > .55 && yy < 0;
+    px.push([xx, yy, code(R.stone, yy === 1 ? 1 : top ? ns - 1 : ns - 3 - (xx > rx * .3 ? 1 : 0))]);
+  }
+  for (let xx = -rx + 1; xx < rx; xx++) px.push([xx, 2, code(R.water, 0)]);
+  g.sprites.push({ x, y, px, bob: false });
+}
+function boat(g, x, y) {
+  const nt = N[R.trunk];
+  g.sprites.push({ x, y, px: rowsPx(BOAT, { T: code(R.trunk, nt - 1), t: code(R.trunk, 2), d: code(R.trunk, 0), o: code(R.trunk, 1) }), bob: true, i: 3 });
+}
+function reeds(g, x0, x1, baseFn, n) {
+  const ng = N[R.grass], nt = N[R.trunk];
+  for (let i = 0; i < n; i++) {
+    const x = Math.round(x0 + g.rand() * (x1 - x0)), base = Math.round(baseFn(x)), h = Math.round(18 + g.rand() * 26), px = [];
+    for (let j = 0; j < h; j++) px.push([0, -j, code(R.grass, j > h * .5 ? ng - 3 : ng - 5)]);
+    if (g.rand() > .5) for (let j = 0; j < 6; j++) { px.push([0, -h - j, code(R.trunk, j === 0 ? nt - 1 : 1)]); px.push([1, -h - j, code(R.trunk, 1)]); }
+    g.sprites.push({ x, y: base, px, bob: false });
+  }
+}
+function fall(g, x, w, y0, y1) { g.falls.push({ x, w, y0, y1 }); }
+function mark(g, label, x, y) { g.marks.push({ label, x, y }); }
+function finish(g, season) {
+  const { W, H, land, body } = g;
+  for (let i = 0; i < W * H; i++) if (land[i] === TR && !body[i]) land[i] = code(R.trunk, 0);
+  // glints: palette-cycled streaks, denser near each surface
+  const rand = rng(77);
+  for (let b = 1; b < g.bodies.length; b++) {
+    const B = g.bodies[b], depth = Math.min(B.y1 - B.y0, 320);
+    const count = Math.round((B.x1 - B.x0) * depth / 700);
+    for (let i = 0; i < count; i++) {
+      const x = Math.floor(B.x0 + rand() * (B.x1 - B.x0)), d = Math.floor(rand() ** 1.8 * depth), y = B.y0 + d;
+      if (y >= H || body[y * W + x] !== b) continue;
+      g.glints.push({ x, y, len: 1 + Math.floor(rand() * (2 + (1 - d / depth) * 5)), s: Math.floor(rand() * 4) });
+    }
+  }
+  g.season = season;
+  return g;
+}
+
+// ---------- the three worlds ----------
+const WORLDS = {
+  a: { name: "Shoreline", W: 1600, H: 900, seed: 11, move: "pan",
+    blurb: "One wide world you travel along. The places sit in stack order from left to right: the pond (home), today's lily (the Inquiry), the brook (a Path) and the pool (the Recap). Going deeper pans right, Back pans left. On wide web the panes sit over consecutive places.",
+    framings: { home: { x: 280, y: 380, share: .40 }, inquiry: { x: 655, y: 380, share: .46 }, path1: { x: 905, y: 380, share: .40 },
+      path2: { x: 1015, y: 380, share: .40 }, path3: { x: 1125, y: 380, share: .40 }, recap: { x: 1440, y: 380, share: .34 } },
+    build(g, spring) {
+      const WY = 380;
+      farTrees(g, 0, 1600, WY); mist(g, 0, 1600, WY);
+      treeRow(g, 0, 760, WY, { gapBack: [150, 430], gapFront: [40, 540] });
+      treeRow(g, 760, 1300, WY, { scale: 1.3, dense: .75, drop: 10 });
+      ground(g, 1290, 1600, (x) => 236 - 10 * Math.sin((x - 1290) / 40), WY, "rock");
+      treeRow(g, 1300, 1600, 238, { scale: .8, front: false, gapBack: [1385, 1420] });
+      bank(g, 0, 1290, WY);
+      water(g, 0, 1600, WY, 900);
+      const pts = [[700, 905], [820, 800], [1000, 782], [1180, 716], [1262, 694]];
+      const brookTop = (x) => { for (let i = 1; i < pts.length; i++) if (x <= pts[i][0]) { const [a, b] = [pts[i - 1], pts[i]]; return lerp(a[1], b[1], (x - a[0]) / (b[0] - a[0])); } return 694; };
+      const poolTop = (x) => Math.min(905, WY + 60 + 300 * Math.sqrt(Math.max(0, 1 - ((x - 1440) / 205) ** 2)));
+      ground(g, 700, 1262, brookTop, 900);
+      ground(g, 1262, 1600, (x) => Math.max(poolTop(x), x < 1300 ? 694 : 0), 900, "rock");
+      fall(g, 1398, 18, 228, WY);
+      sky(g, 0, WY, { x: 330, y: 300, r: 520, s: spring ? .45 : .3 }, g.moon ? { x: 1040, y: 60, r: 9 } : null);
+      // home pond
+      pad(g, 300, 470, 19, { flower: "big" }); mark(g, "New Inquiry", 300, 452);
+      pad(g, 140, 432, 10, { flower: "open" }); pad(g, 212, 522, 12, { flower: "open" }); pad(g, 392, 448, 9, { flower: "open" }); pad(g, 430, 566, 13, { flower: "open" });
+      mark(g, "Recaps", 212, 505);
+      pad(g, 48, 806, 8, { flower: "bud", age: 2 }); pad(g, 96, 846, 9, { flower: "bud", age: 2 }); pad(g, 142, 794, 7, { flower: "bud", age: 2 });
+      mark(g, "Older Recaps", 96, 785);
+      boat(g, 488, 424); mark(g, "Settings", 488, 414);
+      // today's lily: a pad per Probe, ageing
+      pad(g, 610, 452, 14); pad(g, 668, 502, 12, { age: 1 }); pad(g, 712, 436, 10, { age: 1 }); pad(g, 628, 566, 11, { age: 2 }); pad(g, 724, 590, 9, { age: 3 });
+      mark(g, "Today's Inquiry", 660, 420);
+      // the brook: stepping stones, one Path step each
+      [[852, 412], [906, 432], [962, 416], [1016, 438], [1072, 420], [1126, 442], [1182, 426]].forEach(([x, y], i) => stone(g, x, y, 7 - (i % 2)));
+      reeds(g, 760, 1250, brookTop, 26);
+      mark(g, "Brook · Path", 1015, 400);
+      // the pool
+      for (let x = 1262; x < 1600; x += 22) stone(g, x + Math.round(g.rand() * 8), Math.round(poolTop(x)) - 1, 6 + Math.round(g.rand() * 3));
+      mark(g, "Pool · Recap", 1440, 470); mark(g, "Waterfall", 1406, 300);
+    } },
+  b: { name: "Hillside", W: 1000, H: 1900, seed: 23, move: "pan",
+    blurb: "One tall world you go down through. The pond sits on a terrace under the sky; the brook falls from it through three small basins, one per Path step, into the pool at the foot of the hill. Going deeper descends, Back rises. Wider screens see more of the hill, not more of the way down.",
+    framings: { home: { x: 500, y: 380, share: .42 }, inquiry: { x: 560, y: 380, share: .28 }, path1: { x: 400, y: 760, share: .42 },
+      path2: { x: 620, y: 940, share: .42 }, path3: { x: 370, y: 1120, share: .42 }, recap: { x: 500, y: 1360, share: .36 } },
+    build(g, spring) {
+      const WY = 380;
+      farTrees(g, 0, 1000, WY); mist(g, 0, 1000, WY);
+      treeRow(g, 0, 1000, WY, { gapBack: [330, 680], gapFront: [240, 760] });
+      bank(g, 0, 1000, WY);
+      ground(g, 0, 1000, () => WY, 1900, "rock");
+      const pondBot = (x) => WY + 258 * Math.sqrt(Math.max(0, 1 - ((x - 500) / 470) ** 2));
+      water(g, 30, 970, WY, pondBot);
+      const basins = [[180, 620, 760], [380, 860, 940], [140, 600, 1120]];
+      for (const [x0, x1, y] of basins) {
+        treeRow(g, x1 + 30, Math.min(1000, x1 + 360), y, { scale: .7, back: false });
+        treeRow(g, Math.max(0, x0 - 330), x0 - 30, y, { scale: .7, back: false });
+        bank(g, x0 - 24, x1 + 24, y);
+        water(g, x0, x1, y, (x) => y + 112 - Math.max(0, 34 - Math.min(x - x0, x1 - x)));
+      }
+      treeRow(g, 0, 1000, 1360, { scale: .85, back: false, gapFront: [200, 800] });
+      bank(g, 0, 1000, 1360);
+      water(g, 0, 1000, 1360, 1900);
+      ground(g, 0, 1000, (x) => 1900 - 220 * Math.max(0, (Math.abs(x - 500) - 300) / 200), 1900);
+      fall(g, 556, 12, Math.round(pondBot(556)) - 2, 760); fall(g, 592, 9, 868, 940); fall(g, 402, 9, 1048, 1120); fall(g, 556, 12, 1228, 1360);
+      sky(g, 0, WY, { x: 300, y: 300, r: 420, s: spring ? .45 : .3 }, g.moon ? { x: 700, y: 60, r: 9 } : null);
+      pad(g, 500, 452, 19, { flower: "big" }); mark(g, "New Inquiry", 500, 434);
+      pad(g, 300, 470, 11, { flower: "open" }); pad(g, 372, 540, 12, { flower: "open" }); pad(g, 700, 470, 10, { flower: "open" }); mark(g, "Recaps", 372, 524);
+      pad(g, 120, 536, 8, { flower: "bud", age: 2 }); pad(g, 168, 572, 9, { flower: "bud", age: 2 }); pad(g, 96, 500, 7, { flower: "bud", age: 2 }); mark(g, "Older Recaps", 140, 482);
+      boat(g, 820, 424); mark(g, "Settings", 820, 414);
+      pad(g, 560, 560, 14); pad(g, 616, 600, 11, { age: 1 }); pad(g, 512, 612, 10, { age: 2 }); pad(g, 640, 530, 9, { age: 3 }); mark(g, "Today's Inquiry", 570, 535);
+      [[300, 782], [360, 792], [420, 784], [520, 962], [580, 970], [640, 960], [270, 1142], [330, 1152], [390, 1142]].forEach(([x, y]) => stone(g, x, y, 7));
+      mark(g, "Path · step 1", 400, 740); mark(g, "Path · step 2", 620, 920); mark(g, "Path · step 3", 370, 1100);
+      mark(g, "Pool · Recap", 500, 1420);
+    } },
+  c: { name: "Still pond", W: 960, H: 900, seed: 37, move: "dissolve",
+    blurb: "One pond and one framing for every screen. Nothing travels: a screen change only changes the words, through a short dither dissolve. The brook enters at the back; the pond is also the pool. Phones see the middle; tablets and wide web see more of the same pond.",
+    framings: { home: { x: 480, y: 380, share: .42 }, inquiry: { x: 480, y: 380, share: .42 }, path1: { x: 480, y: 380, share: .42 },
+      path2: { x: 480, y: 380, share: .42 }, path3: { x: 480, y: 380, share: .42 }, recap: { x: 480, y: 380, share: .42 } },
+    build(g, spring) {
+      const WY = 380;
+      farTrees(g, 0, 960, WY); mist(g, 0, 960, WY);
+      treeRow(g, 0, 960, WY, { gapBack: [380, 560], gapFront: [300, 640] });
+      ground(g, 596, 700, (x) => 338 + Math.abs(x - 648) * .5, WY, "rock");
+      bank(g, 0, 960, WY);
+      water(g, 0, 960, WY, 900);
+      ground(g, 0, 960, (x) => 905 - 190 * Math.max(0, (Math.abs(x - 480) - 250) / 230), 900);
+      fall(g, 640, 9, 338, WY);
+      sky(g, 0, WY, { x: 420, y: 300, r: 420, s: spring ? .45 : .3 }, g.moon ? { x: 560, y: 60, r: 9 } : null);
+      pad(g, 480, 470, 18, { flower: "big" }); mark(g, "New Inquiry", 480, 452);
+      pad(g, 392, 540, 13); pad(g, 436, 592, 10, { age: 1 }); pad(g, 362, 604, 9, { age: 2 }); pad(g, 420, 506, 8, { age: 3 }); mark(g, "Today's Inquiry", 400, 520);
+      pad(g, 556, 524, 11, { flower: "open" }); pad(g, 600, 584, 10, { flower: "open" }); pad(g, 520, 626, 9, { flower: "open" }); mark(g, "Recaps", 560, 508);
+      pad(g, 350, 690, 8, { flower: "bud", age: 2 }); pad(g, 384, 722, 7, { flower: "bud", age: 2 }); pad(g, 418, 694, 8, { flower: "bud", age: 2 }); mark(g, "Older Recaps", 384, 672);
+      boat(g, 604, 424); mark(g, "Settings", 604, 414);
+      mark(g, "Brook", 644, 326);
+    } },
+};
+function buildWorld(key, season) {
+  const def = WORLDS[key], g = newWorld(def.W, def.H, def.seed + (season === "autumn" ? 5 : 0));
+  g.spring = season === "spring"; g.moon = SEASONS[season].moon;
+  def.build(g, g.spring);
+  finish(g, season);
+  g.LUT = { normal: makeLUT(season, "normal"), still: makeLUT(season, "still"), stepout: makeLUT(season, "stepout") };
+  return g;
+}
+
+// ---------- compose one view of the world: cam = top-left in art pixels; motion = full | reduced | still ----------
+function compose(g, cx, cy, vw, vh, T, motion, out) {
+  const { W, H, land, body, bodies } = g, nW = N[R.water];
+  const full = motion === "full";
+  const tw = full ? Math.floor(T * 8) : 0, ts = full ? Math.floor(T * 3) : 0;
+  for (let y = 0; y < vh; y++) {
+    const wy = cy + y, o = y * vw;
+    if (wy < 0 || wy >= H) { out.fill(code(R.trunk, 0), o, o + vw); continue; }
+    for (let x = 0; x < vw; x++) {
+      const wx = cx + x;
+      if (wx < 0 || wx >= W) { out[o + x] = code(R.trunk, 0); continue; }
+      const i = wy * W + wx, b = body[i];
+      if (!b) { out[o + x] = land[i]; continue; }
+      const B = bodies[b], d = wy - B.y0, sy = B.y0 - 1 - d;
+      const dx = full ? Math.round(Math.sin(wy * .66 + tw * .9) * (.3 + Math.min(1.2, d / 17))) : 0;
+      let c = code(R.water, 1);
+      if (sy >= 0) { const j = sy * W + clamp(wx + dx, 0, W - 1); if (!body[j]) c = land[j] | 16; }
+      const fade = clamp((d / B.fd - .45) / .55, 0, 1);
+      if (fade > 0 && bay(wx, wy) < fade * .9) c = code(R.water, Math.max(0, Math.round((1 - fade) * (nW - 1) * .7)));
+      out[o + x] = c;
+    }
+  }
+  const put = (x, y, c) => { x -= cx; y -= cy; if (x >= 0 && x < vw && y >= 0 && y < vh) out[y * vw + x] = c; };
+  for (const gl of g.glints) {
+    if (gl.y < cy || gl.y >= cy + vh || gl.x + gl.len < cx || gl.x > cx + vw) continue;
+    const dx = full ? Math.round(Math.sin(gl.y * .66 + tw * .9) * .8) : 0;
+    for (let k = 0; k < gl.len; k++) put(gl.x + k + dx, gl.y, code(R.glint, gl.s));
+  }
+  for (const f of g.falls) {
+    if (f.x + f.w < cx || f.x > cx + vw || f.y1 < cy || f.y0 > cy + vh) continue;
+    for (let y = f.y0; y < f.y1 + 3; y++) for (let x = f.x; x < f.x + f.w; x++) {
+      const foam = y >= f.y1 - 1;
+      const s = foam ? (bay(x, y) < .6 ? 3 : 2) : (((y - tw * 2 + Math.floor(hash2(x, 0, 3) * 7)) % 6 + 6) % 6 < 2 ? 3 : (x === f.x || x === f.x + f.w - 1 ? 0 : 1));
+      put(x, y, foam ? code(R.glint, s) : s === 3 ? code(R.glint, 2) : code(R.water, nW - 1 - s * 3));
+    }
+  }
+  for (const s of g.sprites) {
+    const bob = full && s.bob ? ((ts + (s.i ?? 0)) % 2) : 0;
+    if (s.x + 30 < cx || s.x - 30 > cx + vw || s.y + 30 < cy || s.y - 60 > cy + vh) continue;
+    for (const [dx, dy, c] of s.px) put(s.x + dx, s.y + dy + bob, c);
+  }
+}
+const SCREENS = ["home", "inquiry", "path1", "path2", "path3", "recap"];
+if (typeof module !== "undefined") module.exports = { WORLDS, buildWorld, compose, SCREENS, N, R, code };
+</script>
+
+<script>
+"use strict";
+// ================= variants =================
+const VARIANTS = {
+  a: { name: "Halo on the art",
+    blurb: "Words sit straight on the world with a soft halo; any block that falls short of 4.5:1 gets the firm halo, as typography decided (issue #58). Only the Recap cards and the composer get pixel-frost. The world itself carries the reading mode.",
+    rules: [
+      "<b>Halo:</b> soft on every block on the sky or water; firm on any block whose worst 5% falls under 4.5:1 (3:1 large), measured once per block on layout.",
+      "<b>Frost only where things are held:</b> Recap cards and the composer, thin (45% tint) in 3-art-pixel cells.",
+      "<b>Reading:</b> the whole world shifts to the chosen palette row through an 8-step dither and the clock stops.",
+      "<b>Increase Contrast:</b> every group gets a solid plate in art pixels, notched corners, its tint at 100%.",
+    ] },
+  b: { name: "Pixel-frost panels",
+    blurb: "Every group of words sits on a pane of frost drawn in art pixels: 3-pixel cells averaged from the art behind, tinted toward the sky or the water, colour-stepped, with notched corners and a lit top edge. No halo anywhere. Reading thickens the frost.",
+    rules: [
+      "<b>Panels:</b> each group of words (a question, a Reflection, a card, a control) on its own frost pane: 3-art-pixel cells, 16 levels per channel, 2-px notched corners, lit top/left edge, shaded bottom/right.",
+      "<b>Tint by side:</b> sky tint above the waterline, water tint below; cream and pale water in the morning, dusk and deep blue in the evening.",
+      "<b>Strength:</b> 55% tint at rest, 72% while reading, 100% under Increase Contrast.",
+      "<b>No halo,</b> so text is measured against the frost alone.",
+    ] },
+  c: { name: "Mist around the words",
+    blurb: "No panels and no frames. The world itself goes pale in the morning and dark in the evening behind each group of words, on its own palette row, fading out through ordered dither over 8 art pixels. Half strength at rest, full while reading.",
+    rules: [
+      "<b>Mist row:</b> a fourth palette row per season (morning L≈.9, evening L≈.2, chroma × .25), drawn only behind words.",
+      "<b>Shape:</b> each group's box grown by 8 art px, fading out through the Bayer matrix; no outline, no corners.",
+      "<b>Strength:</b> half at rest with the soft halo, full while reading; Increase Contrast turns the mist into a solid plate.",
+      "<b>Cards</b> keep a 1-px line in the ink at 35%, so a Recap card still reads as a thing to tap.",
+    ] },
+  d: { name: "Picture above the page",
+    blurb: "On reading screens (Probes, Path, Recap) the world becomes a band at the top, cut by a dithered shoreline; the words sit on a plain page of still water below. Home stays full-bleed with the halo. Reading narrows the band.",
+    rules: [
+      "<b>Band:</b> 40% of the screen at rest, 28% while reading, moved one art pixel at a time; a 4-row dither and a 1-px water line make the shoreline.",
+      "<b>Page:</b> one flat colour per season (pale still water, deep evening water); no glints, no texture.",
+      "<b>Words</b> flow from under the band in one column; a hairline stands in for the waterline between the app's words and the person's.",
+      "<b>Home</b> keeps the full world with the halo, as in A.",
+    ] },
+};
+const KEYS = Object.keys(VARIANTS);
+
+// ================= devices =================
+const DEVICES = [
+  { id: "i17", name: "iPhone 17", w: 1206, h: 2622, dpr: 3, top: 62, bottom: 34, kb: 336, cls: "phone", island: true },
+  { id: "se", name: "iPhone SE (3rd gen)", w: 750, h: 1334, dpr: 2, top: 20, bottom: 0, kb: 260, cls: "phone" },
+  { id: "p8", name: "Pixel 8 Pro", w: 1344, h: 2992, dpr: 3, top: 48, bottom: 24, kb: 300, cls: "phone" },
+  { id: "a06", name: "Galaxy A06", w: 720, h: 1600, dpr: 2, top: 36, bottom: 24, kb: 290, cls: "phone" },
+  { id: "ipad", name: "iPad 11\" portrait", w: 1640, h: 2360, dpr: 2, top: 24, bottom: 20, kb: 320, cls: "tablet" },
+];
+const SCREEN_LABEL = { home: "Home", inquiry: "Probes", path: "Path · reading", typing: "Path · typing", recap: "Recap" };
+const FRAMING = { home: "home", inquiry: "inquiry", path: "path2", typing: "path3", recap: "recap" };
+const READING_SCREENS = new Set(["inquiry", "path", "typing", "recap"]);
+
+const st = { v: "a", screen: "path", device: "i17", season: "spring", ts: 1, hc: false, reduce: matchMedia("(prefers-reduced-motion: reduce)").matches,
+  rmode: "auto", trig: { open: true, kb: true, scroll: true, pause: false }, rmotion: "stop", rpal: "still", badges: true };
+try { const s = JSON.parse(localStorage.getItem("pond-reading") || "{}"); Object.assign(st, s, { trig: { ...st.trig, ...(s.trig || {}) } }); } catch {}
+if (VARIANTS[location.hash.slice(1)]) st.v = location.hash.slice(1);
+const save = () => { try { const { v, ...rest } = st; localStorage.setItem("pond-reading", JSON.stringify(rest)); } catch {} };
+
+// ================= palette rows =================
+function lutWith(season, fn) {
+  const sea = SEASONS[season], L = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
+  RAMPS.forEach((name, r) => rampLch(sea.ramps[name], N[r]).forEach((c, s) => {
+    L[code(r, s)] = pack(oklch(...fn(c)));
+    L[code(r, s) + 16] = pack(oklch(...fn([c[0] * (1 - sea.refl.mix) + sea.refl.L * sea.refl.mix - sea.refl.dark, c[1] * .75, c[2]])));
+  }));
+  return L;
+}
+function rowsFor(season) {
+  const day = season === "spring";
+  const veil = ([L, C, h]) => day ? [.91 + (L - .6) * .1, C * .22, h] : [.2 + (L - .35) * .1, C * .3, h];
+  return {
+    normal: lutWith(season, (c) => c),
+    still: lutWith(season, (c) => rowT(c, "still")),
+    mist: lutWith(season, ([L, C, h]) => [lerp(L, day ? .93 : .3, .5), C * .55, h]),
+    veilFull: lutWith(season, veil),
+    veilHalf: lutWith(season, (c) => { const v = veil(c); return [lerp(c[0], v[0], .55), lerp(c[1], v[1], .55), c[2]]; }),
+  };
+}
+const TINT = {
+  spring: { above: [252, 249, 238], below: [230, 243, 242], lit: [255, 255, 252], shade: [120, 152, 162], page: [241, 245, 241], plate: [244, 246, 241], haloIn: [246, 251, 255] },
+  autumn: { above: [66, 40, 54], below: [22, 24, 50], lit: [255, 204, 156], shade: [10, 8, 22], page: [27, 25, 45], plate: [29, 26, 46], haloIn: [29, 23, 48] },
+};
+const unpack = (u) => [u & 255, u >>> 8 & 255, u >>> 16 & 255];
+
+// ================= world and camera =================
+let G = null, gKey = "", ROWS = null;
+function world() {
+  const k = st.season;
+  if (k !== gKey) { G = buildWorld("a", st.season); ROWS = rowsFor(st.season); gKey = k; }
+  return G;
+}
+function scaleFor(d) {
+  const g = world();
+  let k = d.cls === "phone" ? Math.max(1, Math.round(d.w / 320)) : Math.max(1, Math.ceil(d.dpr * 1.25 - 1e-6));
+  while (Math.ceil(d.w / k) > g.W || Math.ceil(d.h / k) > g.H) k++;
+  return { k, vw: Math.ceil(d.w / k), vh: Math.ceil(d.h / k) };
+}
+const isPage = () => st.v === "d" && READING_SCREENS.has(st.screen);
+const BAND = { rest: .40, reading: .28 };
+function cameraFor(d, sc) {
+  const g = world(), f = WORLDS.a.framings[FRAMING[st.screen]];
+  const at = isPage() ? .7 * Math.round(BAND.reading * sc.vh) : f.share * sc.vh;
+  return { x: clamp(Math.round(f.x - sc.vw / 2), 0, g.W - sc.vw), y: clamp(Math.round(f.y - at), 0, g.H - sc.vh), wy: f.y };
+}
+
+// ================= the words (mock content) =================
+const COPY = {
+  problem: "Everyone my age seems further along. I keep counting the years, and every birthday feels like a score I'm losing.",
+  probes: ["Who decided where you should be by now?", "What does “further along” measure?", "Is counting the years the same as living them?", "What would you be, if you stopped measuring how far behind you are?"],
+  question: "You said nobody decided, that you picked it up from your brother and from school reports. When you count the years now, whose count is it?",
+  reflection: "I think it's still theirs, honestly. My brother had a house at thirty and my parents still bring it up, not unkindly, just as a fact. When I count, I'm counting against him. School did the same thing: a grade for every term, a place in the class. I don't remember ever deciding that a life should be measured like that. It was just there, like the weather.",
+  draft: "Maybe it's mine now, because I keep it going even when nobody asks. Last week I caught myself doing the sums in the shower: thirty-four, no house, no",
+  next: "If the count is yours now, what would happen if you stopped keeping it for one day?",
+  oq: ["What would I be doing if no one was keeping score?", "Did I ever choose this measure?"],
+  cards: [
+    { probe: "Who decided where you should be by now?", a: "Someone set a schedule for my life.", quote: "Nobody decided. I picked it up from watching my brother, and from school reports." },
+    { probe: "What does “further along” measure?", a: "Life can be measured in milestones.", quote: "A house, a title, kids. I've never asked if those are mine." },
+    { probe: "Is counting the years the same as living them?", a: "Time spent without milestones is wasted.", quote: "Last summer wasn't wasted. I just can't put it on the list." },
+  ],
+};
+
+// ================= views =================
+const box = document.getElementById("box");
+let V = null;
+function makeView() {
+  const d = DEVICES.find((x) => x.id === st.device) || DEVICES[0], sc = scaleFor(d);
+  const W = d.w / d.dpr, H = d.h / d.dpr, stage = document.getElementById("stage");
+  const fit = Math.min((stage.clientWidth - 32) / W, (stage.clientHeight - 120) / H, 1);
+  box.innerHTML = ""; box.style.width = Math.round(W * fit) + "px"; box.style.height = Math.round(H * fit) + "px";
+  const dev = document.createElement("div"); dev.className = "dev";
+  dev.style.width = W + "px"; dev.style.height = H + "px"; dev.style.transform = `scale(${fit})`;
+  const cv = document.createElement("canvas"); cv.width = sc.vw; cv.height = sc.vh;
+  cv.style.width = (sc.vw * sc.k / d.dpr) + "px"; cv.style.height = (sc.vh * sc.k / d.dpr) + "px"; cv.setAttribute("aria-hidden", "true");
+  const ov = document.createElement("div"); ov.className = "layer ov";
+  const deco = document.createElement("div"); deco.className = "layer deco";
+  dev.append(cv, ov, deco); box.append(dev);
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(sc.vw, sc.vh);
+  V = { d, sc, W, H, fit, cpa: sc.k / d.dpr, dev, cv, ctx, img, pix: new Uint32Array(img.data.buffer), buf: new Uint16Array(sc.vw * sc.vh),
+    mask: new Float32Array(sc.vw * sc.vh), ov, deco, cam: null, band: sc.vh, lastKey: "", blocks: [] };
+  document.getElementById("cap").innerHTML = `<b>${d.name}</b> · art px = ${sc.k} device px (${V.cpa.toFixed(2)} CSS px) · sees ${sc.vw}×${sc.vh} art px`;
+  render();
+}
+
+// Build the screen's words. Variants differ in which groups get a surface (painted in art pixels) and which get a halo.
+function render() {
+  const v = V, { d, H } = v;
+  v.cam = cameraFor(d, v.sc);
+  v.dev.className = `dev ${st.season} v${st.v}${st.hc ? " hc" : ""}${(st.v === "c" || isPage()) ? " lineC" : ""}`;
+  v.dev.style.setProperty("--ts", st.ts);
+  const wl = Math.round((v.cam.wy - v.cam.y) * v.cpa), page = isPage();
+  const topY = d.top + 8, colTop = d.top + 56, kbH = st.screen === "typing" ? d.kb : 0;
+  const bar = (l, r) => `<div class="top" style="top:${topY}px">${l}${r}</div>`;
+  const g = (cls, inner, extra = "") => `<div class="g ${cls}" data-g ${extra}>${inner}</div>`;
+  const P = (cls, t) => `<p class="blk ${cls}">${t}</p>`;
+  const back = bar(g("", P("ctl", "‹ Back")), g("", P("ctl", "Help")));
+  let above = "", below = "", top = back, extra = "", colBottom = d.bottom + 16;
+  const pageTop = Math.round(BAND.rest * v.sc.vh * v.cpa) + 10;
+  if (st.screen === "home") {
+    top = bar(g("", P("app", `<span style="font-size:calc(22px * var(--ts))">Look Together</span>`)), "");
+    below = `<div class="stack">${g("", P("ctl btn", "Start today's Inquiry"))}${g("", P("cap", "Unfinished") + P("per", "Everyone my age seems further along…") + P("ctl", "5 days left"))}</div>`;
+  } else if (st.screen === "inquiry") {
+    above = g("", P("cap", "Probes") + COPY.probes.map((q) => P("rd", q)).join(""));
+    below = g("", P("cap", "Your Problem") + P("per", COPY.problem));
+  } else if (st.screen === "path") {
+    above = g("", P("cap", "Probe 4 · step 2") + P("q", COPY.question));
+    below = `<div class="stack">${g("", P("per", COPY.reflection))}${g("", P("ctl", "‹ Step 1 &nbsp; · &nbsp; Step 3 ›"))}</div>`;
+    extra = composer(false, d.bottom + 10, null);
+    colBottom = d.bottom + 10 + 64;
+  } else if (st.screen === "typing") {
+    above = g("", P("cap", "Probe 4 · step 3") + P("q", COPY.next));
+    const cb = kbH + 8, maxH = H - cb - (page ? pageTop + 120 : wl + 14);
+    extra = composer(true, cb, maxH);
+    colBottom = page ? cb + 120 : H - wl;
+  } else if (st.screen === "recap") {
+    above = g("", P("cap", "Recap · 3 November") + P("t28", "What you looked at"));
+    below = `<div class="stack">
+      ${g("", P("cap", "Your Problem") + P("per", COPY.problem))}
+      ${g("card", P("cap", "Open Questions") + COPY.oq.map((q) => P("rd", q)).join(""), "data-card")}
+      ${g("", P("cap", "Looked at"))}
+      ${COPY.cards.map((c) => g("card", P("ctl it", c.probe) + P("rd", c.a) + `<div class="cwl"></div>` + P("per", c.quote) + P("ctl cardMore", "›"), "data-card")).join("")}
+      ${g("", P("cap", "Not looked at yet") + P("rd", COPY.probes[3]))}
+      ${g("", P("rd", "Was this worth your time?") + `<div style="display:flex;gap:8px;flex-wrap:wrap">${["Yes", "Not sure", "No"].map((x) => P("ctl btn", x)).join("")}</div>`)}
+      ${g("", `<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">${P("ctl btn", "Share")}${P("ctl", "Kept on this device")}</div>`)}
+    </div>`;
+  }
+  const mid = page ? `<div class="rule"></div>` : `<div class="wlgap"></div>`;
+  const col = `<div class="col" style="top:${page ? pageTop : colTop}px;bottom:${colBottom}px"><div class="inner">${page ? "" : `<div class="sp"></div>`}${above}${below ? mid + below : ""}</div></div>`;
+  v.ov.innerHTML = top + col + extra;
+  // Halo: which blocks sit on the bare art.
+  const onArt = st.hc ? [] : st.v === "a" ? [...v.ov.querySelectorAll(".blk")].filter((b) => !b.closest("[data-card]"))
+    : st.v === "c" ? [...v.ov.querySelectorAll(".blk")] : st.v === "d" ? [...v.ov.querySelectorAll(page ? ".top .blk" : ".blk")] : [];
+  for (const b of onArt) b.classList.add("halo");
+  // The waterline: the app's words end just above it; when they don't fit, the column lets go and scrolls (issue #56).
+  const sp = v.ov.querySelector(".sp"), colEl = v.ov.querySelector(".col");
+  if (sp) {
+    const ab = colEl.querySelector(".inner > .g");
+    const want = wl - colTop - (ab ? ab.offsetHeight : 0) - 14;
+    sp.style.height = Math.max(0, st.screen === "home" ? wl - colTop - 14 : want) + "px";
+  }
+  colEl.addEventListener("scroll", () => { lastScroll = performance.now(); lastInput = lastScroll; v.lastKey = ""; measureSoon(); }, { passive: true });
+  let deco = "";
+  if (kbH) deco += `<div class="kb" style="height:${kbH}px"><i></i><i></i><i></i><i style="margin-inline:22%"></i></div>`;
+  if (d.top) deco += `<div class="inset" style="top:0;height:${d.top}px"></div>`;
+  if (d.bottom) deco += `<div class="inset" style="bottom:0;height:${d.bottom}px"></div>`;
+  if (d.island) deco += `<div class="island" style="top:11px;width:124px;height:36px"></div>`;
+  v.decoBase = deco; v.deco.innerHTML = deco;
+  v.band = page ? Math.round(BAND.rest * v.sc.vh) : v.sc.vh;
+  v.lastKey = ""; measureSoon();
+}
+function composer(typing, bottom, maxH) {
+  const inner = typing
+    ? `<p class="blk per">${COPY.draft}<span style="opacity:.6">|</span></p><div class="row2"><p class="blk ctl">Mic</p><p class="blk ctl btn">Submit</p></div>`
+    : `<div class="row2"><p class="blk per it">Reflect, or tap the mic</p></div>`;
+  return `<div class="composer g" data-g data-card style="bottom:${bottom}px${maxH ? `;max-height:${maxH}px` : ""}">${inner}</div>`;
+}
+
+// ================= reading mode =================
+let lastScroll = -1e9, lastInput = performance.now();
+function readingState(now) {
+  if (st.rmode === "off") return { on: false, why: ["off"] };
+  if (st.rmode === "on") return { on: true, why: ["always on"] };
+  const why = [];
+  if (st.trig.open && READING_SCREENS.has(st.screen)) why.push("reading screen open");
+  if (st.trig.kb && st.screen === "typing") why.push("keyboard up");
+  if (st.trig.scroll && now - lastScroll < 2500) why.push("scrolling");
+  if (st.trig.pause && now - lastInput > 4000) why.push("4 s pause");
+  return { on: why.length > 0, why: why.length ? why : ["no trigger"] };
+}
+
+// ================= painting =================
+function rectsArt(sel) { // DOM boxes → art-pixel rects in the view
+  const v = V, dr = v.dev.getBoundingClientRect(), out = [];
+  for (const el of v.ov.querySelectorAll(sel)) {
+    const r = el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
+    const k = v.fit * v.cpa;
+    const x0 = Math.floor((r.left - dr.left) / k), y0 = Math.floor((r.top - dr.top) / k), x1 = Math.ceil((r.right - dr.left) / k), y1 = Math.ceil((r.bottom - dr.top) / k);
+    const clip = el.closest(".col"); let cy0 = 0, cy1 = v.sc.vh;
+    if (clip && clip !== el) { const c = clip.getBoundingClientRect(); cy0 = Math.floor((c.top - dr.top) / k); cy1 = Math.ceil((c.bottom - dr.top) / k); }
+    if (y1 < cy0 || y0 > cy1) continue;
+    out.push({ x0: Math.max(0, x0), y0: Math.max(0, y0, cy0), x1: Math.min(v.sc.vw, x1), y1: Math.min(v.sc.vh, y1, cy1), el, card: el.hasAttribute("data-card") });
+  }
+  return out;
+}
+function frost(pix, vw, r, wlArt, m) {
+  const t = TINT[st.season], tint = (r.y0 + r.y1) / 2 < wlArt ? t.above : t.below, C = 3;
+  const q = (x) => clamp(Math.round(x / 16) * 16, 0, 255);
+  for (let cy = r.y0; cy < r.y1; cy += C) for (let cx = r.x0; cx < r.x1; cx += C) {
+    let R = 0, Gg = 0, B = 0, n = 0;
+    for (let y = cy; y < Math.min(cy + C, r.y1); y++) for (let x = cx; x < Math.min(cx + C, r.x1); x++) { const c = pix[y * vw + x]; R += c & 255; Gg += c >>> 8 & 255; B += c >>> 16 & 255; n++; }
+    const o = pack([q(R / n * (1 - m) + tint[0] * m), q(Gg / n * (1 - m) + tint[1] * m), q(B / n * (1 - m) + tint[2] * m)]);
+    for (let y = cy; y < Math.min(cy + C, r.y1); y++) for (let x = cx; x < Math.min(cx + C, r.x1); x++) pix[y * vw + x] = o;
+  }
+  const edge = (x, y, to, a) => { const i = y * vw + x, c = unpack(pix[i]); pix[i] = pack(c.map((v, j) => Math.round(v * (1 - a) + to[j] * a))); };
+  for (let x = r.x0; x < r.x1; x++) { edge(x, r.y0, t.lit, .55); edge(x, r.y1 - 1, t.shade, .35); }
+  for (let y = r.y0 + 1; y < r.y1 - 1; y++) { edge(r.x0, y, t.lit, .4); edge(r.x1 - 1, y, t.shade, .3); }
+  return tint;
+}
+function notch(pix, vw, r, src) { // restore the art in 2-px notched corners
+  for (const [x, y] of [[r.x0, r.y0], [r.x0 + 1, r.y0], [r.x0, r.y0 + 1], [r.x1 - 1, r.y0], [r.x1 - 2, r.y0], [r.x1 - 1, r.y0 + 1],
+    [r.x0, r.y1 - 1], [r.x0 + 1, r.y1 - 1], [r.x0, r.y1 - 2], [r.x1 - 1, r.y1 - 1], [r.x1 - 2, r.y1 - 1], [r.x1 - 1, r.y1 - 2]]) pix[y * vw + x] = src[y * vw + x];
+}
+let readP = 0, T = 0;
+function cycled(L, T, on) {
+  if (!on) return L;
+  const out = L.slice(), base = code(R.glint, 0), tc = Math.floor(T * (st.reduce ? 2.5 : 5));
+  for (let s = 0; s < 4; s++) out[base + s] = L[base + (s + tc) % 4];
+  return out;
+}
+function paint(reading) {
+  const v = V, g = world(), { vw, vh } = v.sc, cam = v.cam;
+  compose(g, cam.x, cam.y, vw, vh, T, st.reduce ? "reduced" : "full", v.buf);
+  const p = Math.round(readP * 8) / 8;
+  const Lb = cycled(ROWS.normal, T, true);
+  const Lr = st.rpal === "normal" ? Lb : st.rpal === "still" ? ROWS.still : cycled(ROWS.mist, T, true);
+  // C: the mist mask, each group's box grown by 8 art px with a dithered falloff
+  const veil = st.v === "c" && !st.hc, M = 8, mask = v.mask;
+  const groups = rectsArt("[data-g]");
+  if (veil) {
+    mask.fill(0);
+    for (const r of groups) for (let y = Math.max(0, r.y0 - M); y < Math.min(vh, r.y1 + M); y++) for (let x = Math.max(0, r.x0 - M); x < Math.min(vw, r.x1 + M); x++) {
+      const dx = Math.max(r.x0 - x, 0, x - r.x1 + 1), dy = Math.max(r.y0 - y, 0, y - r.y1 + 1), dd = Math.hypot(dx, dy);
+      const m = 1 - dd / M; if (m > mask[y * vw + x]) mask[y * vw + x] = m;
+    }
+  }
+  const Lv = reading ? ROWS.veilFull : ROWS.veilHalf;
+  const pix = v.pix, buf = v.buf;
+  for (let y = 0; y < vh; y++) for (let x = 0; x < vw; x++) {
+    const i = y * vw + x, c = buf[i];
+    if (veil && mask[i] > 0 && bay(x + 1, y + 2) < mask[i]) pix[i] = Lv[c];
+    else pix[i] = p > 0 && bay(x, y) < p ? Lr[c] : Lb[c];
+  }
+  // D: the band and the page
+  if (st.v === "d" && v.band < vh) {
+    const page = pack(TINT[st.season].page), line = Lb[code(R.water, 9)];
+    for (let y = Math.max(0, v.band - 4); y < vh; y++) for (let x = 0; x < vw; x++) {
+      const i = y * vw + x;
+      if (y >= v.band + 1 || bay(x, y) < (y - (v.band - 5)) / 5) pix[i] = page;
+      if (y === v.band) pix[i] = line;
+    }
+  }
+  // frost and plates
+  const wlArt = cam.wy - cam.y;
+  const surf = st.hc ? groups : st.v === "a" ? groups.filter((r) => r.card) : st.v === "b" ? groups : [];
+  if (surf.length) {
+    const src = pix.slice();
+    for (const r of surf) {
+      const m = st.hc ? 1 : st.v === "a" ? .45 : reading ? .72 : .55;
+      frost(pix, vw, r, wlArt, m); notch(pix, vw, r, src);
+    }
+  }
+  v.ctx.putImageData(v.img, 0, 0);
+}
+
+// ================= contrast =================
+const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; }; return .2126 * f(r) + .7152 * f(g) + .0722 * f(b); };
+const ratio = (a, b) => (Math.max(a, b) + .05) / (Math.min(a, b) + .05);
+let measureAt = 0;
+const measureSoon = () => { measureAt = performance.now() + 60; };
+function measure() {
+  const v = V, { vw } = v.sc, dr = v.dev.getBoundingClientRect();
+  const res = [];
+  for (const r of rectsArt(".blk")) {
+    const cs = getComputedStyle(r.el), ink = cs.color.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number), Li = lum(ink);
+    const size = parseFloat(cs.fontSize), bold = +cs.fontWeight >= 700, large = size >= 24 || (size >= 18.66 && bold), need = large ? 3 : 4.5;
+    const rs = [];
+    for (let y = r.y0; y < r.y1; y++) for (let x = r.x0; x < r.x1; x++) rs.push(ratio(Li, lum(unpack(v.pix[y * vw + x]))));
+    if (!rs.length) continue;
+    rs.sort((a, b) => a - b);
+    const worst = rs[Math.floor(rs.length * .05)], halo = r.el.classList.contains("halo");
+    const firm = halo && worst < need, inner = ratio(Li, lum(TINT[st.season].haloIn));
+    r.el.classList.toggle("firm", firm);
+    const pass = worst >= need || (firm && inner >= need);
+    const el = r.el.getBoundingClientRect();
+    res.push({ text: r.el.textContent.trim(), worst, need, firm, inner, pass, x: (el.right - dr.left) / v.fit, y: (el.top - dr.top) / v.fit });
+  }
+  v.blocks = res;
+  let deco = v.decoBase;
+  if (st.badges) for (const b of res) if (b.y > 0 && b.y < v.H) deco += `<span class="badge ${!b.pass ? "fail" : b.firm ? "firm" : "pass"}" style="left:${Math.min(b.x + 6, v.W - 4)}px;top:${b.y}px">${b.worst.toFixed(1)}${b.firm ? " · firm" : ""}</span>`;
+  v.deco.innerHTML = deco;
+  const rows = res.slice().sort((a, b) => a.worst - b.worst);
+  document.getElementById("ctTable").innerHTML = `<tr><th>Block</th><th>Art</th><th>Need</th><th>Result</th></tr>` + rows.map((b) =>
+    `<tr><td title="${b.text.replace(/"/g, "&quot;")}">${b.text.slice(0, 26)}</td><td>${b.worst.toFixed(1)}:1</td><td>${b.need}</td><td class="${!b.pass ? "fail" : b.firm ? "firmT" : "pass"}">${!b.pass ? "fails" : b.firm ? `firm halo ${b.inner.toFixed(1)}` : "passes"}</td></tr>`).join("");
+}
+
+// ================= loop =================
+let last = performance.now(), paints = [], statsAt = 0;
+function frame(now) {
+  requestAnimationFrame(frame);
+  const v = V; if (!v) return;
+  const dt = Math.min(.1, (now - last) / 1000); last = now;
+  const rs = readingState(now);
+  readP = clamp(readP + (rs.on ? 1 : -1) * dt / .6, 0, 1);
+  const rate = rs.on ? { keep: 1, slow: .5, stop: 0 }[st.rmotion] : 1;
+  T += dt * rate;
+  if (isPage()) {
+    const target = Math.round((rs.on ? BAND.reading : BAND.rest) * v.sc.vh);
+    if (st.reduce) v.band = target; else if (v.band !== target) v.band += Math.sign(target - v.band) * Math.max(1, Math.round(Math.abs(target - v.band) * dt * 6));
+  } else v.band = v.sc.vh;
+  const full = !st.reduce;
+  const key = [v.cam.x, v.cam.y, full ? Math.floor(T * 8) : 0, Math.floor(T * (full ? 5 : 2.5)), full ? Math.floor(T * 3) : 0, Math.round(readP * 8), v.band, rs.on].join("|");
+  if (key !== v.lastKey) { v.lastKey = key; paint(rs.on); paints.push(now); if (!measureAt) measureAt = now + 300; }
+  if (measureAt && now >= measureAt) { measureAt = 0; measure(); }
+  if (now - statsAt > 400) { statsAt = now; renderStats(rs, now); }
+}
+function renderStats(rs, now) {
+  paints = paints.filter((t) => now - t < 1000);
+  const v = V, fails = v.blocks.filter((b) => !b.pass).length, firm = v.blocks.filter((b) => b.firm).length;
+  document.getElementById("stats").innerHTML =
+    `reading mode   <b>${rs.on ? "on" : "off"}</b> (${rs.why.join(", ")})\n` +
+    `palette        <b>${readP === 0 ? "normal" : readP === 1 ? st.rpal + " row" : "dissolving"}</b>\n` +
+    `world clock    <b>${rs.on ? { keep: "running", slow: "half speed", stop: "stopped" }[st.rmotion] : "running"}</b>${st.reduce ? " · Reduce Motion" : ""}\n` +
+    `redraws        <b>${paints.length}</b> in the last second\n` +
+    (isPage() ? `band           <b>${v.band}</b> of ${v.sc.vh} art px\n` : "") +
+    `blocks         <b>${v.blocks.length}</b> · ${firm} on a firm halo · <span class="${fails ? "fail" : "pass"}">${fails} failing</span>`;
+}
+
+// ================= panel =================
+const $ = (id) => document.getElementById(id);
+function chip(label, pressed, on) {
+  const b = document.createElement("button"); b.type = "button"; b.className = "chip";
+  b.setAttribute("aria-pressed", pressed ? "true" : "false"); b.textContent = label; b.onclick = on; return b;
+}
+function prow(label, chips) {
+  const r = document.createElement("div"); r.className = "prow";
+  const s = document.createElement("span"); s.textContent = label;
+  const c = document.createElement("div"); c.className = "chips"; c.append(...chips); r.append(s, c); return r;
+}
+function set(k, val, rebuild) { st[k] = val; save(); if (rebuild === "view") makeView(); else if (rebuild) render(); renderPanel(); }
+function renderPanel() {
+  const def = VARIANTS[st.v];
+  $("vname").textContent = `${st.v.toUpperCase()} · ${def.name}`; $("vblurb").textContent = def.blurb;
+  $("label").innerHTML = `<b>${st.v.toUpperCase()}</b>${def.name}`;
+  $("screens").replaceChildren(
+    prow("Screen", Object.entries(SCREEN_LABEL).map(([k, l]) => chip(l, st.screen === k, () => set("screen", k, true)))),
+    prow("Device", DEVICES.map((d) => chip(d.name, st.device === d.id, () => set("device", d.id, "view")))),
+    prow("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => chip(l, st.season === k, () => set("season", k, true)))));
+  const trig = (k, l) => chip(l, st.trig[k], () => { st.trig[k] = !st.trig[k]; save(); renderPanel(); });
+  $("reading").replaceChildren(
+    prow("Mode", [["auto", "On a trigger"], ["off", "Never"], ["on", "Always"]].map(([k, l]) => chip(l, st.rmode === k, () => set("rmode", k)))),
+    prow("Triggers", [trig("open", "Probes, Path or Recap open"), trig("kb", "Keyboard up"), trig("scroll", "Scrolling"), trig("pause", "4 s without input")]),
+    prow("Motion", [["keep", "Keeps moving"], ["slow", "Half speed"], ["stop", "Stops"]].map(([k, l]) => chip(l, st.rmotion === k, () => set("rmotion", k)))),
+    prow("Palette", [["normal", "Unchanged"], ["still", "Still water row"], ["mist", "Mist row"]].map(([k, l]) => chip(l, st.rpal === k, () => set("rpal", k)))));
+  $("person").replaceChildren(
+    prow("Text size", [[1, "100%"], [1.35, "135%"], [1.6, "160%"], [2.1, "AX3 210%"]].map(([k, l]) => chip(l, st.ts === k, () => set("ts", k, true)))),
+    prow("Contrast", [chip("Increase Contrast", st.hc, () => set("hc", !st.hc, true))]),
+    prow("Motion", [chip("Reduce Motion", st.reduce, () => set("reduce", !st.reduce, true))]),
+    prow("Show", [chip("Contrast badges", st.badges, () => { set("badges", !st.badges); measureSoon(); })]));
+  $("rules").innerHTML = def.rules.map((r) => `<li>${r}</li>`).join("");
+}
+
+// ================= switcher =================
+function go(dir) { st.v = KEYS[(KEYS.indexOf(st.v) + dir + KEYS.length) % KEYS.length]; history.replaceState(null, "", "#" + st.v); render(); renderPanel(); }
+$("prev").onclick = () => go(-1); $("next").onclick = () => go(1);
+$("panelBtn").onclick = () => { const p = $("panel"), open = p.hidden; p.hidden = !open; $("panelBtn").setAttribute("aria-expanded", open ? "true" : "false"); };
+addEventListener("keydown", (e) => {
+  lastInput = performance.now();
+  if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+  if (e.key === "ArrowLeft") go(-1); else if (e.key === "ArrowRight") go(1);
+});
+addEventListener("hashchange", () => { if (VARIANTS[location.hash.slice(1)] && location.hash.slice(1) !== st.v) { st.v = location.hash.slice(1); render(); renderPanel(); } });
+for (const ev of ["pointermove", "pointerdown", "wheel", "touchstart"]) addEventListener(ev, () => { lastInput = performance.now(); }, { passive: true });
+addEventListener("resize", () => makeView());
+renderPanel(); makeView(); requestAnimationFrame(frame);
+document.fonts && document.fonts.ready.then(() => render());
+</script>
