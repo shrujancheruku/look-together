@@ -258,7 +258,7 @@
   .mc .none { font:italic calc(var(--s14,14px)*var(--ts))/1.4 var(--f-ui); color:var(--wmut); margin:0; }
   .mc .oq { font:400 calc(var(--s15,15px)*var(--ts))/1.4 var(--f-app); margin:8px 0 0; display:flex; gap:8px; align-items:flex-start; }
   .mc .wl2 { position:relative; height:1px; background:var(--rip); }
-  .mc .go { position:absolute; right:12px; top:-14px; width:28px; height:28px; border-radius:50%; display:grid; place-items:center; background:var(--glass); border:1px solid var(--glassB); }
+  .mc .go { position:absolute; right:10px; bottom:10px; width:28px; height:28px; border-radius:50%; display:grid; place-items:center; background:var(--glass); border:1px solid var(--glassB); }
   .mc .go svg { width:14px; height:14px; } .mc .mk { position:absolute; left:16px; top:-7px; }
   .mc:active .up, .mc:active .dn { filter:brightness(1.06); }
   /* mirror: a framed pond, sky-tinted above, water below */
@@ -268,10 +268,10 @@
   #app.evening .c-mirror .mc .up { background:linear-gradient(rgba(255,214,170,.16),rgba(255,214,170,.07)); }
   #app.evening .c-mirror .mc .dn { background:linear-gradient(rgba(20,20,42,.35),rgba(20,20,42,.15)); }
   /* glass (round 3): thin frosted glass with a fine outline; the drops on the pond show faintly through it */
-  .c-glass .mc { border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.08);
+  .c-glass .mc { border-radius:18px; overflow:hidden; border:1px solid var(--rip); background:rgba(255,255,255,.08);
     backdrop-filter:blur(2.5px) saturate(1.15); -webkit-backdrop-filter:blur(2.5px) saturate(1.15); box-shadow:inset 0 1px 0 rgba(255,255,255,.35); }
-  #app.evening .c-glass .mc { border-color:rgba(255,220,180,.28); background:rgba(255,220,180,.04); box-shadow:inset 0 1px 0 rgba(255,220,180,.18); }
-  .c-glass .mc .wl2 { opacity:.8; }
+  #app.evening .c-glass .mc { background:rgba(255,220,180,.04); box-shadow:inset 0 1px 0 rgba(255,220,180,.18); }
+  .c-glass .mc .wl2 { opacity:1; } .c-glass .mc .dn { padding-bottom:16px; }
   .mc .fresh { font:calc(var(--s12,12px)*var(--ts))/1.3 var(--f-ui); color:var(--wmut); margin:0 0 3px; animation:fadein 1.2s ease .6s both; }
   /* open: no frame at all, only the waterline between the two voices, and space between pairs */
   .c-open .mc { margin-bottom:26px; } .c-open .mc .up, .c-open .mc .dn { padding-left:0; }
@@ -301,6 +301,8 @@
   .hflower { position:absolute; z-index:4; background:none; border:0; padding:0; display:flex; flex-direction:column; align-items:center; gap:2px; width:110px; color:var(--wink); text-align:center; cursor:pointer; }
   .hflower span { font-size:calc(var(--s12,12px)*var(--ts)); line-height:1.25; }
   .hflower .d { color:var(--wmut); }
+  .older { position:absolute; left:14px; bottom:26px; z-index:5; background:none; border:0; padding:4px; display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--wink); font:600 calc(var(--s12,12px)*var(--ts)) var(--f-ui); cursor:pointer; }
+  .orow { display:flex; align-items:center; gap:12px; width:100%; background:none; border:0; border-bottom:1px solid var(--rip); padding:12px 2px; text-align:left; color:inherit; font:inherit; cursor:pointer; }
   .signbtn { width:100%; margin:5px 0; padding:12px; }
   #side .gl { padding:6px 8px; border-radius:8px; margin:2px 0; font-size:calc(var(--s12_5,12.5px)*var(--ts)); } #side .gl.cur { background:#e3eedb; } #side .gl.done { opacity:.5; }
   #side .gl b { display:block; font-size:calc(var(--s11,11px)*var(--ts)); letter-spacing:.04em; text-transform:uppercase; color:#666; }
@@ -646,19 +648,17 @@ const PROBLEM = 'I keep saying yes to things at work I don\'t want to do, and th
 // ---------- the Recap (#60): a view of the stored Assumption records, one Recap per case ----------
 // an item: { id, outcome: challenged|rejected|unchallenged|left|not_looked_at, quote?, openq?, earlier?, steps }
 const RC = {
-  full: { name: 'finished', day: 'Tue 3 Nov', problem: PROBLEM, firstPut: 'I can\'t say no at work.', ending: 'recap',
+  full: { name: 'finished', title: 'Saying yes at work, then resenting it', day: 'Tue 3 Nov', problem: PROBLEM, firstPut: 'I can\'t say no at work.', ending: 'recap',
     items: [{ id: 'p1', outcome: 'challenged', quote: 'I have never actually tested it.', steps: 3 },
       { id: 'p2', outcome: 'rejected', quote: 'I was the one who said yes.', earlier: 'Other people make me resentful.', steps: 2 },
       { id: 'p3', outcome: 'unchallenged', openq: 'What is kindness, when it isn\'t agreeing?', steps: 2 },
       { id: 'p4', outcome: 'left', steps: 1 }, { id: 'p5', outcome: 'not_looked_at', added: true }] },
-  stepout: { name: 'stepped out', day: 'Wed 28 Oct', problem: 'Everything at home feels pointless lately, and I don\'t know who to tell.', ending: 'step_out',
+  stepout: { name: 'stepped out', title: 'Everything at home feeling pointless', day: 'Wed 28 Oct', problem: 'Everything at home feels pointless lately, and I don\'t know who to tell.', ending: 'step_out',
     items: [{ id: 'p1', outcome: 'challenged', quote: 'I have never actually tested it.', steps: 3 }, { id: 'p2', outcome: 'left', steps: 1 },
       { id: 'p3', outcome: 'not_looked_at' }, { id: 'p4', outcome: 'not_looked_at' }] },
-  expired: { name: 'ended after 7 days', day: 'Sat 31 Oct', last: 'Sat 24 Oct', problem: 'My sister and I only talk when something goes wrong.', ending: 'expired',
+  expired: { name: 'ended after 7 days', title: 'Only talking to my sister when things go wrong', day: 'Sat 31 Oct', last: 'Sat 24 Oct', problem: 'My sister and I only talk when something goes wrong.', ending: 'expired',
     items: [{ id: 'p4', outcome: 'challenged', quote: 'Only after, mostly.', steps: 2 }, { id: 'p1', outcome: 'left', steps: 2 },
       { id: 'p2', outcome: 'not_looked_at' }, { id: 'p3', outcome: 'not_looked_at' }] },
-  empty: { name: 'ended after 7 days, nothing finished', day: 'Mon 26 Oct', last: 'Mon 19 Oct', problem: 'I can\'t stop checking my phone at night.', ending: 'expired',
-    items: [{ id: 'p1', outcome: 'left', steps: 1 }, { id: 'p2', outcome: 'not_looked_at' }, { id: 'p3', outcome: 'not_looked_at' }, { id: 'p4', outcome: 'not_looked_at' }] },
 };
 // three ways for an outcome to read; never a verdict on the Assumption (ADR 0001), only what the person did with it
 const OW = {
@@ -667,7 +667,23 @@ const OW = {
   quiet: { name: 'no tag, the quote carries it', challenged: '', rejected: '', unchallenged: '', left: 'part-way' },
 };
 const RVS = { A: 'Cards', B: 'The pool', C: 'Walk round the pool', D: 'A letter' };
-const PAST = ['full', 'expired', 'stepout', 'empty'];
+const PAST = ['full', 'expired', 'stepout'];
+// older Recaps, beyond the few on the pond (each opens the finished case in the prototype)
+const OLDER = [['Not sleeping before big meetings', 'Thu 22 Oct'], ['Wanting my parents to be proud', 'Sun 18 Oct'], ['Comparing myself to old friends online', 'Tue 13 Oct'],
+  ['Feeling stuck in the same job', 'Fri 2 Oct'], ['Never finishing what I start', 'Sat 26 Sep'], ['Getting angry in traffic', 'Mon 14 Sep']];
+// where older Recaps live on home: something in the bottom-left corner of the pond
+const OLD = {
+  reeds: { name: 'reeds in the shallows', about: 'Older flowers drift into the reeds at the pond\'s edge.',
+    art: `<svg width="64" height="60" viewBox="0 0 64 60">${[[10, 8, -6], [20, 0, -2], [30, 6, 3], [40, 14, 8], [50, 4, 5]].map(([x, t, b]) => `<path d="M${x} 58Q${x + b / 2} ${30 + t / 2} ${x + b} ${t + 6}" stroke="var(--padR)" stroke-width="2" fill="none"/>`).join('')}
+      ${[[20, 0, -2], [40, 14, 8]].map(([x, t, b]) => `<ellipse cx="${x + b}" cy="${t + 12}" rx="3" ry="7" fill="#7a5233"/>`).join('')}<ellipse cx="54" cy="50" rx="6" ry="2.4" fill="#f6c3cf" opacity=".8"/></svg>` },
+  stones: { name: 'stepping stones', about: 'Stones lead off the pond towards where the older ones are.',
+    art: `<svg width="70" height="50" viewBox="0 0 70 50">${[[54, 12, 9], [34, 24, 11], [14, 38, 13]].map(([x, y, r]) => `<ellipse cx="${x}" cy="${y + 2}" rx="${r * 1.2}" ry="${r * .45}" fill="rgba(0,0,0,.18)"/><ellipse cx="${x}" cy="${y}" rx="${r * 1.1}" ry="${r * .42}" fill="var(--stoneT)" stroke="var(--stone)"/>`).join('')}</svg>` },
+  jetty: { name: 'a little jetty', about: 'A wooden jetty at the edge, where you sit and look back.',
+    art: `<svg width="74" height="52" viewBox="0 0 74 52"><path d="M2 50L18 18L60 18L72 50Z" fill="#9a6a3e"/>${[24, 30, 36, 42].map((y, k) => `<line x1="${16 - k * 3.2 + 4}" y1="${y}" x2="${62 + k * 2}" y2="${y}" stroke="#6f4628" stroke-width="1.2"/>`).join('')}
+      <rect x="15" y="12" width="4" height="14" fill="#6b4a2c"/><rect x="58" y="12" width="4" height="14" fill="#6b4a2c"/></svg>` },
+  closed: { name: 'closed lilies', about: 'Water lilies close in the evening: older Recaps are a cluster of closed flowers.',
+    art: `<svg width="66" height="44" viewBox="0 0 66 44">${[[16, 30, .9], [36, 34, 1], [52, 26, .75]].map(([x, y, k]) => `<g transform="translate(${x} ${y}) scale(${k})"><ellipse cx="0" cy="6" rx="14" ry="4" fill="var(--pad)" stroke="var(--padR)"/><path d="M-5 4Q0 -16 5 4Z" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8"/><path d="M-8 5Q-4 -10 0 4M8 5Q4 -10 0 4" fill="#efb3c2" stroke="#e38ba2" stroke-width=".8"/></g>`).join('')}</svg>` },
+};
 const rcase = () => RC[S.rcase];
 const looked = c => c.items.filter(x => x.outcome !== 'not_looked_at');
 const notYet = c => c.items.filter(x => x.outcome === 'not_looked_at');
@@ -686,7 +702,7 @@ function seed() {
     tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
     intro: 0, wb: 0, guiding: false, skipNote: false, done: new Set(), inlineShown: null,
     rv: RVS[q.get('rv')] ? q.get('rv') : 'A', rcase: RC[q.get('case')] ? q.get('case') : 'full', ow: OW[q.get('ow')] ? q.get('ow') : 'tag',
-    oq: ['after', 'card'].includes(q.get('oq')) ? q.get('oq') : 'top', homeV: q.get('home') === 'pond' ? 'pond' : 'list', card: ['mirror', 'open', 'lean', 'glass'].includes(q.get('card')) ? q.get('card') : 'glass', fresh: q.get('fresh') === '1', mark: q.get('mark') === 'glyph' ? 'glyph' : 'none', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
+    oq: ['after', 'card'].includes(q.get('oq')) ? q.get('oq') : 'top', homeV: q.get('home') === 'list' ? 'list' : 'pond', old: OLD[q.get('old')] ? q.get('old') : 'reeds', card: ['mirror', 'open', 'lean', 'glass'].includes(q.get('card')) ? q.get('card') : 'glass', fresh: q.get('fresh') === '1', mark: q.get('mark') === 'glyph' ? 'glyph' : 'none', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
 }
@@ -715,7 +731,7 @@ function home() {
       ${!live && !S.unfinished.length && !S.past.length ? `<p class="small mut center" style="margin-top:30px">Nothing here yet.</p>` : ''}
       ${live ? `<div class="card tap float row" data-act="resume" style="align-items:flex-start">${padGlyph(7)}<div class="grow"><p class="small mut" style="margin:0">Today</p><p class="read me" style="font-size:calc(var(--s18,18px)*var(--ts));margin:2px 0 0">${esc(inq().problem)}</p></div></div>` : ''}
       ${S.unfinished.length ? '<h3>Unfinished</h3>' : ''}${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start">${padGlyph(u.days)}<p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
-      ${S.homeV === 'list' ? `<h3>Recaps</h3>${S.past.map(k => `<div class="card tap row" data-act="openRecap" data-c="${k}" style="align-items:flex-start">${flowerGlyph()}<div class="grow"><p style="margin:0">${esc(RC[k].problem)}</p><p class="small mut" style="margin:2px 0 0">${RC[k].day}${RC[k].ending === 'step_out' ? ' · stopped early' : RC[k].ending === 'expired' ? ' · after 7 days' : ''}</p></div></div>`).join('')}` : ''}</div>`,
+      ${S.homeV === 'list' ? `<h3>Recaps</h3>${S.past.map(k => `<div class="card tap row" data-act="openRecap" data-c="${k}" style="align-items:flex-start">${flowerGlyph()}<div class="grow"><p style="margin:0">${esc(RC[k].title)}</p><p class="small mut" style="margin:2px 0 0">${RC[k].day}${RC[k].ending === 'step_out' ? ' · stopped early' : RC[k].ending === 'expired' ? ' · after 7 days' : ''}</p></div></div>`).join('')}` : ''}</div>`,
     extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
       ${S.homeV === 'pond' ? homeFlowers() : ''}
       ${pondButton({ role: 'secondary', label: 'Settings', act: 'settings', style: 'left:12px;top:calc(var(--wl) + 4px)' })}
@@ -728,7 +744,16 @@ const HF = [[150, 330, 1], [30, 430, .9], [240, 470, .82], [70, 570, .74]];
 function homeFlowers() {
   return S.past.map((k, n) => { const [x, y, sc] = HF[n], c = RC[k];
     return `<button class="hflower" data-act="openRecap" data-c="${k}" style="left:${x}px;top:${y}px;transform:scale(${sc})" aria-label="Recap, ${c.day}: ${esc(c.problem)}">
-      ${flowerGlyph(34)}<span>${esc(c.problem.split(/[,.]/)[0])}</span><span class="d">${c.day}</span></button>`; }).join('');
+      ${flowerGlyph(34)}<span>${esc(c.title)}</span><span class="d">${c.day}</span></button>`; }).join('')
+    + `<button class="older" data-act="older" aria-label="Older Recaps">${OLD[S.old].art}<span>Older Recaps</span></button>`;
+}
+function olderScreen() {
+  const all = [...PAST.map(k => [RC[k].title, RC[k].day]), ...OLDER];
+  return { wl: '13%', above: topbar(backBtn('home', 'Home')),
+    below: `<div class="scroll pad" style="padding-top:16px"><p class="read" style="margin:0 0 6px;${'font-size:calc(var(--s19,19px)*var(--ts))'}">Older Recaps</p>
+      ${['Nov', 'Oct', 'Sep'].map(m => { const r = all.filter(([, d]) => d.endsWith(m)); return r.length ? `<h3>${{ Nov: 'November', Oct: 'October', Sep: 'September' }[m]}</h3>${r.map(([t, d]) =>
+        `<button class="orow" data-act="openRecap" data-c="${PAST[all.findIndex(a => a[0] === t)] || 'full'}">${flowerGlyph(24)}<span class="grow">${esc(t)}</span><span class="small" style="color:var(--wmut)">${d.split(' ').slice(1).join(' ')}</span></button>`).join('')}` : ''; }).join('')}
+      <div style="height:40px"></div></div>` };
 }
 function writeHalf(kind) {
   const v = kind === 'problem' ? S.problemDraft : S.draft, ph = kind === 'problem' ? W.problemPh() : W.reflPh();
@@ -792,7 +817,7 @@ function rProblem(c) {
 // how the Inquiry ended, when it didn't end on Finish
 function rNote(c) {
   if (c.ending === 'step_out') return `<p class="rnote">This Inquiry stopped early, to point you to people who can help. It won't carry on. <button class="link" data-act="help">Help</button></p>`;
-  if (c.ending === 'expired') return `<p class="rnote">You last came back to this on ${c.last}. After 7 days away, it was gathered into this Recap.${finished(c).length ? '' : ' No Path reached its end.'}</p>`;
+  if (c.ending === 'expired') return `<p class="rnote">You last came back to this on ${c.last}. After 7 days away, it was gathered into this Recap.</p>`;
   return '';
 }
 const chip = o => ow(o) ? `<span class="chip">${ow(o)}</span>` : '';
@@ -824,8 +849,8 @@ function mCard(x) {
   return `<button class="mc" data-act="readPath" data-id="${x.id}" aria-label="${esc(srLine(x))}. Opens the Path.">
     <div class="up">${probe ? `<p class="pr">${s.probe}</p>` : ''}<p class="as">${s.premise}</p>
       ${S.oq === 'card' && x.openq ? `<p class="oq">${LEAF(16, -10)}<span>${x.openq}</span></p>` : ''}</div>
-    <div class="wl2">${S.mark === 'glyph' ? `<span class="mk">${MARK[x.outcome]}</span>` : ''}<span class="go">${ic('r')}</span></div>
-    <div class="dn">${S.fresh && OW.tag[x.outcome] ? `<p class="fresh">${OW.tag[x.outcome]}</p>` : ''}${x.quote ? `<p class="me">${esc(x.quote)}</p>` : `<p class="none">${NOQUOTE[x.outcome]}</p>`}</div></button>`;
+    <div class="wl2">${S.mark === 'glyph' ? `<span class="mk">${MARK[x.outcome]}</span>` : ''}</div>
+    <div class="dn">${S.fresh && OW.tag[x.outcome] ? `<p class="fresh">${OW.tag[x.outcome]}</p>` : ''}${x.quote ? `<p class="me">${esc(x.quote)}</p>` : `<p class="none">${NOQUOTE[x.outcome]}</p>`}</div><span class="go">${ic('r')}</span></button>`;
 }
 function recap() {
   const c = rcase(), top = topbar(backBtn('home', 'Home'), helpBtn());
@@ -931,7 +956,7 @@ function render() {
   else {
     // variant A: an inline line counts as read once the person moves past it
     if (S.inlineShown && S.inlineShown !== guideKey()) { S.done.add(S.inlineShown); S.inlineShown = null; }
-    sc = { splash, intro, signin, home, problem, probes, path, recap, recapRead, settings: settingsScreen }[S.screen]();
+    sc = { splash, intro, signin, home, problem, probes, path, recap, recapRead, older: olderScreen, settings: settingsScreen }[S.screen]();
     sc.extra = (sc.extra || '') + coachNote() + poolCard();
   }
   S.sc = sc;
@@ -957,9 +982,10 @@ function renderSide() {
     C: 'Like walking a Path again, slowly: a first page with the Problem, one page per Assumption (premise above the waterline, your words below), and a last page with what\'s still underneath, worth and Share. ‹ › or swipe.',
     D: 'The same records written out as a short letter, from templates (no model, so nothing new is said). Reads as one quiet page. Risk: prose can sound like a verdict or a summary.' };
   document.getElementById('side').innerHTML = `<div class="box"><h4>Recap ${S.rv} · ${RVS[S.rv]}</h4>${RVA[S.rv]}</div>
+    ${S.screen === 'home' || S.screen === 'older' ? `<div class="box"><h4>Older Recaps · ${OLD[S.old].name}</h4>${OLD[S.old].about} The pond holds the latest few; the rest are a quiet list by month. Titles are the model's short summary (≤10 words), returned with the Breakdown.</div>` : ''}
     <div class="box"><h4>Case · ${c.name}</h4>${{ recap: 'Finished on Finish Inquiry. One of each outcome, a reworded Problem and premise, an Open Question, and a Probe added along the way that was never looked at.',
       step_out: 'Stepped out on the second Path. One Path had finished, so a Recap exists (#34). No "worth your time?" here. The reason for the Step-out isn\'t kept, so the Recap can\'t say it.',
-      expired: c.items.some(x => x.outcome !== 'left' && x.outcome !== 'not_looked_at') ? 'Not opened for 7 days, so the next launch ended it. The Path in progress becomes "left".' : 'Ended after 7 days with no Path finished. Should this still be a Recap, or quietly go?' }[c.ending]}</div>
+      expired: 'Not opened for 7 days, so the next launch ended it. The Path in progress becomes "left". Had no Path finished, it would leave no Recap.' }[c.ending]}</div>
     <div class="box"><h4>Outcomes · ${OW[S.ow].name}</h4><table>${['challenged', 'rejected', 'unchallenged', 'left'].map(o => `<tr><td><code>${o}</code></td><td>${OW[S.ow][o] || '<i>no tag</i>'}</td></tr>`).join('')}</table>
       <p style="margin:6px 0 0;color:#555">Each says what the person did, never whether the Assumption is true (ADR 0001).</p></div>
     <div class="box"><h4>What a screen reader hears</h4>${L.map(x => `<div class="gl">${esc(srLine(x))}</div>`).join('') || '<i>nothing looked at</i>'}
@@ -977,7 +1003,8 @@ function renderProto() {
     ${sel('card', [['glass', 'card: frosted glass'], ['mirror', 'card: framed pond'], ['open', 'card: no frame, waterline only'], ['lean', 'card: framed, no Probe']], S.card)}
     ${sel('mark', [['none', 'outcome: no mark'], ['glyph', 'outcome: mark on the waterline']], S.mark)}
     ${sel('oq', [['after', 'Open Qs: after cards'], ['top', 'Open Qs: on top'], ['card', 'Open Qs: in each card']], S.oq)}
-    ${sel('homeV', [['list', 'home: list'], ['pond', 'home: flowers on the pond']], S.homeV)}
+    ${sel('homeV', [['pond', 'home: flowers on the pond'], ['list', 'home: list']], S.homeV)}
+    ${sel('old', Object.entries(OLD).map(([k, o]) => [k, 'older: ' + o.name]), S.old)}
     ${sel('ts', TS.map(([x, l]) => [String(x), 'text: ' + l]), String(S.ts))}
     ${sel('season', [['auto', 'auto'], ['morning', 'morning'], ['evening', 'evening']], S.season)}
     <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
@@ -1121,6 +1148,7 @@ document.addEventListener('change', e => {
   if (p === 'mark') { S.mark = e.target.value; setParam('mark', S.mark); render(); }
   if (p === 'ow') { S.ow = e.target.value; setParam('ow', S.ow); render(); }
   if (p === 'oq') { S.oq = e.target.value; setParam('oq', S.oq); render(); }
+  if (p === 'old') { S.old = e.target.value; setParam('old', S.old); if (S.screen !== 'home') go('home'); else render(); }
   if (p === 'homeV') { S.homeV = e.target.value; setParam('home', S.homeV); render(); }
 });
 document.addEventListener('click', e => {
@@ -1151,6 +1179,7 @@ document.addEventListener('click', e => {
     submit: () => submit(kind), finish: () => { rippleAt(); inq().status = 'ended'; S.rcase = 'full'; S.rpage = 0; S.fresh = true; setTimeout(() => go('recap'), 350); },
     openRecap: () => { const r = el.getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + 20, 2);
       S.rcase = el.dataset.c; Object.assign(S, { fresh: false, rpage: 0, rsel: null, rshare: false }); setTimeout(() => go('recap'), S.still ? 0 : 400); },
+    older: () => go('older'),
     rsel: () => { S.rsel = el.dataset.id; render(); }, rclose: () => { S.rsel = null; S.rshare = false; render(); }, rshare: () => { S.rshare = true; render(); },
     rworth: () => { S.worth[S.rcase] = el.dataset.w; render(); },
     rprev: () => { S.rpage = Math.max(0, S.rpage - 1); S.dir = 'prev'; render(); }, rnext: () => { S.rpage++; S.dir = 'next'; render(); },
