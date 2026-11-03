@@ -53,7 +53,7 @@ A person telling Look Together that something the app wrote broke how it should 
 _Avoid_: Flag, complaint, feedback
 
 **Account**:
-Who a person is to Look Together: what they sign in with, so their daily allowance follows them across devices. It knows nothing of their Inquiries, which stay on the device they were held on.
+Who a person is to Look Together: what they sign in with, so their daily allowance follows them across devices. It knows nothing of their Inquiries, which stay with the person, on their devices, never with us.
 _Avoid_: Profile, user, member
 
 **Pattern**:
