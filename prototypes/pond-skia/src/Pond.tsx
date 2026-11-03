@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, type ComponentRef } from "react";
+import React, { useEffect, useMemo, useRef, type ComponentRef } from "react";
 import { Platform, View, type GestureResponderEvent } from "react-native";
 import { BlurView, BlurTargetView } from "expo-blur";
 import { Atlas, BackdropFilter, Blur, Canvas, Fill, Group, Image, ImageShader, RoundedRect, Shader, Skia, rect, rrect, useImage, useRSXformBuffer } from "@shopify/react-native-skia";
@@ -24,8 +24,7 @@ export function Pond({ cfg, w, h, draws }: { cfg: Config; w: number; h: number; 
   // The art clock: advances only at the art frame rate, and not at all on Still water,
   // so Skia gets no new uniforms and stops redrawing.
   const t = useSharedValue(0), boil = useSharedValue(0), still = useSharedValue(cfg.still), fps = useSharedValue(cfg.artFps);
-  still.value = cfg.still;
-  fps.value = cfg.artFps;
+  useEffect(() => { still.value = cfg.still; fps.value = cfg.artFps; }, [cfg.still, cfg.artFps]);
   const rips = useSharedValue<number[]>([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]);
   useFrameCallback((f) => {
     if (still.value) return;
