@@ -271,6 +271,9 @@
   .c-glass .mc { border-radius:18px; overflow:hidden; border:1px solid var(--rip); background:rgba(255,255,255,.08);
     backdrop-filter:blur(2.5px) saturate(1.15); -webkit-backdrop-filter:blur(2.5px) saturate(1.15); box-shadow:inset 0 1px 0 rgba(255,255,255,.35); }
   #app.evening .c-glass .mc { background:rgba(255,220,180,.04); box-shadow:inset 0 1px 0 rgba(255,220,180,.18); }
+  /* a very light tinge: sky above the line, water below */
+  .c-glass .mc .up { background:rgba(247,239,224,.22); } .c-glass .mc .dn { background:rgba(70,120,130,.1); }
+  #app.evening .c-glass .mc .up { background:rgba(224,154,92,.09); } #app.evening .c-glass .mc .dn { background:rgba(40,36,80,.18); }
   .c-glass .mc .wl2 { opacity:1; } .c-glass .mc .dn { padding-bottom:16px; }
   .mc .fresh { font:calc(var(--s12,12px)*var(--ts))/1.3 var(--f-ui); color:var(--wmut); margin:0 0 3px; animation:fadein 1.2s ease .6s both; }
   /* open: no frame at all, only the waterline between the two voices, and space between pairs */
@@ -702,7 +705,7 @@ function seed() {
     tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
     intro: 0, wb: 0, guiding: false, skipNote: false, done: new Set(), inlineShown: null,
     rv: RVS[q.get('rv')] ? q.get('rv') : 'A', rcase: RC[q.get('case')] ? q.get('case') : 'full', ow: OW[q.get('ow')] ? q.get('ow') : 'tag',
-    oq: ['after', 'card'].includes(q.get('oq')) ? q.get('oq') : 'top', homeV: q.get('home') === 'list' ? 'list' : 'pond', old: OLD[q.get('old')] ? q.get('old') : 'reeds', card: ['mirror', 'open', 'lean', 'glass'].includes(q.get('card')) ? q.get('card') : 'glass', fresh: q.get('fresh') === '1', mark: q.get('mark') === 'glyph' ? 'glyph' : 'none', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
+    oq: ['after', 'card'].includes(q.get('oq')) ? q.get('oq') : 'top', homeV: q.get('home') === 'list' ? 'list' : 'pond', old: OLD[q.get('old')] ? q.get('old') : 'closed', card: ['mirror', 'open', 'lean', 'glass'].includes(q.get('card')) ? q.get('card') : 'glass', fresh: q.get('fresh') === '1', mark: q.get('mark') === 'glyph' ? 'glyph' : 'none', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
 }
