@@ -89,5 +89,23 @@
   "motion": "dragonfly hovering in place seen from directly above, only the four wings beat up and down, body and head stay still",
   "sheet": "64×64",
   "cost": 0.25
+ },
+ {
+  "id": "padL",
+  "file": "out/rd-padL-27x13-s7-w-1.png",
+  "blockout": "out/bo-padL-27x13.png",
+  "size": "27×13",
+  "seed": 7,
+  "strength": 0.55,
+  "cost": 0.18
+ },
+ {
+  "id": "flower",
+  "file": "out/rd-flower-12x12-s7-w-1.png",
+  "blockout": "out/bo-flower-12x12.png",
+  "size": "12×12",
+  "seed": 7,
+  "strength": 0.6,
+  "cost": 0.18
  }
 ]

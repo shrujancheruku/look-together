@@ -38,6 +38,8 @@ const RD_NOTE = {
   "out/rd-dfly1-20x14-s11-1.png": "RD's background removal took the wings", "out/rd-dfly2-20x14-s11-1.png": "frame 2, same seed",
   "out/rd-dfly1-20x14-s11-k-1.png": "frame 1 on magenta, same seed", "out/rd-dfly2-20x14-s11-k-1.png": "frame 2 on magenta, same seed",
   "out/rd-padS-17x12-s7-1.png": "redrawn round, not as the flat oval asked",
+  "out/rd-padL-27x13-s7-w-1.png": "from the kit's pad; water kept in the palette and keyed by us. As good as PixelLab's best pad",
+  "out/rd-flower-12x12-s7-w-1.png": "clean but pale and soft; Pixen's flower has more detail",
 };
 const rdCards = rdRuns.filter((r) => !r.anim).map((r) => `<figure class="pane plcard"><span class="tag">${SLOTS.find((x) => x.id === r.id).label} · ${r.size}</span><div class="pair">${pix(r.blockout, 6, "blockout")}<span class="arrow">→</span>${pix(r.file, 6, "result")}</div><figcaption>${RD_NOTE[r.file] ?? ""}</figcaption></figure>`).join("");
 const anim = rdRuns.find((r) => r.anim);
@@ -178,7 +180,7 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   <section class="finding">
     <h2>Retro Diffusion, RD Pro from code-drawn blockouts ($${rdSpent.toFixed(2)} of $5)</h2>
     <p><b>Exact size, our palette, and the best koi and dragonfly so far.</b> RD Pro draws at exactly the requested size (12 px minimum) and takes a starting image, so the koi and dragonfly start from rough shapes drawn in code. At strength 0.55 the koi reads clearly at 32 × 16. Its own animation mode turned one dragonfly into a real 4-frame wing-beat with the body held still, which nothing else here managed.</p>
-    <p><b>Watch the background.</b> RD's background removal takes pale parts (the koi's tail, the dragonfly's wings). Magenta keyed out by us fixes it when the palette isn't forced, but a forced palette repaints the magenta. The small pad came back round, not as the flat oval asked.</p>
+    <p><b>Watch the background.</b> RD's background removal takes pale parts (the koi's tail, the dragonfly's wings). Magenta keyed out by us fixes it when the palette isn't forced, but a forced palette repaints the magenta. The small pad came back round, not as the flat oval asked. Keeping the water colour in the forced palette and keying that exact colour out ourselves avoids both problems, and is how the large pad and the flower were made.</p>
   </section>
   <div class="pl"><div class="plrow">${rdAnim}${rdCards}</div></div>
 

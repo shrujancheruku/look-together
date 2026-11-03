@@ -46,4 +46,17 @@ await save(dragonfly(20, 14, .55), "dfly2-20x14");
 const pad = kitPad(8, 3, 2.4), ps = canvas(17, 12);
 pad.px.forEach((v, i) => { if (v) ps.px[(Math.floor(i / pad.w) + 2) * 17 + (i % pad.w)] = v; });
 await save(ps, "padS-17x12");
+const pl = kitPad(13, 6, 0.7), pc = canvas(27, 13);
+pl.px.forEach((v, i) => { if (v) pc.px[i] = v; });
+await save(pc, "padL-27x13");
+// Open flower from slightly above, 11 x 9 on a 12 x 12 canvas (RD's minimum): two rings of petals and a pale centre.
+const F = COLS.flower, fc = canvas(12, 12), fx = 5.5, fy = 6;
+for (let y = 0; y < 12; y++) for (let x = 0; x < 12; x++) {
+  const dx = (x - fx) / 5.5, dy = (y - fy) / 4.5, r = Math.hypot(dx, dy), a = Math.atan2(dy, dx);
+  const petal = .75 + .25 * Math.cos(a * 8);
+  if (r < petal) put(fc, x, y, F[r < .55 ? 10 : dy < 0 ? 8 : 5]);
+  if (r < .3) put(fc, x, y, COLS.light[1]);
+}
+outline(fc, F[1]);
+await save(fc, "flower-12x12");
 console.log("wrote blockouts");
