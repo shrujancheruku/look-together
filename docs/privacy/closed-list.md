@@ -16,6 +16,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 | **Content Reports** (Firestore, apart from Accounts) | the masked exchange, reasons, stage, prompt version, model id, region, platform, app version, date; no Account or Inquiry id | 30-day TTL, read only by the founder, every access logged |
 | **Aggregate counters** (Firestore) | see [What we count](#what-we-count) | Kept as aggregates |
 | **Operational logs** (Cloud Logging, regional buckets) | only the allowlisted fields below | 30 days |
+| **Monitoring metrics** (Cloud Monitoring, **global**) | log-based counts and latencies by allowlisted log fields only, uptime-check results for `/healthz`; alerts on them reach only the founder (Google Cloud mobile app, email) as metric names and values | 24 months (Google's fixed retention) |
 | **Crash reports** (Sentry, US or EU org by region) | exception type, stack trace, the message for our own error classes only, app version, OS, device model, region | 30 days (Developer plan) |
 
 **Allowlisted log fields:** route, status, latency, outcome kind, region, call type, model id, prompt version, app version, platform. Never request or response bodies, account id, email, IP, user agent or Inquiry id, and never an upstream error body. One logger with a typed field list enforces this, with a test that fails on any other field. Cloud Run's built-in request logs (which carry IP and user agent) are excluded on the `_Default` sink, and `_Default` is routed to the regional buckets. Error Reporting is turned off (it is global).
@@ -40,6 +41,7 @@ Aggregate counters, no Account id, Inquiry id or content in any of them. The bac
 | Soften | region, platform, app version, day | Device |
 | Failures | outcome kind, region, call type | Backend |
 | Dropped events | region, call type | Backend |
+| Estimated spend | region, day, call type | Backend, from each call's token, audio-second and character counts × the server-config price table; gates new Breakdowns at the regional ceiling |
 | Reports | reason, stage, prompt version, model id, region, platform, app version, day, whether the Inquiry later stepped out | Backend |
 
 Device increments go over an authenticated request so they can't be spammed; the backend never stores who sent them.
