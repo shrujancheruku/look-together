@@ -1,0 +1,1200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE · Look Together Recap</title>
+<!--
+  PROTOTYPE, throwaway. "How does a Recap look and read?" (wayfinder ticket #60 on map #1).
+  Built on the typography prototype from #58 (below), with Fraunces + Nunito and the adaptive halo fixed.
+  Four Recap layouts, switchable via ?rv=A|B|C|D (or ← → / the bottom bar):
+    A  Cards: one column of segmented cards (#55), then Open Questions, Not looked at yet, worth, Share.
+    B  The pool: each Assumption looked at is a lily pad on still water; tap one for its card. Open Questions float as leaves.
+    C  Walk round the pool: one Assumption per page with ‹ ›, like a Path, ending on what's left.
+    D  A letter: the same records written out as one quiet page, templated, no model.
+  ?case=full|stepout|expired|empty   which Inquiry the Recap is for (finished, stepped out, ended after 7 days, nothing finished)
+  ?ow=tag|said|quiet                 how the four outcomes read     ?oq=after|top   where Open Questions sit (A only)
+  ?home=list|pond                    how Recaps sit on home and reopen
+  ?jump=recap (default) | home | readpath
+-->
+<!--
+  PROTOTYPE, throwaway. "What typography does Look Together use?" (wayfinder ticket #58 on map #1).
+  ROUND 2: typeface E (Fraunces + Nunito) CHOSEN, the tidy scale on by default, lily pads grow with the text up to 135%.
+  The switcher (← → / ?lg=) now cycles ways to keep words legible on the sky and water:
+    off · halo (round 1) · retuned colours · ink by depth · frosted wells.  ?type=A…E still swaps the typeface.
+  Round 1 below:
+  Five typefaces on the first-Inquiry pond prototype (#55, below), switchable via ?variant=A|B|C|D|E (← → / the bar):
+    A  Newsreader + Inter (what the look prototype used)    B  Literata alone, the person in italic
+    C  Atkinson Hyperlegible Next asks, Source Serif 4 answers    D  the platform's own sans, nothing bundled
+    E  Fraunces (soft) + Nunito
+  ?ts=0.85…2.35 simulates dynamic type (iOS xSmall to AX5); ?scale=tidy swaps the prototype's 11 sizes for 6 steps;
+  ?cap=off lets lily pad labels grow with the text; ?halo=on puts a soft halo behind words on the sky and water.
+  The side panel shows each role and the WCAG contrast of the text colours on the sky and water gradients.
+  Start anywhere with ?jump=home|probes|path|pathmid|ended|recap (the guide's notes show on a first Inquiry).
+-->
+<!--
+  PROTOTYPE, throwaway. "What does the guided first Inquiry say at each step?" (wayfinder ticket #55 on map #1).
+  Built on the pond prototype from #54 (below). Three ways to show the same draft wording, switchable via
+  ?variant=A|B|C (or ← → / the bottom bar):
+    A  Inline: the explanation is a line of the screen itself, above the waterline. Gone the next time.
+    B  Leaf note (CHOSEN, round 2): a note beside the thing it explains, no arrow, the rest of the screen dimmed,
+       with "Got it". Round 2 also adds a welcome screen drawing a whole Inquiry, and warm intro copy.
+    C  Still pool: a short card on still water before the step, with "Go on".
+  ?origin=intro|splash|signin places the "inspired by" line. Start with ?jump=intro (the default) to walk the
+  whole intro, sign-in and first Inquiry. Settings has "Show the guide again".
+-->
+<!--
+  PROTOTYPE, throwaway. "What do Look Together's look and the voice of its copy feel like?" (wayfinder ticket #54
+  on map #1), round 4. Brainstorm material, not decisions. Everything floats on one pool in a forest. One rule
+  throughout: the app's words sit ABOVE the waterline, the person's BELOW it (always upright).
+    - Opening: still sky reflected, a drop falls, the ripples bring up the wordmark.
+    - Home: a pond in a forest. Trees sway and drop the odd leaf. Settings is a moored rowboat top left; the
+      primary action is a flowering lily pad bottom right, its label written on the pad.
+    - An Inquiry is a lily: the Problem is its pad, the Paths its stem, the Recap its flower. Each Inquiry on
+      home: an unfinished one is a lily pad that yellows as its 7 days run out; a Recap is the flower alone.
+    - Probe list: Probes above, the person's Problem below; Finish Inquiry is the same bottom-right lily pad.
+    - Path: a meandering brook runs through the water, babbling round stones, and you walk along it step by step
+      (‹ › or swipe). Submitting a Reflection skims a small stone down the brook. An offer to add a Probe floats
+      as a bud on the waterline and opens when tapped. The Path never moves when the
+      keyboard opens: the keyboard slides over the empty water at the bottom.
+    - Recap: the brook quietens and opens into a still pool, and the lily flowers.
+    - The AI notice shows once, at the start of each Inquiry (EU AI Act Art. 50); no label on every screen.
+    - Help and the Step-out still the water: no motion, no metaphor.
+  Logo options (?logo=lily|lilysun|lilyripples). Voice warms along the current Path and when the model signals
+  softening ("model: softening" in the bar).
+  ANIMATION IS PLACEHOLDER. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits
+  between snappy and calm.
+  ?jump=home|new|probes|path|pathmid|ended|recap|help|stepout  ?season=morning|evening|auto
+  Everything is in memory; reload resets. Phone only.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..600,0..100,0..1;1,9..144,300..600,0..100,0..1&family=Inter:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400;1,7..72,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  @property --wl { syntax:'<percentage>'; inherits:true; initial-value:50%; }
+  #app.morning { --sky1:#c9dfec; --sky2:#f7efe0; --wat1:#dfe8de; --wat2:#6e97a0; --ink:#1f2e36; --wink:#0e2a31; --mut:#5d6d72; --wmut:#2f5058;
+    --glass:rgba(255,255,255,.42); --glassB:rgba(255,255,255,.6); --acc:#4f7a3a; --leaf:#7fa65a; --leafV:#4f7a3a; --drop:#ffffff; --rip:rgba(255,255,255,.75); --still:#9fbcc0; --shade:rgba(20,50,60,.28);
+    --creek:#f4fbf8; --pad:#5d8f45; --padR:#3f6e30; --stone:#a7aaa2; --stoneT:#c4c6bd; }
+  #app.evening { --sky1:#1e1a32; --sky2:#c07a4c; --wat1:#6a4a44; --wat2:#14142a; --ink:#f4eadc; --wink:#f1e5d4; --mut:#cdbfae; --wmut:#cdb9a6;
+    --glass:rgba(24,20,44,.42); --glassB:rgba(255,220,180,.18); --acc:#e09a5c; --leaf:#c8692e; --leafV:#7d3a17; --drop:#ffe6c8; --rip:rgba(255,214,170,.55); --still:#2a2638; --shade:rgba(0,0,0,.4);
+    --creek:#ffd9b0; --pad:#6f6a2c; --padR:#4c4a1c; --stone:#5d5a63; --stoneT:#77737d; }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:#b9b9b4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; gap:24px; padding:16px 16px 150px; font:calc(var(--s13,13px)*var(--ts)) system-ui,sans-serif; }
+  #app { --wl:50%; position:relative; overflow:hidden; width:390px; max-width:100%; height:800px; flex:none; border-radius:34px; box-shadow:0 8px 40px #0003;
+    font:calc(var(--s15,15px)*var(--ts))/1.5 var(--f-ui); color:var(--ink); transition:--wl .9s cubic-bezier(.4,.1,.2,1); }
+  .sky { position:absolute; inset:0 0 auto 0; height:var(--wl); background:linear-gradient(var(--sky1),var(--sky2)); }
+  .water { position:absolute; inset:var(--wl) 0 0 0; background:linear-gradient(var(--wat1),var(--wat2)); overflow:hidden; }
+  .water::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(transparent 0 7px, rgba(255,255,255,.05) 7px 8px); }
+  /* the brook: a meandering band with currents and babbling stones, walked along step by step */
+  .creek { position:absolute; left:0; top:0; opacity:0; transition:opacity 1.6s ease; pointer-events:none; }
+  #creekg { transition:transform 1.4s cubic-bezier(.4,.1,.2,1); }
+  .creek .babble { transform-box:fill-box; transform-origin:center; animation:ringout 3.2s ease-out infinite; opacity:0; }
+  .wline { position:absolute; left:0; right:0; top:var(--wl); height:1px; background:var(--rip); opacity:.7; }
+  #rip { position:absolute; inset:0; pointer-events:none; z-index:3; }
+  #ui { position:absolute; inset:0; }
+  .layer { position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; }
+  .above { height:var(--wl); display:flex; flex-direction:column; min-height:0; }
+  .below { flex:1; min-height:0; display:flex; flex-direction:column; color:var(--wink); }
+  .scroll { overflow-y:auto; min-height:0; flex:1; scrollbar-width:thin; scrollbar-color:var(--glassB) transparent; }
+  .pad { padding:12px 22px; }
+  .read { font-family:var(--f-app); }
+  .mut { color:var(--mut); } .below .mut { color:var(--wmut); } .small { font-size:calc(var(--s13,13px)*var(--ts)); }
+  p { margin:6px 0; } h1 { font:500 calc(var(--s26,26px)*var(--ts))/1.2 var(--f-app); margin:4px 0 6px; }
+  h3 { font:500 calc(var(--s12,12px)*var(--ts))/1 var(--f-ui); letter-spacing:.08em; text-transform:uppercase; margin:20px 0 10px; color:var(--mut); }
+  .below h3 { color:var(--wmut); }
+  button { font:inherit; cursor:pointer; color:inherit; background:var(--glass); border:1px solid var(--glassB); border-radius:22px; padding:9px 16px; backdrop-filter:blur(6px); }
+  button.pri { background:var(--ink); color:var(--sky2); border-color:var(--ink); }
+  #app.evening button.pri { background:var(--acc); color:#1e1a32; border-color:var(--acc); }
+  button.link { background:none; border:none; padding:4px 0; backdrop-filter:none; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+  button:disabled { opacity:.4; }
+  .row { display:flex; gap:10px; align-items:center; } .grow { flex:1; } .right { margin-left:auto; } .center { text-align:center; }
+  .topbar { display:flex; align-items:center; padding:46px 14px 2px; min-height:80px; flex:none; }
+  .topbar .s { flex:1; display:flex; } .topbar .s.r { justify-content:flex-end; }
+  .back { background:none; border:none; backdrop-filter:none; padding:6px 4px; display:flex; align-items:center; gap:2px; font-size:calc(var(--s14,14px)*var(--ts)); }
+  .help { background:none; border:none; padding:6px 2px; backdrop-filter:none; font-weight:500; font-size:calc(var(--s14,14px)*var(--ts)); display:flex; gap:6px; align-items:center; }
+  .help::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--acc); }
+  .card { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; padding:13px 16px; margin:9px 0; backdrop-filter:blur(6px); }
+  .card.tap { cursor:pointer; }
+  .float { animation:bob 7s ease-in-out infinite; } .float:nth-child(2n) { animation-delay:-2.5s; } .float:nth-child(3n) { animation-delay:-4.8s; }
+  @keyframes bob { 50% { transform:translateY(3px) rotate(-.3deg); } }
+  #app.still .float, #app.still .pobj .bobber, #app.still .pobj .ring, #app.still .sway, #app.still .creek .babble { animation:none !important; }
+  .badge { font:italic calc(var(--s14,14px)*var(--ts)) var(--f-app); white-space:nowrap; }
+
+  /* forest behind the wordmark, and its reflection */
+  .trees { position:absolute; left:0; right:0; z-index:2; pointer-events:none; }
+  .trees.top { top:calc(var(--wl) - 130px); height:130px; }
+  .trees.refl { top:var(--wl); height:130px; transform:scaleY(-1); opacity:.22; filter:blur(1.5px); }
+  .sway { transform-box:fill-box; transform-origin:50% 100%; animation:sway 6s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform:rotate(-1.4deg); } to { transform:rotate(1.6deg) skewX(1deg); } }
+  .flyer { position:absolute; z-index:5; pointer-events:none; }
+
+  /* things found on a pond, used as the two controls */
+  .pobj { zoom:var(--tsp); position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; flex-direction:column; align-items:center; }
+  .pobj .body { position:relative; display:grid; place-items:center; }
+  .pobj .bobber { position:relative; z-index:2; animation:pbob 6.5s ease-in-out infinite; display:grid; place-items:center; }
+  .pobj.boat .bobber { animation-name:rock; animation-duration:5s; }
+  .pobj.stones .bobber { animation:none; }
+  .pobj .shadow { position:absolute; inset:35% 4% 0 8%; background:radial-gradient(ellipse at 50% 50%, var(--shade), transparent 70%); filter:blur(3px); transform:translate(2px,6px); }
+  .pobj .ring { position:absolute; left:50%; top:62%; width:116%; height:50%; margin:-25% 0 0 -58%; border:1px solid var(--rip); border-radius:50%; opacity:0; animation:ringout 6s ease-out infinite; }
+  .pobj .ring.r2 { animation-delay:-3s; }
+  @keyframes pbob { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(1.5px) rotate(.8deg); } 75% { transform:translateY(-1px) rotate(-.6deg); } }
+  @keyframes rock { 0%,100% { transform:rotate(-2deg) translateY(0); } 50% { transform:rotate(2deg) translateY(1.5px); } }
+  @keyframes ringout { 0% { transform:scale(.7); opacity:.55; } 100% { transform:scale(1.7); opacity:0; } }
+  .pobj .on { position:absolute; inset:0; display:grid; place-items:center; z-index:3; pointer-events:none; font:var(--w-pad) 15px/1.1 var(--f-pad); font-style:var(--st-pad); color:#fbf6ea; text-shadow:0 1px 3px rgba(0,0,0,.45); white-space:nowrap; }
+  .pobj.stones .on { color:#2f2f2c; text-shadow:0 1px 0 rgba(255,255,255,.5); font-weight:600; }
+  #app.evening .pobj.stones .on { color:#f2ece4; text-shadow:0 1px 0 rgba(0,0,0,.5); }
+  .pobj .under { font-size:12px; color:var(--wink); text-shadow:0 1px 3px rgba(0,0,0,.25); margin-top:2px; font-style:normal; }
+  .pobj.dry { opacity:.75; } .pobj.dry .ring { display:none; }
+  .leafnote { position:absolute; right:20px; bottom:130px; z-index:7; width:230px; }
+
+  /* Path halves */
+  .q { font:400 calc(var(--s22,22px)*var(--ts))/1.4 var(--f-app); }
+  .r { font:400 calc(var(--s18,18px)*var(--ts))/1.5 var(--f-app); }
+  .premise { font:italic calc(var(--s15,15px)*var(--ts)) var(--f-app); color:var(--wmut); margin-bottom:10px; }
+  .stepnav { position:absolute; left:0; right:0; top:calc(var(--wl) - 17px); z-index:6; display:flex; align-items:center; padding:0 8px; pointer-events:none; }
+  .stepnav button { pointer-events:auto; background:var(--glass); width:34px; height:34px; padding:0; border-radius:50%; display:grid; place-items:center; }
+  .dotsrow { flex:1; display:flex; justify-content:center; gap:7px; }
+  .dotsrow i { width:6px; height:6px; border-radius:50%; background:var(--rip); opacity:.5; } .dotsrow i.on { opacity:1; transform:scale(1.4); }
+  .dotsrow i.end { border-radius:1px; transform:rotate(45deg); } .dotsrow i.end.on { transform:rotate(45deg) scale(1.4); }
+  .fromR { animation:fromR .7s ease both; } .fromL { animation:fromL .7s ease both; }
+  @keyframes fromR { from { opacity:0; transform:translateX(28px); } } @keyframes fromL { from { opacity:0; transform:translateX(-28px); } }
+  textarea.ref { width:100%; height:150px; background:none; border:none; outline:none; resize:none; color:var(--wink); font:calc(var(--s18,18px)*var(--ts))/1.5 var(--f-app); padding:0; }
+  textarea.ref::placeholder { color:var(--wmut); }
+  .ctrl { display:flex; align-items:center; gap:10px; padding:6px 22px 0; }
+  .kbd { transform:translateY(100%); transition:transform .32s cubic-bezier(.3,.7,.3,1); display:grid !important; }
+  #app.kb .kbd { transform:none; }
+  .skim { position:absolute; z-index:3; width:7px; height:3px; border-radius:50%; background:#5f615b; opacity:.85; }
+  .stage { flex:none; display:block; }
+  .bud { position:absolute; z-index:7; left:70%; top:calc(var(--wl) - 26px); background:none; border:none; padding:0; backdrop-filter:none; animation:pbob 4.5s ease-in-out infinite; }
+  .bud::after { content:""; position:absolute; left:-6px; right:-6px; bottom:-3px; height:8px; border:1px solid var(--rip); border-radius:50%; opacity:.5; }
+  .budcard { position:absolute; z-index:9; right:14px; width:270px; bottom:calc(100% - var(--wl) + 34px); font-size:calc(var(--s14,14px)*var(--ts)); }
+  .ailabel { font-variant:small-caps; letter-spacing:.06em; font-size:calc(var(--s13,13px)*var(--ts)); }
+  .mic { width:42px; height:42px; padding:0; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .mic.on { background:var(--acc); }
+  svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+  .offer { margin-top:10px; font-size:calc(var(--s14,14px)*var(--ts)); }
+
+  .pair { margin:4px 0 18px; }
+  .pair .pq { font:400 calc(var(--s17,17px)*var(--ts))/1.4 var(--f-app); padding:0 0 8px; }
+  .pair .pl { height:1px; background:var(--rip); opacity:.8; }
+  .pair .pr { font:400 calc(var(--s16,16px)*var(--ts))/1.5 var(--f-app); padding:8px 12px 10px; background:linear-gradient(rgba(110,151,160,.35),transparent); }
+  #app.evening .pair .pr { background:linear-gradient(rgba(106,74,68,.5),transparent); }
+
+  .fadein { animation:fade 1.1s ease both; } @keyframes fade { from { opacity:0; transform:translateY(-6px); } }
+  .rise { animation:rise 1.1s ease both; } @keyframes rise { from { opacity:0; transform:translateY(14px); } }
+  .drop { position:absolute; left:50%; width:9px; height:13px; margin-left:-4px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:var(--drop); z-index:8; top:-20px; box-shadow:0 0 6px var(--drop); }
+
+  .mark { position:absolute; left:0; right:0; top:calc(var(--wl) - 80px); height:160px; z-index:5; display:flex; justify-content:center; }
+  .mark .lk, .mark .tg { opacity:0; transition:opacity 1.4s ease; } .mark.show .lk { opacity:1; } .mark.show .tg { opacity:.62; transition-delay:.5s; }
+  .hint { position:absolute; bottom:60px; left:0; right:0; text-align:center; color:var(--wmut); opacity:0; transition:opacity 1s 2.2s; z-index:5; } .mark.show ~ .hint { opacity:1; }
+
+  .scrim { position:absolute; inset:0; z-index:20; background:rgba(0,0,0,.35); display:flex; align-items:flex-end; }
+  .sheet { background:var(--still); color:var(--ink); width:100%; border-radius:24px 24px 0 0; padding:18px 22px 30px; }
+  #app.evening .sheet { color:var(--wink); }
+  .contact { background:var(--glass); border-radius:12px; padding:12px 14px; margin:8px 0; }
+  .plain { position:absolute; inset:0; z-index:20; background:var(--still); padding:70px 24px 24px; }
+  #app.evening .plain { color:var(--wink); }
+
+  .kbd { position:absolute; left:0; right:0; bottom:0; height:280px; background:#d1d3d9; z-index:30; padding:8px 4px; grid-template-columns:repeat(10,1fr); grid-auto-rows:44px; gap:8px 5px; }
+  #app.evening .kbd { background:#2b2b2f; }
+  .kbd b { background:#fff; border-radius:5px; box-shadow:0 1px 0 #888; } #app.evening .kbd b { background:#555; }
+  .kbd .done { grid-column:span 3; font:500 calc(var(--s14,14px)*var(--ts)) system-ui; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#123; }
+  #app.evening .kbd .done { color:#eee; }
+
+  #side { width:320px; flex:none; color:#222; }
+  #side .box { background:#f4f4f2; border-radius:12px; padding:14px; margin-bottom:12px; line-height:1.45; }
+  #side h4 { margin:0 0 8px; font-size:calc(var(--s11,11px)*var(--ts)); letter-spacing:.06em; text-transform:uppercase; color:#666; }
+  #side .logos { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  #side .logos > div { border-radius:10px; overflow:hidden; cursor:pointer; outline:2px solid transparent; } #side .logos > div.on { outline-color:#6a5; }
+  #side .logos span { display:block; font-size:calc(var(--s11,11px)*var(--ts)); color:#555; padding:3px 6px; background:#fff; }
+  @media (max-width:760px) { #side { display:none; } }
+  /* the guide: the app's words, so always above the waterline */
+  .guide { font:400 calc(var(--s15,15px)*var(--ts))/1.45 var(--f-app); color:var(--ink); border-left:2px solid var(--acc); padding:2px 0 2px 10px; margin:4px 0 10px; }
+  .guide b { font-weight:500; }
+  .gskip { font-size:calc(var(--s12,12px)*var(--ts)); }
+  .coach { position:absolute; z-index:12; width:270px; font-size:calc(var(--s14,14px)*var(--ts)); background:rgba(255,255,255,.9) !important; color:#1f2e36; box-shadow:0 4px 18px var(--shade); }
+  #app.evening .coach { background:rgba(30,26,50,.92) !important; color:#f4eadc; }
+  .coach { animation:fade .6s ease both; }
+  .spot { position:absolute; z-index:11; pointer-events:none; border-radius:18px; box-shadow:0 0 0 2000px rgba(8,16,22,.5); transition:all .35s ease; }
+  .coach .ttl { font:500 calc(var(--s16,16px)*var(--ts)) var(--f-app); margin:0 0 2px; }
+  .gpool { position:absolute; inset:0; z-index:15; display:flex; flex-direction:column; }
+  .gpool .ab { height:58%; display:flex; flex-direction:column; justify-content:flex-end; padding:0 30px 26px; background:linear-gradient(var(--sky1),var(--sky2)); }
+  .gpool .bl { flex:1; background:linear-gradient(var(--wat1),var(--wat2)); border-top:1px solid var(--rip); display:flex; flex-direction:column; align-items:center; padding-top:30px; gap:10px; color:var(--wink); }
+  .gpool h1 { font-size:calc(var(--s24,24px)*var(--ts)); }
+  .flow { display:flex; align-items:flex-start; margin:4px -8px 0; }
+  .fstep { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; line-height:1.25; opacity:.22; filter:grayscale(1); transition:opacity .8s ease, filter .8s ease, transform .8s ease; }
+  .fstep.lit { opacity:.75; filter:none; } .fstep.cur { opacity:1; transform:translateY(-2px); }
+  .fstep .fg { height:36px; display:grid; place-items:end center; margin-bottom:4px; }
+  .fstep b { font-weight:500; font-size:calc(var(--s11_5,11.5px)*var(--ts)); }
+  .farrow { font-style:normal; color:var(--mut); padding-top:12px; opacity:.3; transition:opacity .8s; } .farrow.lit { opacity:.8; }
+  .wglyph { position:absolute; left:0; right:0; top:calc(var(--wl) - 60px); z-index:5; display:flex; flex-direction:column; align-items:center; pointer-events:none; animation:emerge 1.2s cubic-bezier(.3,.7,.3,1) both; }
+  .wglyph .wg { height:60px; display:flex; align-items:flex-end; }
+  .wglyph .wr { transform:scaleY(-.6); transform-origin:top; opacity:.2; filter:blur(1.5px); }
+  @keyframes emerge { from { opacity:0; transform:translateY(26px) scale(.85); } 60% { opacity:1; } }
+  /* the Recap: one segment per Assumption looked at */
+  .rseg { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; margin:0 0 14px; overflow:hidden; backdrop-filter:blur(6px); }
+  .rseg .rtop { padding:12px 16px 10px; }
+  .rseg .rlab { display:flex; align-items:center; gap:8px; font-size:calc(var(--s12,12px)*var(--ts)); color:var(--wmut); margin-bottom:4px; }
+  .rseg .rprobe { font:italic calc(var(--s14,14px)*var(--ts))/1.35 var(--f-app); } .rseg .chip { flex:none; white-space:nowrap; }
+  .rseg .chip { border:1px solid var(--glassB); border-radius:10px; padding:1px 8px; font-size:calc(var(--s11_5,11.5px)*var(--ts)); }
+  .rseg .rprem { font:400 calc(var(--s17,17px)*var(--ts))/1.4 var(--f-app); margin:0; }
+  .rseg .rq { border-top:1px solid var(--rip); padding:10px 16px 12px; background:linear-gradient(rgba(110,151,160,.3),transparent); }
+  #app.evening .rseg .rq { background:linear-gradient(rgba(106,74,68,.45),transparent); }
+  .rseg .rq p { margin:0; } .rseg .rq .rlab { margin-bottom:2px; }
+  .rseg .rquote { font:italic calc(var(--s16,16px)*var(--ts))/1.5 var(--f-app); }
+  .rseg .rfoot { display:flex; justify-content:space-between; align-items:center; padding:0 16px 10px; }
+  .rseg.left .rprem { opacity:.75; }
+  /* ---------- the Recap (#60) ---------- */
+  .rnote { font-size:calc(var(--s14,14px)*var(--ts)); margin:10px 0 0; }
+  .rrow { display:flex; gap:8px; flex-wrap:wrap; }
+  .rshare { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-top:18px; }
+  /* B: the pool */
+  .pool { position:relative; padding:18px 18px 30px; }
+  .ppad { display:flex; align-items:center; gap:10px; width:78%; margin:0 0 18px; background:none; border:0; padding:0; text-align:left; color:inherit; cursor:pointer; }
+  .ppad:nth-child(even) { margin-left:auto; flex-direction:row-reverse; text-align:right; }
+  .ppad .pg { flex:none; position:relative; }
+  .ppad .pg .fl { position:absolute; left:50%; top:-8px; transform:translateX(-50%); }
+  .ppad .pt { font:400 calc(var(--s16,16px)*var(--ts))/1.35 var(--f-app); }
+  .ppad .pt small { display:block; font:calc(var(--s12,12px)*var(--ts)) var(--f-ui); color:var(--wmut); margin-top:2px; }
+  .pleaf { display:flex; gap:10px; align-items:flex-start; margin:8px 0 14px; }
+  .pbuds { display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; }
+  .pbuds button { background:none; border:0; padding:4px; display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--wmut); font-size:calc(var(--s12,12px)*var(--ts)); }
+  .rsheet { position:absolute; left:12px; right:12px; bottom:18px; z-index:21; }
+  .rsheet .rseg { background:var(--still); backdrop-filter:none; }
+  .rscrim { position:absolute; inset:0; z-index:20; background:rgba(0,0,0,.25); }
+  /* C: pages */
+  .rpage .pc { font-size:calc(var(--s12,12px)*var(--ts)); }
+  .rpage .bigq { font:400 calc(var(--s22,22px)*var(--ts))/1.35 var(--f-app); margin:6px 0 0; }
+  /* D: a letter */
+  .letter p { font:400 calc(var(--s16,16px)*var(--ts))/1.6 var(--f-app); margin:0 0 14px; }
+  .letter .me { font-family:var(--f-me); }
+  .letter .sig { font-size:calc(var(--s12,12px)*var(--ts)); color:var(--wmut); }
+  /* home: Recaps as flowers on the pond */
+  .hflower { position:absolute; z-index:4; background:none; border:0; padding:0; display:flex; flex-direction:column; align-items:center; gap:2px; width:110px; color:var(--wink); text-align:center; cursor:pointer; }
+  .hflower span { font-size:calc(var(--s12,12px)*var(--ts)); line-height:1.25; }
+  .hflower .d { color:var(--wmut); }
+  .signbtn { width:100%; margin:5px 0; padding:12px; }
+  #side .gl { padding:6px 8px; border-radius:8px; margin:2px 0; font-size:calc(var(--s12_5,12.5px)*var(--ts)); } #side .gl.cur { background:#e3eedb; } #side .gl.done { opacity:.5; }
+  #side .gl b { display:block; font-size:calc(var(--s11,11px)*var(--ts)); letter-spacing:.04em; text-transform:uppercase; color:#666; }
+  #proto { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#111; color:#fff; border-radius:16px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:calc(var(--s12,12px)*var(--ts))/1.3 ui-monospace,Menlo,monospace; z-index:100; box-shadow:0 4px 20px #0006; max-width:calc(100vw - 24px); }
+  #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; }
+  #proto button.on { background:#6a5; border-color:#8c7; }
+  /* ---------- typography (#58): roles, set per variant ---------- */
+  :root { --ts:1; --tsp:1; }
+  .typo { --f-app:"Newsreader",Georgia,serif; --f-me:var(--f-app); --f-ui:"Inter",system-ui,sans-serif; --f-pad:var(--f-ui); --f-mark:var(--f-app);
+    --w-pad:600; --st-pad:normal; --w-mark:400; --st-me:normal; --w-me:400; }
+  #app .r, #app textarea.ref, #app .pair .pr, #app .rseg .rquote, #app .me { font-family:var(--f-me); font-style:var(--st-me); font-weight:var(--w-me); }
+  /* B: one serif, two voices: the app upright, the person in italic */
+  .typo.t-B { --f-app:"Literata",Georgia,serif; --f-ui:var(--f-app); --st-me:italic; --st-pad:italic; --w-pad:500; }
+  #app.t-B h3 { text-transform:none; font-variant:small-caps; letter-spacing:.06em; font-family:var(--f-app); }
+  /* C: the app asks in a hyperlegible sans, the person answers in a serif */
+  .typo.t-C { --f-app:"Atkinson Hyperlegible Next",system-ui,sans-serif; --f-ui:var(--f-app); --f-me:"Source Serif 4",Georgia,serif; --f-mark:var(--f-me); }
+  /* D: the platform's own sans (SF Pro / Roboto), nothing bundled; the app's words a weight heavier */
+  .typo.t-D { --f-app:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif; --f-ui:var(--f-app); --w-mark:300; }
+  #app.t-D .q, #app.t-D h1, #app.t-D .pair .pq, #app.t-D .rseg .rprem { font-weight:600; letter-spacing:-.01em; }
+  /* E: soft and round: a soft serif for the app, a rounded sans for the person and the controls */
+  .typo.t-E { --f-app:"Fraunces",Georgia,serif; --f-ui:"Nunito",system-ui,sans-serif; --f-me:var(--f-ui); --w-pad:700; font-variation-settings:"SOFT" 100,"WONK" 0; }
+  .typo.t-E .me, .typo.t-E .r, .typo.t-E textarea.ref, .typo.t-E .pr, .typo.t-E .rquote { font-variation-settings:normal; }
+  /* a tidy scale: six steps (12 caption, 14 control, 16 body, 18 reading, 22 question, 28 title) instead of the prototype's eleven */
+  #app.tidy { --s11:12px; --s11_5:12px; --s12_5:12px; --s13:14px; --s15:16px; --s17:18px; --s19:18px; --s24:28px; --s26:28px; }
+  /* ---------- legibility on the sky and water (#58, round 2) ---------- */
+  /* halo: a soft glow behind every letter (round 1; didn't help much) */
+  #app.lg-halo.morning .layer, #app.lg-adaptive.morning .layer { text-shadow:0 0 8px rgba(255,255,255,.6), 0 0 2px rgba(255,255,255,.5); }
+  #app.lg-halo.evening .layer, #app.lg-adaptive.evening .layer { text-shadow:0 0 8px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
+  /* firm halo: the same glow, stacked tight to the letters so it backs each stroke, then fading out */
+  #app.morning { --haloF:0 0 1px rgba(255,252,245,.95), 0 0 3px rgba(255,252,245,.85), 0 0 7px rgba(255,252,245,.6), 0 0 16px rgba(255,252,245,.4); }
+  #app.evening { --haloF:0 0 1px rgba(16,10,8,.95), 0 0 3px rgba(16,10,8,.85), 0 0 7px rgba(16,10,8,.6), 0 0 16px rgba(16,10,8,.4); }
+  #app.lg-firm .layer, #app.lg-adaptive .layer [data-firm] { text-shadow:var(--haloF); }
+  /* retuned: the same scene, its colours moved just far enough that every pair passes 4.5 */
+  #app.lg-retuned.morning { --mut:#536165; --wat2:#8fb0b6; --wmut:#22414a; }
+  #app.lg-retuned.evening { --sky2:#8f5d44; --mut:#e3d8cb; --wat1:#604441; --wmut:#d5c4b3; }
+  /* well: a soft, frosted patch of sky or water colour behind each block of words */
+  #app.lg-well.morning { --wellC:rgba(247,241,228,.5); } #app.lg-well.evening { --wellC:rgba(24,20,42,.5); }
+  #app.lg-well .layer :is(p,h1,h3,.q,.r,.premise,textarea.ref):not(:empty):not(.card *,.pobj *,.sheet *,.coach *,.rseg *,.gpool *) {
+    width:fit-content; max-width:100%; background:var(--wellC); box-shadow:0 0 28px 18px var(--wellC); border-radius:40px; }
+  /* depth: each line's ink is chosen for the colour of the sky or water behind it (set by script) */
+  #app.lg-depth [data-flip] { transition:color .4s; }
+  #side .spec { margin:6px 0 10px; } #side .spec b { display:block; font:11px system-ui; color:#666; letter-spacing:.04em; text-transform:uppercase; }
+  #side table { border-collapse:collapse; width:100%; font-size:12px; } #side td { padding:2px 4px; } #side td.bad { color:#a33; font-weight:600; } #side td.ok { color:#373; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="wave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="1" seed="3"/><feDisplacementMap id="wavemap" in="SourceGraphic" scale="0"/></filter>
+  <filter id="softwave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.12" numOctaves="1" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.5"/></filter></svg>
+<div id="app"><div class="sky"></div><div class="water" id="water"></div><div class="wline"></div><canvas id="rip" width="390" height="800"></canvas><div id="ui"></div></div>
+<div id="side"></div>
+<div id="proto"></div>
+<script>
+// ---------- art: leaves, trees, pond objects ----------
+const LEAF = (w, rot = 0, fill = 'var(--leaf)') => `<svg width="${w}" height="${w * .62}" viewBox="0 0 50 31" style="transform:rotate(${rot}deg)"><path d="M3 28C8 10 24 2 47 3C44 19 30 30 3 28Z" fill="${fill}"/><path d="M5 27C18 19 30 12 44 5" stroke="var(--leafV)" stroke-width="1.3" fill="none"/></svg>`;
+const CROWNS = { morning: ['#7fae5c', '#93c06a', '#5f9446', '#a9cc7a'], evening: ['#c8692e', '#d9913a', '#a4471f', '#e0b04a'] };
+const TREES = [[-6, 130, 1.15, 0], [42, 130, .9, 0], [88, 130, .65, .6], [126, 130, .45, 1], [264, 130, .5, 1], [302, 130, .75, .6], [340, 130, 1.05, 0], [386, 130, .85, 0]];
+function forest(sn) {
+  const cs = CROWNS[sn], trunk = sn === 'evening' ? '#3a2522' : '#5a4636';
+  return `<svg viewBox="0 0 390 130" width="390" height="130" preserveAspectRatio="none">${TREES.map(([x, y, s, far], n) => {
+    const c = k => cs[(n + k) % cs.length], h = 62 * s, r = 24 * s;
+    const blossom = sn === 'morning' && !far ? [0, 1, 2].map(k => `<circle cx="${x + (k - 1) * r * .6}" cy="${y - h - r * .6 + k * 6}" r="${2.2 * s}" fill="#f4c9d2"/>`).join('') : '';
+    return `<g class="sway" style="animation-duration:${5 + (n % 3) * 1.3}s;animation-delay:-${n * .9}s;opacity:${1 - far * .45}">
+      <rect x="${x - 3 * s}" y="${y - h}" width="${6 * s}" height="${h}" fill="${trunk}"/>
+      <circle cx="${x}" cy="${y - h - r * .4}" r="${r}" fill="${c(0)}"/><circle cx="${x - r * .75}" cy="${y - h + r * .3}" r="${r * .8}" fill="${c(1)}"/>
+      <circle cx="${x + r * .75}" cy="${y - h + r * .25}" r="${r * .85}" fill="${c(2)}"/><circle cx="${x + r * .1}" cy="${y - h - r * 1.2}" r="${r * .7}" fill="${c(3)}"/>${blossom}</g>`; }).join('')}</svg>`;
+}
+// a lily pad seen at an angle: a disc with its notch, squashed by perspective
+const PAD_PATH = 'M50 50L94.4 38.1A46 46 0 1 0 94.4 61.9Z';
+const lilyPad = (w, fill = 'var(--pad)', rim = 'var(--padR)') => `<svg width="${w}" height="${w * .46}" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <path d="${PAD_PATH}" fill="${fill}" stroke="${rim}" stroke-width="2.5"/>${[200, 150, 250, 110, 290].map(a => `<line x1="50" y1="50" x2="${50 + 40 * Math.cos(a * Math.PI / 180)}" y2="${50 + 40 * Math.sin(a * Math.PI / 180)}" stroke="${rim}" stroke-width="1.2" opacity=".6"/>`).join('')}</svg>`;
+const lotus = (w, open) => `<svg width="${w}" height="${w * .8}" viewBox="0 0 40 32">${(open ? [-60, -30, 0, 30, 60] : [-25, 0, 25]).map(a => `<ellipse cx="20" cy="${open ? 18 : 16}" rx="5" ry="${open ? 13 : 14}" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 20 30)"/>`).join('')}${open ? '<circle cx="20" cy="24" r="3" fill="#f1cf5b"/>' : ''}</svg>`;
+const rowboat = w => `<svg width="${w}" height="${w * .5}" viewBox="0 0 90 45">
+  <line x1="18" y1="24" x2="2" y2="40" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="2" cy="40" rx="5" ry="2" fill="#6b4a2c"/>
+  <path d="M4 16Q45 30 86 16L78 32Q45 42 12 32Z" fill="#9a6a3e"/><path d="M4 16Q45 26 86 16" stroke="#5e3a20" stroke-width="3" fill="none"/>
+  <path d="M10 18Q45 28 80 18L76 22Q45 30 14 22Z" fill="#6f4628"/><rect x="40" y="20" width="10" height="4" rx="1" fill="#b5875a"/>
+  <line x1="62" y1="22" x2="84" y2="38" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+const stone = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 100 40" preserveAspectRatio="none"><ellipse cx="50" cy="22" rx="48" ry="17" fill="var(--stone)"/><ellipse cx="48" cy="18" rx="44" ry="13" fill="var(--stoneT)"/></svg>`;
+
+// an Inquiry is a lily: its pad is the Problem, and it yellows as its 7 days run out; a Recap is the flower alone
+const padAge = d => d >= 5 ? ['var(--pad)', 'var(--padR)'] : d >= 3 ? ['#a59a3c', '#7d7428'] : ['#8a6a3a', '#634a26'];
+const padGlyph = (days = 7, w = 30) => { const [f, r] = padAge(days);
+  return `<svg class="stage" width="${w}" height="${w * .62}" viewBox="0 0 100 62"><g transform="translate(2 4) scale(.96 .56)"><path d="${PAD_PATH}" fill="${f}" stroke="${r}" stroke-width="3"/></g></svg>`; };
+const flowerGlyph = (w = 26) => `<svg class="stage" width="${w}" height="${w * .8}" viewBox="0 0 40 32">${[-60, -30, 0, 30, 60].map(a => `<ellipse cx="20" cy="17" rx="4.6" ry="11" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 20 28)"/>`).join('')}<circle cx="20" cy="24" r="3" fill="#f1cf5b"/></svg>`;
+const budGlyph = (w = 22) => `<svg width="${w}" height="${w * 1.2}" viewBox="0 0 20 24"><path d="M10 23Q9 18 10 13" stroke="#4f7a3a" stroke-width="1.4" fill="none"/><ellipse cx="10" cy="8" rx="4.4" ry="7" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8"/><path d="M10 2Q7 8 10 14Q13 8 10 2" fill="#eea7b8" opacity=".7"/></svg>`;
+function pondButton({ role, label, act, style, dry }) {
+  const prim = role === 'primary', kind = 'boat';
+  let obj, on = '', under = '';
+  if (kind === 'stones') { obj = prim ? stone(170, 66) : stone(92, 38); on = label; }
+  else if (kind === 'boat' && !prim) { obj = rowboat(78); under = label; }
+  else { // lily pads; the primary one carries a lotus, closed once today's Inquiry is used
+    const w = prim ? 168 : 76;
+    obj = `<span style="position:relative;display:block">${lilyPad(w, dry ? '#9c8e6a' : undefined, dry ? '#7c6e4a' : undefined)}${prim && !dry ? `<span style="position:absolute;right:${w * .02}px;top:-${w * .16}px">${lotus(w * .2, true)}</span>` : ''}</span>`;
+    on = prim ? label : ''; under = prim ? '' : label; }
+  return `<button class="pobj ${kind} ${dry ? 'dry' : ''}" style="${style}" data-act="${act}" aria-label="${label}">
+    <span class="body"><span class="ring"></span><span class="ring r2"></span><span class="shadow"></span><span class="bobber">${obj}${on ? `<span class="on" style="${prim && kind !== 'stones' ? 'padding-right:14px' : ''}">${on}</span>` : ''}</span></span>${under ? `<span class="under">${under}</span>` : ''}</button>`;
+}
+
+// ---------- logos: each draws "Look" above a waterline and "Together" upright below it ----------
+const PAL = { morning: { ink: '#1f2e36', line: '#ffffff', sun: '#f0bf5e', pad: '#5d8f45', padR: '#3f6e30', rip: '#ffffff' }, evening: { ink: '#f4eadc', line: '#ffd6aa', sun: '#f6e6c8', pad: '#7d7a34', padR: '#4c4a1c', rip: '#ffd9b0' } };
+const TG = (c, still) => `<g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="108" y="124" style="font-family:var(--f-mark);font-weight:var(--w-mark)" font-size="40" fill="${c.ink}">Together</text></g>`;
+const LOOK = (c, still, art) => `<g class="lk" ${still ? 'style="opacity:1"' : ''}>${art}<text x="108" y="66" style="font-family:var(--f-mark);font-weight:var(--w-mark)" font-size="48" fill="${c.ink}">Look</text></g>`;
+// a lily on the waterline: the pad seen at an angle, the flower above it, its reflection faint below
+const lotusPetals = (cx, by, k, o = 1) => [-62, -31, 0, 31, 62].map(a => `<ellipse cx="${cx}" cy="${by - 11 * k}" rx="${4.6 * k}" ry="${11.5 * k}" fill="#f6c3cf" stroke="#e38ba2" stroke-width="${.8 * k}" opacity="${o}" transform="rotate(${a} ${cx} ${by})"/>`).join('') + `<circle cx="${cx}" cy="${by - 3 * k}" r="${3 * k}" fill="#f1cf5b" opacity="${o}"/>`;
+const padAt = (c, cx, y, w) => `<g transform="translate(${cx - w / 2} ${y - w * .12}) scale(${w / 100} ${w * .24 / 100})"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${c.padR}" stroke-width="4"/></g>`;
+let RID = 0;
+// the flower's reflection: the lotus flipped below the pad (never over it), squashed, and cut into bands that the
+// water shifts a little sideways and fades, so it reads as a rippled reflection of the same shape
+function lotusReflection(cx, y, k) {
+  const id = 'rf' + (++RID), by = y - 2 * k, yb = y + 7 * k, h = 18 * k, n = 5, bh = h / n;
+  const shifts = [0, 1.8, -1.4, 2.2, -1.8], ops = [.5, .4, .3, .2, .12];
+  return `<defs>${shifts.map((_, i) => `<clipPath id="${id}${i}"><rect x="${cx - 32 * k}" y="${yb + i * bh}" width="${64 * k}" height="${bh * .74}"/></clipPath>`).join('')}</defs>`
+    + shifts.map((dx, i) => `<g clip-path="url(#${id}${i})" opacity="${ops[i]}"><g transform="translate(${dx * k} ${yb}) scale(1 -.72) translate(0 ${-by})">${lotusPetals(cx, by, k)}</g></g>`).join('');
+}
+const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) + lotusReflection(cx, y, k);
+const sunArt = (c, cx, y, k) => `<circle cx="${cx + 4 * k}" cy="${y - 34 * k}" r="${17 * k}" fill="${c.sun}"/>` + [[14, 40], [22, 30], [30, 20], [38, 10]].map(([dy, w], n) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="${c.sun}" stroke-width="${3 * k}" stroke-linecap="round" opacity="${.8 - n * .17}"/>`).join('');
+const rippleArt = (c, cx, y, k) => [38, 50].map((r, n) => `<ellipse cx="${cx}" cy="${y}" rx="${r * k}" ry="${r * .24 * k}" fill="none" stroke="${c.rip}" stroke-width="${.6 * k}" opacity="${.32 - n * .14}"/>`).join('');
+const LOGOS = {
+  lily: { name: 'Lily on the water', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => lilyArt(c, 50, 58, 1.25) },
+  lilysun: { name: 'Lily with the sun (or moon)', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + sunArt(c, 64, 80, 1) + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => sunArt(c, 50, 60, 1.1) + lilyArt(c, 50, 60, 1.2) },
+  lilyripples: { name: 'Lily with ripples', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + rippleArt(c, 64, 80, .9) + lilyArt(c, 64, 80, 1) + TG(c, still),
+    icon: c => rippleArt(c, 50, 60, .95) + lilyArt(c, 50, 60, 1.2) },
+};
+function wordmark(w, sn, still, logo = S.logo) { return `<svg width="${w}" viewBox="0 0 300 160">${LOGOS[logo].mark(PAL[sn], still)}</svg>`; }
+function appIcon(s, sn, logo = S.logo) {
+  const e = sn === 'evening', id = 'g' + s + sn + logo, L = LOGOS[logo];
+  return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><defs><linearGradient id="${id}s" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#1e1a32' : '#c9dfec'}"/><stop offset="1" stop-color="${e ? '#c07a4c' : '#f7efe0'}"/></linearGradient>
+    <linearGradient id="${id}w" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#6a4a44' : '#dfe8de'}"/><stop offset="1" stop-color="${e ? '#14142a' : '#6e97a0'}"/></linearGradient><clipPath id="${id}c"><rect width="100" height="100" rx="22"/></clipPath></defs>
+    <g clip-path="url(#${id}c)"><rect width="100" height="60" fill="url(#${id}s)"/><rect y="60" width="100" height="40" fill="url(#${id}w)"/><line x1="0" y1="60" x2="100" y2="60" stroke="#fff" stroke-opacity=".6"/>${L.icon(PAL[sn])}</g></svg>`;
+}
+const IC = { back: '<path d="M15 5l-7 7 7 7"/>', l: '<path d="M15 5l-7 7 7 7"/>', r: '<path d="M9 5l7 7-7 7"/>', mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  stop: '<rect x="7" y="7" width="10" height="10"/>', more: '<circle cx="5" cy="12" r=".7"/><circle cx="12" cy="12" r=".7"/><circle cx="19" cy="12" r=".7"/>' };
+const ic = k => `<svg class="i" viewBox="0 0 24 24">${IC[k]}</svg>`;
+
+// ---------- the brook: a long meander, with currents that follow it and stones it babbles round ----------
+const CW = 2600, cy = x => 210 + 70 * Math.sin(x / 210) + 26 * Math.sin(x / 83 + 1.3);
+const cpath = (dy = 0, wob = 0) => 'M' + Array.from({ length: CW / 20 + 1 }, (_, k) => { const x = k * 20; return `${x} ${(cy(x) + dy + wob * Math.sin(x / 37 + dy)).toFixed(1)}`; }).join(' L');
+function creekSvg() {
+  const lanes = [[-34, '10 44', 5200], [-17, '22 60', 3900], [0, '14 36', 3300], [16, '26 52', 4300], [33, '8 40', 5600]];
+  const rocks = [170, 470, 760, 1080, 1390, 1700, 2010, 2320].map((x, k) => [x, cy(x) + (k % 2 ? 22 : -20), 9 + (k % 3) * 4]);
+  return `<svg class="creek" id="creek" width="${CW}" height="560"><g id="creekg">
+    <path d="${cpath()}" stroke="var(--creek)" stroke-width="104" stroke-linecap="round" fill="none" opacity=".16"/>
+    <path d="${cpath()}" stroke="var(--creek)" stroke-width="60" stroke-linecap="round" fill="none" opacity=".12"/>
+    ${lanes.map(([dy, da, ms]) => `<path class="cur" data-ms="${ms}" data-len="${da.split(' ').reduce((a, b) => a + +b, 0) * 6}" d="${cpath(dy, 4)}" stroke="var(--rip)" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="${da}"/>`).join('')}
+    ${rocks.map(([x, y, r], k) => `<ellipse class="babble" cx="${x}" cy="${y}" rx="${r * 2.2}" ry="${r * .9}" fill="none" stroke="var(--rip)" stroke-width="1" style="animation-delay:-${k * .7}s"/>
+      <ellipse class="babble" cx="${x}" cy="${y}" rx="${r * 2.2}" ry="${r * .9}" fill="none" stroke="var(--rip)" stroke-width="1" style="animation-delay:-${k * .7 + 1.6}s"/>
+      <ellipse cx="${x}" cy="${y}" rx="${r * 1.3}" ry="${r * .55}" fill="rgba(40,40,40,.35)"/><ellipse cx="${x - 2}" cy="${y - 1.5}" rx="${r * 1.1}" ry="${r * .4}" fill="rgba(160,160,150,.35)"/>`).join('')}
+  </g></svg>`;
+}
+
+// ---------- voice: warms along the current Path, or at once when the model signals softening ----------
+const TIER = ['spare', 'plain', 'warm'];
+function tier() {
+  if (S.soften) return 2;
+  if (S.screen === 'path') return Math.min(2, S.vi);
+  if (S.screen === 'recap') return 2;
+  return 0;
+}
+const V = (...a) => a[Math.min(tier(), a.length - 1)];
+const W = {
+  problemT: () => V('What are you facing?', 'What are you facing?', 'What would you like to look at?'),
+  problemHelp: () => V('Something to face, not fix.', 'Something in your life to face, not fix.', 'Something in your life you\'d like to face, not fix.'),
+  problemPh: () => V('As it comes.', 'Write it as it comes.', 'However it comes is fine.'),
+  pick: () => V('Where to look first?', 'Pick one to look at.', 'Where would you like to look next?'),
+  reflPh: () => V('As it comes.', 'Take your time.', 'Take all the time you need.'),
+  notFit: () => V('Doesn\'t fit', 'This doesn\'t fit me', 'This doesn\'t sound like me'),
+  under: () => V('Underneath:', 'Underneath this:', 'What might be underneath:'),
+  sent: () => V('Sent on Submit.', 'Sent only when you tap Submit.', 'Nothing goes until you tap Submit.'),
+  ended: () => V('Ended. Read only.', 'This Path has ended. You can read it back.', 'This Path has ended. It\'s here whenever you want to read it back.'),
+  toProbes: () => V('Back to the Probes', 'Back to your Probes'), // a button: stays short even when the voice is warm
+  finish: () => V('Go on, or finish.', 'You can keep going, or finish here.', 'You can keep going, or let it rest and finish here.'),
+  waiting: () => V('…', 'Letting it settle…', 'Letting that settle for a moment…'),
+  outcome: o => ({ challenged: 'you questioned this', rejected: 'this wasn\'t yours', unchallenged: 'left as it was' })[o],
+};
+
+// ---------- the guide: one explanation per step of the first Inquiry, shown once ----------
+// the wording follows the voice arc: spare at the start, warmer along the Path and at the Recap
+const GUIDE = {
+  inquiry: { at: 'Home, first time', title: 'Your first Inquiry',
+    text: 'An Inquiry is one sitting with one thing in your life. You have one a day. Tap New Inquiry to begin.',
+    target: '.pobj[data-act=newLeaf]', place: 'above' },
+  problem: { at: 'Writing the Problem', title: 'A Problem',
+    text: 'Every Inquiry starts with a Problem: something you\'re facing, to look at rather than fix. Write it as it comes, or tap the mic and say it.',
+    target: '.below', place: 'above' },
+  probes: { at: 'The Breakdown', title: 'The Breakdown',
+    text: 'Under what you wrote are things you may be taking for granted. Each question here is a Probe that pokes at one of them. Pick the one that catches you.',
+    target: '[data-act=openPath]', place: 'below' },
+  path: { at: 'First step of a Path', title: 'A Path',
+    text: 'The app asks, and you answer with a Reflection, written or spoken. You can change it until you tap Submit. If a question doesn\'t fit you, say so.',
+    target: '.below', place: 'above' },
+  closing: { at: 'A Path ends', title: 'The end of a Path',
+    text: 'A Path ends when there\'s nothing more to ask. Sometimes it hands you an Open Question: one to keep with you, not to answer now.',
+    target: '.above .grow', place: 'below' },
+  finish: { at: 'Back on the Probes', title: 'Go on, or finish',
+    text: 'You can walk another Path, or finish whenever you like. Finish Inquiry gathers what you looked at into a Recap.',
+    target: '.pobj[data-act=finish]', place: 'above' },
+  recap: { at: 'The Recap', title: 'Your Recap',
+    text: 'This is what you looked at, in your own words. It isn\'t a verdict. It stays on this device, and you can come back to it from home.',
+    target: '.below .rseg', place: 'below' },
+};
+const VARIANTS = { B: 'Leaf note (chosen)', A: 'Inline line', C: 'Still pool card' }; // the guide (#55), fixed at B here
+const TYPES = {
+  A: { name: 'Newsreader + Inter', fonts: 'Newsreader (app and person) · Inter (controls, pad labels)',
+    about: 'What the look prototype used. One serif for everything read or written, above and below the water; a neutral sans for controls. The waterline alone tells the two voices apart.' },
+  B: { name: 'Literata alone', fonts: 'Literata everywhere: app roman, person italic, labels small caps',
+    about: 'One serif, two voices. The app speaks upright, the person writes in italic, so a Reflection reads like your own hand. No sans at all: controls and the lily pad labels are Literata too. Literata was drawn for long reading on screens (Google Play Books).' },
+  C: { name: 'Atkinson asks, Source Serif answers', fonts: 'Atkinson Hyperlegible Next (app, controls) · Source Serif 4 (person, wordmark)',
+    about: 'The app asks in a sans built for low vision (Braille Institute); the person answers in a warm serif. The typeface flips at the waterline, so the reflection rule is in the letters too.' },
+  D: { name: 'Platform sans', fonts: 'SF Pro on Apple, Roboto on Android, Segoe on Windows. Nothing bundled',
+    about: 'The phone\'s own type. Nothing to license or bundle, and dynamic type and accessibility sizes behave exactly as the OS intends. The app\'s words go a weight heavier. Feels like any app; the pond has to carry all the character.' },
+  E: { name: 'Fraunces + Nunito', fonts: 'Fraunces, soft (app, wordmark) · Nunito (person, controls)',
+    about: 'CHOSEN. Soft and round. Fraunces with its soft axis full on for what the app says, rounded Nunito for the person and the controls. The warmest, most storybook of the five.' },
+};
+const LG = {
+  off: { name: 'as is', about: 'The look prototype\'s colours, untouched. Evening fails at the waterline: cream on the dusk glow is 2.9, muted text 1.9.' },
+  halo: { name: 'soft halo', about: 'Round 1: a soft glow behind every letter. The best of round 2, but on its own it didn\'t help much.' },
+  firm: { name: 'firm halo', about: 'The same glow stacked tight to the letters, so each stroke has its own backing before it fades into the sky or water. Dark behind cream in the evening, pale behind dark ink in the morning. On every line.' },
+  adaptive: { name: 'halo, firm where needed', about: 'The soft halo everywhere, and the firm one only on lines that fall short of 4.5 on the gradient behind them, such as a question running down into the evening glow. The rest of the screen keeps its light touch. On native: one measurement per text block on layout.' },
+  retuned: { name: 'retuned colours (rejected)', about: 'The same scene with its colours moved just far enough that every text colour passes 4.5 on every part of the sky and water: a deeper ember dusk at the waterline in the evening, lighter deep water in the morning, darker muted text. No new device; tokens only.' },
+  depth: { name: 'ink by depth (rejected)', about: 'The colours stay; each line of text picks its ink for what sits behind it. Over the evening glow the words turn dark, as if lit by it; higher in the dusk they stay cream. Within one block the ink changes line by line, so a question that runs down into the glow darkens as it goes. Limit: where the glow is mid-tone, even near-black or near-white only reach about 4.4, so a line sitting there still falls just short. On native: a masked gradient per text block, measured on layout.' },
+  well: { name: 'frosted wells (rejected)', about: 'A soft, feathered patch of sky or water colour behind each block of words, like still water around them. No edges, so it isn\'t a card. Costs some of the scene where text is dense.' },
+};
+const TS = [[0.85, 'xSmall'], [1, 'default'], [1.18, 'xLarge'], [1.35, 'xxxLarge'], [1.65, 'AX2'], [2, 'AX4'], [2.35, 'AX5']];
+// season colours as in the CSS, for the contrast check
+const TPAL = { morning: { sky1: '#c9dfec', sky2: '#f7efe0', wat1: '#dfe8de', wat2: '#6e97a0', ink: '#1f2e36', wink: '#0e2a31', mut: '#5d6d72', wmut: '#2f5058' },
+  evening: { sky1: '#1e1a32', sky2: '#c07a4c', wat1: '#6a4a44', wat2: '#14142a', ink: '#f4eadc', wink: '#f1e5d4', mut: '#cdbfae', wmut: '#cdb9a6' } };
+function contrast(a, b) { const L = h => { const c = [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255).map(x => x <= .03928 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4); return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]; };
+  const [x, y] = [L(a), L(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); }
+function guideKey() { // which explanation belongs to what's on screen now
+  if (!S.guiding || S.sheet) return null;
+  const k = (() => {
+    if (S.screen === 'home') return !inq() ? 'inquiry' : null;
+    if (S.screen === 'problem') return 'problem';
+    if (S.screen === 'probes') return inq().probes.some(p => p.status === 'looked') ? 'finish' : 'probes';
+    if (S.screen === 'path' && !S.readAll) { const p = probe(), st = steps(p);
+      if (p.status === 'looked' && S.vi === st.length) return 'closing';
+      if (p.status !== 'looked' && S.vi === 0 && p.pos === 0) return 'path'; }
+    if (S.screen === 'recap') return 'recap';
+    return null; })();
+  return k && !S.done.has(k) ? k : null;
+}
+const skipLink = k => k === 'inquiry' ? ` <button class="link gskip mut right" data-act="skipGuide">Skip the guide</button>` : '';
+function inlineGuide() { // variant A: the explanation is part of the screen
+  const k = S.variant === 'A' && guideKey(); if (!k) return '';
+  S.inlineShown = k;
+  return `<p class="guide fadein">${GUIDE[k].text}${skipLink(k)}</p>`;
+}
+function coachNote() { // variant B: a note floats by the thing it explains, and the rest of the screen dims
+  if (S.skipNote) return `<div class="spot" style="inset:0;box-shadow:none;background:rgba(8,16,22,.5)"></div><div class="card coach fadein" style="left:50%;top:40%;transform:translate(-50%,-50%)">
+    <p class="ttl">The guide is off</p><p style="margin:0 0 8px">Whenever you'd like it back, it's in Settings, under "Show the guide again".</p><button class="pri" data-act="skipNoteOk">OK</button></div>`;
+  const k = S.variant === 'B' && guideKey(); if (!k) return '';
+  const g = GUIDE[k];
+  return `<div class="spot" id="spot"></div><div class="card coach" id="coach" data-target="${g.target}" data-place="${g.place}" style="visibility:hidden">
+    <p class="ttl">${g.title}</p><p style="margin:0 0 8px">${g.text}</p><div class="row"><button class="pri" data-act="gotIt" data-k="${k}">Got it</button>${skipLink(k)}</div></div>`;
+}
+function placeCoach() { // cut the dim around the element the note is about, and set the note beside it
+  const c = document.getElementById('coach'), sp = document.getElementById('spot'); if (!c) return;
+  const app = document.getElementById('app'), ar = app.getBoundingClientRect(), t = document.querySelector('#ui ' + c.dataset.target);
+  if (!t) { sp.style.cssText = 'inset:0;box-shadow:none;background:rgba(8,16,22,.5)'; c.style.cssText = 'left:60px;top:200px'; return; }
+  const tr = t.getBoundingClientRect(), m = 6, x = tr.left - ar.left - m, y = tr.top - ar.top - m, w = tr.width + 2 * m, h = tr.height + 2 * m;
+  Object.assign(sp.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  const cw = c.offsetWidth, ch = c.offsetHeight, gap = 14;
+  const left = Math.min(Math.max(x + w / 2 - cw / 2, 14), ar.width - cw - 14);
+  const top = c.dataset.place === 'below' ? Math.min(y + h + gap, ar.height - ch - 14) : Math.max(y - gap - ch, 14);
+  Object.assign(c.style, { left: left + 'px', top: top + 'px', visibility: 'visible' });
+}
+function poolCard() { // variant C: a short card on still water before the step
+  const k = S.variant === 'C' && guideKey(); if (!k) return '';
+  const g = GUIDE[k];
+  return `<div class="gpool"><div class="ab"><p class="small mut" style="margin:0">${g.at}</p><h1>${g.title}</h1><p class="read" style="font-size:calc(var(--s18,18px)*var(--ts));margin:0">${g.text}</p></div>
+    <div class="bl"><button class="pri" data-act="gotIt" data-k="${k}">Go on</button>${skipLink(k)}</div></div>`;
+}
+
+// ---------- the intro, before sign-in and before any model call ----------
+const ORIGIN = 'Inspired by the way J. Krishnamurti asked questions.';
+const originLine = where => S.origin === where ? `<p class="small mut" style="margin-top:14px">${ORIGIN}</p>` : '';
+// the welcome walks through a whole Inquiry one beat at a time, growing the lily it becomes: pad, ripples, brook, flower
+const GLYPH = {
+  pad: w => padGlyph(7, w),
+  ripples: w => `<svg width="${w}" height="${w * .62}" viewBox="0 0 40 25">${[6, 11, 16].map((r, k) => `<ellipse cx="20" cy="13" rx="${r + 2}" ry="${(r + 2) * .45}" fill="none" stroke="var(--ink)" stroke-width="${1.2 * 40 / w + .4}" opacity="${.7 - k * .2}"/>`).join('')}</svg>`,
+  brook: w => `<svg width="${w}" height="${w * .62}" viewBox="0 0 40 25"><path d="M2 18C10 4 18 22 26 10S36 6 38 8" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/><circle cx="14" cy="13" r="2" fill="var(--ink)" opacity=".6"/><circle cx="30" cy="9" r="2" fill="var(--ink)" opacity=".6"/></svg>`,
+  flower: w => flowerGlyph(w),
+};
+const BEATS = [
+  { h: 'Welcome. We\'re glad you\'re here.', p: 'Look Together is a quiet place to look at your own thinking. Let\'s walk through how it works.', g: null },
+  { step: 'Bring a Problem', h: 'You start with what you\'re facing.', p: 'Something in your life, in your own words. It isn\'t here to be fixed, just looked at.', g: 'pad' },
+  { step: 'See what\'s beneath', h: 'Then we look underneath it.', p: 'The app draws out what you might be taking for granted, and asks a gentle question about each. These questions are Probes.', g: 'ripples' },
+  { step: 'Follow a Path', h: 'You follow a Path.', p: 'Pick the Probe that catches you, and follow it one question at a time, answering in your own words.', g: 'brook' },
+  { step: 'Keep a Recap', h: 'And keep what you saw.', p: 'When you\'re ready, you finish with a Recap of what you looked at, kept on your device, just for you.', g: 'flower' },
+  { h: 'No judging, ever.', p: 'It won\'t tell you what\'s right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours.', g: 'flower', last: true },
+];
+function welcome() {
+  const b = S.wb, B = BEATS[b], mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : 'fadein';
+  const steps = BEATS.filter(x => x.step);
+  // the strip at the top grows step by step: what's been met so far is lit
+  const strip = `<div class="flow">${steps.map((x, k) => { const lit = k + 1 <= b, cur = k + 1 === b;
+    return `<div class="fstep ${lit ? 'lit' : ''} ${cur ? 'cur' : ''}"><div class="fg">${GLYPH[x.g](cur ? 36 : 28)}</div><b>${x.step}</b></div>${k < steps.length - 1 ? `<i class="farrow ${b > k + 1 ? 'lit' : ''}">›</i>` : ''}`; }).join('')}</div>`;
+  return { wl: '64%',
+    above: `${topbar(b ? backBtn('introBack', 'Back') : '', b && !B.last ? `<button class="link small mut" data-act="welcomeEnd">Skip</button>` : '')}<div class="pad" style="padding:0 26px">${b ? strip : ''}</div>
+      <div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px ${B.g || B.last ? 84 : 22}px"><div class="${mv}"><h1>${B.h}</h1><p class="read" style="font-size:calc(var(--s18,18px)*var(--ts));margin:0">${B.p}</p>${B.last ? originLine('intro') : ''}</div></div>`,
+    below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${B.last ? 'Go on' : b ? 'Next' : 'Show me'}</button>
+      <div class="dotsrow" style="margin-top:22px">${BEATS.map((_, k) => `<i class="${k === b ? 'on' : ''}"></i>`).join('')}</div><p class="small mut" style="margin-top:14px">${b ? '' : 'Swipe, scroll or tap'}</p></div>`,
+    // the glyph for this beat rises out of the water onto the waterline
+    extra: B.g ? `<div class="wglyph" style="${S.prevWb != null && BEATS[S.prevWb].g === B.g ? 'animation:none' : ''}"><div class="wg">${GLYPH[B.g](96)}</div><div class="wr">${GLYPH[B.g](96)}</div></div>` : '' };
+}
+const INTRO = [
+  null, // the welcome, drawn by welcome()
+  () => ({ h: 'Before we begin, one thing to know.', p: 'You\'ll be talking with an AI, not a person. It\'s here to help you reflect, but it isn\'t therapy, and it isn\'t a crisis service. If things ever feel like too much, Help is always at the top of an Inquiry.', extra: `<button class="link small mut" data-act="help" style="margin-top:8px;align-self:flex-start">Need help now?</button>`, btn: 'I understand' }),
+  () => ({ h: 'What you write stays with you.', p: 'Your Inquiries are kept on this device, encrypted. We never see them, and each Inquiry starts fresh, without reading the ones before. You can delete anything, any time.', extra: '', btn: 'Go on' }),
+];
+function intro() {
+  const n = S.intro; if (n === 0) return welcome();
+  const s = INTRO[n]();
+  return { wl: s.pre ? '72%' : '58%',
+    above: `${topbar(n ? backBtn('introBack', 'Back') : '')}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px 22px"><h1>${s.h}</h1><p class="read" style="font-size:calc(var(--s17,17px)*var(--ts));margin:0">${s.p}</p>${s.pre || ''}${s.extra}</div>`,
+    below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${s.btn}</button>
+      <div class="dotsrow" style="margin-top:22px">${INTRO.map((_, k) => `<i class="${k === n ? 'on' : ''}"></i>`).join('')}</div></div>` };
+}
+function signin() {
+  return { wl: '46%',
+    above: `${topbar(backBtn('introBack', 'Back'))}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 30px 22px"><h1>Almost there.</h1><p class="read" style="font-size:calc(var(--s18,18px)*var(--ts));margin:0">Sign in so your Inquiry each day can follow you to any device. Your Account only knows who you are, never what you write.</p>${originLine('signin')}</div>`,
+    below: `<div class="pad" style="padding:26px 30px 0">${['Continue with Apple', 'Continue with Google', 'Email me a code'].map(l => `<button class="signbtn ${l.includes('Apple') ? 'pri' : ''}" data-act="signedIn">${l}</button>`).join('')}</div>` };
+}
+
+// ---------- data ----------
+const PS = {
+  p1: { probe: 'What would happen if you said no the next time?', premise: 'Saying no would cost me something I can\'t afford.',
+        qs: ['When you picture saying no, what exactly do you see happening?', 'Is that something you have seen happen, or something you expect?', 'What is it like to look at that expectation, rather than at the request?'],
+        rs: ['I imagine my manager going quiet and giving the good projects to someone else.', 'Honestly, I expect it. I have never actually tested it.', 'It feels smaller. Like a story I keep telling.'], outcome: 'challenged', quote: 'I have never actually tested it.' },
+  p2: { probe: 'Whose resentment is it, when you resent everyone?', premise: 'Other people cause my resentment.',
+        qs: ['When the resentment comes, where is your attention: on them, or on what you agreed to?', 'If no one had asked, would the resentment be there?'],
+        rs: ['On them. On how they just assume I\'ll do it.', 'Maybe not. But I was the one who said yes.'], outcome: 'rejected', quote: 'I was the one who said yes.',
+        offer: 'There might be another belief here: that being useful is what makes you worth keeping. Add it as a Probe?' },
+  p3: { probe: 'Is wanting to be liked the same as wanting to be kind?', premise: 'Being agreeable is the same as being kind.',
+        qs: ['When you say yes and resent it, is that kindness?', 'What would kindness look like here, if not agreeing?'], rs: ['No. It feels more like fear dressed up.', 'I don\'t know. Maybe telling the truth about my week.'], outcome: 'unchallenged', openq: 'What is kindness, when it isn\'t agreeing?' },
+  p4: { probe: 'What do you mean by things you don\'t want to do?', premise: 'I know clearly what I want and don\'t want.',
+        qs: ['Name one. What makes it unwanted?', 'Did you know that before you said yes, or only after?'], rs: ['The Friday reporting. It eats my evening.', 'Only after, mostly.'], outcome: 'challenged', quote: 'Only after, mostly.' },
+};
+PS.p5 = { probe: 'What would be left of you, if you weren\'t useful?', premise: 'Being useful is what makes me worth keeping.', qs: [], rs: [] };
+const PROBLEM = 'I keep saying yes to things at work I don\'t want to do, and then I resent everyone.';
+
+// ---------- the Recap (#60): a view of the stored Assumption records, one Recap per case ----------
+// an item: { id, outcome: challenged|rejected|unchallenged|left|not_looked_at, quote?, openq?, earlier?, steps }
+const RC = {
+  full: { name: 'finished', day: 'Tue 3 Nov', problem: PROBLEM, firstPut: 'I can\'t say no at work.', ending: 'recap',
+    items: [{ id: 'p1', outcome: 'challenged', quote: 'I have never actually tested it.', steps: 3 },
+      { id: 'p2', outcome: 'rejected', quote: 'I was the one who said yes.', earlier: 'Other people make me resentful.', steps: 2 },
+      { id: 'p3', outcome: 'unchallenged', openq: 'What is kindness, when it isn\'t agreeing?', steps: 2 },
+      { id: 'p4', outcome: 'left', steps: 1 }, { id: 'p5', outcome: 'not_looked_at', added: true }] },
+  stepout: { name: 'stepped out', day: 'Wed 28 Oct', problem: 'Everything at home feels pointless lately, and I don\'t know who to tell.', ending: 'step_out',
+    items: [{ id: 'p1', outcome: 'challenged', quote: 'I have never actually tested it.', steps: 3 }, { id: 'p2', outcome: 'left', steps: 1 },
+      { id: 'p3', outcome: 'not_looked_at' }, { id: 'p4', outcome: 'not_looked_at' }] },
+  expired: { name: 'ended after 7 days', day: 'Sat 31 Oct', last: 'Sat 24 Oct', problem: 'My sister and I only talk when something goes wrong.', ending: 'expired',
+    items: [{ id: 'p4', outcome: 'challenged', quote: 'Only after, mostly.', steps: 2 }, { id: 'p1', outcome: 'left', steps: 2 },
+      { id: 'p2', outcome: 'not_looked_at' }, { id: 'p3', outcome: 'not_looked_at' }] },
+  empty: { name: 'ended after 7 days, nothing finished', day: 'Mon 26 Oct', last: 'Mon 19 Oct', problem: 'I can\'t stop checking my phone at night.', ending: 'expired',
+    items: [{ id: 'p1', outcome: 'left', steps: 1 }, { id: 'p2', outcome: 'not_looked_at' }, { id: 'p3', outcome: 'not_looked_at' }, { id: 'p4', outcome: 'not_looked_at' }] },
+};
+// three ways for an outcome to read; never a verdict on the Assumption (ADR 0001), only what the person did with it
+const OW = {
+  tag: { name: 'short tags', challenged: 'you questioned this', rejected: 'not yours', unchallenged: 'left as it was', left: 'part-way' },
+  said: { name: 'what you did', challenged: 'You questioned this.', rejected: 'You said this wasn\'t yours.', unchallenged: 'You looked at this and let it be.', left: 'You set this down part-way.' },
+  quiet: { name: 'no tag, the quote carries it', challenged: '', rejected: '', unchallenged: '', left: 'part-way' },
+};
+const RVS = { A: 'Cards', B: 'The pool', C: 'Walk round the pool', D: 'A letter' };
+const PAST = ['full', 'expired', 'stepout', 'empty'];
+const rcase = () => RC[S.rcase];
+const looked = c => c.items.filter(x => x.outcome !== 'not_looked_at');
+const notYet = c => c.items.filter(x => x.outcome === 'not_looked_at');
+const finished = c => c.items.filter(x => !['left', 'not_looked_at'].includes(x.outcome));
+const ow = o => OW[S.ow][o];
+// what a screen reader hears for one Assumption looked at (#56): the Probe, the outcome, the Assumption, the quote
+const srLine = x => [PS[x.id].probe, OW.tag[x.outcome], PS[x.id].premise.replace(/\.$/, ''), x.quote ? 'In your words: ' + x.quote : ''].filter(Boolean).join(', ');
+const SAMPLE = 'I think I\'m scared that if I stop being the reliable one, nobody will need me.';
+function seed() {
+  const q = new URLSearchParams(location.search);
+  return { season: q.get('season') || 'auto', still: false, soften: false,
+    logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lilyripples', budOpen: false,
+    screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
+    today: null, todayDone: false,
+    variant: 'B', type: TYPES[q.get('type')] ? q.get('type') : 'E', lg: LG[q.get('lg')] ? q.get('lg') : 'adaptive', ts: TS.some(t => t[0] === +q.get('ts')) ? +q.get('ts') : 1,
+    tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
+    intro: 0, wb: 0, guiding: false, skipNote: false, done: new Set(), inlineShown: null,
+    rv: RVS[q.get('rv')] ? q.get('rv') : 'A', rcase: RC[q.get('case')] ? q.get('case') : 'full', ow: OW[q.get('ow')] ? q.get('ow') : 'tag',
+    oq: q.get('oq') === 'top' ? 'top' : 'after', homeV: q.get('home') === 'pond' ? 'pond' : 'list', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
+    // a first-time person: nothing on the pond yet
+    unfinished: [], past: [] };
+}
+let S = seed();
+const season = () => S.season !== 'auto' ? S.season : new Date().getHours() < 15 ? 'morning' : 'evening';
+const esc = t => String(t).replace(/</g, '&lt;');
+const inq = () => S.today;
+const probe = () => inq().probes.find(p => p.id === S.path);
+function steps(p) { const s = PS[p.id], n = p.status === 'looked' ? s.qs.length : p.pos + 1;
+  return Array.from({ length: n }, (_, k) => ({ q: k === 0 ? s.probe : s.qs[k], r: k < p.pos ? s.rs[k] : null })); }
+
+// ---------- screens: each returns { wl, above, below, extra } ----------
+const topbar = (l = '', r = '') => `<div class="topbar"><div class="s">${l}</div><div class="s r">${r}</div></div>`;
+const backBtn = (a, label) => `<button class="back" data-act="${a}">${ic('back')}${label}</button>`;
+const helpBtn = () => `<button class="help" data-act="help">Help</button>`;
+const leafColour = d => d >= 5 ? 'var(--leaf)' : d >= 3 ? '#c9a043' : '#8a5a3a'; // an Unfinished leaf browns as its 7 days run out
+
+function splash() {
+  return { wl: '50%', above: '', below: '', extra: `<div class="mark" id="mark">${wordmark(300, season())}</div>${S.origin === 'splash' ? `<p class="hint small" style="bottom:300px;padding:0 40px">${ORIGIN}</p>` : ''}<p class="hint small">tap anywhere</p>` };
+}
+function home() {
+  const live = inq() && inq().status === 'live', sn = season();
+  return { wl: '27%',
+    above: `<div class="pad" style="position:absolute;top:40px;left:0;right:0;z-index:7;padding:0 24px">${inlineGuide()}</div><div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(51px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
+    below: `<div class="scroll pad" style="padding-top:64px;padding-bottom:150px">
+      ${!live && !S.unfinished.length && !S.past.length ? `<p class="small mut center" style="margin-top:30px">Nothing here yet.</p>` : ''}
+      ${live ? `<div class="card tap float row" data-act="resume" style="align-items:flex-start">${padGlyph(7)}<div class="grow"><p class="small mut" style="margin:0">Today</p><p class="read me" style="font-size:calc(var(--s18,18px)*var(--ts));margin:2px 0 0">${esc(inq().problem)}</p></div></div>` : ''}
+      ${S.unfinished.length ? '<h3>Unfinished</h3>' : ''}${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start">${padGlyph(u.days)}<p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
+      ${S.homeV === 'list' ? `<h3>Recaps</h3>${S.past.map(k => `<div class="card tap row" data-act="openRecap" data-c="${k}" style="align-items:flex-start">${flowerGlyph()}<div class="grow"><p style="margin:0">${esc(RC[k].problem)}</p><p class="small mut" style="margin:2px 0 0">${RC[k].day}${RC[k].ending === 'step_out' ? ' · stopped early' : RC[k].ending === 'expired' ? ' · after 7 days' : ''}</p></div></div>`).join('')}` : ''}</div>`,
+    extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
+      ${S.homeV === 'pond' ? homeFlowers() : ''}
+      ${pondButton({ role: 'secondary', label: 'Settings', act: 'settings', style: 'left:12px;top:calc(var(--wl) + 4px)' })}
+      ${pondButton({ role: 'primary', label: S.todayDone ? 'Next at 15:40' : 'New Inquiry', act: 'newLeaf', style: 'right:14px;bottom:30px', dry: S.todayDone })}
+      ${S.leafNote ? `<div class="card leafnote fadein"><p style="margin:0"><b>Today's Inquiry is done.</b></p><p class="small mut" style="margin:2px 0 0">The next one opens at 15:40.</p></div>` : ''}` };
+}
+
+// each Recap is the lily's flower alone, floating on the pond; older ones drift further off and smaller
+const HF = [[150, 330, 1], [30, 430, .9], [240, 470, .82], [70, 570, .74]];
+function homeFlowers() {
+  return S.past.map((k, n) => { const [x, y, sc] = HF[n], c = RC[k];
+    return `<button class="hflower" data-act="openRecap" data-c="${k}" style="left:${x}px;top:${y}px;transform:scale(${sc})" aria-label="Recap, ${c.day}: ${esc(c.problem)}">
+      ${flowerGlyph(34)}<span>${esc(c.problem.split(/[,.]/)[0])}</span><span class="d">${c.day}</span></button>`; }).join('');
+}
+function writeHalf(kind) {
+  const v = kind === 'problem' ? S.problemDraft : S.draft, ph = kind === 'problem' ? W.problemPh() : W.reflPh();
+  return `<div class="pad" style="padding-top:18px;padding-bottom:0"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea></div>
+    <div class="ctrl"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
+    <span class="small mut">${W.sent()}</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div>`;
+}
+
+function problem() {
+  return { wl: '36%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:16px"><p class="small mut" style="margin-top:0">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p>${inlineGuide()}<h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
+    below: writeHalf('problem') };
+}
+function probes() {
+  const i = inq(), any = i.probes.some(p => p.status === 'looked');
+  return { wl: '64%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0">${inlineGuide()}<p class="read" style="font-size:calc(var(--s19,19px)*var(--ts));margin:0 0 4px">${W.pick()}</p>
+      ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:calc(var(--s17,17px)*var(--ts));margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}</div>`,
+    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><div class="row" style="margin:8px 0 2px">${padGlyph(7, 26)}<p class="small mut" style="margin:0">Your Problem</p></div><p class="r" style="font-size:calc(var(--s17,17px)*var(--ts))">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
+    extra: any ? pondButton({ role: 'primary', label: 'Finish Inquiry', act: 'finish', style: 'right:14px;bottom:30px' }) : '' };
+}
+function path() {
+  const p = probe(), s = PS[p.id], st = steps(p), looked = p.status === 'looked', last = looked ? st.length : st.length - 1;
+  const vi = Math.min(S.vi, last), cur = st[vi], writing = !looked && vi === st.length - 1, mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : '';
+  const nav = `<div class="stepnav"><button data-act="prev" ${vi ? '' : 'disabled'} aria-label="Previous step">${ic('l')}</button>
+    <div class="dotsrow">${st.map((_, k) => `<i class="${k === vi ? 'on' : ''}"></i>`).join('')}${looked ? `<i class="end ${vi === st.length ? 'on' : ''}"></i>` : ''}</div>
+    <button data-act="next" ${vi < last ? '' : 'disabled'} aria-label="Next step">${ic('r')}</button></div>`;
+  const read = `<button class="link small mut" data-act="readAll">Read it all</button>`;
+  const root = `<button class="pri" data-act="closePath">${W.toProbes()}</button>`;
+  const head = topbar(backBtn('closePath', 'Probes'), helpBtn());
+  if (S.readAll) return { wl: '12%', above: topbar(backBtn('closeRead', 'Path'), helpBtn()),
+    below: `<div class="scroll pad" style="padding-top:18px">${st.filter(x => x.r).map(x => `<div class="rseg"><div class="rtop"><p class="rprem">${x.q}</p></div><div class="rq"><p class="rquote" style="font-style:normal">${esc(x.r)}</p></div></div>`).join('')}
+      <div class="center" style="margin:20px 0 40px">${root}</div></div>` };
+  if (looked && vi === st.length) // the closing view: what the app hands back above, the person's own words below, and the way back to the root
+    return { wl: '36%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px">${inlineGuide()}<p class="small mut" style="margin:0">Looked at · ${W.outcome(s.outcome)}</p>
+      ${s.openq ? `<p class="small mut" style="margin-top:10px">Open Question</p><p class="q">${s.openq}</p>` : `<p class="q mut" style="font-size:calc(var(--s17,17px)*var(--ts))">${s.premise}</p>`}</div>`,
+      below: `<div class="pad ${mv}" style="padding-top:26px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:16px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
+  const offer = vi === 1 && s.offer && p.offered ? `<p class="small mut" style="margin:6px 0 0">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>` : '';
+  // an offer to add a Probe floats as a bud on the waterline, and opens when tapped
+  const bud = vi === 1 && s.offer && !p.offered ? `<button class="bud" data-act="bud" aria-label="Another Probe might be here">${budGlyph()}</button>
+    ${S.budOpen ? `<div class="card budcard fadein">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Add it</button><button data-act="offer" data-a="no">Not now</button></div></div>` : ''}` : '';
+  return { wl: '36%', // fixed, so the keyboard never moves anything
+    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;padding-bottom:26px;overflow-y:auto;min-height:0"><div style="margin-top:auto">${inlineGuide()}
+      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
+      ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div></div>`,
+    below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:22px"><p class="premise">${W.under()} ${s.premise}</p></div>` : '')
+      + (p.pending ? `<div class="pad" style="padding-top:26px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
+        : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:26px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
+    extra: nav + bud };
+}
+// ---------- the Recap (#60): four layouts over the same records ----------
+const fs = n => `font-size:calc(var(--s${n},${n}px)*var(--ts))`;
+function rHead(c, small) {
+  return `<div class="pad row" style="padding-top:0;align-items:flex-end">${flowerGlyph(small ? 30 : 40)}<div><p class="small mut" style="margin:0">Recap · ${c.day}</p>
+    <p class="read" style="${fs(small ? 16 : 19)};margin:0">What you looked at</p></div></div>`;
+}
+function rProblem(c) {
+  return `<p class="small" style="margin:0;color:var(--wmut)">Your Problem</p><p class="r" style="${fs(17)};margin:2px 0 0">${esc(c.problem)}</p>
+    ${c.firstPut ? `<p class="small" style="margin:2px 0 0;color:var(--wmut)">First put as: “${esc(c.firstPut)}”</p>` : ''}`;
+}
+// how the Inquiry ended, when it didn't end on Finish
+function rNote(c) {
+  if (c.ending === 'step_out') return `<p class="rnote">This Inquiry stopped early, to point you to people who can help. It won't carry on. <button class="link" data-act="help">Help</button></p>`;
+  if (c.ending === 'expired') return `<p class="rnote">You last came back to this on ${c.last}. After 7 days away, it was gathered into this Recap.${finished(c).length ? '' : ' No Path reached its end.'}</p>`;
+  return '';
+}
+const chip = o => ow(o) ? `<span class="chip">${ow(o)}</span>` : '';
+const readLink = x => x.steps ? `<button class="link small" data-act="readPath" data-id="${x.id}" style="color:var(--wmut)">Read the Path</button>` : '';
+function rCard(x, withOq) {
+  const s = PS[x.id], said = S.ow === 'said';
+  return `<div class="rseg ${x.outcome}" aria-label="${esc(srLine(x))}"><div class="rtop"><div class="rlab"><span class="grow rprobe">${s.probe}</span>${said ? '' : chip(x.outcome)}</div>
+      <p class="rprem">${s.premise}</p>${x.earlier ? `<p class="small" style="margin:2px 0 0;color:var(--wmut)">First put as: “${x.earlier}”</p>` : ''}
+      ${said && ow(x.outcome) ? `<p class="small" style="margin:6px 0 0;color:var(--wmut)">${ow(x.outcome)}</p>` : ''}
+      ${withOq && x.openq ? `<p class="small" style="margin:10px 0 0;color:var(--wmut)">Open Question</p><p class="read" style="margin:0;${fs(16)}">${x.openq}</p>` : ''}</div>
+    <div class="rq">${x.quote ? `<div class="rlab">In your words</div><p class="rquote">“${x.quote}”</p>` : `<p class="small" style="opacity:.7">${x.outcome === 'left' ? 'You left this Path before it ended.' : 'Nothing quoted.'}</p>`}</div>
+    <div class="rfoot rq" style="border-top:0;padding-top:0;background:none"><span></span>${readLink(x)}</div></div>`;
+}
+const rOqs = (c, h = 'Open Questions') => { const q = c.items.filter(x => x.openq); return q.length ? `<h3>${h}</h3>${q.map(x => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;${fs(17)}">${x.openq}</p></div>`).join('')}` : ''; };
+const rNotYet = c => notYet(c).length ? `<h3>Not looked at yet</h3>${notYet(c).map(x => `<p style="opacity:.8;margin:0 0 8px" class="read">${PS[x.id].probe}${x.added ? `<span class="small" style="display:block;color:var(--wmut)">added along the way</span>` : ''}</p>`).join('')}` : '';
+// "worth your time" is asked once, on a finished Recap only; never after a Step-out
+const rWorth = c => c.ending === 'step_out' ? '' : `<h3>Was this worth your time?</h3><div class="rrow">${['Yes', 'Not sure', 'No'].map(w => `<button class="${S.worth[S.rcase] === w ? 'pri' : ''}" data-act="rworth" data-w="${w}">${w}</button>`).join('')}</div>`;
+const rShare = () => `<div class="rshare"><button data-act="rshare">Share</button><span class="small" style="color:var(--wmut)">Kept on this device</span></div>`;
+
+function recap() {
+  const c = rcase(), top = topbar(backBtn('home', 'Home'), helpBtn());
+  if (S.rv === 'B') return recapPool(c, top);
+  if (S.rv === 'C') return recapPages(c, top);
+  if (S.rv === 'D') return recapLetter(c, top);
+  const L = looked(c);
+  return { wl: '22%', above: `${top}${rHead(c)}`,
+    below: `<div class="scroll pad" style="padding-top:18px">${rProblem(c)}${rNote(c)}
+      ${S.oq === 'top' ? rOqs(c) : ''}
+      ${L.length ? `<h3>Looked at</h3>${L.map(x => rCard(x, S.oq === 'card')).join('')}` : ''}
+      ${S.oq === 'after' ? rOqs(c) : ''}${rNotYet(c)}${rWorth(c)}${rShare()}<div style="height:50px"></div></div>`,
+    extra: rSheets(c) };
+}
+// B: the pool. Pads for what was looked at (a flower on those that reached the end), leaves for Open Questions, buds for the rest
+function recapPool(c, top) {
+  const L = looked(c);
+  const pad = x => { const fin = x.outcome !== 'left', [f, r] = fin ? ['var(--pad)', 'var(--padR)'] : padAge(2);
+    return `<button class="ppad" data-act="rsel" data-id="${x.id}" aria-label="${esc(srLine(x))}"><span class="pg">${lilyPad(64, f, r)}${fin ? `<span class="fl">${lotus(20, true)}</span>` : ''}</span>
+      <span class="pt">${PS[x.id].premise}${ow(x.outcome) ? `<small>${ow(x.outcome)}</small>` : ''}</span></button>`; };
+  return { wl: '30%', above: `${top}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-top:0">${rHead(c)}</div>`,
+    below: `<div class="scroll"><div class="pool">${rProblem(c)}${rNote(c)}<div style="height:22px"></div>
+      ${L.map(pad).join('')}
+      ${c.items.some(x => x.openq) ? c.items.filter(x => x.openq).map(x => `<div class="pleaf">${LEAF(26, -14)}<div><p class="small" style="margin:0;color:var(--wmut)">Open Question</p><p class="read" style="margin:0;${fs(17)}">${x.openq}</p></div></div>`).join('') : ''}
+      ${notYet(c).length ? `<p class="small" style="margin:16px 0 0;color:var(--wmut)">Not looked at yet</p><div class="pbuds">${notYet(c).map(x => `<button data-act="rsel" data-id="${x.id}" aria-label="Not looked at yet: ${esc(PS[x.id].probe)}">${budGlyph(18)}</button>`).join('')}</div>` : ''}
+      ${rWorth(c)}${rShare()}<div style="height:50px"></div></div></div>`,
+    extra: rSheets(c) };
+}
+// C: one Assumption per page, walked with ‹ ›, then what's left
+function recapPages(c, top) {
+  const L = looked(c), n = L.length + 2, k = Math.min(S.rpage, n - 1), mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : '';
+  const nav = `<div class="stepnav"><button data-act="rprev" ${k ? '' : 'disabled'} aria-label="Previous page">${ic('l')}</button>
+    <div class="dotsrow">${Array.from({ length: n }, (_, j) => `<i class="${j === k ? 'on' : ''}"></i>`).join('')}</div>
+    <button data-act="rnext" ${k < n - 1 ? '' : 'disabled'} aria-label="Next page">${ic('r')}</button></div>`;
+  let above, below;
+  if (k === 0) {
+    above = `<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px">${rHead(c)}
+      <p class="read" style="margin:10px 0 0">${L.length ? `You looked at ${L.length === 1 ? 'one thing' : L.length + ' things'} underneath this.` : 'You didn\'t get far with this one.'}</p></div>`;
+    below = `<div class="pad ${mv}" style="padding-top:26px">${rProblem(c)}${rNote(c)}</div>`;
+  } else if (k <= L.length) {
+    const x = L[k - 1], s = PS[x.id];
+    above = `<div class="pad grow rpage ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px;overflow-y:auto;min-height:0">
+      <p class="pc mut" style="margin:0">${k} of ${L.length}${ow(x.outcome) ? ' · ' + ow(x.outcome) : ''}</p><p class="rprobe mut" style="margin:6px 0 0;font:italic ${'calc(var(--s14,14px)*var(--ts))'} var(--f-app)">${s.probe}</p>
+      <p class="bigq">${s.premise}</p>${x.earlier ? `<p class="small mut" style="margin:2px 0 0">First put as: “${x.earlier}”</p>` : ''}
+      ${x.openq ? `<p class="small mut" style="margin:12px 0 0">Open Question</p><p class="read" style="margin:0;${fs(17)}">${x.openq}</p>` : ''}</div>`;
+    below = `<div class="pad ${mv}" style="padding-top:26px">${x.quote ? `<p class="small" style="margin:0;color:var(--wmut)">In your words</p><p class="r">“${x.quote}”</p>` : `<p class="small" style="opacity:.75">You left this Path before it ended.</p>`}${readLink(x)}</div>`;
+  } else {
+    above = `<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px"><p class="read" style="${fs(19)};margin:0">${notYet(c).length ? 'Still underneath' : 'That\'s everything'}</p></div>`;
+    below = `<div class="scroll pad ${mv}" style="padding-top:20px">${notYet(c).length ? notYet(c).map(x => `<p class="read" style="opacity:.85;margin:0 0 8px">${PS[x.id].probe}</p>`).join('') : ''}${rWorth(c)}${rShare()}<div style="height:40px"></div></div>`;
+  }
+  return { wl: '42%', above: `${top}${above}`, below, extra: nav + rSheets(c) };
+}
+// D: a letter, written from the records by template (no model call, no verdict)
+function recapLetter(c, top) {
+  const q = t => `<span class="me">“${esc(t)}”</span>`;
+  const line = x => { const s = PS[x.id], oq = x.openq ? ` It left you with a question to keep: <i>${x.openq}</i>` : '';
+    return { challenged: `Asked “${s.probe}”, you looked at the idea that <i>${s.premise.replace(/\.$/, '')}</i>, and questioned it: ${q(x.quote)}${oq}`,
+      rejected: `“${s.probe}” led to the idea that <i>${s.premise.replace(/\.$/, '')}</i>. You said it wasn't yours: ${q(x.quote)}${oq}`,
+      unchallenged: `“${s.probe}” led to the idea that <i>${s.premise.replace(/\.$/, '')}</i>. You looked at it, and let it be.${oq}`,
+      left: `You began on “${s.probe}”, and set it down part-way.` }[x.outcome]; };
+  const L = looked(c), N = notYet(c);
+  return { wl: '14%', above: `${top}`,
+    below: `<div class="scroll pad letter" style="padding-top:16px">${rHead(c, true)}<div style="height:12px"></div>
+      <p>You came with ${q(c.problem)}${c.firstPut ? ` At first you put it as ${q(c.firstPut)}.` : ''}</p>
+      ${c.ending !== 'recap' ? `<p class="small" style="color:var(--wmut)">${rNote(c).replace(/<\/?p[^>]*>/g, '')}</p>` : ''}
+      ${L.map(x => `<p>${line(x)} ${readLink(x)}</p>`).join('')}
+      ${N.length ? `<p>Not looked at yet: ${N.map(x => `“${PS[x.id].probe}”`).join(' and ')}</p>` : ''}
+      <p class="sig">Gathered from your Inquiry on ${c.day}.</p>${rWorth(c)}${rShare()}<div style="height:50px"></div></div>`,
+    extra: rSheets(c) };
+}
+// sheets over the Recap: one Assumption's card (B), Share
+function rSheets(c) {
+  if (S.rshare) return `<div class="rscrim" data-act="rclose"></div><div class="rsheet"><div class="card" style="background:var(--still)">
+    <p style="margin:0 0 8px"><b>Share this Recap</b></p><div class="rrow"><button class="pri">PDF</button><button>Text</button><button>Copy</button></div>
+    <p class="small mut" style="margin:10px 0 0">Anyone with the file can read it. Only this Recap is shared, not the whole Path.</p><button class="link small" data-act="rclose" style="margin-top:6px">Close</button></div></div>`;
+  if (!S.rsel) return '';
+  const x = c.items.find(i => i.id === S.rsel);
+  const body = x.outcome === 'not_looked_at' ? `<div class="card" style="background:var(--still)"><p class="small mut" style="margin:0">Not looked at yet</p><p class="read" style="margin:4px 0 0">${PS[x.id].probe}</p></div>` : rCard(x, true);
+  return `<div class="rscrim" data-act="rclose"></div><div class="rsheet">${body}<div class="center"><button data-act="rclose">Close</button></div></div>`;
+}
+// read back one Path from a Recap: the app's question on top, the Reflection below
+function recapRead() {
+  const c = rcase(), x = c.items.find(i => i.id === S.rread), s = PS[x.id];
+  const st = Array.from({ length: x.steps }, (_, k) => ({ q: k ? s.qs[k] : s.probe, r: s.rs[k] }));
+  return { wl: '12%', above: topbar(backBtn('closeRecapRead', 'Recap'), helpBtn()),
+    below: `<div class="scroll pad" style="padding-top:18px"><p class="small" style="margin:0 0 10px;color:var(--wmut)">${x.outcome === 'left' ? 'Left part-way' : 'The whole Path'}</p>
+      ${st.map(y => `<div class="rseg"><div class="rtop"><p class="rprem">${y.q}</p></div><div class="rq"><p class="rquote" style="font-style:normal">${esc(y.r)}</p></div></div>`).join('')}
+      <div class="center" style="margin:20px 0 40px"><button class="pri" data-act="closeRecapRead">Back to the Recap</button></div></div>` };
+}
+function settingsScreen() {
+  return { wl: '13%', above: topbar(backBtn('home', 'Home')), below: `<div class="scroll pad" style="padding-top:16px"><div class="card tap" style="margin:6px 0" data-act="guideAgain">${S.guiding && !S.done.size ? 'The guide will show on your next Inquiry' : 'Show the guide again'}</div>${['Region: United States', 'Season: follows the time of day', 'Crash reports: on', 'Export all', 'Import', 'Sent reports', 'About Look Together', 'Privacy', 'Sign out'].map(l => `<div class="card" style="margin:6px 0">${l}</div>`).join('')}</div>` };
+}
+const contacts = `<div class="contact"><b>988 Suicide &amp; Crisis Lifeline</b><br><span class="small">Call or text 988 · US</span></div><div class="contact"><b>Crisis Text Line</b><br><span class="small">Text HOME to 741741</span></div><p class="small">Somewhere else? findahelpline.com</p>`;
+
+// ---------- render ----------
+let lastScreen = null;
+function render() {
+  const app = document.getElementById('app');
+  app.className = season() + (S.still || S.sheet || S.screen === 'stepout' ? ' still' : '') + (S.kb ? ' kb' : '') + ' typo t-' + S.type + (S.tidy ? ' tidy' : '') + ' lg-' + S.lg;
+  app.style.setProperty('--ts', S.ts); app.style.setProperty('--tsp', Math.min(S.ts, 1.35));
+  let sc;
+  if (S.screen === 'stepout') sc = { wl: '100%', above: '', below: '', extra: `<div class="plain"><h1>Let's stop here.</h1><p>This is an AI, and it can't help with this the way a person can. It isn't a crisis service.</p><p>If you might be in danger, please reach out now:</p>${contacts}<p class="small" style="margin-top:14px">This Inquiry won't carry on.</p><button data-act="home" style="margin-top:10px">Close</button></div>` };
+  else {
+    // variant A: an inline line counts as read once the person moves past it
+    if (S.inlineShown && S.inlineShown !== guideKey()) { S.done.add(S.inlineShown); S.inlineShown = null; }
+    sc = { splash, intro, signin, home, problem, probes, path, recap, recapRead, settings: settingsScreen }[S.screen]();
+    sc.extra = (sc.extra || '') + coachNote() + poolCard();
+  }
+  S.sc = sc;
+  app.style.setProperty('--wl', sc.wl);
+  const sheet = S.sheet === 'help' ? `<div class="scrim"><div class="sheet"><h1 style="font-size:calc(var(--s22,22px)*var(--ts))">Paused</h1><p>Nothing is lost. If you'd like to talk to someone now:</p>${contacts}<button class="pri" data-act="closeSheet" style="width:100%;margin-top:8px">Back to my Inquiry</button></div></div>` : '';
+  document.getElementById('ui').innerHTML = `<div class="layer"><div class="above">${sc.above}</div><div class="below">${sc.below}</div></div>${sc.extra || ''}${sheet}
+    <div class="kbd">${'<b></b>'.repeat(27)}<span class="done kbdone">done</span></div>`;
+  if (S.screen === 'splash' && lastScreen !== 'splash') playSplash();
+  // the water: a brook along a Path, quietening into a pool at the Recap, still everywhere else
+  if (S.screen !== lastScreen) brookTo(S.screen === 'path' ? 1 : 0, S.screen === 'recap' && lastScreen === 'path' ? 4500 : 1400);
+  if (S.screen === 'path') walkBrook(S.vi);
+  if (S.screen === 'home') startLeafFall();
+  lastScreen = S.screen; S.justReplied = false; S.dir = null;
+  placeCoach(); setTimeout(placeCoach, 800); // again once screens have finished sliding in
+  legible(); setTimeout(legible, 900); setTimeout(legible, 1800);
+  renderSide(); renderProto();
+}
+function renderSide() {
+  const c = rcase(), L = looked(c);
+  const RVA = {
+    A: 'One column, top to bottom: the Problem (and "first put as"), how it ended if not on Finish, a segmented card per Assumption looked at, then Open Questions, Not looked at yet, "Was this worth your time?" and Share. ?oq= moves Open Questions to the top or into each card.',
+    B: 'The pool from the look decision taken literally. Each Assumption looked at is a lily pad on still water, with a flower if its Path reached the end; a pad left part-way is yellowed. Tap a pad for its card. Open Questions float as leaves, always visible. What wasn\'t looked at is a row of closed buds.',
+    C: 'Like walking a Path again, slowly: a first page with the Problem, one page per Assumption (premise above the waterline, your words below), and a last page with what\'s still underneath, worth and Share. ‹ › or swipe.',
+    D: 'The same records written out as a short letter, from templates (no model, so nothing new is said). Reads as one quiet page. Risk: prose can sound like a verdict or a summary.' };
+  document.getElementById('side').innerHTML = `<div class="box"><h4>Recap ${S.rv} · ${RVS[S.rv]}</h4>${RVA[S.rv]}</div>
+    <div class="box"><h4>Case · ${c.name}</h4>${{ recap: 'Finished on Finish Inquiry. One of each outcome, a reworded Problem and premise, an Open Question, and a Probe added along the way that was never looked at.',
+      step_out: 'Stepped out on the second Path. One Path had finished, so a Recap exists (#34). No "worth your time?" here. The reason for the Step-out isn\'t kept, so the Recap can\'t say it.',
+      expired: c.items.some(x => x.outcome !== 'left' && x.outcome !== 'not_looked_at') ? 'Not opened for 7 days, so the next launch ended it. The Path in progress becomes "left".' : 'Ended after 7 days with no Path finished. Should this still be a Recap, or quietly go?' }[c.ending]}</div>
+    <div class="box"><h4>Outcomes · ${OW[S.ow].name}</h4><table>${['challenged', 'rejected', 'unchallenged', 'left'].map(o => `<tr><td><code>${o}</code></td><td>${OW[S.ow][o] || '<i>no tag</i>'}</td></tr>`).join('')}</table>
+      <p style="margin:6px 0 0;color:#555">Each says what the person did, never whether the Assumption is true (ADR 0001).</p></div>
+    <div class="box"><h4>What a screen reader hears</h4>${L.map(x => `<div class="gl">${esc(srLine(x))}</div>`).join('') || '<i>nothing looked at</i>'}
+      <p style="margin:6px 0 0;color:#555">The Probe, then the outcome, then the Assumption, then "In your words" (#56). Focus starts on the heading "What you looked at".</p></div>
+    <div class="box" id="measure"></div>
+    <div class="box"><h4>State</h4>screen: ${S.screen}${S.rread ? ' / ' + S.rread : ''} · page ${S.rpage}${S.rsel ? ' · open: ' + S.rsel : ''} · worth: ${S.worth[S.rcase] || '–'} · home: ${S.homeV}</div>`;
+}
+function renderProto() {
+  const sel = (p, opts, cur) => `<select data-p="${p}">${opts.map(([v, l]) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+  document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span>
+    <button data-p="vprev" aria-label="Previous variant">←</button><span>${S.rv} · ${RVS[S.rv]}</span><button data-p="vnext" aria-label="Next variant">→</button>
+    ${sel('case', Object.entries(RC).map(([k, c]) => [k, 'case: ' + c.name]), S.rcase)}
+    ${sel('ow', Object.entries(OW).map(([k, o]) => [k, 'outcomes: ' + o.name]), S.ow)}
+    ${sel('oq', [['after', 'Open Qs: after cards'], ['top', 'Open Qs: on top'], ['card', 'Open Qs: in each card']], S.oq)}
+    ${sel('homeV', [['list', 'home: list'], ['pond', 'home: flowers on the pond']], S.homeV)}
+    ${sel('ts', TS.map(([x, l]) => [String(x), 'text: ' + l]), String(S.ts))}
+    ${sel('season', [['auto', 'auto'], ['morning', 'morning'], ['evening', 'evening']], S.season)}
+    <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
+    ${sel('jump', [['', 'jump to…'], ['home', 'home'], ['recap', 'Recap'], ['finish', 'finish an Inquiry'], ['readpath', 'read a Path']], '')}`;
+}
+
+// ---------- water: the brook, ripples, drops, falling leaves ----------
+let brookAnims = [], brookRate = 0, brookRaf = null;
+function brookTo(target, ms) {
+  const el = document.getElementById('creek');
+  if (!brookAnims.length) brookAnims = [...el.querySelectorAll('.cur')].map(p => { const a = p.animate([{ strokeDashoffset: 0 }, { strokeDashoffset: -+p.dataset.len }], { duration: +p.dataset.ms * 6, iterations: Infinity }); a.playbackRate = 0.0001; return a; });
+  if (S.still) target = 0;
+  el.style.opacity = target ? '1' : '0'; el.style.transitionDuration = ms + 'ms';
+  cancelAnimationFrame(brookRaf); const from = brookRate, t0 = performance.now();
+  (function f(t) { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); brookRate = from + (target - from) * e;
+    brookAnims.forEach(a => a.playbackRate = Math.max(brookRate, 0.0001)); if (k < 1) brookRaf = requestAnimationFrame(f); })(t0);
+}
+function walkBrook(vi) { // each step moves you a little way down the meander
+  document.getElementById('creekg').style.transform = `translateX(${-vi * 330 - 60}px)`;
+}
+let rings = [], rafOn = false;
+function ripple(x, y, n = 3, small) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, small, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
+function tick(t) {
+  const c = document.getElementById('rip'), g = c.getContext('2d'); g.clearRect(0, 0, c.width, c.height);
+  const col = getComputedStyle(document.getElementById('app')).getPropertyValue('--rip');
+  const life = o => o.small ? 1100 : 2600;
+  rings = rings.filter(o => t - o.born < life(o));
+  for (const o of rings) { const age = t - o.born; if (age < 0) continue; const r = o.small ? 2 + age * .022 : 4 + age * .07;
+    g.globalAlpha = Math.max(0, 1 - age / life(o)) * (o.small ? .6 : .9); g.strokeStyle = col; g.lineWidth = 1.2; g.beginPath(); g.ellipse(o.x, o.y, r, r * .28, 0, 0, Math.PI * 2); g.stroke(); }
+  if (rings.length) requestAnimationFrame(tick); else { rafOn = false; g.clearRect(0, 0, c.width, c.height); }
+}
+const wlPx = () => { const a = document.getElementById('app'); return a.getBoundingClientRect().height * parseFloat(getComputedStyle(a).getPropertyValue('--wl')) / 100; };
+function drop(then, x = 195) {
+  const app = document.getElementById('app'), y = wlPx() + 10;
+  if (S.still) return then();
+  const d = document.createElement('div'); d.className = 'drop'; d.style.left = x + 'px'; app.appendChild(d);
+  d.animate([{ top: '-20px' }, { top: (y - 8) + 'px' }], { duration: 650, easing: 'cubic-bezier(.5,0,1,1)' }).onfinish = () => { d.remove(); ripple(x, y); then(); };
+}
+function skim() { // a small flat stone skips four times down the brook, each hop shorter and quicker, then sinks
+  if (S.still) return;
+  const app = document.getElementById('app'), y = wlPx() + 250, x0 = 70, hops = [72, 46, 28, 15], lifts = [9, 5, 2.6, 1.2];
+  const st = document.createElement('div'); st.className = 'skim'; st.style.left = x0 + 'px'; st.style.top = y + 'px'; app.appendChild(st);
+  const total = hops.reduce((a, b) => a + b, 0), dur = 760, kf = [{ transform: 'translate(0,0)', offset: 0 }];
+  let x = 0;
+  hops.forEach((h, k) => { const at = (x + h / 2) / total, end = (x + h) / total;
+    kf.push({ transform: `translate(${x + h / 2}px,${-lifts[k]}px)`, offset: at }, { transform: `translate(${x + h}px,0)`, offset: end });
+    x += h; const xx = x0 + x; setTimeout(() => ripple(xx + 4, y + 3, 1, true), dur * end); });
+  st.animate(kf, { duration: dur, easing: 'cubic-bezier(.15,.6,.45,1)', fill: 'forwards' }).onfinish = () =>
+    st.animate([{ opacity: .9, transform: `translate(${x}px,0)` }, { opacity: 0, transform: `translate(${x + 3}px,4px)` }], { duration: 260, fill: 'forwards' }).onfinish = () => st.remove();
+}
+function playSplash() {
+  setTimeout(() => drop(() => { const mk = document.getElementById('mark'); if (!mk) return; mk.classList.add('show'); waveDown(18, 2600); }), S.still ? 0 : 700);
+}
+function waveDown(from, ms) { if (S.still) return; const m = document.getElementById('wavemap'), t0 = performance.now();
+  (function f(t) { const k = Math.min(1, (t - t0) / ms); m.setAttribute('scale', String(from * (1 - k))); if (k < 1) requestAnimationFrame(f); })(t0); }
+let leafTimer = null;
+function startLeafFall() { // now and then a leaf comes off a tree and drifts down onto the pond
+  clearTimeout(leafTimer);
+  leafTimer = setTimeout(function fall() {
+    if (S.screen !== 'home') return;
+    if (!S.still && !S.sheet) {
+      const app = document.getElementById('app'), wl = wlPx(), left = Math.random() < .5;
+      const x0 = left ? 20 + Math.random() * 70 : 290 + Math.random() * 70, y0 = wl - 100 + Math.random() * 40;
+      const x1 = x0 + (left ? 1 : -1) * (60 + Math.random() * 90), y1 = wl + 20 + Math.random() * 50;
+      const el = document.createElement('div'); el.className = 'flyer'; el.innerHTML = LEAF(14 + Math.random() * 6, Math.random() * 360, CROWNS[season()][Math.floor(Math.random() * 4)]);
+      el.style.left = x0 + 'px'; el.style.top = y0 + 'px'; app.appendChild(el);
+      const dx = x1 - x0, dy = y1 - y0;
+      el.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: `translate(${dx * .35}px,${dy * .3}px) rotate(120deg)` }, { transform: `translate(${dx * .55}px,${dy * .55}px) rotate(60deg)` },
+        { transform: `translate(${dx * .85}px,${dy * .8}px) rotate(200deg)` }, { transform: `translate(${dx}px,${dy}px) rotate(170deg) scaleY(.7)` }], { duration: 6000 + Math.random() * 2000, easing: 'ease-in-out', fill: 'forwards' })
+        .onfinish = () => { ripple(x1 + 8, y1 + 6, 2); el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 4000, delay: 2500, fill: 'forwards' }).onfinish = () => el.remove(); };
+    }
+    leafTimer = setTimeout(fall, 3500 + Math.random() * 5000);
+  }, 1200);
+}
+
+// ---------- keyboard (faked): it slides over the empty water; nothing on screen moves ----------
+function setKb(on) {
+  if (S.kb === on) return; S.kb = on; const app = document.getElementById('app');
+  app.classList.toggle('kb', on);
+  renderSide();
+}
+document.addEventListener('focusin', e => { if (e.target.matches('textarea.ref')) setKb(true); });
+document.addEventListener('focusout', e => { if (e.target.matches('textarea.ref')) setTimeout(() => { if (!document.activeElement.matches('textarea.ref')) setKb(false); }, 60); });
+document.addEventListener('mousedown', e => { if (e.target.closest('.kbd')) { e.preventDefault(); if (e.target.closest('.kbdone')) document.activeElement.blur(); } });
+
+// ---------- actions ----------
+function newToday(midway) {
+  S.today = { problem: PROBLEM, status: 'live', worth: null, probes: ['p1', 'p2', 'p3', 'p4'].map(id => ({ id, status: 'open', pos: 0 })) };
+  S.todayDone = true;
+  if (midway) { Object.assign(S.today.probes[0], { status: 'looked', pos: 3 }); Object.assign(S.today.probes[1], { pos: 1 }); Object.assign(S.today.probes[2], { status: 'looked', pos: 2 }); }
+}
+function submit(kind) {
+  if (S.busy) return;
+  const v = (kind === 'problem' ? S.problemDraft : S.draft).trim(); if (!v) return;
+  S.busy = true; if (document.activeElement) document.activeElement.blur(); S.kb = false;
+  if (kind === 'problem') { render(); return drop(() => setTimeout(() => { S.busy = false; newToday(false); S.problemDraft = ''; S.screen = 'probes'; render(); }, 600)); }
+  if (/hurt myself|end it|kill/i.test(v)) { S.busy = false; S.draft = ''; S.screen = 'stepout'; S.path = null; return render(); }
+  const p = probe(); p.pending = v; render(); skim(); // a stone skims down the brook; the reply doesn't wait for it
+  setTimeout(() => {
+    const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.busy = false; S.budOpen = false;
+    if (p.pos >= s.qs.length) p.status = 'looked';
+    const st = steps(p); S.vi = p.status === 'looked' ? st.length : st.length - 1; S.justReplied = true; S.dir = 'next'; render();
+  }, 500);
+}
+function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: false, readAll: false, kb: false }, x); render(); }
+function jump(v) {
+  Object.assign(S, { sheet: null, path: null, vi: 0, readAll: false, kb: false, leafNote: false });
+  if (v === 'splash' || v === 'intro' || v === 'first') { // start over as a first-time person
+    Object.assign(S, { today: null, todayDone: false, guiding: true, done: new Set(), inlineShown: null, intro: 0, wb: Math.min(+new URLSearchParams(location.search).get('wb') || 0, BEATS.length - 1) });
+    return go(v === 'first' ? 'home' : v); }
+  S.past = PAST; Object.assign(S, { rpage: 0, rsel: null, rshare: false, rread: null });
+  if (v === 'home') return go(v);
+  if (v === 'recap') { lastScreen = 'recap'; return go('recap'); }
+  if (v === 'readpath') return go('recapRead', { rread: 'p1' });
+  if (v === 'finish') { newToday(true); return go('probes'); }
+  if (v === 'new') { S.today = null; S.todayDone = false; return go('problem'); }
+  newToday(true);
+  if (v === 'probes') return go('probes');
+  if (v === 'path') return go('path', { path: 'p2', vi: 1 });
+  if (v === 'pathmid') return go('path', { path: 'p1', vi: 1 });
+  if (v === 'ended') return go('path', { path: 'p1', vi: 3 });
+  if (v === 'help') { go('path', { path: 'p2', vi: 1 }); S.sheet = 'help'; return render(); }
+  if (v === 'stepout') return go('stepout');
+}
+
+document.addEventListener('input', e => {
+  const k = e.target.dataset.draft; if (!k) return;
+  if (k === 'problem') S.problemDraft = e.target.value; else S.draft = e.target.value;
+  document.querySelectorAll('button[data-act=submit]').forEach(b => b.disabled = !e.target.value.trim());
+});
+document.addEventListener('change', e => {
+  const p = e.target.dataset.p;
+  if (p === 'season') { S.season = e.target.value; render(); }
+  if (p === 'origin') { S.origin = e.target.value; setParam('origin', S.origin); render(); }
+  if (p === 'type') { S.type = e.target.value; setParam('type', S.type); render(); }
+  if (p === 'ts') { S.ts = +e.target.value; setParam('ts', S.ts); render(); placeCoach(); }
+  if (p === 'jump') jump(e.target.value);
+  if (p === 'case') { S.rcase = e.target.value; Object.assign(S, { rpage: 0, rsel: null, rshare: false }); setParam('case', S.rcase); if (S.screen !== 'recap') go('recap'); else render(); }
+  if (p === 'ow') { S.ow = e.target.value; setParam('ow', S.ow); render(); }
+  if (p === 'oq') { S.oq = e.target.value; setParam('oq', S.oq); render(); }
+  if (p === 'homeV') { S.homeV = e.target.value; setParam('home', S.homeV); render(); }
+});
+document.addEventListener('click', e => {
+  const lg = e.target.closest('[data-logo]'); if (lg) { S.logo = lg.dataset.logo; return render(); }
+  const pb = e.target.closest('button[data-p]');
+  if (pb) { const p = pb.dataset.p;
+    if (p === 'still') { S.still = !S.still; brookTo(S.screen === 'path' ? 1 : 0, 300); render(); }
+    if (p === 'soften') { S.soften = !S.soften; render(); }
+    if (p === 'tidy') { S.tidy = !S.tidy; setParam('scale', S.tidy ? 'tidy' : 'as-is'); render(); }
+
+    if (p === 'vprev') cycleVariant(-1); if (p === 'vnext') cycleVariant(1);
+    if (p === 'reset') { const { season, still, logo, variant, origin, type, ts, tidy, lg } = S; S = seed(); Object.assign(S, { season, still, logo, variant, origin, type, ts, tidy, lg, screen: 'intro' }); render(); } return; }
+  if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('intro', { intro: 0, wb: 0 }), S.still ? 0 : 500); }
+  const el = e.target.closest('[data-act]');
+  if (!el) { // a tap on open water ripples
+    const a = document.getElementById('app'); if (!a.contains(e.target) || e.target.closest('textarea,.kbd,.sheet,.plain')) return;
+    const r = a.getBoundingClientRect(), y = e.clientY - r.top; if (y > wlPx()) ripple(e.clientX - r.left, y, 1); return; }
+  const a = el.dataset.act, kind = el.dataset.kind;
+  const rippleAt = () => { const r = el.querySelector('.bobber').getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + r.height * .6, 2); };
+  ({
+    home: () => go('home', { path: null }), settings: () => { rippleAt(); setTimeout(() => go('settings'), 300); },
+    newLeaf: () => { if (S.todayDone) { S.leafNote = !S.leafNote; return render(); } rippleAt(); setTimeout(() => go('problem'), 350); },
+    resume: () => go('probes'), fill: () => { S.problemDraft = PROBLEM; render(); },
+    openPath: () => { const p = inq().probes.find(x => x.id === el.dataset.pid), st = steps(p); go('path', { path: p.id, vi: p.status === 'looked' ? 0 : st.length - 1 }); },
+    closePath: () => go('probes', { path: null }), readAll: () => { S.readAll = true; render(); }, closeRead: () => { S.readAll = false; render(); },
+    prev: () => { S.vi = Math.max(0, S.vi - 1); S.dir = 'prev'; render(); }, next: () => { S.vi++; S.dir = 'next'; render(); },
+    reveal: () => { probe().reveal = true; render(); }, offer: () => { probe().offered = el.dataset.a; S.budOpen = false; render(); }, bud: () => { S.budOpen = !S.budOpen; render(); },
+    submit: () => submit(kind), finish: () => { rippleAt(); inq().status = 'ended'; S.rcase = 'full'; S.rpage = 0; setTimeout(() => go('recap'), 350); },
+    openRecap: () => { const r = el.getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + 20, 2);
+      S.rcase = el.dataset.c; Object.assign(S, { rpage: 0, rsel: null, rshare: false }); setTimeout(() => go('recap'), S.still ? 0 : 400); },
+    rsel: () => { S.rsel = el.dataset.id; render(); }, rclose: () => { S.rsel = null; S.rshare = false; render(); }, rshare: () => { S.rshare = true; render(); },
+    rworth: () => { S.worth[S.rcase] = el.dataset.w; render(); },
+    rprev: () => { S.rpage = Math.max(0, S.rpage - 1); S.dir = 'prev'; render(); }, rnext: () => { S.rpage++; S.dir = 'next'; render(); },
+    readPath: () => go('recapRead', { rread: el.dataset.id, rsel: null }), closeRecapRead: () => go('recap', { rread: null }), worth: () => { inq().worth = el.dataset.w; render(); },
+    mic: () => { S.dictating = !S.dictating; if (!S.dictating) { if (kind === 'problem') S.problemDraft += (S.problemDraft ? ' ' : '') + PROBLEM; else S.draft += (S.draft ? ' ' : '') + SAMPLE; } render(); },
+    help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
+    introNext: () => welcomeStep(1) || (S.intro < INTRO.length - 1 ? go('intro', { intro: S.intro + 1 }) : go('signin')),
+    introBack: () => welcomeStep(-1) || (S.screen === 'signin' ? go('intro', { intro: INTRO.length - 1 }) : go('intro', { intro: Math.max(0, S.intro - 1), wb: S.intro === 1 ? BEATS.length - 1 : S.wb })),
+    welcomeEnd: () => { S.prevWb = S.wb; S.wb = BEATS.length - 1; S.dir = 'next'; render(); },
+    signedIn: () => go('home'),
+    gotIt: () => { S.done.add(el.dataset.k); render(); },
+    skipGuide: () => { S.guiding = false; S.inlineShown = null; S.skipNote = true; render(); }, skipNoteOk: () => { S.skipNote = false; render(); },
+    guideAgain: () => { S.guiding = true; S.done = new Set(); S.inlineShown = null; S.today = null; S.todayDone = false; render(); },
+  }[a] || (() => {}))();
+});
+
+function welcomeStep(d) { // moves within the welcome's beats; false once past either end
+  if (S.screen !== 'intro' || S.intro !== 0) return false;
+  const nb = S.wb + d; if (nb < 0 || nb >= BEATS.length) return false;
+  S.prevWb = S.wb; S.wb = nb; S.dir = d > 0 ? 'next' : 'prev'; render(); return true;
+}
+let wheelAt = 0;
+document.addEventListener('wheel', e => { if (S.screen !== 'intro' || S.intro || !document.getElementById('app').contains(e.target)) return;
+  e.preventDefault(); const t = performance.now(); if (t - wheelAt < 700 || Math.abs(e.deltaY) < 8) return; wheelAt = t; welcomeStep(e.deltaY > 0 ? 1 : -1); }, { passive: false });
+// swipe between steps on the Path, but not from the screen edges (the system Back gesture lives there)
+let sw = null;
+document.addEventListener('pointerdown', e => { const a = document.getElementById('app'), r = a.getBoundingClientRect(), x = e.clientX - r.left;
+  if (S.screen === 'intro' && !S.intro && a.contains(e.target) && !e.target.closest('button')) sw = { x: e.clientX, y: e.clientY, welcome: true };
+  else if ((S.screen === 'path' || (S.screen === 'recap' && S.rv === 'C')) && !S.readAll && a.contains(e.target) && !e.target.closest('textarea,button') && x > 28 && x < r.width - 28) sw = { x: e.clientX, y: e.clientY }; });
+document.addEventListener('pointerup', e => { if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y, sw0 = sw; sw = null;
+  if (sw0.welcome) { if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) welcomeStep(dx < 0 ? 1 : -1); else if (Math.abs(dy) > 50) welcomeStep(dy < 0 ? 1 : -1); return; }
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { const b = document.querySelector(`.stepnav button[data-act$=${dx < 0 ? 'next' : 'prev'}]`); if (b && !b.disabled) b.click(); } });
+
+// the variant switcher: ← → cycle (but never while typing), and the URL keeps the choice
+function setParam(k, v) { const u = new URL(location.href); u.searchParams.set(k, v); history.replaceState(null, '', u); }
+function cycleVariant(d) { const ks = Object.keys(RVS); S.rv = ks[(ks.indexOf(S.rv) + d + ks.length) % ks.length]; Object.assign(S, { rpage: 0, rsel: null, rshare: false }); setParam('rv', S.rv); if (S.screen !== 'recap') go('recap'); else render(); }
+
+// legibility: measure every line of words on the sky and water against the gradient behind it,
+// and under "ink by depth", flip the ink of any line that falls short
+const rgb = c => { const m = c.match(/[\d.]+/g).map(Number); return { r: m[0], g: m[1], b: m[2], a: m[3] ?? 1 }; };
+const hex2 = h => ({ r: parseInt(h.slice(1, 3), 16), g: parseInt(h.slice(3, 5), 16), b: parseInt(h.slice(5, 7), 16), a: 1 });
+const over = (f, b) => ({ r: f.r * f.a + b.r * (1 - f.a), g: f.g * f.a + b.g * (1 - f.a), b: f.b * f.a + b.b * (1 - f.a), a: 1 });
+const lum = c => { const v = [c.r, c.g, c.b].map(x => x / 255).map(x => x <= .03928 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
+const SKIPT = '.card,.pobj,.sheet,.coach,.budcard,.kbd,.plain,.scrim,.stepnav,.rseg,.gpool,.spot,.trees';
+const INK = { dark: hex2('#0d0906'), light: hex2('#fffbf5') }; // near black and white: where the glow is mid-tone, only these clear 4.5
+function legible() {
+  const app = document.getElementById('app'), cs = getComputedStyle(app), ar = app.getBoundingClientRect(), wl = ar.height * parseFloat(S.sc.wl) / 100; // where the waterline is going, not where it is mid-move
+  const v = k => hex2(cs.getPropertyValue('--' + k).trim());
+  const well = S.lg === 'well' ? rgb(cs.getPropertyValue('--wellC')) : null;
+  const bgAt = y => { const [a, b, t] = y < wl ? ['sky1', 'sky2', y / wl] : ['wat1', 'wat2', (y - wl) / (ar.height - wl)];
+    const A = v(a), B = v(b), k = Math.max(0, Math.min(1, t)), c = { r: A.r + (B.r - A.r) * k, g: A.g + (B.g - A.g) * k, b: A.b + (B.b - A.b) * k, a: 1 };
+    return well ? over(well, c) : c; };
+  const els = [...app.querySelectorAll('#ui .layer *')].filter(el => !el.closest(SKIPT) && (!el.closest('button') || el.closest('.back,.help'))
+    && (el.tagName === 'TEXTAREA' || [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())));
+  const seen = [];
+  for (const el of els) {
+    delete el.dataset.firm;
+    if (el.dataset.flip) { ['color', 'backgroundImage', 'backgroundSize', 'backgroundPosition', 'backgroundRepeat', 'webkitBackgroundClip', 'backgroundClip'].forEach(k => el.style[k] = ''); delete el.dataset.flip; }
+    const r = el.getBoundingClientRect(); if (!r.height || r.bottom < ar.top || r.top > ar.bottom) continue;
+    // a block is as legible as its worst line: sample the gradient at its top, middle and bottom
+    const bgs = [.15, .5, .85].map(f => bgAt(r.top + r.height * f - ar.top)), fg = rgb(getComputedStyle(el).color);
+    const worst = ink => Math.min(...bgs.map(bg => ratio(over(ink, bg), bg)));
+    let c = worst(fg);
+    if (S.lg === 'depth' && c < 4.5) {
+      // one ink per line: the text's own colour where it passes, else dark or light, whichever reads best across the line
+      const css = k => `rgb(${Math.round(k.r)},${Math.round(k.g)},${Math.round(k.b)})`;
+      const lh = el.tagName === 'TEXTAREA' ? r.height : parseFloat(getComputedStyle(el).lineHeight) || r.height, lines = [];
+      for (let y0 = 0; y0 < r.height - 1; y0 += lh) {
+        const ys = [.2, .5, .8].map(f => r.top + y0 + lh * f - ar.top), score = k => Math.min(...ys.map(y => { const bg = bgAt(y); return ratio(over(k, bg), bg); }));
+        const k = score(fg) >= 4.5 ? fg : score(INK.dark) > score(INK.light) ? INK.dark : INK.light;
+        lines.push({ y0, y1: Math.min(r.height, y0 + lh), k, c: score(k) }); }
+      if (el.tagName === 'TEXTAREA') el.style.color = css(lines[0].k);
+      else Object.assign(el.style, { backgroundImage: `linear-gradient(to bottom, ${lines.map(l => `${css(l.k)} ${l.y0}px ${l.y1}px`).join(', ')})`,
+        backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', webkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' });
+      el.dataset.flip = 1; c = Math.min(...lines.map(l => l.c)); }
+    if (S.lg === 'adaptive' && c < 4.5) el.dataset.firm = 1;
+    seen.push({ c, t: (el.value || el.placeholder || el.textContent).trim().slice(0, 34) });
+  }
+  const box = document.getElementById('measure'); if (!box) return;
+  const bad = seen.filter(x => x.c < 4.5).sort((a, b) => a.c - b.c);
+  box.innerHTML = `<h4>On this screen</h4>${['halo', 'firm', 'adaptive'].includes(S.lg) ? `<p style="margin:0 0 4px;color:#555">A halo can't be measured as a ratio, so these are the gradient alone.${S.lg === 'adaptive' ? ' The lines below get the firm halo.' : ''}</p>` : ''}<b>${seen.length - bad.length} of ${seen.length}</b> lines of words on the sky and water pass 4.5 on the gradient${bad.length ? '' : ' ✓'}
+    ${bad.length ? `<table style="margin-top:6px">${bad.slice(0, 5).map(x => `<tr><td>${esc(x.t)}…</td><td class="bad">${x.c.toFixed(1)}</td></tr>`).join('')}</table>` : ''}
+    <p style="margin:6px 0 0;color:#555">Measured against the gradient alone; trees, the brook and glass cards aren't counted.</p>`;
+}
+let lgRaf = 0; document.addEventListener('scroll', () => { cancelAnimationFrame(lgRaf); lgRaf = requestAnimationFrame(legible); }, true);
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+  if (e.key === 'ArrowLeft') cycleVariant(-1); if (e.key === 'ArrowRight') cycleVariant(1);
+});
+
+document.getElementById('water').innerHTML = creekSvg();
+jump(new URLSearchParams(location.search).get('jump') || 'recap');
+</script>
+</body>
+</html>
