@@ -248,6 +248,28 @@
   .rnote { font-size:calc(var(--s14,14px)*var(--ts)); margin:10px 0 0; }
   .rrow { display:flex; gap:8px; flex-wrap:wrap; }
   .rshare { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-top:18px; }
+  /* A, round 2: each card is a small pond. The app's Probe and Assumption above its own waterline, the person's words below.
+     The whole card opens the Path; a chevron sitting on the waterline says so. */
+  .mc { display:block; width:100%; text-align:left; border:0; padding:0; margin:0 0 14px; background:none; color:inherit; font:inherit; position:relative; cursor:pointer; }
+  .mc .up { padding:12px 44px 12px 16px; } .mc .dn { padding:11px 44px 13px 16px; }
+  .mc .pr { font:italic calc(var(--s14,14px)*var(--ts))/1.35 var(--f-app); color:var(--wmut); margin:0 0 3px; }
+  .mc .as { font:400 calc(var(--s18,18px)*var(--ts))/1.35 var(--f-app); margin:0; }
+  .mc .me { font:400 calc(var(--s16,16px)*var(--ts))/1.5 var(--f-me); margin:0; }
+  .mc .none { font:italic calc(var(--s14,14px)*var(--ts))/1.4 var(--f-ui); color:var(--wmut); margin:0; }
+  .mc .oq { font:400 calc(var(--s15,15px)*var(--ts))/1.4 var(--f-app); margin:8px 0 0; display:flex; gap:8px; align-items:flex-start; }
+  .mc .wl2 { position:relative; height:1px; background:var(--rip); }
+  .mc .go { position:absolute; right:12px; top:-14px; width:28px; height:28px; border-radius:50%; display:grid; place-items:center; background:var(--glass); border:1px solid var(--glassB); }
+  .mc .go svg { width:14px; height:14px; } .mc .mk { position:absolute; left:16px; top:-7px; }
+  .mc:active .up, .mc:active .dn { filter:brightness(1.06); }
+  /* mirror: a framed pond, sky-tinted above, water below */
+  .c-mirror .mc { border-radius:18px; overflow:hidden; border:1px solid var(--glassB); }
+  .c-mirror .mc .up { background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.28)); }
+  .c-mirror .mc .dn { background:linear-gradient(rgba(110,151,160,.28),rgba(110,151,160,.1)); }
+  #app.evening .c-mirror .mc .up { background:linear-gradient(rgba(255,214,170,.16),rgba(255,214,170,.07)); }
+  #app.evening .c-mirror .mc .dn { background:linear-gradient(rgba(20,20,42,.35),rgba(20,20,42,.15)); }
+  /* open: no frame at all, only the waterline between the two voices, and space between pairs */
+  .c-open .mc { margin-bottom:26px; } .c-open .mc .up, .c-open .mc .dn { padding-left:0; }
+  .c-open .mc .wl2 { opacity:.9; }
   /* B: the pool */
   .pool { position:relative; padding:18px 18px 30px; }
   .ppad { display:flex; align-items:center; gap:10px; width:78%; margin:0 0 18px; background:none; border:0; padding:0; text-align:left; color:inherit; cursor:pointer; }
@@ -658,7 +680,7 @@ function seed() {
     tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
     intro: 0, wb: 0, guiding: false, skipNote: false, done: new Set(), inlineShown: null,
     rv: RVS[q.get('rv')] ? q.get('rv') : 'A', rcase: RC[q.get('case')] ? q.get('case') : 'full', ow: OW[q.get('ow')] ? q.get('ow') : 'tag',
-    oq: q.get('oq') === 'top' ? 'top' : 'after', homeV: q.get('home') === 'pond' ? 'pond' : 'list', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
+    oq: q.get('oq') === 'top' ? 'top' : 'after', homeV: q.get('home') === 'pond' ? 'pond' : 'list', card: ['mirror', 'open', 'lean'].includes(q.get('card')) ? q.get('card') : 'mirror', mark: q.get('mark') === 'glyph' ? 'glyph' : 'none', rpage: 0, rsel: null, rshare: false, rread: null, worth: {},
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
 }
@@ -784,6 +806,21 @@ const rNotYet = c => notYet(c).length ? `<h3>Not looked at yet</h3>${notYet(c).m
 const rWorth = c => c.ending === 'step_out' ? '' : `<h3>Was this worth your time?</h3><div class="rrow">${['Yes', 'Not sure', 'No'].map(w => `<button class="${S.worth[S.rcase] === w ? 'pri' : ''}" data-act="rworth" data-w="${w}">${w}</button>`).join('')}</div>`;
 const rShare = () => `<div class="rshare"><button data-act="rshare">Share</button><span class="small" style="color:var(--wmut)">Kept on this device</span></div>`;
 
+// A's card: Probe and Assumption above a waterline, the person's quote below; tap anywhere to read the Path
+const MARK = { // a mark on the waterline for the outcome (?mark=glyph); the screen reader still hears it in words
+  challenged: '<svg width="22" height="12" viewBox="0 0 22 12"><ellipse cx="11" cy="6" rx="10" ry="4" fill="none" stroke="var(--wmut)"/><ellipse cx="11" cy="6" rx="5" ry="2" fill="none" stroke="var(--wmut)"/></svg>',
+  rejected: '<svg width="22" height="12" viewBox="0 0 50 31"><path d="M3 28C8 10 24 2 47 3C44 19 30 30 3 28Z" fill="var(--leaf)" transform="rotate(-12 25 15)"/></svg>',
+  unchallenged: '<svg width="22" height="12" viewBox="0 0 22 12"><line x1="1" y1="6" x2="21" y2="6" stroke="var(--wmut)" stroke-width="1.5"/></svg>',
+  left: '<svg width="22" height="12" viewBox="0 0 22 12"><path d="M11 6L21 3.5A10 4 0 1 0 21 8.5Z" fill="#a59a3c"/></svg>' };
+const NOQUOTE = { unchallenged: 'Left as it was', left: 'Set down part-way', challenged: '', rejected: '' };
+function mCard(x) {
+  const s = PS[x.id], probe = S.card !== 'lean';
+  return `<button class="mc" data-act="readPath" data-id="${x.id}" aria-label="${esc(srLine(x))}. Opens the Path.">
+    <div class="up">${probe ? `<p class="pr">${s.probe}</p>` : ''}<p class="as">${s.premise}</p>
+      ${S.oq === 'card' && x.openq ? `<p class="oq">${LEAF(16, -10)}<span>${x.openq}</span></p>` : ''}</div>
+    <div class="wl2">${S.mark === 'glyph' ? `<span class="mk">${MARK[x.outcome]}</span>` : ''}<span class="go">${ic('r')}</span></div>
+    <div class="dn">${x.quote ? `<p class="me">${esc(x.quote)}</p>` : `<p class="none">${NOQUOTE[x.outcome]}</p>`}</div></button>`;
+}
 function recap() {
   const c = rcase(), top = topbar(backBtn('home', 'Home'), helpBtn());
   if (S.rv === 'B') return recapPool(c, top);
@@ -793,7 +830,7 @@ function recap() {
   return { wl: '22%', above: `${top}${rHead(c)}`,
     below: `<div class="scroll pad" style="padding-top:18px">${rProblem(c)}${rNote(c)}
       ${S.oq === 'top' ? rOqs(c) : ''}
-      ${L.length ? `<h3>Looked at</h3>${L.map(x => rCard(x, S.oq === 'card')).join('')}` : ''}
+      ${L.length ? `<h3>Looked at</h3><div class="c-${S.card === 'lean' ? 'mirror' : S.card}">${L.map(mCard).join('')}</div>` : ''}
       ${S.oq === 'after' ? rOqs(c) : ''}${rNotYet(c)}${rWorth(c)}${rShare()}<div style="height:50px"></div></div>`,
     extra: rSheets(c) };
 }
@@ -909,7 +946,7 @@ function render() {
 function renderSide() {
   const c = rcase(), L = looked(c);
   const RVA = {
-    A: 'One column, top to bottom: the Problem (and "first put as"), how it ended if not on Finish, a segmented card per Assumption looked at, then Open Questions, Not looked at yet, "Was this worth your time?" and Share. ?oq= moves Open Questions to the top or into each card.',
+    A: 'Round 2 (chosen layout): each card is a small pond. The Probe and Assumption sit above its waterline, the person\'s words below it, with no labels. Tapping anywhere on a card opens its Path; a chevron on the waterline hints at it. The outcome isn\'t written on the card: the quote shows it, and a card with no quote says "Left as it was" or "Set down part-way" where the words would be. ?card= frames it or not, ?mark=glyph adds a small mark on the waterline. Round 1: one column, top to bottom: the Problem (and "first put as"), how it ended if not on Finish, a segmented card per Assumption looked at, then Open Questions, Not looked at yet, "Was this worth your time?" and Share. ?oq= moves Open Questions to the top or into each card.',
     B: 'The pool from the look decision taken literally. Each Assumption looked at is a lily pad on still water, with a flower if its Path reached the end; a pad left part-way is yellowed. Tap a pad for its card. Open Questions float as leaves, always visible. What wasn\'t looked at is a row of closed buds.',
     C: 'Like walking a Path again, slowly: a first page with the Problem, one page per Assumption (premise above the waterline, your words below), and a last page with what\'s still underneath, worth and Share. ‹ › or swipe.',
     D: 'The same records written out as a short letter, from templates (no model, so nothing new is said). Reads as one quiet page. Risk: prose can sound like a verdict or a summary.' };
@@ -930,6 +967,8 @@ function renderProto() {
     <button data-p="vprev" aria-label="Previous variant">←</button><span>${S.rv} · ${RVS[S.rv]}</span><button data-p="vnext" aria-label="Next variant">→</button>
     ${sel('case', Object.entries(RC).map(([k, c]) => [k, 'case: ' + c.name]), S.rcase)}
     ${sel('ow', Object.entries(OW).map(([k, o]) => [k, 'outcomes: ' + o.name]), S.ow)}
+    ${sel('card', [['mirror', 'card: framed pond'], ['open', 'card: no frame, waterline only'], ['lean', 'card: framed, no Probe']], S.card)}
+    ${sel('mark', [['none', 'outcome: no mark'], ['glyph', 'outcome: mark on the waterline']], S.mark)}
     ${sel('oq', [['after', 'Open Qs: after cards'], ['top', 'Open Qs: on top'], ['card', 'Open Qs: in each card']], S.oq)}
     ${sel('homeV', [['list', 'home: list'], ['pond', 'home: flowers on the pond']], S.homeV)}
     ${sel('ts', TS.map(([x, l]) => [String(x), 'text: ' + l]), String(S.ts))}
@@ -1070,6 +1109,8 @@ document.addEventListener('change', e => {
   if (p === 'ts') { S.ts = +e.target.value; setParam('ts', S.ts); render(); placeCoach(); }
   if (p === 'jump') jump(e.target.value);
   if (p === 'case') { S.rcase = e.target.value; Object.assign(S, { rpage: 0, rsel: null, rshare: false }); setParam('case', S.rcase); if (S.screen !== 'recap') go('recap'); else render(); }
+  if (p === 'card') { S.card = e.target.value; setParam('card', S.card); render(); }
+  if (p === 'mark') { S.mark = e.target.value; setParam('mark', S.mark); render(); }
   if (p === 'ow') { S.ow = e.target.value; setParam('ow', S.ow); render(); }
   if (p === 'oq') { S.oq = e.target.value; setParam('oq', S.oq); render(); }
   if (p === 'homeV') { S.homeV = e.target.value; setParam('home', S.homeV); render(); }
