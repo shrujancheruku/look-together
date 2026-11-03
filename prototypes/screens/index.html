@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE · Look Together screens</title>
+<!--
+  PROTOTYPE, throwaway. Answers: "What are the app's screens, and how does a person move between them?"
+  (wayfinder ticket #47 on map #1). Three variants that disagree on navigation, switchable via ?variant=A|B|C
+  and the floating bar (← / → keys too). The look is deliberately plain grey: visual identity is still fog.
+    A  Quiet stack   : home list, drill-down Probe list → full-screen Path, ONE Inquiry in progress at a time.
+    B  Tabs + sheets : Today / Inquiries / Settings tabs, Path as a sheet over the list (two-pane on web),
+                       SEVERAL Inquiries in progress at once.
+    C  One page      : opens straight into today's Inquiry, Paths expand inline, Recap grows at the bottom,
+                       past Inquiries in a drawer; starting a new Inquiry FINISHES the old one.
+  Everything is in memory; reload resets. Model replies are canned.
+-->
+<style>
+  :root { --bg:#ececea; --fg:#1d1d1b; --mut:#6d6d68; --line:#d6d6d1; --card:#fff; --acc:#3d5a6c; --soft:#f5f5f2; --warn:#8a3b2e; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.45 -apple-system,system-ui,"Segoe UI",sans-serif; color:var(--fg); background:#c9c9c4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding:16px 16px 140px; }
+  #app { background:var(--bg); position:relative; overflow:hidden; border-radius:28px; box-shadow:0 8px 40px #0003; display:flex; flex-direction:column; }
+  #app.phone { width:390px; max-width:100%; height:780px; }
+  #app.web { width:1100px; max-width:100%; height:760px; border-radius:10px; }
+  .scroll { flex:1; overflow-y:auto; }
+  .pad { padding:16px; }
+  .narrow { max-width:620px; margin:0 auto; }
+  h1 { font-size:22px; margin:8px 0 4px; font-weight:600; } h2 { font-size:17px; margin:18px 0 8px; font-weight:600; }
+  h3 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); margin:20px 0 8px; font-weight:600; }
+  p { margin:6px 0; } .mut { color:var(--mut); } .small { font-size:13px; }
+  button { font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--card); color:var(--fg); border-radius:10px; padding:9px 14px; }
+  button.pri { background:var(--acc); color:#fff; border-color:var(--acc); } button.link { border:none; background:none; color:var(--acc); padding:4px 0; }
+  button.danger { color:var(--warn); } button:disabled { opacity:.4; cursor:default; }
+  .row { display:flex; gap:8px; align-items:center; } .row.wrap { flex-wrap:wrap; } .grow { flex:1; } .right { margin-left:auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin:10px 0; }
+  .card.tap { cursor:pointer; } .card.tap:hover { border-color:var(--acc); }
+  .tag { display:inline-block; font-size:11px; padding:2px 8px; border-radius:20px; background:var(--soft); border:1px solid var(--line); color:var(--mut); }
+  .tag.prog { background:#fff4d6; border-color:#e8d49a; color:#6d5a1e; } .tag.done { background:#e1ece4; border-color:#b7cfbd; color:#2f5a3a; }
+  .kw { background:#e4ebf0; border-radius:4px; padding:0 3px; }
+  .topbar { display:flex; align-items:center; gap:8px; padding:14px 16px 10px; border-bottom:1px solid var(--line); background:var(--bg); min-height:54px; }
+  .topbar .title { font-weight:600; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .help { background:#fff; border:1.5px solid var(--warn); color:var(--warn); font-weight:600; }
+  .help.pill { border-radius:20px; padding:5px 12px; font-size:13px; }
+  .help.fab { position:absolute; right:16px; bottom:76px; border-radius:30px; padding:10px 16px; box-shadow:0 2px 10px #0002; z-index:5; }
+  .help.strip { border-radius:0; border:none; border-top:1.5px solid var(--warn); width:100%; padding:10px; font-size:14px; }
+  .composer { border-top:1px solid var(--line); background:var(--card); padding:10px 12px; }
+  .composer textarea { width:100%; min-height:70px; border:1px solid var(--line); border-radius:10px; padding:8px; font:inherit; resize:vertical; background:var(--soft); }
+  .ailabel { font-size:11px; color:var(--mut); }
+  .mic { border-radius:50%; width:40px; height:40px; padding:0; } .mic.on { background:var(--warn); color:#fff; border-color:var(--warn); }
+  .q { background:var(--card); border:1px solid var(--line); border-radius:14px 14px 14px 4px; padding:10px 12px; margin:10px 30px 4px 0; position:relative; }
+  .r { background:#e4ebf0; border-radius:14px 14px 4px 14px; padding:10px 12px; margin:4px 0 10px 30px; }
+  .more { position:absolute; right:6px; top:4px; border:none; background:none; color:var(--mut); padding:2px 6px; }
+  .offer { border:1px dashed var(--acc); border-radius:12px; padding:10px 12px; margin:10px 0; background:#f3f6f8; }
+  .closing { border-left:3px solid var(--acc); padding:8px 12px; margin:12px 0; background:var(--card); border-radius:0 10px 10px 0; }
+  .tabs { display:flex; border-top:1px solid var(--line); background:var(--card); }
+  .tabs button { flex:1; border:none; border-radius:0; background:none; padding:12px 4px; color:var(--mut); font-size:13px; }
+  .tabs button.on { color:var(--acc); font-weight:600; }
+  .rail { width:200px; border-right:1px solid var(--line); background:var(--card); padding:16px 8px; display:flex; flex-direction:column; gap:4px; }
+  .rail button { border:none; text-align:left; background:none; } .rail button.on { background:var(--soft); color:var(--acc); font-weight:600; }
+  .scrim { position:absolute; inset:0; background:#0005; z-index:10; display:flex; align-items:flex-end; }
+  .scrim.center { align-items:center; justify-content:center; }
+  .sheet { background:var(--bg); width:100%; max-height:88%; border-radius:18px 18px 0 0; display:flex; flex-direction:column; overflow:hidden; }
+  .sheet.tall { height:88%; } .scrim.center .sheet { width:min(520px,92%); border-radius:16px; max-height:85%; }
+  .grab { width:40px; height:4px; background:var(--line); border-radius:4px; margin:8px auto 0; }
+  .drawer { position:absolute; inset:0 auto 0 0; width:82%; max-width:340px; background:var(--bg); z-index:11; box-shadow:4px 0 20px #0003; display:flex; flex-direction:column; }
+  .dots { display:flex; gap:6px; justify-content:center; margin:14px 0; } .dots i { width:7px; height:7px; border-radius:50%; background:var(--line); } .dots i.on { background:var(--acc); }
+  .switch { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); }
+  .setrow { display:block; width:100%; text-align:left; border:none; border-bottom:1px solid var(--line); border-radius:0; background:none; padding:13px 0; }
+  .banner { background:#fff4d6; border-bottom:1px solid #e8d49a; padding:8px 14px; font-size:13px; }
+  .acc-h { display:flex; gap:8px; align-items:flex-start; cursor:pointer; }
+  .twopane { display:flex; flex:1; min-height:0; } .twopane > .left { width:42%; border-right:1px solid var(--line); overflow-y:auto; } .twopane > .rightp { flex:1; display:flex; flex-direction:column; min-width:0; }
+  .sideidx { position:sticky; top:16px; width:220px; flex:none; align-self:flex-start; font-size:13px; }
+  .sideidx a { display:block; padding:4px 0; color:var(--acc); cursor:pointer; text-decoration:none; }
+  label.chk { display:flex; gap:8px; padding:6px 0; align-items:center; }
+  .preview { background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:10px; font-size:13px; white-space:pre-wrap; }
+  .lock { text-align:center; padding:28px 16px; }
+  /* prototype chrome, deliberately loud so it's not mistaken for design */
+  #proto { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#111; color:#fff; border-radius:16px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:12px/1.3 ui-monospace,Menlo,monospace; z-index:100; box-shadow:0 4px 20px #0006; max-width:calc(100vw - 24px); }
+  #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; }
+  #proto .vlabel { min-width:150px; text-align:center; font-weight:700; }
+  #state { position:fixed; right:12px; top:12px; width:250px; max-height:60vh; overflow:auto; background:#111d; color:#cfc; font:11px/1.35 ui-monospace,Menlo,monospace; padding:8px 10px; border-radius:10px; white-space:pre-wrap; z-index:99; }
+  @media (max-width:900px) { #state { display:none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<pre id="state"></pre>
+<div id="proto"></div>
+<script>
+// ---------- mock data ----------
+const PROBE_SCRIPTS = {
+  p1: { probe: 'What would happen if you said <span class="kw">no</span> the next time?', premise: 'Saying no would cost me something I can\'t afford.',
+        qs: ['When you picture saying no, what exactly do you see happening?', 'Is that something you have seen happen, or something you expect?', 'What is it like to look at that expectation, rather than at the request?'],
+        rs: ['I imagine my manager going quiet and giving the good projects to someone else.', 'Honestly, I expect it. I have never actually tested it.', 'It feels smaller. Like a story I keep telling.'],
+        outcome: 'challenged', quote: 'I have never actually tested it.', openq: null },
+  p2: { probe: 'Whose <span class="kw">resentment</span> is it, when you resent everyone?', premise: 'Other people cause my resentment.',
+        qs: ['When the resentment comes, where is your attention: on them, or on what you agreed to?', 'If no one had asked, would the resentment be there?'],
+        rs: ['On them. On how they just assume I\'ll do it.', 'Maybe not. But I was the one who said yes.'],
+        outcome: 'rejected', quote: 'I was the one who said yes.', openq: null,
+        offer: { after: 0, kind: 'add', text: 'It sounds like there is another belief here: that being <span class="kw">useful</span> is what makes you worth keeping. Add it as a Probe?',
+                 newProbe: { id: 'p5', probe: 'What are you, at work, when you are not <span class="kw">useful</span>?', premise: 'I am worth keeping only while I am useful.' } } },
+  p3: { probe: 'Is wanting to be <span class="kw">liked</span> the same as wanting to be kind?', premise: 'Being agreeable is the same as being kind.',
+        qs: ['When you say yes and resent it, is that kindness?', 'What would kindness look like here, if not agreeing?', 'Is there anything left to look at in this, or does it stay open?'],
+        rs: ['No. It feels more like fear dressed up.', 'I don\'t know. Maybe telling the truth about my week.', 'It stays open.'],
+        outcome: 'unchallenged', quote: null, openq: 'What is kindness, when it isn\'t agreeing?',
+        offer: { after: 0, kind: 'problem', text: 'You might be asking something slightly different. Reword your Problem as: <em>"I agree to things out of fear and call it kindness"</em>?' } },
+  p4: { probe: 'What do you mean by <span class="kw">things</span> you don\'t want to do?', premise: 'I know clearly what I want and don\'t want.',
+        qs: ['Name one. What makes it unwanted?', 'Did you know that before you said yes, or only after?'],
+        rs: ['The Friday reporting. It eats my evening.', 'Only after, mostly.'], outcome: 'challenged', quote: 'Only after, mostly.', openq: null },
+  p5: { probe: '', premise: '', qs: ['When you imagine being not useful for a week, what comes up?'], rs: ['That I\'d be forgotten.'], outcome: 'unchallenged', quote: null, openq: 'Who would forget, and what would be lost?' },
+};
+const P6 = { probe: 'Does being <span class="kw">tired</span> mean something is wrong?', premise: 'Tiredness is a sign something needs fixing.', qs: ['What is the tiredness like, just as it is?', 'When is it lighter, if ever?'], rs: ['Heavy. Every morning.', 'On days nobody needs anything from me.'], outcome: 'unchallenged', quote: null, openq: null };
+PROBE_SCRIPTS.p6 = P6;
+
+function mkProbe(id, status = 'open', pos = 0) {
+  const s = PROBE_SCRIPTS[id];
+  return { id, probe: s.probe, premise: s.premise, status, pos, offerShown: false, offerAnswered: null };
+}
+function seed() {
+  return {
+    variant: new URLSearchParams(location.search).get('variant') || 'A',
+    width: 'phone', platform: 'ios',
+    onboarded: true, signedIn: true, onbStep: 0,
+    atLimit: false, region: 'us', crash: true, reminder: false,
+    screen: 'home', tab: 'today', current: null, path: null, sheet: null, drawer: false,
+    dictating: false, draft: '', problemDraft: '', reportTarget: null, reportSend: false, reportReasons: [],
+    reports: [{ when: '2 days ago', reasons: ['Judged me'], sent: false }],
+    edge: null, revealPremise: {},
+    inquiries: [
+      { id: 'i1', day: '3 days ago', problem: 'I can\'t stop comparing myself to my brother.', status: 'ended', worth: 'yes',
+        probes: [{ id: 'x1', probe: 'What would you be without the <span class="kw">comparison</span>?', premise: 'I need a measure to know who I am.', status: 'looked', outcome: 'challenged', quote: 'I don\'t know who I\'d be. That\'s the scary part.', pos: 3 },
+                 { id: 'x2', probe: 'Is your brother\'s life <span class="kw">yours</span> to measure?', premise: 'His life is a standard for mine.', status: 'open', pos: 0 }],
+        openqs: ['Who would I be without a measure?'] },
+      { id: 'i2', day: '2 days ago', problem: 'I\'m always tired and I don\'t know why.', status: 'live', worth: null, ends: 'in 5 days',
+        probes: [Object.assign(mkProbe('p6', 'exploring', 1)), { id: 'y2', probe: 'Who decided how <span class="kw">rested</span> you should feel?', premise: 'There is a right amount of energy to have.', status: 'open', pos: 0 }], openqs: [] },
+    ],
+    log: [],
+  };
+}
+let S = seed();
+const V = { A: 'Quiet stack', B: 'Tabs + sheets', C: 'One page' };
+const NEW_PROBLEM = 'I keep saying yes to things at work I don\'t want to do, and then I resent everyone.';
+
+// ---------- helpers ----------
+const cur = () => S.inquiries.find(i => i.id === S.current);
+const live = () => S.inquiries.filter(i => i.status === 'live');
+const probeOf = (inq, pid) => inq && inq.probes.find(p => p.id === pid);
+const script = id => PROBE_SCRIPTS[id];
+const esc = t => String(t).replace(/</g, '&lt;');
+const web = () => S.platform === 'web';
+const statusTag = p => p.status === 'exploring' ? '<span class="tag prog">in progress</span>' : p.status === 'looked' ? `<span class="tag done">looked at · ${p.outcome}</span>` : '';
+const ended = inq => inq.probes.some(p => p.status === 'looked');
+function log(m) { S.log.unshift(m); S.log = S.log.slice(0, 8); }
+function go(screen, extra = {}) { Object.assign(S, { screen, sheet: null, drawer: false }, extra); render(); }
+
+// ---------- shared content blocks ----------
+function helpBtn(kind) { return `<button class="help ${kind}" data-act="help">${kind === 'strip' ? 'Need to stop? Get help' : 'Help'}</button>`; }
+
+function onboarding() {
+  const steps = [
+    ['Look at a Problem together', 'Bring something in your life you have to face. The app draws out the beliefs underneath it and asks about them. No lessons, no answers handed out.<br><br><span class="mut small">Inspired by the approach of J. Krishnamurti. You don\'t need to know his work.</span>', true],
+    ['This is an AI, not therapy', 'Look Together is an AI. It is not a therapist or a crisis service, and it won\'t tell you what\'s true. If you\'re in danger, the Help button is on every screen.', false],
+    ['Your Inquiries stay with you', `What you write is kept encrypted on ${web() ? 'nothing: this browser keeps nothing after you close the tab' : 'this phone'}, and in your own ${S.platform === 'android' ? 'Google' : 'Apple'} backup only if it's end-to-end encrypted. We never store it. Replies come from Google's Gemini, which may keep flagged text up to 90 days. Crash reports are on, without content; you can turn them off.<br><br>One Inquiry a day, free.`, true],
+    ['Sign in so your daily Inquiry follows you', null, false],
+  ];
+  const [t, body, skippable] = steps[S.onbStep];
+  return `<div class="scroll pad narrow" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="dots">${steps.map((_, i) => `<i class="${i === S.onbStep ? 'on' : ''}"></i>`).join('')}</div>
+    <h1>${t}</h1>
+    ${body ? `<p>${body}</p>` : `<p class="mut">We only use this to count your daily Inquiry. It knows nothing of what you write.</p>
+      <div style="display:grid;gap:8px;margin-top:16px">
+        ${S.platform !== 'android' ? '<button data-act="signin">Continue with Apple</button>' : ''}
+        <button data-act="signin">Continue with Google</button>
+        <button data-act="signin">Email me a code</button>
+        <label class="chk small mut"><input type="checkbox"> Send me occasional news (optional)</label>
+        <p class="small mut">I confirm I'm 18 or older.</p></div>`}
+    <div class="row" style="margin-top:20px">
+      ${S.onbStep > 0 ? '<button class="link" data-act="onbBack">Back</button>' : ''}
+      ${skippable ? '<button class="link right" data-act="onbNext">Skip</button>' : ''}
+      ${S.onbStep < 3 ? `<button class="pri ${skippable ? '' : 'right'}" data-act="onbNext">${S.onbStep === 1 ? 'I understand' : 'Next'}</button>` : ''}
+    </div></div>`;
+}
+
+function composer(kind) {
+  const val = kind === 'problem' ? S.problemDraft : S.draft;
+  return `<div class="composer">
+    <div class="ailabel">AI · not therapy · nothing is sent until you tap Submit</div>
+    <textarea data-draft="${kind}" placeholder="${kind === 'problem' ? 'What are you facing? Write it as it comes.' : 'Your Reflection. Take your time.'}">${esc(val)}</textarea>
+    <div class="row">
+      <button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" title="Dictate">${S.dictating ? '■' : '🎙'}</button>
+      ${S.dictating ? '<span class="small mut">dictating…</span>' : ''}
+      <button class="link" data-act="clear" data-kind="${kind}">Clear</button>
+      <button class="pri right" data-act="${kind === 'problem' ? 'submitProblem' : 'submit'}" ${val.trim() ? '' : 'disabled'}>Submit</button>
+    </div></div>`;
+}
+
+function problemScreen() {
+  return `<div class="scroll pad narrow">
+    <div class="card" style="background:var(--soft)"><b>You're talking with an AI.</b> It isn't therapy and it won't judge what's true. <span class="mut small">(shown at the start of every Inquiry)</span></div>
+    <h1>What are you facing?</h1>
+    <p class="mut">A Problem is something in your life you have to face and understand, not a task to fix. Write it in your own words.</p>
+    <p class="small mut">For example: "I keep putting off calling my father." · "I feel like I'm wasting my life." · "I get angry at my kids and hate myself after."</p>
+    <button class="link small" data-act="fillProblem">(proto: fill example)</button>
+  </div>${composer('problem')}`;
+}
+
+function probeList(inq, opts = {}) {
+  const canFinish = ended(inq) && inq.status === 'live';
+  const all = inq.probes.every(p => p.status === 'looked');
+  return `<div class="pad ${opts.narrow ? 'narrow' : ''}">
+    <p class="mut small">Your Problem</p><p><b>${esc(inq.problem)}</b></p>
+    <h3>Pick one to look at</h3>
+    ${inq.probes.map(p => `<div class="card tap" data-act="openPath" data-pid="${p.id}" style="${S.path === p.id && opts.highlight ? 'border-color:var(--acc)' : ''}">
+        <div class="row"><div class="grow">${p.probe}</div><button class="more" style="position:static" data-act="report" data-pid="${p.id}" title="Report">⋯</button></div>
+        <div class="row" style="margin-top:6px">${statusTag(p)}<button class="link small right" data-act="listen">listen</button></div></div>`).join('')}
+    ${canFinish ? `<div class="card" style="text-align:center">${all ? '<p>You\'ve looked at every Probe.</p>' : '<p class="mut small">You can keep going, or finish here.</p>'}<button class="pri" data-act="finish">Finish</button></div>` : ''}
+  </div>`;
+}
+
+function pathBody(inq, p) {
+  const s = script(p.id); const steps = [];
+  if (!s) return '<p>(no script)</p>';
+  steps.push(`<div class="q"><button class="more" data-act="report" data-pid="${p.id}">⋯</button>${p.probe}</div>`);
+  if (S.revealPremise[p.id] || p.status === 'looked') steps.push(`<p class="small mut">Underneath: <i>${s.premise}</i></p>`);
+  for (let i = 0; i < p.pos; i++) {
+    steps.push(`<div class="r">${esc(s.rs[i])}</div>`);
+    if (s.offer && s.offer.after === i) steps.push(offerBlock(p, s.offer));
+    if (i + 1 < s.qs.length) steps.push(`<div class="q"><button class="more" data-act="report" data-pid="${p.id}">⋯</button>${s.qs[i + 1]}</div>`);
+  }
+  if (p.status === 'looked') steps.push(`<div class="closing"><p class="small mut">Looked at · ${p.outcome}</p>${s.quote ? `<p>"${s.quote}"</p>` : ''}${s.openq ? `<p class="small mut">Open Question</p><p><b>${s.openq}</b></p>` : ''}</div><p class="small mut" style="text-align:center">This Path has ended. You can read it, not continue it.</p>`);
+  else if (p.pos === 0) steps.push('<button class="link small" data-act="reveal" data-pid="' + p.id + '">This doesn\'t fit me</button>');
+  return steps.join('');
+}
+function offerBlock(p, o) {
+  if (p.offerAnswered) return `<p class="small mut">${p.offerAnswered === 'yes' ? (o.kind === 'add' ? '✓ Added to your Probes' : '✓ Problem reworded') : 'Not added.'}</p>`;
+  return `<div class="offer">${o.text}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-pid="${p.id}" data-a="yes">Yes</button><button data-act="offer" data-pid="${p.id}" data-a="no">No</button></div></div>`;
+}
+const pathOpen = p => p.status !== 'looked' && cur() && cur().status === 'live';
+
+function recap(inq) {
+  const looked = inq.probes.filter(p => p.status === 'looked');
+  const notYet = inq.probes.filter(p => p.status !== 'looked');
+  const oqs = looked.map(p => script(p.id) ? script(p.id).openq : null).filter(Boolean).concat(inq.openqs || []);
+  return `<div class="pad narrow">
+    ${inq.status === 'stepped' ? '<div class="card" style="background:var(--soft)">This Inquiry was paused for your safety and won\'t continue. Here is what you looked at before.</div>' : ''}
+    <p class="mut small">${inq.day} · Recap</p><h1 style="font-size:19px">${esc(inq.problem)}</h1>
+    <h3>What you looked at</h3>
+    ${looked.map(p => `<div class="card"><p class="small mut">${script(p.id) ? script(p.id).premise : p.premise} · ${p.outcome}</p>${(script(p.id) && script(p.id).quote) || p.quote ? `<p>"${(script(p.id) && script(p.id).quote) || p.quote}"</p>` : ''}<button class="link small" data-act="readPath" data-pid="${p.id}">Read the Path</button></div>`).join('') || '<p class="mut">Nothing yet.</p>'}
+    ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<p><b>${q}</b></p>`).join('')}` : ''}
+    ${notYet.length ? `<h3>Not looked at yet</h3>${notYet.map(p => `<p class="mut">${p.probe}</p>`).join('')}` : ''}
+    ${inq.status === 'ended' ? `<h3>Was this worth your time?</h3><div class="row">${['yes', 'not sure', 'no'].map(w => `<button class="${inq.worth === w ? 'pri' : ''}" data-act="worth" data-w="${w}">${w}</button>`).join('')}</div>` : ''}
+    <div class="row" style="margin-top:18px"><button data-act="share">Share</button>${web() ? '' : ''}</div>
+    ${web() ? '<p class="small mut" style="margin-top:12px">Nothing is kept after you close this tab. Export to keep it.</p>' : ''}
+  </div>`;
+}
+
+function limitScreen() { return `<div class="scroll pad narrow lock"><h1>Today's Inquiry is done.</h1><p class="mut">The next opens at 15:40.</p><p>Your past Recaps are still here to read.</p><button data-act="home">Back</button></div>`; }
+function stepOut() {
+  return `<div class="scroll pad narrow" style="padding-top:40px"><h1>Let's stop here.</h1>
+    <p>I'm an AI, and I can't help with this the way a person can. This isn't a crisis service.</p>
+    <p>If you might be in danger, please reach out now:</p>
+    <div class="card"><b>988 Suicide &amp; Crisis Lifeline</b><br>Call or text 988 · <span class="mut small">US</span></div>
+    <div class="card"><b>Crisis Text Line</b><br>Text HOME to 741741</div>
+    <p class="small mut">Not in the US? <u>findahelpline.com</u></p>
+    <p class="small mut">This Inquiry won't continue.</p>
+    <button data-act="home">Close</button></div>`;
+}
+function settings() {
+  const s = (label, act, cls = '') => `<button class="setrow ${cls}" data-act="${act}">${label}</button>`;
+  return `<div class="pad narrow">
+    <h3>Account</h3><p class="small mut">Signed in with Apple · a…@privaterelay.appleid.com</p>
+    ${s(`Region: ${S.region === 'us' ? 'United States' : 'Europe'} (change)`, 'region')}
+    <div class="switch"><span>Crash reports <span class="small mut">(no content)</span></span><input type="checkbox" data-act="crash" ${S.crash ? 'checked' : ''}></div>
+    ${web() ? '' : `<div class="switch"><span>Daily reminder <span class="small mut">(on this phone only)</span></span><input type="checkbox" data-act="reminder" ${S.reminder ? 'checked' : ''}></div>`}
+    <h3>Your Inquiries</h3>
+    ${s('Export all', 'share')}${s('Import', 'import')}${s('Sent reports', 'reports')}
+    ${s('Delete everything for this Account', 'noop', 'danger')}
+    <h3>About</h3>${s('About Look Together', 'about')}${s('Privacy', 'noop')}
+    ${s('Sign out', 'signout')}${s('Delete account', 'noop', 'danger')}
+  </div>`;
+}
+function about() { return `<div class="pad narrow"><h1>About</h1><p>I went to a Krishnamurti Foundation school in the Sahyadri hills… <span class="mut small">(founder's signed first-person story)</span></p><p class="small mut">Look Together is independent. It is not affiliated with or endorsed by the Krishnamurti Foundations.</p><p><u>kfionline.org</u> · <u>jkrishnamurti.org</u></p></div>`; }
+function sentReports() { return `<div class="pad narrow"><h1>Sent reports</h1>${S.reports.map(r => `<div class="card"><p>${r.reasons.join(', ')}</p><p class="small mut">${r.when} · ${r.sent ? 'exchange sent · <button class="link small">Delete it</button>' : 'reasons only'}</p></div>`).join('')}</div>`; }
+function edgeScreen() {
+  if (S.edge === 'deleted') return `<div class="scroll pad narrow lock"><h1>This Account was deleted</h1><p class="mut">Its Inquiries are still on this phone. Keep a copy, or remove them.</p><div class="row" style="justify-content:center"><button data-act="share">Export all</button><button class="danger" data-act="edgeDone">Delete them</button></div></div>`;
+  if (S.edge === 'nokey') return `<div class="scroll pad narrow lock"><h1>Inquiries came back from a backup</h1><p class="mut">…but this phone can't open them. Turning on iCloud Keychain may help.</p><div class="row" style="justify-content:center"><button data-act="edgeDone">Try again</button><button class="danger" data-act="edgeDone">Delete them</button></div></div>`;
+  return '';
+}
+
+// ---------- overlays ----------
+function overlays() {
+  let h = '';
+  if (S.sheet === 'help') h += `<div class="scrim center"><div class="sheet"><div class="scroll pad"><h2>Paused</h2><p>Nothing is lost. If you need to talk to someone now:</p>
+    <div class="card"><b>988 Suicide &amp; Crisis Lifeline</b> · call or text 988</div><p class="small mut">Elsewhere: findahelpline.com</p>
+    <div class="row"><button class="pri" data-act="closeSheet">Back to ${S.current ? 'the Inquiry' : 'the app'}</button></div></div></div></div>`;
+  if (S.sheet === 'report') h += `<div class="scrim"><div class="sheet"><div class="grab"></div><div class="scroll pad"><h2>Report this reply</h2>
+    ${['Judged me or my beliefs', 'Gave advice or answers', 'Sounded like therapy', 'Harmful or upsetting', 'Didn\'t make sense'].map(r => `<label class="chk"><input type="checkbox" data-act="rreason" value="${r}" ${S.reportReasons.includes(r) ? 'checked' : ''}> ${r}</label>`).join('')}
+    <label class="chk" style="margin-top:8px"><input type="checkbox" data-act="rsend" ${S.reportSend ? 'checked' : ''}> Also send this one exchange so we can see it</label>
+    ${S.reportSend ? `<div class="preview">App: When you picture saying no, what exactly do you see happening?\nYou: I imagine my manager [name] going quiet…</div><p class="small mut">Names are masked. Kept 30 days, read only by the founder, never linked to your Account. You can delete it from Sent reports.</p>` : '<p class="small mut">Only the reasons are counted. We never see what you wrote.</p>'}
+    <div class="row"><button data-act="closeSheet">Cancel</button><button class="pri right" data-act="sendReport" ${S.reportReasons.length ? '' : 'disabled'}>Send</button></div></div></div></div>`;
+  if (S.sheet === 'reported') h += `<div class="scrim center"><div class="sheet"><div class="pad"><h2>Thank you</h2><p>Your report helps us keep the app from judging or advising.</p><button class="pri" data-act="closeSheet">Done</button></div></div></div>`;
+  if (S.sheet === 'share') h += `<div class="scrim"><div class="sheet"><div class="grab"></div><div class="pad"><h2>Share</h2>
+    <div class="switch"><span>Include the Paths</span><input type="checkbox"></div>
+    <button class="pri" style="width:100%;margin-top:10px" data-act="closeSheet">Share as PDF</button>
+    <details style="margin-top:10px"><summary class="small mut">More formats</summary><div class="row" style="margin-top:6px"><button data-act="closeSheet">Text</button><button data-act="closeSheet">JSON</button></div></details>
+    <p class="small mut">Anyone with this file can read it.</p></div></div></div>`;
+  if (S.sheet === 'oneAtATime') { const o = live()[0]; h += `<div class="scrim center"><div class="sheet"><div class="pad"><h2>One Inquiry at a time</h2><p>"${esc(o.problem)}" is still open. Finish it to see its Recap, or leave it unfinished (it ends by itself ${o.ends}).</p>
+    <div style="display:grid;gap:8px"><button data-act="resume" data-id="${o.id}">Go back to it</button><button data-act="finishOther" data-id="${o.id}">Finish it and start today's</button><button data-act="closeSheet" class="link">Cancel</button></div></div></div></div>`; }
+  if (S.sheet === 'webLeave') h += `<div class="scrim center"><div class="sheet"><div class="pad"><h2>Leave this page?</h2><p class="small mut">(browser's own beforeunload dialog)</p><p>This Inquiry will be lost. Nothing is kept after you close the tab.</p><button data-act="closeSheet">Stay</button></div></div></div>`;
+  if (S.sheet === 'region') h += `<div class="scrim center"><div class="sheet"><div class="pad"><h2>Region</h2><p class="small mut">Where your replies are processed. Chosen from your location at first launch.</p>${['us', 'eu'].map(r => `<label class="chk"><input type="radio" name="rg" data-act="setRegion" value="${r}" ${S.region === r ? 'checked' : ''}> ${r === 'us' ? 'United States' : 'Europe'}</label>`).join('')}<button class="pri" data-act="closeSheet">Done</button></div></div></div>`;
+  return h;
+}
+
+// ---------- start / navigation logic (variant-specific rules live here) ----------
+function startToday() {
+  if (S.atLimit) return go('limit');
+  const open = live();
+  if (S.variant === 'A' && open.length) { S.sheet = 'oneAtATime'; return render(); }
+  if (S.variant === 'C' && open.length) { open.forEach(i => { i.status = ended(i) ? 'ended' : 'ended'; }); log(`C: auto-finished ${open.length} open Inquiry into a Recap`); }
+  S.current = null; S.path = null; go('problem');
+}
+function submitProblem() {
+  const inq = { id: 'i' + (S.inquiries.length + 1), day: 'Today', problem: S.problemDraft.trim(), status: 'live', worth: null, ends: 'in 7 days', openqs: [],
+    probes: ['p1', 'p2', 'p3', 'p4'].map(id => mkProbe(id)) };
+  S.inquiries.unshift(inq); S.problemDraft = ''; S.current = inq.id; S.atLimit = true; log('Breakdown returned → day counted');
+  go('inquiry', { path: null });
+}
+function openPath(pid) { const p = probeOf(cur(), pid); if (p.status === 'open' && cur().status === 'live') p.status = 'exploring'; S.path = pid; S.draft = ''; if (S.variant !== 'C') S.screen = 'inquiry'; render(); }
+function submitReflection() {
+  const inq = cur(), p = probeOf(inq, S.path), s = script(p.id);
+  if (/hurt myself|end it|kill/i.test(S.draft)) { inq.status = 'stepped'; S.draft = ''; log('classifier → Step-out; Inquiry locked'); return go('stepout'); }
+  p.pos++; S.draft = '';
+  if (p.pos >= s.qs.length) { p.status = 'looked'; p.outcome = s.outcome; log(`Path ${p.id} ended: ${s.outcome}`); }
+  render();
+}
+function finish() { const inq = cur(); inq.status = 'ended'; log('Finish → Recap'); go('recap', { path: null }); }
+
+// ---------- variant renderers ----------
+function topbar(title, left = '', right = '') { return `<div class="topbar">${left}<div class="title">${title}</div>${right}</div>`; }
+const back = act => `<button class="link" data-act="${act}">‹ Back</button>`;
+
+function homeList(compact) {
+  const today = S.inquiries.find(i => i.day === 'Today');
+  const unfinished = live().filter(i => i !== today);
+  const past = S.inquiries.filter(i => i.status !== 'live');
+  return `<div class="pad ${compact ? '' : 'narrow'}">
+    ${today && today.status === 'live' ? `<div class="card tap" data-act="resume" data-id="${today.id}"><p class="small mut">Today · in progress</p><p><b>${esc(today.problem)}</b></p></div>`
+      : S.atLimit ? `<div class="card"><p><b>Today's Inquiry is done.</b></p><p class="mut">The next opens at 15:40.</p></div>`
+      : `<div class="card" style="text-align:center;padding:24px"><p>What are you facing today?</p><button class="pri" data-act="start">Start today's Inquiry</button><p class="small mut" style="margin-top:8px">One a day, free.</p></div>`}
+    ${unfinished.length ? `<h3>Unfinished</h3>${unfinished.map(i => `<div class="card tap" data-act="resume" data-id="${i.id}"><p>${esc(i.problem)}</p><p class="small mut">${i.day} · ends by itself ${i.ends}</p></div>`).join('')}` : ''}
+    ${past.length ? `<h3>Recaps</h3>${past.map(i => `<div class="card tap" data-act="openRecap" data-id="${i.id}"><p>${esc(i.problem)}</p><p class="small mut">${i.day}${i.status === 'stepped' ? ' · paused for safety' : ''}</p></div>`).join('')}` : ''}
+  </div>`;
+}
+
+function common() { // screens rendered the same way inside every variant's chrome
+  if (S.edge) return edgeScreen();
+  if (!S.onboarded) return onboarding();
+  if (S.screen === 'limit') return limitScreen();
+  if (S.screen === 'stepout') return stepOut();
+  return null;
+}
+
+// A: Quiet stack — one column, drill-down, Help pill top-right on every screen.
+function renderA() {
+  const c = common(); const help = helpBtn('pill');
+  if (c) return topbar('', '', help) + c;
+  const inq = cur();
+  switch (S.screen) {
+    case 'home': return topbar('Look Together', '', `<button class="link" data-act="settings">⚙︎</button>${help}`) + `<div class="scroll">${homeList()}</div>`;
+    case 'problem': return topbar('New Inquiry', back('home'), help) + problemScreen();
+    case 'inquiry':
+      if (S.path) { const p = probeOf(inq, S.path);
+        return topbar('Path', back('closePath'), help) + `<div class="scroll pad narrow">${pathBody(inq, p)}</div>` + (pathOpen(p) ? composer('path') : ''); }
+      return topbar('Inquiry', back('home'), help) + `<div class="scroll">${probeList(inq, { narrow: true })}</div>`;
+    case 'recap': return topbar('Recap', back('home'), help) + `<div class="scroll">${recap(inq)}</div>`;
+    case 'settings': return topbar('Settings', back('home'), help) + `<div class="scroll">${settings()}</div>`;
+    case 'about': return topbar('About', back('settings'), help) + `<div class="scroll">${about()}</div>`;
+    case 'reports': return topbar('Sent reports', back('settings'), help) + `<div class="scroll">${sentReports()}</div>`;
+  }
+}
+
+// B: Tabs + sheets — bottom tabs (left rail on web), Path as sheet (right pane on web), Help FAB.
+function renderB() {
+  const c = common();
+  const tabsList = [['today', 'Today'], ['inquiries', 'Inquiries'], ['settings', 'Settings']];
+  const nav = web()
+    ? `<div class="rail"><b style="padding:6px 14px 14px">Look Together</b>${tabsList.map(([k, l]) => `<button class="${S.tab === k ? 'on' : ''}" data-act="tab" data-tab="${k}">${l}</button>`).join('')}<div style="flex:1"></div>${helpBtn('pill')}</div>`
+    : `<div class="tabs">${tabsList.map(([k, l]) => `<button class="${S.tab === k ? 'on' : ''}" data-act="tab" data-tab="${k}">${l}</button>`).join('')}</div>`;
+  const fab = web() ? '' : helpBtn('fab');
+  if (c) return topbar('', '', helpBtn('pill')) + c;
+  const inq = cur(); let main;
+  if (S.screen === 'problem') main = topbar('New Inquiry', back('home')) + problemScreen();
+  else if (S.screen === 'inquiry') {
+    const p = S.path && probeOf(inq, S.path);
+    if (web()) main = topbar(esc(inq.problem), back('home')) + `<div class="twopane"><div class="left">${probeList(inq, { highlight: true })}</div><div class="rightp">${p ? `<div class="scroll pad">${pathBody(inq, p)}</div>${pathOpen(p) ? composer('path') : ''}` : '<div class="pad mut" style="margin:auto">Pick a Probe on the left.</div>'}</div></div>`;
+    else main = topbar('Inquiry', back('home')) + `<div class="scroll">${probeList(inq)}</div>` + (p ? `<div class="scrim"><div class="sheet tall"><div class="grab"></div><div class="topbar"><button class="link" data-act="closePath">⌄ Back to list</button><div class="title"></div></div><div class="scroll pad">${pathBody(inq, p)}</div>${pathOpen(p) ? composer('path') : ''}</div></div>` : '');
+  }
+  else if (S.screen === 'recap') main = topbar('Recap', back('home')) + `<div class="scroll">${recap(inq)}</div>`;
+  else if (S.screen === 'about') main = topbar('About', back('settings')) + `<div class="scroll">${about()}</div>`;
+  else if (S.screen === 'reports') main = topbar('Sent reports', back('settings')) + `<div class="scroll">${sentReports()}</div>`;
+  else if (S.tab === 'settings') main = topbar('Settings') + `<div class="scroll">${settings()}</div>`;
+  else if (S.tab === 'inquiries') main = topbar('Inquiries') + `<div class="scroll pad narrow">${S.inquiries.map(i => `<div class="card tap" data-act="${i.status === 'live' ? 'resume' : 'openRecap'}" data-id="${i.id}"><div class="row"><span class="grow">${esc(i.problem)}</span>${i.status === 'live' ? '<span class="tag prog">in progress</span>' : ''}</div><p class="small mut">${i.day}${i.ends && i.status === 'live' ? ' · ends ' + i.ends : ''}</p></div>`).join('')}</div>`;
+  else { // today
+    const today = S.inquiries.find(i => i.day === 'Today');
+    main = topbar('Today') + `<div class="scroll pad narrow">${today && today.status === 'live' ? `<div class="card tap" data-act="resume" data-id="${today.id}"><p class="small mut">In progress</p><p><b>${esc(today.problem)}</b></p></div>` : S.atLimit ? `<div class="card lock"><b>Today's Inquiry is done.</b><p class="mut">The next opens at 15:40.</p></div>` : `<div class="card lock"><p>What are you facing today?</p><button class="pri" data-act="start">Start today's Inquiry</button></div>`}
+      ${live().filter(i => i !== today).length ? `<p class="small mut">${live().filter(i => i !== today).length} other in progress, under Inquiries.</p>` : ''}</div>`;
+  }
+  return web() ? `<div style="display:flex;flex:1;min-height:0">${nav}<div style="flex:1;display:flex;flex-direction:column;min-width:0;position:relative">${main}</div></div>`
+               : `<div style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative">${main}${fab}</div>${['problem', 'inquiry', 'recap', 'about', 'reports'].includes(S.screen) ? '' : nav}`;
+}
+
+// C: One page — opens into today's Inquiry, accordion Paths inline, Recap at the bottom, drawer for everything else, Help strip.
+function renderC() {
+  const c = common(); const strip = helpBtn('strip');
+  if (c) return topbar('', '', helpBtn('pill')) + c;
+  const menu = `<button class="link" data-act="drawer">☰</button>`;
+  const drawer = S.drawer ? `<div class="scrim" style="z-index:10" data-act="drawerClose"></div><div class="drawer"><div class="topbar"><div class="title">Look Together</div><button class="link" data-act="drawerClose">✕</button></div><div class="scroll pad">
+      <button class="setrow" data-act="cToday">Today</button>
+      <h3>Past Inquiries</h3>${S.inquiries.filter(i => i.day !== 'Today').map(i => `<button class="setrow" data-act="${i.status === 'live' ? 'resume' : 'openRecap'}" data-id="${i.id}">${esc(i.problem)}<br><span class="small mut">${i.day}${i.status === 'live' ? ' · unfinished' : ''}</span></button>`).join('')}
+      <h3>&nbsp;</h3><button class="setrow" data-act="settings">Settings</button></div></div>` : '';
+  let body, title = 'Today';
+  const inq = cur();
+  if (S.screen === 'settings') { title = 'Settings'; body = `<div class="scroll">${settings()}</div>`; }
+  else if (S.screen === 'about') { title = 'About'; body = `<div class="scroll">${about()}</div>`; }
+  else if (S.screen === 'reports') { title = 'Sent reports'; body = `<div class="scroll">${sentReports()}</div>`; }
+  else if (S.screen === 'recap') { title = inq.day; body = `<div class="scroll">${recap(inq)}</div>`; }
+  else if (S.screen === 'problem' || !inq) {
+    if (S.atLimit && !inq) body = limitScreen();
+    else if (!inq && live().length && S.screen !== 'problem') body = `<div class="scroll pad narrow"><div class="card"><p class="small mut">Unfinished from ${live()[0].day}</p><p><b>${esc(live()[0].problem)}</b></p><div class="row"><button data-act="resume" data-id="${live()[0].id}">Go back to it</button></div></div><h1>Or start today's</h1><p class="mut">Starting a new one finishes the old one, with its Recap.</p><button class="pri" data-act="start">Start today's Inquiry</button></div>`;
+    else body = problemScreen();
+  } else {
+    title = inq.day;
+    const acc = inq.probes.map(p => {
+      const open = S.path === p.id;
+      return `<div class="card" id="pr-${p.id}"><div class="acc-h" data-act="${open ? 'closePath' : 'openPath'}" data-pid="${p.id}"><span>${open ? '▾' : '▸'}</span><div class="grow">${p.probe}<div style="margin-top:4px">${statusTag(p)}</div></div></div>
+        ${open ? `<div style="margin-top:8px">${pathBody(inq, p)}</div>${pathOpen(p) ? `<div style="margin:0 -14px -14px">${composer('path')}</div>` : ''}` : ''}</div>`; }).join('');
+    const doneSoFar = inq.probes.filter(p => p.status === 'looked');
+    const idx = web() ? `<div class="sideidx"><b>Probes</b>${inq.probes.map(p => `<a data-act="openPath" data-pid="${p.id}">${p.probe.replace(/<[^>]+>/g, '').slice(0, 40)}… ${p.status === 'looked' ? '✓' : p.status === 'exploring' ? '·' : ''}</a>`).join('')}</div>` : '';
+    body = `<div class="scroll"><div class="pad" style="display:flex;gap:24px;${web() ? 'max-width:900px;margin:0 auto' : ''}">${idx}<div class="grow" style="min-width:0">
+      <p class="mut small">Your Problem</p><p><b>${esc(inq.problem)}</b></p>${acc}
+      <h3>Recap so far</h3>${doneSoFar.length ? doneSoFar.map(p => `<p class="small">· ${script(p.id).premise} — <i>${p.outcome}</i></p>`).join('') + (inq.status === 'live' ? '<button class="pri" data-act="finish">Finish</button>' : '') : '<p class="small mut">Fills in as you finish Paths.</p>'}
+      </div></div></div>`;
+  }
+  return topbar(title, menu, '') + body + strip + drawer;
+}
+
+// ---------- render ----------
+function render() {
+  if (!V[S.variant]) S.variant = 'A';
+  const app = document.getElementById('app');
+  app.className = S.width;
+  const banner = web() && cur() && cur().status === 'live' && ['inquiry', 'problem'].includes(S.screen) ? `<div class="banner">Web keeps nothing: closing this tab loses the Inquiry. <button class="link small" data-act="webLeave">(proto: try closing)</button></div>` : '';
+  app.innerHTML = banner + ({ A: renderA, B: renderB, C: renderC }[S.variant])() + overlays();
+  renderProto(); renderState();
+}
+function renderState() {
+  const inq = cur();
+  document.getElementById('state').textContent = `variant ${S.variant} · ${S.platform}/${S.width}\nscreen: ${S.edge ? 'edge:' + S.edge : !S.onboarded ? 'onboarding ' + (S.onbStep + 1) + '/4' : S.screen}${S.variant === 'B' ? ' tab:' + S.tab : ''}\npath: ${S.path || '-'}  sheet: ${S.sheet || '-'}\nlimit reached: ${S.atLimit}\n\nInquiries:\n` +
+    S.inquiries.map(i => `${i.id === S.current ? '▶' : ' '} ${i.day}: ${i.status}\n   ` + i.probes.map(p => `${p.id}:${p.status}${p.outcome ? '/' + p.outcome : ''}`).join(' ')).join('\n') + `\n\nlog:\n${S.log.join('\n')}`;
+}
+function renderProto() {
+  const keys = Object.keys(V);
+  document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span><button data-p="prev">←</button><span class="vlabel">${S.variant} (${V[S.variant]})</span><button data-p="next">→</button>
+    <select data-p="platform">${['ios', 'android', 'web'].map(p => `<option ${S.platform === p ? 'selected' : ''}>${p}</option>`).join('')}</select>
+    <select data-p="jump"><option value="">jump to…</option>${[['onb', 'onboarding + sign-in'], ['home', 'home'], ['new', "new Inquiry (Problem)"], ['inq', 'today\'s Inquiry, mid-way'], ['recap', 'a Recap'], ['steprecap', 'stepped-out Recap'], ['stepout', 'Step-out screen'], ['limit', 'limit screen'], ['settings', 'settings'], ['deleted', 'Account deleted'], ['nokey', 'restore without key']].map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>
+    <button data-p="reset">reset</button><span style="opacity:.6">type "hurt myself" in a Reflection → Step-out</span>`;
+}
+
+// ---------- events ----------
+document.addEventListener('input', e => {
+  const k = e.target.dataset.draft; if (!k) return;
+  if (k === 'problem') S.problemDraft = e.target.value; else S.draft = e.target.value;
+  const btn = e.target.closest('.composer').querySelector('button.pri'); btn.disabled = !e.target.value.trim();
+});
+document.addEventListener('change', e => {
+  const a = e.target.dataset.act, p = e.target.dataset.p;
+  if (a === 'crash') S.crash = e.target.checked;
+  if (a === 'reminder') S.reminder = e.target.checked;
+  if (a === 'rsend') { S.reportSend = e.target.checked; render(); }
+  if (a === 'rreason') { S.reportReasons = e.target.checked ? [...S.reportReasons, e.target.value] : S.reportReasons.filter(r => r !== e.target.value); render(); }
+  if (a === 'setRegion') { S.region = e.target.value; }
+  if (p === 'platform') { S.platform = e.target.value; S.width = S.platform === 'web' ? 'web' : 'phone'; render(); }
+  if (p === 'jump') jump(e.target.value);
+});
+document.addEventListener('click', e => {
+  const pb = e.target.closest('[data-p]');
+  if (pb && pb.tagName === 'BUTTON') {
+    const keys = Object.keys(V), i = keys.indexOf(S.variant);
+    if (pb.dataset.p === 'prev') setVariant(keys[(i + keys.length - 1) % keys.length]);
+    if (pb.dataset.p === 'next') setVariant(keys[(i + 1) % keys.length]);
+    if (pb.dataset.p === 'reset') { const v = S.variant, pl = S.platform, w = S.width; S = seed(); Object.assign(S, { variant: v, platform: pl, width: w }); render(); }
+    return;
+  }
+  const el = e.target.closest('[data-act]'); if (!el || el.tagName === 'INPUT') return;
+  const a = el.dataset.act, pid = el.dataset.pid, id = el.dataset.id;
+  if (el.classList.contains('scrim') && e.target !== el) return;
+  e.stopPropagation();
+  ({
+    onbNext: () => { S.onbStep++; render(); }, onbBack: () => { S.onbStep--; render(); },
+    signin: () => { S.onboarded = true; S.signedIn = true; go('home', { tab: 'today' }); },
+    help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); },
+    home: () => { S.current = null; go('home', { path: null, tab: 'today' }); },
+    start: startToday,
+    fillProblem: () => { S.problemDraft = NEW_PROBLEM; render(); },
+    mic: () => { S.dictating = !S.dictating; if (!S.dictating) { const add = ' and I don\'t really know why I do it'; if (el.dataset.kind === 'problem') S.problemDraft += add; else S.draft += add; } render(); },
+    clear: () => { if (el.dataset.kind === 'problem') S.problemDraft = ''; else S.draft = ''; render(); },
+    submitProblem, submit: submitReflection,
+    openPath: () => openPath(pid),
+    closePath: () => { S.path = null; render(); },
+    reveal: () => { S.revealPremise[pid] = true; log(`${pid}: premise revealed on pushback`); render(); },
+    offer: () => { const p = probeOf(cur(), pid), o = script(pid).offer; p.offerAnswered = el.dataset.a;
+      if (el.dataset.a === 'yes' && o.kind === 'add') { cur().probes.push(mkProbe('p5')); PROBE_SCRIPTS.p5.probe = o.newProbe.probe; PROBE_SCRIPTS.p5.premise = o.newProbe.premise; cur().probes.at(-1).probe = o.newProbe.probe; log('Add it? → new Probe p5'); }
+      if (el.dataset.a === 'yes' && o.kind === 'problem') { cur().problem = 'I agree to things out of fear and call it kindness.'; log('Problem reworded'); }
+      render(); },
+    finish,
+    resume: () => { S.current = id; go('inquiry', { path: null }); },
+    finishOther: () => { const o = S.inquiries.find(i => i.id === id); o.status = 'ended'; log('A: finished the old Inquiry first'); S.current = null; go('problem'); },
+    openRecap: () => { S.current = id; go('recap'); },
+    readPath: () => { const inq = cur(); if (script(pid)) go('inquiry', { path: pid }); else log('proto: no Path text for seeded Inquiry'); },
+    worth: () => { cur().worth = el.dataset.w; render(); },
+    share: () => { S.sheet = 'share'; render(); },
+    report: () => { S.reportTarget = pid; S.reportReasons = []; S.reportSend = false; S.sheet = 'report'; render(); },
+    sendReport: () => { S.reports.unshift({ when: 'just now', reasons: S.reportReasons, sent: S.reportSend }); S.sheet = 'reported'; render(); },
+    settings: () => go('settings'), about: () => go('about'), reports: () => go('reports'),
+    region: () => { S.sheet = 'region'; render(); },
+    signout: () => { S.onboarded = false; S.onbStep = 3; render(); },
+    tab: () => { S.tab = el.dataset.tab; S.current = null; go('home', { path: null }); },
+    drawer: () => { S.drawer = true; render(); }, drawerClose: () => { S.drawer = false; render(); },
+    cToday: () => { const t = S.inquiries.find(i => i.day === 'Today'); S.current = t ? t.id : null; go(t ? 'inquiry' : 'home'); },
+    edgeDone: () => { S.edge = null; render(); },
+    webLeave: () => { S.sheet = 'webLeave'; render(); },
+    listen: () => log('listen → POST /speak (one reply read aloud)'), import: () => log('Import → file picker (JSON)'), noop: () => {},
+  }[a] || (() => {}))();
+});
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input,textarea,[contenteditable]')) return;
+  const keys = Object.keys(V), i = keys.indexOf(S.variant);
+  if (e.key === 'ArrowLeft') setVariant(keys[(i + keys.length - 1) % keys.length]);
+  if (e.key === 'ArrowRight') setVariant(keys[(i + 1) % keys.length]);
+});
+function setVariant(v) { S.variant = v; const u = new URL(location); u.searchParams.set('variant', v); history.replaceState(null, '', u); if (v === 'C' && S.screen === 'home') { const t = S.inquiries.find(i => i.day === 'Today'); S.current = t ? t.id : null; S.screen = t ? 'inquiry' : 'home'; } render(); }
+function ensureToday(midway) {
+  let t = S.inquiries.find(i => i.day === 'Today');
+  if (!t) { S.problemDraft = NEW_PROBLEM; submitProblem(); t = cur(); }
+  if (midway) { const p1 = probeOf(t, 'p1'); p1.status = 'looked'; p1.pos = 3; p1.outcome = 'challenged'; const p2 = probeOf(t, 'p2'); p2.status = 'exploring'; p2.pos = 1; }
+  return t;
+}
+function jump(v) {
+  S.edge = null; S.sheet = null; S.drawer = false; S.onboarded = true;
+  if (v === 'onb') { S.onboarded = false; S.onbStep = 0; }
+  if (v === 'home') { S.current = null; S.screen = 'home'; S.tab = 'today'; S.path = null; }
+  if (v === 'new') { S.atLimit = false; S.inquiries = S.inquiries.filter(i => i.day !== 'Today'); S.current = null; S.screen = 'problem'; }
+  if (v === 'inq') { const t = ensureToday(true); S.current = t.id; S.screen = 'inquiry'; S.path = 'p2'; }
+  if (v === 'recap') { S.current = 'i1'; S.screen = 'recap'; }
+  if (v === 'steprecap') { const t = ensureToday(true); t.status = 'stepped'; S.current = t.id; S.screen = 'recap'; }
+  if (v === 'stepout') { S.screen = 'stepout'; }
+  if (v === 'limit') { S.screen = 'limit'; S.atLimit = true; }
+  if (v === 'settings') { S.screen = 'settings'; S.tab = 'settings'; }
+  if (v === 'deleted' || v === 'nokey') S.edge = v;
+  render();
+}
+if (S.variant === 'C') setVariant('C'); else render();
+</script>
+</body>
+</html>
