@@ -6,21 +6,21 @@
 <title>PROTOTYPE · Look Together pond</title>
 <!--
   PROTOTYPE, throwaway. "What do Look Together's look and the voice of its copy feel like?" (wayfinder ticket #54
-  on map #1), round 3. Brainstorm material, not decisions. The idea: everything floats on one reflecting pool in a
-  forest. One rule throughout: the app's words sit ABOVE the waterline, the person's BELOW it (upright, never flipped).
-    - Opening: still sky reflected, a drop falls, the ripples bring up "Look" above and "Together" below.
-    - Home: a pond in the forest. Trees behind the wordmark sway and drop the odd leaf onto the water. Settings
-      is a floating leaf top left; New Inquiry is the floating leaf bottom right, with a clear label (home only).
-    - Probe list: Probes above the waterline, the person's Problem below.
-    - Path: the pond becomes a slow stream flowing right, the way forward; ‹ › or swipe move with it. Each step is
-      two halves: the app's question above, the Reflection below. The waterline sits high so the keyboard can grow
-      into the space below without moving much. An ended Path leads back to the Probes.
-    - Recap: the stream slows and opens out into a still pool.
+  on map #1), round 4. Brainstorm material, not decisions. Everything floats on one pool in a forest. One rule
+  throughout: the app's words sit ABOVE the waterline, the person's BELOW it (always upright).
+    - Opening: still sky reflected, a drop falls, the ripples bring up the wordmark.
+    - Home: a pond in a forest. Trees sway and drop the odd leaf. The two controls are things found on a pond,
+      three ways to compare (?controls=boat|lily|stones): a moored rowboat and a flowering lily pad, two lily pads,
+      or stepping stones. Settings top left; the primary action bottom right, its label written on the object.
+    - Probe list: Probes above, the person's Problem below; Finish Inquiry is the same bottom-right object.
+    - Path: a meandering brook runs through the water, babbling round stones, and you walk along it step by step
+      (‹ › or swipe). The waterline sits high so the keyboard grows into the space below with little movement.
+    - Recap: the brook quietens and opens into a still pool.
     - Help and the Step-out still the water: no motion, no metaphor.
-  Voice warms along the current Path (spare on its first step, plain on its second, warm after), and jumps to warm
-  when the model signals softening (toggle "model: softening" in the bar). The prompt would warm the same way.
-  ANIMATION IS PLACEHOLDER. Making it smooth, natural and relaxing is heavy work for later, as is finding timing
-  that sits between snappy and calm.
+  Logo options (?logo=leaf|ripples|sun|pad). Voice warms along the current Path and when the model signals
+  softening ("model: softening" in the bar).
+  ANIMATION IS PLACEHOLDER. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits
+  between snappy and calm.
   ?jump=home|new|probes|path|pathmid|ended|recap|help|stepout  ?season=morning|evening|auto
   Everything is in memory; reload resets. Phone only.
 -->
@@ -29,9 +29,11 @@
 <style>
   @property --wl { syntax:'<percentage>'; inherits:true; initial-value:50%; }
   #app.morning { --sky1:#c9dfec; --sky2:#f7efe0; --wat1:#dfe8de; --wat2:#6e97a0; --ink:#1f2e36; --wink:#0e2a31; --mut:#5d6d72; --wmut:#2f5058;
-    --glass:rgba(255,255,255,.42); --glassB:rgba(255,255,255,.6); --acc:#4f7a3a; --leaf:#7fa65a; --leafV:#4f7a3a; --drop:#ffffff; --rip:rgba(255,255,255,.75); --still:#9fbcc0; --shade:rgba(20,50,60,.28); }
+    --glass:rgba(255,255,255,.42); --glassB:rgba(255,255,255,.6); --acc:#4f7a3a; --leaf:#7fa65a; --leafV:#4f7a3a; --drop:#ffffff; --rip:rgba(255,255,255,.75); --still:#9fbcc0; --shade:rgba(20,50,60,.28);
+    --creek:#f4fbf8; --pad:#5d8f45; --padR:#3f6e30; --stone:#a7aaa2; --stoneT:#c4c6bd; }
   #app.evening { --sky1:#1e1a32; --sky2:#c07a4c; --wat1:#6a4a44; --wat2:#14142a; --ink:#f4eadc; --wink:#f1e5d4; --mut:#cdbfae; --wmut:#cdb9a6;
-    --glass:rgba(24,20,44,.42); --glassB:rgba(255,220,180,.18); --acc:#e09a5c; --leaf:#c8692e; --leafV:#7d3a17; --drop:#ffe6c8; --rip:rgba(255,214,170,.55); --still:#2a2638; --shade:rgba(0,0,0,.4); }
+    --glass:rgba(24,20,44,.42); --glassB:rgba(255,220,180,.18); --acc:#e09a5c; --leaf:#c8692e; --leafV:#7d3a17; --drop:#ffe6c8; --rip:rgba(255,214,170,.55); --still:#2a2638; --shade:rgba(0,0,0,.4);
+    --creek:#ffd9b0; --pad:#6f6a2c; --padR:#4c4a1c; --stone:#5d5a63; --stoneT:#77737d; }
 
   * { box-sizing:border-box; }
   body { margin:0; background:#b9b9b4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; gap:24px; padding:16px 16px 150px; font:13px system-ui,sans-serif; }
@@ -40,11 +42,10 @@
   .sky { position:absolute; inset:0 0 auto 0; height:var(--wl); background:linear-gradient(var(--sky1),var(--sky2)); }
   .water { position:absolute; inset:var(--wl) 0 0 0; background:linear-gradient(var(--wat1),var(--wat2)); overflow:hidden; }
   .water::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(transparent 0 7px, rgba(255,255,255,.05) 7px 8px); }
-  /* the stream: streaks drifting right, faded in and slowed by JS */
-  .flow { position:absolute; inset:0; opacity:0; background-image:
-      radial-gradient(ellipse 34px 1.2px at 50% 50%, var(--rip), transparent),
-      radial-gradient(ellipse 18px 1px at 50% 50%, var(--rip), transparent);
-    background-size:160px 22px, 97px 13px; background-position:0 0, 40px 6px; }
+  /* the brook: a meandering band with currents and babbling stones, walked along step by step */
+  .creek { position:absolute; left:0; top:0; opacity:0; transition:opacity 1.6s ease; pointer-events:none; }
+  #creekg { transition:transform 1.4s cubic-bezier(.4,.1,.2,1); }
+  .creek .babble { transform-box:fill-box; transform-origin:center; animation:ringout 3.2s ease-out infinite; opacity:0; }
   .wline { position:absolute; left:0; right:0; top:var(--wl); height:1px; background:var(--rip); opacity:.7; }
   #rip { position:absolute; inset:0; pointer-events:none; z-index:3; }
   #ui { position:absolute; inset:0; }
@@ -52,11 +53,11 @@
   .above { height:var(--wl); display:flex; flex-direction:column; min-height:0; }
   .below { flex:1; min-height:0; display:flex; flex-direction:column; color:var(--wink); }
   .scroll { overflow-y:auto; min-height:0; flex:1; scrollbar-width:thin; scrollbar-color:var(--glassB) transparent; }
-  .pad { padding:14px 22px; }
+  .pad { padding:12px 22px; }
   .read { font-family:"Newsreader",Georgia,serif; }
   .mut { color:var(--mut); } .below .mut { color:var(--wmut); } .small { font-size:13px; }
-  p { margin:6px 0; } h1 { font:500 26px/1.2 "Newsreader",serif; margin:4px 0 8px; }
-  h3 { font:500 12px/1 "Inter",sans-serif; letter-spacing:.08em; text-transform:uppercase; margin:22px 0 10px; color:var(--mut); }
+  p { margin:6px 0; } h1 { font:500 26px/1.2 "Newsreader",serif; margin:4px 0 6px; }
+  h3 { font:500 12px/1 "Inter",sans-serif; letter-spacing:.08em; text-transform:uppercase; margin:20px 0 10px; color:var(--mut); }
   .below h3 { color:var(--wmut); }
   button { font:inherit; cursor:pointer; color:inherit; background:var(--glass); border:1px solid var(--glassB); border-radius:22px; padding:9px 16px; backdrop-filter:blur(6px); }
   button.pri { background:var(--ink); color:var(--sky2); border-color:var(--ink); }
@@ -64,48 +65,51 @@
   button.link { background:none; border:none; padding:4px 0; backdrop-filter:none; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
   button:disabled { opacity:.4; }
   .row { display:flex; gap:10px; align-items:center; } .grow { flex:1; } .right { margin-left:auto; } .center { text-align:center; }
-  .topbar { display:flex; align-items:center; padding:50px 14px 6px; min-height:90px; flex:none; }
+  .topbar { display:flex; align-items:center; padding:46px 14px 2px; min-height:80px; flex:none; }
   .topbar .s { flex:1; display:flex; } .topbar .s.r { justify-content:flex-end; }
   .back { background:none; border:none; backdrop-filter:none; padding:6px 4px; display:flex; align-items:center; gap:2px; font-size:14px; }
   .help { background:none; border:none; padding:6px 2px; backdrop-filter:none; font-weight:500; font-size:14px; display:flex; gap:6px; align-items:center; }
   .help::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--acc); }
-  .card { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; padding:14px 16px; margin:10px 0; backdrop-filter:blur(6px); }
+  .card { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; padding:13px 16px; margin:9px 0; backdrop-filter:blur(6px); }
   .card.tap { cursor:pointer; }
   .float { animation:bob 7s ease-in-out infinite; } .float:nth-child(2n) { animation-delay:-2.5s; } .float:nth-child(3n) { animation-delay:-4.8s; }
   @keyframes bob { 50% { transform:translateY(3px) rotate(-.3deg); } }
-  #app.still .float, #app.still .fleaf .lf, #app.still .fleaf .ring, #app.still .sway { animation:none !important; }
+  #app.still .float, #app.still .pobj .bobber, #app.still .pobj .ring, #app.still .sway, #app.still .creek .babble { animation:none !important; }
   .badge { font:italic 14px "Newsreader",serif; white-space:nowrap; }
+  #app.kb .hide-kb { display:none; }
 
-  /* forest behind the wordmark, and its reflection on the water */
+  /* forest behind the wordmark, and its reflection */
   .trees { position:absolute; left:0; right:0; z-index:2; pointer-events:none; }
-  .trees.top { top:calc(var(--wl) - 150px); height:150px; }
-  .trees.refl { top:var(--wl); height:150px; transform:scaleY(-1); opacity:.22; filter:blur(1.5px); }
+  .trees.top { top:calc(var(--wl) - 130px); height:130px; }
+  .trees.refl { top:var(--wl); height:130px; transform:scaleY(-1); opacity:.22; filter:blur(1.5px); }
   .sway { transform-box:fill-box; transform-origin:50% 100%; animation:sway 6s ease-in-out infinite alternate; }
   @keyframes sway { from { transform:rotate(-1.4deg); } to { transform:rotate(1.6deg) skewX(1deg); } }
   .flyer { position:absolute; z-index:5; pointer-events:none; }
 
-  /* leaves floating on the water: flattened by perspective, a shadow, rings */
-  .fleaf { position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; align-items:center; gap:10px; }
-  .fleaf .body { position:relative; display:grid; place-items:center; }
-  .fleaf .lf { position:relative; z-index:2; animation:float 6.5s ease-in-out infinite; transform-origin:50% 60%; }
-  .fleaf .lf svg { transform:scaleY(.72); display:block; }
-  .fleaf .shadow { position:absolute; inset:30% 6% 4% 10%; background:radial-gradient(ellipse at 50% 50%, var(--shade), transparent 70%); filter:blur(3px); transform:translate(3px,5px); }
-  .fleaf .ring { position:absolute; left:50%; top:58%; width:120%; height:44%; margin:-22% 0 0 -60%; border:1px solid var(--rip); border-radius:50%; opacity:0; animation:ringout 6s ease-out infinite; }
-  .fleaf .ring.r2 { animation-delay:-3s; }
-  @keyframes float { 0%,100% { transform:translateY(0) rotate(0); } 30% { transform:translateY(1.5px) rotate(2deg); } 70% { transform:translateY(-1px) rotate(-1.5deg); } }
+  /* things found on a pond, used as the two controls */
+  .pobj { position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; flex-direction:column; align-items:center; }
+  .pobj .body { position:relative; display:grid; place-items:center; }
+  .pobj .bobber { position:relative; z-index:2; animation:pbob 6.5s ease-in-out infinite; display:grid; place-items:center; }
+  .pobj.boat .bobber { animation-name:rock; animation-duration:5s; }
+  .pobj.stones .bobber { animation:none; }
+  .pobj .shadow { position:absolute; inset:35% 4% 0 8%; background:radial-gradient(ellipse at 50% 50%, var(--shade), transparent 70%); filter:blur(3px); transform:translate(2px,6px); }
+  .pobj .ring { position:absolute; left:50%; top:62%; width:116%; height:50%; margin:-25% 0 0 -58%; border:1px solid var(--rip); border-radius:50%; opacity:0; animation:ringout 6s ease-out infinite; }
+  .pobj .ring.r2 { animation-delay:-3s; }
+  @keyframes pbob { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(1.5px) rotate(.8deg); } 75% { transform:translateY(-1px) rotate(-.6deg); } }
+  @keyframes rock { 0%,100% { transform:rotate(-2deg) translateY(0); } 50% { transform:rotate(2deg) translateY(1.5px); } }
   @keyframes ringout { 0% { transform:scale(.7); opacity:.55; } 100% { transform:scale(1.7); opacity:0; } }
-  .fleaf .lbl { font-size:12px; color:var(--wink); }
-  .fleaf.primary .lbl { order:-1; font:600 16px "Inter",sans-serif; background:var(--ink); color:var(--sky2); padding:12px 18px; border-radius:24px; box-shadow:0 6px 18px var(--shade); }
-  #app.evening .fleaf.primary .lbl { background:var(--acc); color:#1e1a32; }
-  .fleaf.primary.dry .lbl { background:var(--glass); color:var(--wink); font-weight:500; box-shadow:none; }
-  .fleaf.dry svg path:first-child { fill:#a99a7c; } .fleaf.dry .ring { display:none; }
-  .leafnote { position:absolute; right:20px; bottom:120px; z-index:7; width:230px; }
+  .pobj .on { position:absolute; inset:0; display:grid; place-items:center; z-index:3; pointer-events:none; font:600 15px/1.1 "Inter",sans-serif; color:#fbf6ea; text-shadow:0 1px 3px rgba(0,0,0,.45); white-space:nowrap; }
+  .pobj.stones .on { color:#2f2f2c; text-shadow:0 1px 0 rgba(255,255,255,.5); font-weight:600; }
+  #app.evening .pobj.stones .on { color:#f2ece4; text-shadow:0 1px 0 rgba(0,0,0,.5); }
+  .pobj .under { font-size:12px; color:var(--wink); text-shadow:0 1px 3px rgba(0,0,0,.25); margin-top:2px; font-style:normal; }
+  .pobj.dry { opacity:.75; } .pobj.dry .ring { display:none; }
+  .leafnote { position:absolute; right:20px; bottom:130px; z-index:7; width:230px; }
 
   /* Path halves */
   .q { font:400 22px/1.4 "Newsreader",serif; }
   #app.kb .q { font-size:18px; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .r { font:400 18px/1.5 "Newsreader",serif; }
-  .under { font:italic 15px "Newsreader",serif; color:var(--wmut); margin-bottom:10px; }
+  .premise { font:italic 15px "Newsreader",serif; color:var(--wmut); margin-bottom:10px; }
   .stepnav { position:absolute; left:0; right:0; top:calc(var(--wl) - 17px); z-index:6; display:flex; align-items:center; padding:0 8px; pointer-events:none; }
   .stepnav button { pointer-events:auto; background:var(--glass); width:34px; height:34px; padding:0; border-radius:50%; display:grid; place-items:center; }
   .dotsrow { flex:1; display:flex; justify-content:center; gap:7px; }
@@ -122,9 +126,8 @@
   .mic { width:42px; height:42px; padding:0; border-radius:50%; display:flex; align-items:center; justify-content:center; }
   .mic.on { background:var(--acc); }
   svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
-  .offer { margin-top:12px; font-size:14px; }
+  .offer { margin-top:10px; font-size:14px; }
 
-  /* read-back and Recap: mirrored pairs */
   .pair { margin:4px 0 18px; }
   .pair .pq { font:400 17px/1.4 "Newsreader",serif; padding:0 0 8px; }
   .pair .pl { height:1px; background:var(--rip); opacity:.8; }
@@ -135,17 +138,15 @@
   .rise { animation:rise 1.1s ease both; } @keyframes rise { from { opacity:0; transform:translateY(14px); } }
   .drop { position:absolute; left:50%; width:9px; height:13px; margin-left:-4px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:var(--drop); z-index:8; top:-20px; box-shadow:0 0 6px var(--drop); }
 
-  /* opening */
   .mark { position:absolute; left:0; right:0; top:calc(var(--wl) - 80px); height:160px; z-index:5; display:flex; justify-content:center; }
   .mark .lk, .mark .tg { opacity:0; transition:opacity 1.4s ease; } .mark.show .lk { opacity:1; } .mark.show .tg { opacity:.62; transition-delay:.5s; }
   .hint { position:absolute; bottom:60px; left:0; right:0; text-align:center; color:var(--wmut); opacity:0; transition:opacity 1s 2.2s; z-index:5; } .mark.show ~ .hint { opacity:1; }
 
-  /* still screens */
   .scrim { position:absolute; inset:0; z-index:20; background:rgba(0,0,0,.35); display:flex; align-items:flex-end; }
   .sheet { background:var(--still); color:var(--ink); width:100%; border-radius:24px 24px 0 0; padding:18px 22px 30px; }
   #app.evening .sheet { color:var(--wink); }
   .contact { background:var(--glass); border-radius:12px; padding:12px 14px; margin:8px 0; }
-  .plain { position:absolute; inset:0; z-index:20; background:var(--still); padding:90px 24px 24px; }
+  .plain { position:absolute; inset:0; z-index:20; background:var(--still); padding:70px 24px 24px; }
   #app.evening .plain { color:var(--wink); }
 
   .kbd { position:absolute; left:0; right:0; bottom:0; height:280px; background:#d1d3d9; z-index:30; display:none; padding:8px 4px; }
@@ -155,9 +156,12 @@
   .kbd .done { grid-column:span 3; font:500 14px system-ui; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#123; }
   #app.evening .kbd .done { color:#eee; }
 
-  #side { width:300px; flex:none; color:#222; }
+  #side { width:320px; flex:none; color:#222; }
   #side .box { background:#f4f4f2; border-radius:12px; padding:14px; margin-bottom:12px; line-height:1.45; }
   #side h4 { margin:0 0 8px; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#666; }
+  #side .logos { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  #side .logos > div { border-radius:10px; overflow:hidden; cursor:pointer; outline:2px solid transparent; } #side .logos > div.on { outline-color:#6a5; }
+  #side .logos span { display:block; font-size:11px; color:#555; padding:3px 6px; background:#fff; }
   @media (max-width:760px) { #side { display:none; } }
   #proto { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#111; color:#fff; border-radius:16px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:12px/1.3 ui-monospace,Menlo,monospace; z-index:100; box-shadow:0 4px 20px #0006; max-width:calc(100vw - 24px); }
   #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; }
@@ -167,49 +171,96 @@
 <body>
 <svg width="0" height="0" style="position:absolute"><filter id="wave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="1" seed="3"/><feDisplacementMap id="wavemap" in="SourceGraphic" scale="0"/></filter>
   <filter id="softwave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.12" numOctaves="1" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.5"/></filter></svg>
-<div id="app"><div class="sky"></div><div class="water"><div class="flow" id="flow"></div></div><div class="wline"></div><canvas id="rip" width="390" height="800"></canvas><div id="ui"></div></div>
+<div id="app"><div class="sky"></div><div class="water" id="water"></div><div class="wline"></div><canvas id="rip" width="390" height="800"></canvas><div id="ui"></div></div>
 <div id="side"></div>
 <div id="proto"></div>
 <script>
-// ---------- art ----------
+// ---------- art: leaves, trees, pond objects ----------
 const LEAF = (w, rot = 0, fill = 'var(--leaf)') => `<svg width="${w}" height="${w * .62}" viewBox="0 0 50 31" style="transform:rotate(${rot}deg)"><path d="M3 28C8 10 24 2 47 3C44 19 30 30 3 28Z" fill="${fill}"/><path d="M5 27C18 19 30 12 44 5" stroke="var(--leafV)" stroke-width="1.3" fill="none"/></svg>`;
-const PAL = { morning: { ink: '#1f2e36', leaf: '#7fa65a', v: '#4f7a3a', line: '#ffffff' }, evening: { ink: '#f4eadc', leaf: '#c8692e', v: '#7d3a17', line: '#ffd6aa' } };
-function wordmark(w, sn, still) { // a leaf on the water; "Look" above, "Together" upright in the reflection
-  const c = PAL[sn], leaf = `<path d="M222 78C227 66 240 61 256 62C254 72 244 79 222 78Z" fill="${c.leaf}"/><path d="M224 77C234 72 243 67 254 63" stroke="${c.v}" stroke-width="1.2" fill="none"/>`;
-  return `<svg width="${w}" viewBox="0 0 300 160">
-    <g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="150" y="62" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Look</text>${leaf}</g>
-    <line x1="40" y1="80" x2="260" y2="80" stroke="${c.line}" stroke-opacity=".7"/>
-    <g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="150" y="128" text-anchor="middle" font-family="Newsreader,serif" font-size="46" fill="${c.ink}">Together</text>
-      <g transform="translate(0 160) scale(1 -1)" opacity=".5">${leaf}</g></g></svg>`;
-}
-function appIcon(s, sn) {
-  const e = sn === 'evening', id = 'g' + s + sn;
-  return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><defs><linearGradient id="${id}s" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#1e1a32' : '#c9dfec'}"/><stop offset="1" stop-color="${e ? '#c07a4c' : '#f7efe0'}"/></linearGradient>
-    <linearGradient id="${id}w" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#6a4a44' : '#dfe8de'}"/><stop offset="1" stop-color="${e ? '#14142a' : '#6e97a0'}"/></linearGradient><clipPath id="${id}c"><rect width="100" height="100" rx="22"/></clipPath></defs>
-    <g clip-path="url(#${id}c)"><rect width="100" height="56" fill="url(#${id}s)"/><rect y="56" width="100" height="44" fill="url(#${id}w)"/>
-    <path d="M26 56C33 38 52 30 76 31C73 46 58 57 26 56Z" fill="${e ? '#c8692e' : '#7fa65a'}"/><path d="M26 56C33 74 52 82 76 81C73 66 58 55 26 56Z" fill="${e ? '#c8692e' : '#7fa65a'}" opacity=".35"/>
-    <line x1="0" y1="56" x2="100" y2="56" stroke="#fff" stroke-opacity=".6"/></g></svg>`;
-}
-// trees: spring greens with blossom in the morning, autumn rust and gold in the evening
 const CROWNS = { morning: ['#7fae5c', '#93c06a', '#5f9446', '#a9cc7a'], evening: ['#c8692e', '#d9913a', '#a4471f', '#e0b04a'] };
-const TREES = [ // x, base y, scale, distance (0 near, 1 far)
-  [-6, 150, 1.25, 0], [42, 150, .95, 0], [88, 150, .7, .6], [128, 150, .5, 1], [262, 150, .55, 1], [300, 150, .8, .6], [338, 150, 1.15, 0], [386, 150, .9, 0]];
+const TREES = [[-6, 130, 1.15, 0], [42, 130, .9, 0], [88, 130, .65, .6], [126, 130, .45, 1], [264, 130, .5, 1], [302, 130, .75, .6], [340, 130, 1.05, 0], [386, 130, .85, 0]];
 function forest(sn) {
   const cs = CROWNS[sn], trunk = sn === 'evening' ? '#3a2522' : '#5a4636';
-  return `<svg viewBox="0 0 390 150" width="390" height="150" preserveAspectRatio="none">${TREES.map(([x, y, s, far], n) => {
-    const c = k => cs[(n + k) % cs.length], h = 70 * s, r = 26 * s;
+  return `<svg viewBox="0 0 390 130" width="390" height="130" preserveAspectRatio="none">${TREES.map(([x, y, s, far], n) => {
+    const c = k => cs[(n + k) % cs.length], h = 62 * s, r = 24 * s;
     const blossom = sn === 'morning' && !far ? [0, 1, 2].map(k => `<circle cx="${x + (k - 1) * r * .6}" cy="${y - h - r * .6 + k * 6}" r="${2.2 * s}" fill="#f4c9d2"/>`).join('') : '';
     return `<g class="sway" style="animation-duration:${5 + (n % 3) * 1.3}s;animation-delay:-${n * .9}s;opacity:${1 - far * .45}">
       <rect x="${x - 3 * s}" y="${y - h}" width="${6 * s}" height="${h}" fill="${trunk}"/>
       <circle cx="${x}" cy="${y - h - r * .4}" r="${r}" fill="${c(0)}"/><circle cx="${x - r * .75}" cy="${y - h + r * .3}" r="${r * .8}" fill="${c(1)}"/>
       <circle cx="${x + r * .75}" cy="${y - h + r * .25}" r="${r * .85}" fill="${c(2)}"/><circle cx="${x + r * .1}" cy="${y - h - r * 1.2}" r="${r * .7}" fill="${c(3)}"/>${blossom}</g>`; }).join('')}</svg>`;
 }
+// a lily pad seen at an angle: a disc with its notch, squashed by perspective
+const PAD_PATH = 'M50 50L94.4 38.1A46 46 0 1 0 94.4 61.9Z';
+const lilyPad = (w, fill = 'var(--pad)', rim = 'var(--padR)') => `<svg width="${w}" height="${w * .46}" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <path d="${PAD_PATH}" fill="${fill}" stroke="${rim}" stroke-width="2.5"/>${[200, 150, 250, 110, 290].map(a => `<line x1="50" y1="50" x2="${50 + 40 * Math.cos(a * Math.PI / 180)}" y2="${50 + 40 * Math.sin(a * Math.PI / 180)}" stroke="${rim}" stroke-width="1.2" opacity=".6"/>`).join('')}</svg>`;
+const lotus = (w, open) => `<svg width="${w}" height="${w * .8}" viewBox="0 0 40 32">${(open ? [-60, -30, 0, 30, 60] : [-25, 0, 25]).map(a => `<ellipse cx="20" cy="${open ? 18 : 16}" rx="5" ry="${open ? 13 : 14}" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 20 30)"/>`).join('')}${open ? '<circle cx="20" cy="24" r="3" fill="#f1cf5b"/>' : ''}</svg>`;
+const rowboat = w => `<svg width="${w}" height="${w * .5}" viewBox="0 0 90 45">
+  <line x1="18" y1="24" x2="2" y2="40" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="2" cy="40" rx="5" ry="2" fill="#6b4a2c"/>
+  <path d="M4 16Q45 30 86 16L78 32Q45 42 12 32Z" fill="#9a6a3e"/><path d="M4 16Q45 26 86 16" stroke="#5e3a20" stroke-width="3" fill="none"/>
+  <path d="M10 18Q45 28 80 18L76 22Q45 30 14 22Z" fill="#6f4628"/><rect x="40" y="20" width="10" height="4" rx="1" fill="#b5875a"/>
+  <line x1="62" y1="22" x2="84" y2="38" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+const stone = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 100 40" preserveAspectRatio="none"><ellipse cx="50" cy="22" rx="48" ry="17" fill="var(--stone)"/><ellipse cx="48" cy="18" rx="44" ry="13" fill="var(--stoneT)"/></svg>`;
+
+function pondButton({ role, label, act, style, dry }) {
+  const prim = role === 'primary', kind = S.controls;
+  let obj, on = '', under = '';
+  if (kind === 'stones') { obj = prim ? stone(170, 66) : stone(92, 38); on = label; }
+  else if (kind === 'boat' && !prim) { obj = rowboat(78); under = label; }
+  else { // lily pads; the primary one carries a lotus, closed once today's Inquiry is used
+    const w = prim ? 168 : 76;
+    obj = `<span style="position:relative;display:block">${lilyPad(w, dry ? '#9c8e6a' : undefined, dry ? '#7c6e4a' : undefined)}${prim && !dry ? `<span style="position:absolute;right:${w * .02}px;top:-${w * .16}px">${lotus(w * .2, true)}</span>` : ''}</span>`;
+    on = prim ? label : ''; under = prim ? '' : label; }
+  return `<button class="pobj ${kind} ${dry ? 'dry' : ''}" style="${style}" data-act="${act}" aria-label="${label}">
+    <span class="body"><span class="ring"></span><span class="ring r2"></span><span class="shadow"></span><span class="bobber">${obj}${on ? `<span class="on" style="${prim && kind !== 'stones' ? 'padding-right:14px' : ''}">${on}</span>` : ''}</span></span>${under ? `<span class="under">${under}</span>` : ''}</button>`;
+}
+
+// ---------- logos: each draws "Look" above a waterline and "Together" upright below it ----------
+const PAL = { morning: { ink: '#1f2e36', leaf: '#7fa65a', v: '#4f7a3a', line: '#ffffff', sun: '#f0bf5e', pad: '#5d8f45' }, evening: { ink: '#f4eadc', leaf: '#c8692e', v: '#7d3a17', line: '#ffd6aa', sun: '#f6e6c8', pad: '#7d7a34' } };
+const TG = (c, still, x = 150, size = 46, anchor = 'middle') => `<g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="${x}" y="128" text-anchor="${anchor}" font-family="Newsreader,serif" font-size="${size}" fill="${c.ink}">Together</text>`;
+const LINE = (c, x1 = 40, x2 = 260) => `<line x1="${x1}" y1="80" x2="${x2}" y2="80" stroke="${c.line}" stroke-opacity=".7"/>`;
+const LOGOS = {
+  leaf: { name: 'Leaf on the water', mark(c, still) {
+    const leaf = `<path d="M222 78C227 66 240 61 256 62C254 72 244 79 222 78Z" fill="${c.leaf}"/><path d="M224 77C234 72 243 67 254 63" stroke="${c.v}" stroke-width="1.2" fill="none"/>`;
+    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="150" y="62" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Look</text>${leaf}</g>${LINE(c)}${TG(c, still)}<g transform="translate(0 160) scale(1 -1)" opacity=".5">${leaf}</g></g>`; },
+    icon: (c, e) => `<path d="M26 56C33 38 52 30 76 31C73 46 58 57 26 56Z" fill="${c.leaf}"/><path d="M26 56C33 74 52 82 76 81C73 66 58 55 26 56Z" fill="${c.leaf}" opacity=".35"/>` },
+  ripples: { name: 'Two ripples meeting', mark(c, still) { // the two o's of Look are two drops' ripples, overlapping
+    const o = (cx, k) => `<circle cx="${cx}" cy="49" r="12.5" fill="none" stroke="${c.ink}" stroke-width="3.6"/><circle cx="${cx}" cy="49" r="19" fill="none" stroke="${c.ink}" stroke-width="1" opacity=".35"/><circle cx="${cx}" cy="49" r="25" fill="none" stroke="${c.ink}" stroke-width=".7" opacity="${.18 * k}"/>`;
+    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="125" y="62" text-anchor="end" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">L</text>${o(139, 1)}${o(166, 1)}<text x="181" y="62" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">k</text></g>${LINE(c)}${TG(c, still)}</g>`; },
+    icon: (c, e) => [[38, 0], [62, 0]].map(([x]) => [9, 17, 25, 33].map((r, k) => `<ellipse cx="${x}" cy="70" rx="${r}" ry="${r * .4}" fill="none" stroke="${e ? '#ffd9b0' : '#ffffff'}" stroke-width="${2.4 - k * .5}" opacity="${1 - k * .22}"/>`).join('') + `<circle cx="${x}" cy="70" r="2.5" fill="${e ? '#ffd9b0' : '#fff'}"/>`).join(''), full: true },
+  sun: { name: 'Sun (or moon) and its reflection', mark(c, still) {
+    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><circle cx="70" cy="52" r="20" fill="${c.sun}"/><text x="108" y="66" font-family="Newsreader,serif" font-size="48" fill="${c.ink}">Look</text></g>${LINE(c, 30, 270)}
+      ${TG(c, still, 108, 40, 'start')}${[[92, 38], [100, 30], [108, 20], [116, 10]].map(([y, w], k) => `<line x1="${70 - w / 2}" y1="${y}" x2="${70 + w / 2}" y2="${y}" stroke="${c.sun}" stroke-width="3" stroke-linecap="round" opacity="${.85 - k * .18}"/>`).join('')}</g>`; },
+    icon: (c, e) => `<circle cx="50" cy="38" r="15" fill="${c.sun}"/>${[[63, 30], [70, 24], [77, 16], [84, 8]].map(([y, w], k) => `<line x1="${50 - w / 2}" y1="${y}" x2="${50 + w / 2}" y2="${y}" stroke="${c.sun}" stroke-width="3.2" stroke-linecap="round" opacity="${.9 - k * .2}"/>`).join('')}` },
+  pad: { name: 'Lily pad for an o', mark(c, still) { // the first o of Look is a lily pad from above, a lotus beside it
+    return `<g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="125" y="62" text-anchor="end" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">L</text>
+      <g transform="translate(126 36) scale(.27)"><path d="${PAD_PATH}" fill="${c.pad}"/></g><text x="153" y="62" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">ok</text></g>${LINE(c)}${TG(c, still)}</g>`; },
+    icon: (c, e) => `<g transform="translate(14 46) scale(.72 .34)"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${e ? '#4c4a1c' : '#3f6e30'}" stroke-width="3"/></g><g transform="translate(40 30)">${[-45, -15, 15, 45].map(a => `<ellipse cx="10" cy="12" rx="4" ry="11" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 10 22)"/>`).join('')}</g>` },
+};
+function wordmark(w, sn, still, logo = S.logo) { return `<svg width="${w}" viewBox="0 0 300 160">${LOGOS[logo].mark(PAL[sn], still).replace(/<\/g>$/, '</g>')}</svg>`; }
+function appIcon(s, sn, logo = S.logo) {
+  const e = sn === 'evening', id = 'g' + s + sn + logo, L = LOGOS[logo];
+  return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><defs><linearGradient id="${id}s" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#1e1a32' : '#c9dfec'}"/><stop offset="1" stop-color="${e ? '#c07a4c' : '#f7efe0'}"/></linearGradient>
+    <linearGradient id="${id}w" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#6a4a44' : '#dfe8de'}"/><stop offset="1" stop-color="${e ? '#14142a' : '#6e97a0'}"/></linearGradient><clipPath id="${id}c"><rect width="100" height="100" rx="22"/></clipPath></defs>
+    <g clip-path="url(#${id}c)">${L.full ? `<rect width="100" height="100" fill="url(#${id}w)"/>` : `<rect width="100" height="56" fill="url(#${id}s)"/><rect y="56" width="100" height="44" fill="url(#${id}w)"/><line x1="0" y1="56" x2="100" y2="56" stroke="#fff" stroke-opacity=".6"/>`}${L.icon(PAL[sn], e)}</g></svg>`;
+}
 const IC = { back: '<path d="M15 5l-7 7 7 7"/>', l: '<path d="M15 5l-7 7 7 7"/>', r: '<path d="M9 5l7 7-7 7"/>', mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
   stop: '<rect x="7" y="7" width="10" height="10"/>', more: '<circle cx="5" cy="12" r=".7"/><circle cx="12" cy="12" r=".7"/><circle cx="19" cy="12" r=".7"/>' };
 const ic = k => `<svg class="i" viewBox="0 0 24 24">${IC[k]}</svg>`;
-function floatLeaf({ w, rot, fill, label, act, style, primary, dry, aria }) {
-  return `<button class="fleaf ${primary ? 'primary' : ''} ${dry ? 'dry' : ''}" style="${style}" data-act="${act}" aria-label="${aria || label}">
-    <span class="body"><span class="ring"></span><span class="ring r2"></span><span class="shadow"></span><span class="lf">${LEAF(w, rot, fill)}</span></span>${label ? `<span class="lbl">${label}</span>` : ''}</button>`;
+
+// ---------- the brook: a long meander, with currents that follow it and stones it babbles round ----------
+const CW = 2600, cy = x => 210 + 70 * Math.sin(x / 210) + 26 * Math.sin(x / 83 + 1.3);
+const cpath = (dy = 0, wob = 0) => 'M' + Array.from({ length: CW / 20 + 1 }, (_, k) => { const x = k * 20; return `${x} ${(cy(x) + dy + wob * Math.sin(x / 37 + dy)).toFixed(1)}`; }).join(' L');
+function creekSvg() {
+  const lanes = [[-34, '10 44', 5200], [-17, '22 60', 3900], [0, '14 36', 3300], [16, '26 52', 4300], [33, '8 40', 5600]];
+  const rocks = [170, 470, 760, 1080, 1390, 1700, 2010, 2320].map((x, k) => [x, cy(x) + (k % 2 ? 22 : -20), 9 + (k % 3) * 4]);
+  return `<svg class="creek" id="creek" width="${CW}" height="560"><g id="creekg">
+    <path d="${cpath()}" stroke="var(--creek)" stroke-width="104" stroke-linecap="round" fill="none" opacity=".16"/>
+    <path d="${cpath()}" stroke="var(--creek)" stroke-width="60" stroke-linecap="round" fill="none" opacity=".12"/>
+    ${lanes.map(([dy, da, ms]) => `<path class="cur" data-ms="${ms}" data-len="${da.split(' ').reduce((a, b) => a + +b, 0) * 6}" d="${cpath(dy, 4)}" stroke="var(--rip)" stroke-width="1.3" stroke-linecap="round" fill="none" stroke-dasharray="${da}"/>`).join('')}
+    ${rocks.map(([x, y, r], k) => `<ellipse class="babble" cx="${x}" cy="${y}" rx="${r * 2.2}" ry="${r * .9}" fill="none" stroke="var(--rip)" stroke-width="1" style="animation-delay:-${k * .7}s"/>
+      <ellipse class="babble" cx="${x}" cy="${y}" rx="${r * 2.2}" ry="${r * .9}" fill="none" stroke="var(--rip)" stroke-width="1" style="animation-delay:-${k * .7 + 1.6}s"/>
+      <ellipse cx="${x}" cy="${y}" rx="${r * 1.3}" ry="${r * .55}" fill="rgba(40,40,40,.35)"/><ellipse cx="${x - 2}" cy="${y - 1.5}" rx="${r * 1.1}" ry="${r * .4}" fill="rgba(160,160,150,.35)"/>`).join('')}
+  </g></svg>`;
 }
 
 // ---------- voice: warms along the current Path, or at once when the model signals softening ----------
@@ -223,7 +274,7 @@ function tier() {
 const V = (...a) => a[Math.min(tier(), a.length - 1)];
 const W = {
   problemT: () => V('What are you facing?', 'What are you facing?', 'What would you like to look at?'),
-  problemHelp: () => V('Something to face, not fix.', 'Something in your life to face, not fix.', 'Something in your life you\'d like to face, not fix. Write it however it comes.'),
+  problemHelp: () => V('Something to face, not fix.', 'Something in your life to face, not fix.', 'Something in your life you\'d like to face, not fix.'),
   problemPh: () => V('As it comes.', 'Write it as it comes.', 'However it comes is fine.'),
   pick: () => V('Where to look first?', 'Pick one to look at.', 'Where would you like to look next?'),
   reflPh: () => V('As it comes.', 'Take your time.', 'Take all the time you need.'),
@@ -256,6 +307,7 @@ const SAMPLE = 'I think I\'m scared that if I stop being the reliable one, nobod
 function seed() {
   const q = new URLSearchParams(location.search);
   return { season: q.get('season') || 'auto', still: false, soften: false,
+    controls: ['boat', 'lily', 'stones'].includes(q.get('controls')) ? q.get('controls') : 'boat', logo: LOGOS[q.get('logo')] ? q.get('logo') : 'leaf',
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
     unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5 }, { problem: 'I keep putting off calling my father.', days: 2 }],
@@ -280,37 +332,37 @@ function splash() {
 }
 function home() {
   const live = inq() && inq().status === 'live', sn = season();
-  return { wl: '33%',
-    above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(54px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
-    below: `<div class="scroll pad" style="padding-top:74px;padding-bottom:140px">
+  return { wl: '27%',
+    above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(51px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
+    below: `<div class="scroll pad" style="padding-top:64px;padding-bottom:150px">
       ${live ? `<div class="card tap float" data-act="resume"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div>` : ''}
       <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start"><span>${LEAF(22, -20, leafColour(u.days))}</span><p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
       <h3>Recaps</h3>${S.past.map(p => `<div class="card tap"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div>`).join('')}</div>`,
     extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
-      ${floatLeaf({ w: 44, rot: 20, label: 'Settings', act: 'settings', style: 'left:16px;top:calc(var(--wl) + 8px);flex-direction:column;gap:0' })}
-      ${floatLeaf({ w: 70, rot: -15, label: S.todayDone ? 'Next at 15:40' : '＋ New Inquiry', act: 'newLeaf', style: 'right:18px;bottom:34px', primary: true, dry: S.todayDone, aria: 'New Inquiry' })}
+      ${pondButton({ role: 'secondary', label: 'Settings', act: 'settings', style: 'left:12px;top:calc(var(--wl) + 4px)' })}
+      ${pondButton({ role: 'primary', label: S.todayDone ? 'Next at 15:40' : 'New Inquiry', act: 'newLeaf', style: 'right:14px;bottom:30px', dry: S.todayDone })}
       ${S.leafNote ? `<div class="card leafnote fadein"><p style="margin:0"><b>Today's Inquiry is done.</b></p><p class="small mut" style="margin:2px 0 0">The next one opens at 15:40.</p></div>` : ''}` };
 }
 
 function writeHalf(kind) {
   const v = kind === 'problem' ? S.problemDraft : S.draft, ph = kind === 'problem' ? W.problemPh() : W.reflPh();
-  return `<div class="pad grow" style="display:flex;flex-direction:column;padding-top:24px"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea><p class="small mut" style="margin:0">${W.sent()}</p></div>
+  return `<div class="pad grow" style="display:flex;flex-direction:column;padding-top:20px"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea><p class="small mut" style="margin:0">${W.sent()}</p></div>
     <div class="ctrl"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
     <span class="ailabel">ai · not therapy</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div>`;
 }
 
 function problem() {
-  return { wl: '42%', kbWl: '34%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:20px"><p class="small mut">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
+  return { wl: '36%', kbWl: '30%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:16px"><p class="small mut hide-kb" style="margin-top:0">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut hide-kb" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
     below: writeHalf('problem') };
 }
 function probes() {
   const i = inq(), any = i.probes.some(p => p.status === 'looked');
-  return { wl: '66%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 6px">${W.pick()}</p>
-      ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:17px;margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}
-      ${any ? `<div class="center" style="margin:10px 0"><p class="small mut">${W.finish()}</p><button class="pri" data-act="finish">Finish</button></div>` : ''}</div>`,
-    below: `<div class="pad"><p class="small mut" style="margin:6px 0 2px">Your Problem</p><p class="r" style="font-size:17px">${esc(i.problem)}</p></div>` };
+  return { wl: '64%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 4px">${W.pick()}</p>
+      ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:17px;margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}</div>`,
+    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><p class="small mut" style="margin:8px 0 2px">Your Problem</p><p class="r" style="font-size:17px">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
+    extra: any ? pondButton({ role: 'primary', label: 'Finish Inquiry', act: 'finish', style: 'right:14px;bottom:30px' }) : '' };
 }
 function path() {
   const p = probe(), s = PS[p.id], st = steps(p), looked = p.status === 'looked', last = looked ? st.length : st.length - 1;
@@ -321,29 +373,29 @@ function path() {
   const read = `<button class="link small mut" data-act="readAll">Read it all</button>`;
   const root = `<button class="pri" data-act="closePath">${W.toProbes()}</button>`;
   const head = topbar(backBtn('closePath', 'Probes'), helpBtn());
-  if (S.readAll) return { wl: '14%', above: topbar(backBtn('closeRead', 'Path'), helpBtn()),
-    below: `<div class="scroll pad">${st.filter(x => x.r).map(x => `<div class="pair"><div class="pq" style="color:var(--wink)">${x.q}</div><div class="pl"></div><div class="pr">${esc(x.r)}</div></div>`).join('')}
+  if (S.readAll) return { wl: '12%', above: topbar(backBtn('closeRead', 'Path'), helpBtn()),
+    below: `<div class="scroll pad" style="padding-top:18px">${st.filter(x => x.r).map(x => `<div class="pair"><div class="pq" style="color:var(--wink)">${x.q}</div><div class="pl"></div><div class="pr">${esc(x.r)}</div></div>`).join('')}
       <div class="center" style="margin:20px 0 40px">${root}</div></div>` };
   if (looked && vi === st.length) // the closing view: what the app hands back above, the person's own words below, and the way back to the root
-    return { wl: '42%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px"><p class="small mut">Looked at · ${W.outcome(s.outcome)}</p>
-      ${s.openq ? `<p class="small mut" style="margin-top:12px">Open Question</p><p class="q">${s.openq}</p>` : `<p class="q mut" style="font-size:17px">${s.premise}</p>`}</div>`,
-      below: `<div class="pad ${mv}" style="padding-top:28px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:18px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
+    return { wl: '36%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px"><p class="small mut" style="margin:0">Looked at · ${W.outcome(s.outcome)}</p>
+      ${s.openq ? `<p class="small mut" style="margin-top:10px">Open Question</p><p class="q">${s.openq}</p>` : `<p class="q mut" style="font-size:17px">${s.premise}</p>`}</div>`,
+      below: `<div class="pad ${mv}" style="padding-top:26px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:16px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
   const offer = vi === 1 && s.offer ? (p.offered ? `<p class="small mut">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>`
     : `<div class="card offer">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Yes</button><button data-act="offer" data-a="no">No</button></div></div>`) : '';
-  return { wl: '42%', kbWl: '34%',
-    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px">
-      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
+  return { wl: offer && !p.offered ? '48%' : '36%', kbWl: '30%',
+    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px">
+      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
       ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div>`,
-    below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:24px"><p class="under">${W.under()} ${s.premise}</p></div>` : '')
-      + (p.pending ? `<div class="pad" style="padding-top:28px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
-        : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:28px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
+    below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:22px"><p class="premise">${W.under()} ${s.premise}</p></div>` : '')
+      + (p.pending ? `<div class="pad" style="padding-top:26px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
+        : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:26px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
     extra: nav };
 }
 function recap() {
   const i = inq(), looked = i.probes.filter(p => p.status === 'looked'), notYet = i.probes.filter(p => p.status !== 'looked'), oqs = looked.map(p => PS[p.id].openq).filter(Boolean);
-  return { wl: '30%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0"><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px">What you looked at</p></div>`,
-    below: `<div class="scroll pad">
+  return { wl: '22%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0"><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div>`,
+    below: `<div class="scroll pad" style="padding-top:18px">
       ${looked.map(p => `<div class="pair"><div class="pq" style="color:var(--wink)">${PS[p.id].premise} <span class="small" style="opacity:.75">· ${W.outcome(PS[p.id].outcome)}</span></div><div class="pl"></div>${PS[p.id].quote ? `<div class="pr">“${PS[p.id].quote}”</div>` : '<div class="pr" style="opacity:.6">—</div>'}</div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
       ${notYet.length ? `<h3>Not looked at yet</h3>${notYet.map(p => `<p style="opacity:.75">${PS[p.id].probe}</p>`).join('')}` : ''}
@@ -351,7 +403,7 @@ function recap() {
       <div style="height:40px"></div></div>` };
 }
 function settingsScreen() {
-  return { wl: '18%', above: topbar(backBtn('home', 'Home')), below: `<div class="scroll pad">${['Region: United States', 'Season: follows the time of day', 'Crash reports: on', 'Export all', 'Import', 'Sent reports', 'About Look Together', 'Privacy', 'Sign out'].map(l => `<div class="card" style="margin:6px 0">${l}</div>`).join('')}</div>` };
+  return { wl: '13%', above: topbar(backBtn('home', 'Home')), below: `<div class="scroll pad" style="padding-top:16px">${['Region: United States', 'Season: follows the time of day', 'Crash reports: on', 'Export all', 'Import', 'Sent reports', 'About Look Together', 'Privacy', 'Sign out'].map(l => `<div class="card" style="margin:6px 0">${l}</div>`).join('')}</div>` };
 }
 const contacts = `<div class="contact"><b>988 Suicide &amp; Crisis Lifeline</b><br><span class="small">Call or text 988 · US</span></div><div class="contact"><b>Crisis Text Line</b><br><span class="small">Text HOME to 741741</span></div><p class="small">Somewhere else? findahelpline.com</p>`;
 
@@ -369,38 +421,46 @@ function render() {
   document.getElementById('ui').innerHTML = `<div class="layer"><div class="above">${sc.above}</div><div class="below">${sc.below}</div></div>${sc.extra || ''}${sheet}
     <div class="kbd">${'<b></b>'.repeat(27)}<span class="done kbdone">done</span></div>`;
   if (S.screen === 'splash' && lastScreen !== 'splash') playSplash();
-  // the water: a stream along a Path, slowing into a pool at the Recap, still everywhere else
-  if (S.screen !== lastScreen) flowTo(S.screen === 'path' ? 1 : 0, S.screen === 'recap' ? 4000 : 1400);
+  // the water: a brook along a Path, quietening into a pool at the Recap, still everywhere else
+  if (S.screen !== lastScreen) brookTo(S.screen === 'path' ? 1 : 0, S.screen === 'recap' ? 4500 : 1400);
+  if (S.screen === 'path') walkBrook(S.vi);
   if (S.screen === 'home') startLeafFall();
   lastScreen = S.screen; S.justReplied = false; S.dir = null;
   renderSide(); renderProto();
 }
 function renderSide() {
-  const sn = season();
-  document.getElementById('side').innerHTML = `<div class="box"><h4>Wordmark · ${sn}</h4><div style="background:linear-gradient(${sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0'});border-radius:10px">${wordmark(270, sn, true)}</div></div>
-    <div class="box"><h4>App icon</h4><div class="row" style="align-items:flex-end">${appIcon(88, sn)}${appIcon(58, sn)}${appIcon(30, sn)}${appIcon(58, sn === 'evening' ? 'morning' : 'evening')}</div></div>
-    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. The pool is a pond in a forest on home, a stream flowing right (forward) along a Path, and a pool again at the Recap. Help and the Step-out still the water.</div>
+  const sn = season(), bg = sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0';
+  document.getElementById('side').innerHTML = `<div class="box"><h4>Logo options · click to use</h4><div class="logos">${Object.keys(LOGOS).map(k => `<div class="${S.logo === k ? 'on' : ''}" data-logo="${k}"><div style="background:linear-gradient(${bg});display:flex;justify-content:center">${wordmark(140, sn, true, k)}</div><span>${LOGOS[k].name}</span></div>`).join('')}</div></div>
+    <div class="box"><h4>App icons · ${sn}</h4><div class="row" style="align-items:flex-end;flex-wrap:wrap">${Object.keys(LOGOS).map(k => appIcon(k === S.logo ? 62 : 46, sn, k)).join('')}${appIcon(30, sn)}</div></div>
+    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. A pond in a forest on home, a brook you walk along on a Path, a pool again at the Recap. Help and the Step-out still the water.</div>
     <div class="box"><h4>Not yet</h4>Animation is placeholder. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits between snappy and calm.</div>
-    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
+    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>controls: ${S.controls} · logo: ${S.logo}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
 }
 function renderProto() {
+  const sel = (p, opts, cur) => `<select data-p="${p}">${opts.map(([v, l]) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
   document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span>
-    <select data-p="season">${['auto', 'morning', 'evening'].map(v => `<option ${S.season === v ? 'selected' : ''}>${v}</option>`).join('')}</select>
+    ${sel('season', [['auto', 'auto'], ['morning', 'morning'], ['evening', 'evening']], S.season)}
+    ${sel('controls', [['boat', 'controls: rowboat + lily'], ['lily', 'controls: lily pads'], ['stones', 'controls: stones']], S.controls)}
+    ${sel('logo', Object.keys(LOGOS).map(k => [k, 'logo: ' + k]), S.logo)}
     <button data-p="soften" class="${S.soften ? 'on' : ''}">model: ${S.soften ? 'softening' : 'neutral'}</button>
     <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
-    <select data-p="jump"><option value="">jump to…</option>${[['splash', 'opening'], ['home', 'home'], ['new', 'new Inquiry'], ['probes', 'Probe list'], ['path', 'a Path, writing'], ['pathmid', 'a Path, read back'], ['ended', 'an ended Path'], ['recap', 'Recap'], ['help', 'Help'], ['stepout', 'Step-out']].map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>
-    <button data-p="reset">reset</button><span style="opacity:.6">type "hurt myself" → Step-out</span>`;
+    ${sel('jump', [['', 'jump to…'], ['splash', 'opening'], ['home', 'home'], ['new', 'new Inquiry'], ['probes', 'Probe list'], ['path', 'a Path, writing'], ['pathmid', 'a Path, read back'], ['ended', 'an ended Path'], ['recap', 'Recap'], ['help', 'Help'], ['stepout', 'Step-out']], '')}
+    <button data-p="reset">reset</button>`;
 }
 
-// ---------- water: stream, ripples, drops, settling, falling leaves ----------
-let flowAnim = null, flowRate = 0, flowRaf = null;
-function flowTo(target, ms) {
-  const el = document.getElementById('flow');
-  if (!flowAnim) { flowAnim = el.animate([{ backgroundPosition: '0 0, 40px 6px' }, { backgroundPosition: '320px 0, 234px 6px' }], { duration: 9000, iterations: Infinity }); flowAnim.playbackRate = 0; }
+// ---------- water: the brook, ripples, drops, falling leaves ----------
+let brookAnims = [], brookRate = 0, brookRaf = null;
+function brookTo(target, ms) {
+  const el = document.getElementById('creek');
+  if (!brookAnims.length) brookAnims = [...el.querySelectorAll('.cur')].map(p => { const a = p.animate([{ strokeDashoffset: 0 }, { strokeDashoffset: -+p.dataset.len }], { duration: +p.dataset.ms * 6, iterations: Infinity }); a.playbackRate = 0.0001; return a; });
   if (S.still) target = 0;
-  cancelAnimationFrame(flowRaf); const from = flowRate, t0 = performance.now();
-  (function f(t) { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); flowRate = from + (target - from) * e;
-    flowAnim.playbackRate = Math.max(flowRate, 0.0001); el.style.opacity = String(flowRate * .55); if (k < 1) flowRaf = requestAnimationFrame(f); })(t0);
+  el.style.opacity = target ? '1' : '0'; el.style.transitionDuration = ms + 'ms';
+  cancelAnimationFrame(brookRaf); const from = brookRate, t0 = performance.now();
+  (function f(t) { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); brookRate = from + (target - from) * e;
+    brookAnims.forEach(a => a.playbackRate = Math.max(brookRate, 0.0001)); if (k < 1) brookRaf = requestAnimationFrame(f); })(t0);
+}
+function walkBrook(vi) { // each step moves you a little way down the meander
+  document.getElementById('creekg').style.transform = `translateX(${-vi * 330 - 60}px)`;
 }
 let rings = [], rafOn = false;
 function ripple(x, y, n = 3) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
@@ -431,7 +491,7 @@ function startLeafFall() { // now and then a leaf comes off a tree and drifts do
     if (S.screen !== 'home') return;
     if (!S.still && !S.sheet) {
       const app = document.getElementById('app'), wl = wlPx(), left = Math.random() < .5;
-      const x0 = left ? 20 + Math.random() * 70 : 290 + Math.random() * 70, y0 = wl - 110 + Math.random() * 40;
+      const x0 = left ? 20 + Math.random() * 70 : 290 + Math.random() * 70, y0 = wl - 100 + Math.random() * 40;
       const x1 = x0 + (left ? 1 : -1) * (60 + Math.random() * 90), y1 = wl + 20 + Math.random() * 50;
       const el = document.createElement('div'); el.className = 'flyer'; el.innerHTML = LEAF(14 + Math.random() * 6, Math.random() * 360, CROWNS[season()][Math.floor(Math.random() * 4)]);
       el.style.left = x0 + 'px'; el.style.top = y0 + 'px'; app.appendChild(el);
@@ -484,7 +544,7 @@ function jump(v) {
   if (v === 'path') return go('path', { path: 'p2', vi: 1 });
   if (v === 'pathmid') return go('path', { path: 'p1', vi: 1 });
   if (v === 'ended') return go('path', { path: 'p1', vi: 3 });
-  if (v === 'recap') { S.today.status = 'ended'; lastScreen = 'path'; flowTo(1, 1); return go('recap'); }
+  if (v === 'recap') { S.today.status = 'ended'; lastScreen = 'path'; brookTo(1, 1); return go('recap'); }
   if (v === 'help') { go('path', { path: 'p2', vi: 1 }); S.sheet = 'help'; return render(); }
   if (v === 'stepout') return go('stepout');
 }
@@ -497,29 +557,33 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const p = e.target.dataset.p;
   if (p === 'season') { S.season = e.target.value; render(); }
+  if (p === 'controls') { S.controls = e.target.value; render(); }
+  if (p === 'logo') { S.logo = e.target.value; render(); }
   if (p === 'jump') jump(e.target.value);
 });
 document.addEventListener('click', e => {
+  const lg = e.target.closest('[data-logo]'); if (lg) { S.logo = lg.dataset.logo; return render(); }
   const pb = e.target.closest('button[data-p]');
   if (pb) { const p = pb.dataset.p;
-    if (p === 'still') { S.still = !S.still; flowTo(S.screen === 'path' ? 1 : 0, 300); render(); }
+    if (p === 'still') { S.still = !S.still; brookTo(S.screen === 'path' ? 1 : 0, 300); render(); }
     if (p === 'soften') { S.soften = !S.soften; render(); }
-    if (p === 'reset') { const { season, still } = S; S = seed(); Object.assign(S, { season, still, screen: 'home' }); render(); } return; }
+    if (p === 'reset') { const { season, still, controls, logo } = S; S = seed(); Object.assign(S, { season, still, controls, logo, screen: 'home' }); render(); } return; }
   if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('home'), S.still ? 0 : 500); }
   const el = e.target.closest('[data-act]');
   if (!el) { // a tap on open water ripples
     const a = document.getElementById('app'); if (!a.contains(e.target) || e.target.closest('textarea,.kbd,.sheet,.plain')) return;
     const r = a.getBoundingClientRect(), y = e.clientY - r.top; if (y > wlPx()) ripple(e.clientX - r.left, y, 1); return; }
   const a = el.dataset.act, kind = el.dataset.kind;
+  const rippleAt = () => { const r = el.querySelector('.bobber').getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + r.height * .6, 2); };
   ({
-    home: () => go('home', { path: null }), settings: () => go('settings'),
-    newLeaf: () => { if (S.todayDone) { S.leafNote = !S.leafNote; return render(); } const r = el.querySelector('.lf').getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + r.height / 2, 2); setTimeout(() => go('problem'), 350); },
+    home: () => go('home', { path: null }), settings: () => { rippleAt(); setTimeout(() => go('settings'), 300); },
+    newLeaf: () => { if (S.todayDone) { S.leafNote = !S.leafNote; return render(); } rippleAt(); setTimeout(() => go('problem'), 350); },
     resume: () => go('probes'), fill: () => { S.problemDraft = PROBLEM; render(); },
     openPath: () => { const p = inq().probes.find(x => x.id === el.dataset.pid), st = steps(p); go('path', { path: p.id, vi: p.status === 'looked' ? 0 : st.length - 1 }); },
     closePath: () => go('probes', { path: null }), readAll: () => { S.readAll = true; render(); }, closeRead: () => { S.readAll = false; render(); },
     prev: () => { S.vi = Math.max(0, S.vi - 1); S.dir = 'prev'; render(); }, next: () => { S.vi++; S.dir = 'next'; render(); },
     reveal: () => { probe().reveal = true; render(); }, offer: () => { probe().offered = el.dataset.a; render(); },
-    submit: () => submit(kind), finish: () => { inq().status = 'ended'; go('recap'); }, worth: () => { inq().worth = el.dataset.w; render(); },
+    submit: () => submit(kind), finish: () => { rippleAt(); inq().status = 'ended'; setTimeout(() => go('recap'), 350); }, worth: () => { inq().worth = el.dataset.w; render(); },
     mic: () => { S.dictating = !S.dictating; if (!S.dictating) { if (kind === 'problem') S.problemDraft += (S.problemDraft ? ' ' : '') + PROBLEM; else S.draft += (S.draft ? ' ' : '') + SAMPLE; } render(); },
     help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
   }[a] || (() => {}))();
@@ -532,6 +596,7 @@ document.addEventListener('pointerdown', e => { const a = document.getElementByI
 document.addEventListener('pointerup', e => { if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null;
   if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { const b = document.querySelector(`.stepnav button[data-act=${dx < 0 ? 'next' : 'prev'}]`); if (b && !b.disabled) b.click(); } });
 
+document.getElementById('water').innerHTML = creekSvg();
 const J = new URLSearchParams(location.search).get('jump'); if (J) jump(J); else render();
 </script>
 </body>
