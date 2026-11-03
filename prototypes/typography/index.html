@@ -6,6 +6,10 @@
 <title>PROTOTYPE · Look Together typography</title>
 <!--
   PROTOTYPE, throwaway. "What typography does Look Together use?" (wayfinder ticket #58 on map #1).
+  ROUND 2: typeface E (Fraunces + Nunito) CHOSEN, the tidy scale on by default, lily pads grow with the text up to 135%.
+  The switcher (← → / ?lg=) now cycles ways to keep words legible on the sky and water:
+    off · halo (round 1) · retuned colours · ink by depth · frosted wells.  ?type=A…E still swaps the typeface.
+  Round 1 below:
   Five typefaces on the first-Inquiry pond prototype (#55, below), switchable via ?variant=A|B|C|D|E (← → / the bar):
     A  Newsreader + Inter (what the look prototype used)    B  Literata alone, the person in italic
     C  Atkinson Hyperlegible Next asks, Source Serif 4 answers    D  the platform's own sans, nothing bundled
@@ -112,7 +116,7 @@
   .flyer { position:absolute; z-index:5; pointer-events:none; }
 
   /* things found on a pond, used as the two controls */
-  .pobj { position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; flex-direction:column; align-items:center; }
+  .pobj { zoom:var(--tsp); position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; flex-direction:column; align-items:center; }
   .pobj .body { position:relative; display:grid; place-items:center; }
   .pobj .bobber { position:relative; z-index:2; animation:pbob 6.5s ease-in-out infinite; display:grid; place-items:center; }
   .pobj.boat .bobber { animation-name:rock; animation-duration:5s; }
@@ -123,10 +127,10 @@
   @keyframes pbob { 0%,100% { transform:translateY(0) rotate(0); } 40% { transform:translateY(1.5px) rotate(.8deg); } 75% { transform:translateY(-1px) rotate(-.6deg); } }
   @keyframes rock { 0%,100% { transform:rotate(-2deg) translateY(0); } 50% { transform:rotate(2deg) translateY(1.5px); } }
   @keyframes ringout { 0% { transform:scale(.7); opacity:.55; } 100% { transform:scale(1.7); opacity:0; } }
-  .pobj .on { position:absolute; inset:0; display:grid; place-items:center; z-index:3; pointer-events:none; font:var(--w-pad) calc(15px*var(--tsp))/1.1 var(--f-pad); font-style:var(--st-pad); color:#fbf6ea; text-shadow:0 1px 3px rgba(0,0,0,.45); white-space:nowrap; }
+  .pobj .on { position:absolute; inset:0; display:grid; place-items:center; z-index:3; pointer-events:none; font:var(--w-pad) 15px/1.1 var(--f-pad); font-style:var(--st-pad); color:#fbf6ea; text-shadow:0 1px 3px rgba(0,0,0,.45); white-space:nowrap; }
   .pobj.stones .on { color:#2f2f2c; text-shadow:0 1px 0 rgba(255,255,255,.5); font-weight:600; }
   #app.evening .pobj.stones .on { color:#f2ece4; text-shadow:0 1px 0 rgba(0,0,0,.5); }
-  .pobj .under { font-size:calc(12px*var(--tsp)); color:var(--wink); text-shadow:0 1px 3px rgba(0,0,0,.25); margin-top:2px; font-style:normal; }
+  .pobj .under { font-size:12px; color:var(--wink); text-shadow:0 1px 3px rgba(0,0,0,.25); margin-top:2px; font-style:normal; }
   .pobj.dry { opacity:.75; } .pobj.dry .ring { display:none; }
   .leafnote { position:absolute; right:20px; bottom:130px; z-index:7; width:230px; }
 
@@ -249,9 +253,19 @@
   .typo.t-E .me, .typo.t-E .r, .typo.t-E textarea.ref, .typo.t-E .pr, .typo.t-E .rquote { font-variation-settings:normal; }
   /* a tidy scale: six steps (12 caption, 14 control, 16 body, 18 reading, 22 question, 28 title) instead of the prototype's eleven */
   #app.tidy { --s11:12px; --s11_5:12px; --s12_5:12px; --s13:14px; --s15:16px; --s17:18px; --s19:18px; --s24:28px; --s26:28px; }
-  /* a soft halo behind words on the sky and water */
-  #app.halo.morning .layer { text-shadow:0 0 8px rgba(255,255,255,.6), 0 0 2px rgba(255,255,255,.5); }
-  #app.halo.evening .layer { text-shadow:0 0 8px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
+  /* ---------- legibility on the sky and water (#58, round 2) ---------- */
+  /* halo: a soft glow behind every letter (round 1; didn't help much) */
+  #app.lg-halo.morning .layer { text-shadow:0 0 8px rgba(255,255,255,.6), 0 0 2px rgba(255,255,255,.5); }
+  #app.lg-halo.evening .layer { text-shadow:0 0 8px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
+  /* retuned: the same scene, its colours moved just far enough that every pair passes 4.5 */
+  #app.lg-retuned.morning { --mut:#536165; --wat2:#8fb0b6; --wmut:#22414a; }
+  #app.lg-retuned.evening { --sky2:#8f5d44; --mut:#e3d8cb; --wat1:#604441; --wmut:#d5c4b3; }
+  /* well: a soft, frosted patch of sky or water colour behind each block of words */
+  #app.lg-well.morning { --wellC:rgba(247,241,228,.5); } #app.lg-well.evening { --wellC:rgba(24,20,42,.5); }
+  #app.lg-well .layer :is(p,h1,h3,.q,.r,.premise,textarea.ref):not(:empty):not(.card *,.pobj *,.sheet *,.coach *,.rseg *,.gpool *) {
+    width:fit-content; max-width:100%; background:var(--wellC); box-shadow:0 0 28px 18px var(--wellC); border-radius:40px; }
+  /* depth: each line's ink is chosen for the colour of the sky or water behind it (set by script) */
+  #app.lg-depth [data-flip] { transition:color .4s; }
   #side .spec { margin:6px 0 10px; } #side .spec b { display:block; font:11px system-ui; color:#666; letter-spacing:.04em; text-transform:uppercase; }
   #side table { border-collapse:collapse; width:100%; font-size:12px; } #side td { padding:2px 4px; } #side td.bad { color:#a33; font-weight:600; } #side td.ok { color:#373; }
 </style>
@@ -423,7 +437,14 @@ const TYPES = {
   D: { name: 'Platform sans', fonts: 'SF Pro on Apple, Roboto on Android, Segoe on Windows. Nothing bundled',
     about: 'The phone\'s own type. Nothing to license or bundle, and dynamic type and accessibility sizes behave exactly as the OS intends. The app\'s words go a weight heavier. Feels like any app; the pond has to carry all the character.' },
   E: { name: 'Fraunces + Nunito', fonts: 'Fraunces, soft (app, wordmark) · Nunito (person, controls)',
-    about: 'Soft and round. Fraunces with its soft axis full on for what the app says, rounded Nunito for the person and the controls. The warmest, most storybook of the five.' },
+    about: 'CHOSEN. Soft and round. Fraunces with its soft axis full on for what the app says, rounded Nunito for the person and the controls. The warmest, most storybook of the five.' },
+};
+const LG = {
+  off: { name: 'as is', about: 'The look prototype\'s colours, untouched. Evening fails at the waterline: cream on the dusk glow is 2.9, muted text 1.9.' },
+  halo: { name: 'halo', about: 'Round 1: a soft glow behind every letter. Didn\'t help much. Not counted below, since it changes the background under each letter.' },
+  retuned: { name: 'retuned colours', about: 'The same scene with its colours moved just far enough that every text colour passes 4.5 on every part of the sky and water: a deeper ember dusk at the waterline in the evening, lighter deep water in the morning, darker muted text. No new device; tokens only.' },
+  depth: { name: 'ink by depth', about: 'The colours stay; each line of text picks its ink for what sits behind it. Over the evening glow the words turn dark, as if lit by it; higher in the dusk they stay cream. Within one block the ink changes line by line, so a question that runs down into the glow darkens as it goes. Limit: where the glow is mid-tone, even near-black or near-white only reach about 4.4, so a line sitting there still falls just short. On native: a masked gradient per text block, measured on layout.' },
+  well: { name: 'frosted wells', about: 'A soft, feathered patch of sky or water colour behind each block of words, like still water around them. No edges, so it isn\'t a card. Costs some of the scene where text is dense.' },
 };
 const TS = [[0.85, 'xSmall'], [1, 'default'], [1.18, 'xLarge'], [1.35, 'xxxLarge'], [1.65, 'AX2'], [2, 'AX4'], [2.35, 'AX5']];
 // season colours as in the CSS, for the contrast check
@@ -549,8 +570,8 @@ function seed() {
     logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lilyripples', budOpen: false,
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
-    variant: 'B', type: TYPES[q.get('variant')] ? q.get('variant') : 'A', ts: TS.some(t => t[0] === +q.get('ts')) ? +q.get('ts') : 1,
-    tidy: q.get('scale') === 'tidy', capPad: q.get('cap') !== 'off', halo: q.get('halo') === 'on', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
+    variant: 'B', type: TYPES[q.get('type')] ? q.get('type') : 'E', lg: LG[q.get('lg')] ? q.get('lg') : 'off', ts: TS.some(t => t[0] === +q.get('ts')) ? +q.get('ts') : 1,
+    tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
     intro: 0, wb: 0, guiding: true, skipNote: false, done: new Set(), inlineShown: null,
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
@@ -659,8 +680,8 @@ const contacts = `<div class="contact"><b>988 Suicide &amp; Crisis Lifeline</b><
 let lastScreen = null;
 function render() {
   const app = document.getElementById('app');
-  app.className = season() + (S.still || S.sheet || S.screen === 'stepout' ? ' still' : '') + (S.kb ? ' kb' : '') + ' typo t-' + S.type + (S.tidy ? ' tidy' : '') + (S.halo ? ' halo' : '');
-  app.style.setProperty('--ts', S.ts); app.style.setProperty('--tsp', S.capPad ? Math.min(S.ts, 1.18) : S.ts);
+  app.className = season() + (S.still || S.sheet || S.screen === 'stepout' ? ' still' : '') + (S.kb ? ' kb' : '') + ' typo t-' + S.type + (S.tidy ? ' tidy' : '') + ' lg-' + S.lg;
+  app.style.setProperty('--ts', S.ts); app.style.setProperty('--tsp', Math.min(S.ts, 1.35));
   let sc;
   if (S.screen === 'stepout') sc = { wl: '100%', above: '', below: '', extra: `<div class="plain"><h1>Let's stop here.</h1><p>This is an AI, and it can't help with this the way a person can. It isn't a crisis service.</p><p>If you might be in danger, please reach out now:</p>${contacts}<p class="small" style="margin-top:14px">This Inquiry won't carry on.</p><button data-act="home" style="margin-top:10px">Close</button></div>` };
   else {
@@ -681,12 +702,13 @@ function render() {
   if (S.screen === 'home') startLeafFall();
   lastScreen = S.screen; S.justReplied = false; S.dir = null;
   placeCoach(); setTimeout(placeCoach, 800); // again once screens have finished sliding in
+  legible(); setTimeout(legible, 900); setTimeout(legible, 1800);
   renderSide(); renderProto();
 }
 function renderSide() {
   const sn = season(), bg = sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0';
   const cur = guideKey();
-  const T = TYPES[S.type], P = TPAL[sn];
+  const T = TYPES[S.type], cs = getComputedStyle(document.getElementById('app')), P = Object.fromEntries(Object.keys(TPAL[sn]).map(k => [k, cs.getPropertyValue('--' + k).trim()]));
   const row = (l, fg, bg) => { const c = contrast(P[fg], P[bg]); return `<tr><td>${l}</td><td class="${c >= 4.5 ? 'ok' : 'bad'}">${c.toFixed(1)}${c >= 4.5 ? '' : c >= 3 ? ' large only' : ' fails'}</td></tr>`; };
   document.getElementById('side').innerHTML = `<div class="box"><h4>Typeface ${S.type} · ${T.name}</h4>${T.about}<p style="margin:8px 0 0;color:#555">${T.fonts}</p></div>
     <div class="box"><h4>Roles</h4><div class="typo t-${S.type}" id="specimen" style="--ts:1">
@@ -695,11 +717,13 @@ function renderSide() {
       <div class="spec"><b>Control</b><span style="font:500 15px var(--f-ui)">Back to your Probes</span></div>
       <div class="spec"><b>Lily pad label</b><span style="font:var(--w-pad) 15px var(--f-pad);font-style:var(--st-pad)">New Inquiry</span></div>
       <div class="spec"><b>Wordmark</b><span style="font-size:30px;font-family:var(--f-mark);font-weight:var(--w-mark)">Look Together</span></div></div>
-      <p style="margin:4px 0 0;color:#555">Text size: <b>${TS.find(t => t[0] === S.ts)[1]}</b> (${Math.round(S.ts * 100)}%)${S.capPad ? ', lily pad labels capped at 118%' : ''} · scale: <b>${S.tidy ? 'tidy, 6 steps' : 'as prototyped, 11 steps'}</b></p></div>
-    <div class="box"><h4>Contrast · ${sn} (WCAG, 4.5 for body)</h4><table>
+      <p style="margin:4px 0 0;color:#555">Text size: <b>${TS.find(t => t[0] === S.ts)[1]}</b> (${Math.round(S.ts * 100)}%), lily pads grow up to 135% · scale: <b>${S.tidy ? 'tidy, 6 steps' : 'as prototyped, 11 steps'}</b></p></div>
+    <div class="box"><h4>Legibility · ${LG[S.lg].name}</h4>${LG[S.lg].about}</div>
+    <div class="box" id="measure"></div>
+    <div class="box"><h4>Colour pairs · ${sn} (WCAG, 4.5 for body)</h4><table>
       ${row('Text on sky, top', 'ink', 'sky1')}${row('Text on sky, at waterline', 'ink', 'sky2')}${row('Muted on sky, at waterline', 'mut', 'sky2')}
       ${row('Text on water, top', 'wink', 'wat1')}${row('Text on water, bottom', 'wink', 'wat2')}${row('Muted on water, top', 'wmut', 'wat1')}${row('Muted on water, bottom', 'wmut', 'wat2')}</table>
-      <p style="margin:6px 0 0;color:#555">Same in every typeface: it's the colours. Thin or light weights need more than the number says.</p></div>
+      <p style="margin:6px 0 0;color:#555">The gradient's two ends, before any fix that works per line.</p></div>
     <div class="box"><h4>Guide · ${VARIANTS[S.variant]}</h4>${{
       A: 'The explanation is a line of the screen itself, above the waterline, in the app\'s voice. Nothing to dismiss; it\'s gone the next time.',
       B: 'Chosen. A note sits beside the thing it explains, with no arrow; everything else dims. It waits for "Got it". Skipping says where to turn the guide back on.',
@@ -712,11 +736,11 @@ function renderSide() {
 function renderProto() {
   const sel = (p, opts, cur) => `<select data-p="${p}">${opts.map(([v, l]) => `<option value="${v}" ${cur === v ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
   document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span>
-    <button data-p="vprev" aria-label="Previous variant">←</button><span>${S.type} (${TYPES[S.type].name})</span><button data-p="vnext" aria-label="Next variant">→</button>
+    <button data-p="vprev" aria-label="Previous variant">←</button><span>legibility: ${LG[S.lg].name}</span><button data-p="vnext" aria-label="Next variant">→</button>
+    ${sel('type', Object.entries(TYPES).map(([k, t]) => [k, 'type: ' + t.name]), S.type)}
     ${sel('ts', TS.map(([x, l]) => [String(x), 'text: ' + l]), String(S.ts))}
     <button data-p="tidy" class="${S.tidy ? 'on' : ''}">scale: ${S.tidy ? 'tidy' : 'as is'}</button>
-    <button data-p="cap" class="${S.capPad ? 'on' : ''}">pad labels: ${S.capPad ? 'capped' : 'grow'}</button>
-    <button data-p="halo" class="${S.halo ? 'on' : ''}">halo: ${S.halo ? 'on' : 'off'}</button>
+
     ${sel('season', [['auto', 'auto'], ['morning', 'morning'], ['evening', 'evening']], S.season)}
     <button data-p="soften" class="${S.soften ? 'on' : ''}">model: ${S.soften ? 'softening' : 'neutral'}</button>
     <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
@@ -849,6 +873,7 @@ document.addEventListener('change', e => {
   const p = e.target.dataset.p;
   if (p === 'season') { S.season = e.target.value; render(); }
   if (p === 'origin') { S.origin = e.target.value; setParam('origin', S.origin); render(); }
+  if (p === 'type') { S.type = e.target.value; setParam('type', S.type); render(); }
   if (p === 'ts') { S.ts = +e.target.value; setParam('ts', S.ts); render(); placeCoach(); }
   if (p === 'jump') jump(e.target.value);
 });
@@ -859,10 +884,9 @@ document.addEventListener('click', e => {
     if (p === 'still') { S.still = !S.still; brookTo(S.screen === 'path' ? 1 : 0, 300); render(); }
     if (p === 'soften') { S.soften = !S.soften; render(); }
     if (p === 'tidy') { S.tidy = !S.tidy; setParam('scale', S.tidy ? 'tidy' : 'as-is'); render(); }
-    if (p === 'cap') { S.capPad = !S.capPad; setParam('cap', S.capPad ? 'on' : 'off'); render(); }
-    if (p === 'halo') { S.halo = !S.halo; setParam('halo', S.halo ? 'on' : 'off'); render(); }
+
     if (p === 'vprev') cycleVariant(-1); if (p === 'vnext') cycleVariant(1);
-    if (p === 'reset') { const { season, still, logo, variant, origin, type, ts, tidy, capPad, halo } = S; S = seed(); Object.assign(S, { season, still, logo, variant, origin, type, ts, tidy, capPad, halo, screen: 'intro' }); render(); } return; }
+    if (p === 'reset') { const { season, still, logo, variant, origin, type, ts, tidy, lg } = S; S = seed(); Object.assign(S, { season, still, logo, variant, origin, type, ts, tidy, lg, screen: 'intro' }); render(); } return; }
   if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('intro', { intro: 0, wb: 0 }), S.still ? 0 : 500); }
   const el = e.target.closest('[data-act]');
   if (!el) { // a tap on open water ripples
@@ -910,7 +934,55 @@ document.addEventListener('pointerup', e => { if (!sw) return; const dx = e.clie
 
 // the variant switcher: ← → cycle (but never while typing), and the URL keeps the choice
 function setParam(k, v) { const u = new URL(location.href); u.searchParams.set(k, v); history.replaceState(null, '', u); }
-function cycleVariant(d) { const ks = Object.keys(TYPES); S.type = ks[(ks.indexOf(S.type) + d + ks.length) % ks.length]; setParam('variant', S.type); render(); placeCoach(); }
+function cycleVariant(d) { const ks = Object.keys(LG); S.lg = ks[(ks.indexOf(S.lg) + d + ks.length) % ks.length]; setParam('lg', S.lg); render(); placeCoach(); }
+
+// legibility: measure every line of words on the sky and water against the gradient behind it,
+// and under "ink by depth", flip the ink of any line that falls short
+const rgb = c => { const m = c.match(/[\d.]+/g).map(Number); return { r: m[0], g: m[1], b: m[2], a: m[3] ?? 1 }; };
+const hex2 = h => ({ r: parseInt(h.slice(1, 3), 16), g: parseInt(h.slice(3, 5), 16), b: parseInt(h.slice(5, 7), 16), a: 1 });
+const over = (f, b) => ({ r: f.r * f.a + b.r * (1 - f.a), g: f.g * f.a + b.g * (1 - f.a), b: f.b * f.a + b.b * (1 - f.a), a: 1 });
+const lum = c => { const v = [c.r, c.g, c.b].map(x => x / 255).map(x => x <= .03928 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4); return .2126 * v[0] + .7152 * v[1] + .0722 * v[2]; };
+const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + .05) / (y + .05); };
+const SKIPT = '.card,.pobj,.sheet,.coach,.budcard,.kbd,.plain,.scrim,.stepnav,.rseg,.gpool,.spot,.trees';
+const INK = { dark: hex2('#0d0906'), light: hex2('#fffbf5') }; // near black and white: where the glow is mid-tone, only these clear 4.5
+function legible() {
+  const app = document.getElementById('app'), cs = getComputedStyle(app), ar = app.getBoundingClientRect(), wl = ar.height * parseFloat(S.sc.wl) / 100; // where the waterline is going, not where it is mid-move
+  const v = k => hex2(cs.getPropertyValue('--' + k).trim());
+  const well = S.lg === 'well' ? rgb(cs.getPropertyValue('--wellC')) : null;
+  const bgAt = y => { const [a, b, t] = y < wl ? ['sky1', 'sky2', y / wl] : ['wat1', 'wat2', (y - wl) / (ar.height - wl)];
+    const A = v(a), B = v(b), k = Math.max(0, Math.min(1, t)), c = { r: A.r + (B.r - A.r) * k, g: A.g + (B.g - A.g) * k, b: A.b + (B.b - A.b) * k, a: 1 };
+    return well ? over(well, c) : c; };
+  const els = [...app.querySelectorAll('#ui .layer *')].filter(el => !el.closest(SKIPT) && (!el.closest('button') || el.closest('.back,.help'))
+    && (el.tagName === 'TEXTAREA' || [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())));
+  const seen = [];
+  for (const el of els) {
+    if (el.dataset.flip) { ['color', 'backgroundImage', 'backgroundSize', 'backgroundPosition', 'backgroundRepeat', 'webkitBackgroundClip', 'backgroundClip'].forEach(k => el.style[k] = ''); delete el.dataset.flip; }
+    const r = el.getBoundingClientRect(); if (!r.height || r.bottom < ar.top || r.top > ar.bottom) continue;
+    // a block is as legible as its worst line: sample the gradient at its top, middle and bottom
+    const bgs = [.15, .5, .85].map(f => bgAt(r.top + r.height * f - ar.top)), fg = rgb(getComputedStyle(el).color);
+    const worst = ink => Math.min(...bgs.map(bg => ratio(over(ink, bg), bg)));
+    let c = worst(fg);
+    if (S.lg === 'depth' && c < 4.5) {
+      // one ink per line: the text's own colour where it passes, else dark or light, whichever reads best across the line
+      const css = k => `rgb(${Math.round(k.r)},${Math.round(k.g)},${Math.round(k.b)})`;
+      const lh = el.tagName === 'TEXTAREA' ? r.height : parseFloat(getComputedStyle(el).lineHeight) || r.height, lines = [];
+      for (let y0 = 0; y0 < r.height - 1; y0 += lh) {
+        const ys = [.2, .5, .8].map(f => r.top + y0 + lh * f - ar.top), score = k => Math.min(...ys.map(y => { const bg = bgAt(y); return ratio(over(k, bg), bg); }));
+        const k = score(fg) >= 4.5 ? fg : score(INK.dark) > score(INK.light) ? INK.dark : INK.light;
+        lines.push({ y0, y1: Math.min(r.height, y0 + lh), k, c: score(k) }); }
+      if (el.tagName === 'TEXTAREA') el.style.color = css(lines[0].k);
+      else Object.assign(el.style, { backgroundImage: `linear-gradient(to bottom, ${lines.map(l => `${css(l.k)} ${l.y0}px ${l.y1}px`).join(', ')})`,
+        backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', webkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' });
+      el.dataset.flip = 1; c = Math.min(...lines.map(l => l.c)); }
+    seen.push({ c, t: (el.value || el.placeholder || el.textContent).trim().slice(0, 34) });
+  }
+  const box = document.getElementById('measure'); if (!box) return;
+  const bad = seen.filter(x => x.c < 4.5).sort((a, b) => a.c - b.c);
+  box.innerHTML = `<h4>On this screen</h4>${S.lg === 'halo' ? '<p style="margin:0;color:#555">Not counted under the halo.</p>' : `<b>${seen.length - bad.length} of ${seen.length}</b> lines of words on the sky and water pass 4.5${bad.length ? '' : ' ✓'}
+    ${bad.length ? `<table style="margin-top:6px">${bad.slice(0, 5).map(x => `<tr><td>${esc(x.t)}…</td><td class="bad">${x.c.toFixed(1)}</td></tr>`).join('')}</table>` : ''}`}
+    <p style="margin:6px 0 0;color:#555">Measured against the gradient alone; trees, the brook and glass cards aren't counted.</p>`;
+}
+let lgRaf = 0; document.addEventListener('scroll', () => { cancelAnimationFrame(lgRaf); lgRaf = requestAnimationFrame(legible); }, true);
 document.addEventListener('keydown', e => {
   if (e.target.closest('input,textarea,select,[contenteditable]')) return;
   if (e.key === 'ArrowLeft') cycleVariant(-1); if (e.key === 'ArrowRight') cycleVariant(1);
