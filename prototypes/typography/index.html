@@ -255,8 +255,12 @@
   #app.tidy { --s11:12px; --s11_5:12px; --s12_5:12px; --s13:14px; --s15:16px; --s17:18px; --s19:18px; --s24:28px; --s26:28px; }
   /* ---------- legibility on the sky and water (#58, round 2) ---------- */
   /* halo: a soft glow behind every letter (round 1; didn't help much) */
-  #app.lg-halo.morning .layer { text-shadow:0 0 8px rgba(255,255,255,.6), 0 0 2px rgba(255,255,255,.5); }
-  #app.lg-halo.evening .layer { text-shadow:0 0 8px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
+  #app.lg-halo.morning .layer, #app.lg-adaptive.morning .layer { text-shadow:0 0 8px rgba(255,255,255,.6), 0 0 2px rgba(255,255,255,.5); }
+  #app.lg-halo.evening .layer, #app.lg-adaptive.evening .layer { text-shadow:0 0 8px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
+  /* firm halo: the same glow, stacked tight to the letters so it backs each stroke, then fading out */
+  #app.morning { --haloF:0 0 1px rgba(255,252,245,.95), 0 0 3px rgba(255,252,245,.85), 0 0 7px rgba(255,252,245,.6), 0 0 16px rgba(255,252,245,.4); }
+  #app.evening { --haloF:0 0 1px rgba(16,10,8,.95), 0 0 3px rgba(16,10,8,.85), 0 0 7px rgba(16,10,8,.6), 0 0 16px rgba(16,10,8,.4); }
+  #app.lg-firm .layer, #app.lg-adaptive .layer [data-firm] { text-shadow:var(--haloF); }
   /* retuned: the same scene, its colours moved just far enough that every pair passes 4.5 */
   #app.lg-retuned.morning { --mut:#536165; --wat2:#8fb0b6; --wmut:#22414a; }
   #app.lg-retuned.evening { --sky2:#8f5d44; --mut:#e3d8cb; --wat1:#604441; --wmut:#d5c4b3; }
@@ -441,10 +445,12 @@ const TYPES = {
 };
 const LG = {
   off: { name: 'as is', about: 'The look prototype\'s colours, untouched. Evening fails at the waterline: cream on the dusk glow is 2.9, muted text 1.9.' },
-  halo: { name: 'halo', about: 'Round 1: a soft glow behind every letter. Didn\'t help much. Not counted below, since it changes the background under each letter.' },
-  retuned: { name: 'retuned colours', about: 'The same scene with its colours moved just far enough that every text colour passes 4.5 on every part of the sky and water: a deeper ember dusk at the waterline in the evening, lighter deep water in the morning, darker muted text. No new device; tokens only.' },
-  depth: { name: 'ink by depth', about: 'The colours stay; each line of text picks its ink for what sits behind it. Over the evening glow the words turn dark, as if lit by it; higher in the dusk they stay cream. Within one block the ink changes line by line, so a question that runs down into the glow darkens as it goes. Limit: where the glow is mid-tone, even near-black or near-white only reach about 4.4, so a line sitting there still falls just short. On native: a masked gradient per text block, measured on layout.' },
-  well: { name: 'frosted wells', about: 'A soft, feathered patch of sky or water colour behind each block of words, like still water around them. No edges, so it isn\'t a card. Costs some of the scene where text is dense.' },
+  halo: { name: 'soft halo', about: 'Round 1: a soft glow behind every letter. The best of round 2, but on its own it didn\'t help much.' },
+  firm: { name: 'firm halo', about: 'The same glow stacked tight to the letters, so each stroke has its own backing before it fades into the sky or water. Dark behind cream in the evening, pale behind dark ink in the morning. On every line.' },
+  adaptive: { name: 'halo, firm where needed', about: 'The soft halo everywhere, and the firm one only on lines that fall short of 4.5 on the gradient behind them, such as a question running down into the evening glow. The rest of the screen keeps its light touch. On native: one measurement per text block on layout.' },
+  retuned: { name: 'retuned colours (rejected)', about: 'The same scene with its colours moved just far enough that every text colour passes 4.5 on every part of the sky and water: a deeper ember dusk at the waterline in the evening, lighter deep water in the morning, darker muted text. No new device; tokens only.' },
+  depth: { name: 'ink by depth (rejected)', about: 'The colours stay; each line of text picks its ink for what sits behind it. Over the evening glow the words turn dark, as if lit by it; higher in the dusk they stay cream. Within one block the ink changes line by line, so a question that runs down into the glow darkens as it goes. Limit: where the glow is mid-tone, even near-black or near-white only reach about 4.4, so a line sitting there still falls just short. On native: a masked gradient per text block, measured on layout.' },
+  well: { name: 'frosted wells (rejected)', about: 'A soft, feathered patch of sky or water colour behind each block of words, like still water around them. No edges, so it isn\'t a card. Costs some of the scene where text is dense.' },
 };
 const TS = [[0.85, 'xSmall'], [1, 'default'], [1.18, 'xLarge'], [1.35, 'xxxLarge'], [1.65, 'AX2'], [2, 'AX4'], [2.35, 'AX5']];
 // season colours as in the CSS, for the contrast check
@@ -570,7 +576,7 @@ function seed() {
     logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lilyripples', budOpen: false,
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
-    variant: 'B', type: TYPES[q.get('type')] ? q.get('type') : 'E', lg: LG[q.get('lg')] ? q.get('lg') : 'off', ts: TS.some(t => t[0] === +q.get('ts')) ? +q.get('ts') : 1,
+    variant: 'B', type: TYPES[q.get('type')] ? q.get('type') : 'E', lg: LG[q.get('lg')] ? q.get('lg') : 'adaptive', ts: TS.some(t => t[0] === +q.get('ts')) ? +q.get('ts') : 1,
     tidy: q.get('scale') !== 'as-is', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
     intro: 0, wb: 0, guiding: true, skipNote: false, done: new Set(), inlineShown: null,
     // a first-time person: nothing on the pond yet
@@ -956,6 +962,7 @@ function legible() {
     && (el.tagName === 'TEXTAREA' || [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())));
   const seen = [];
   for (const el of els) {
+    delete el.dataset.firm;
     if (el.dataset.flip) { ['color', 'backgroundImage', 'backgroundSize', 'backgroundPosition', 'backgroundRepeat', 'webkitBackgroundClip', 'backgroundClip'].forEach(k => el.style[k] = ''); delete el.dataset.flip; }
     const r = el.getBoundingClientRect(); if (!r.height || r.bottom < ar.top || r.top > ar.bottom) continue;
     // a block is as legible as its worst line: sample the gradient at its top, middle and bottom
@@ -974,12 +981,13 @@ function legible() {
       else Object.assign(el.style, { backgroundImage: `linear-gradient(to bottom, ${lines.map(l => `${css(l.k)} ${l.y0}px ${l.y1}px`).join(', ')})`,
         backgroundSize: '100% 100%', backgroundRepeat: 'no-repeat', webkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' });
       el.dataset.flip = 1; c = Math.min(...lines.map(l => l.c)); }
+    if (S.lg === 'adaptive' && c < 4.5) el.dataset.firm = 1;
     seen.push({ c, t: (el.value || el.placeholder || el.textContent).trim().slice(0, 34) });
   }
   const box = document.getElementById('measure'); if (!box) return;
   const bad = seen.filter(x => x.c < 4.5).sort((a, b) => a.c - b.c);
-  box.innerHTML = `<h4>On this screen</h4>${S.lg === 'halo' ? '<p style="margin:0;color:#555">Not counted under the halo.</p>' : `<b>${seen.length - bad.length} of ${seen.length}</b> lines of words on the sky and water pass 4.5${bad.length ? '' : ' ✓'}
-    ${bad.length ? `<table style="margin-top:6px">${bad.slice(0, 5).map(x => `<tr><td>${esc(x.t)}…</td><td class="bad">${x.c.toFixed(1)}</td></tr>`).join('')}</table>` : ''}`}
+  box.innerHTML = `<h4>On this screen</h4>${['halo', 'firm', 'adaptive'].includes(S.lg) ? `<p style="margin:0 0 4px;color:#555">A halo can't be measured as a ratio, so these are the gradient alone.${S.lg === 'adaptive' ? ' The lines below get the firm halo.' : ''}</p>` : ''}<b>${seen.length - bad.length} of ${seen.length}</b> lines of words on the sky and water pass 4.5 on the gradient${bad.length ? '' : ' ✓'}
+    ${bad.length ? `<table style="margin-top:6px">${bad.slice(0, 5).map(x => `<tr><td>${esc(x.t)}…</td><td class="bad">${x.c.toFixed(1)}</td></tr>`).join('')}</table>` : ''}
     <p style="margin:6px 0 0;color:#555">Measured against the gradient alone; trees, the brook and glass cards aren't counted.</p>`;
 }
 let lgRaf = 0; document.addEventListener('scroll', () => { cancelAnimationFrame(lgRaf); lgRaf = requestAnimationFrame(legible); }, true);
