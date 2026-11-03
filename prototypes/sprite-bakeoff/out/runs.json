@@ -1,0 +1,168 @@
+[
+ {
+  "n": 1,
+  "secs": 26.238,
+  "usage": {
+   "promptTokenCount": 916,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2434,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    },
+    {
+     "modality": "IMAGE",
+     "tokenCount": 560
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 398
+  }
+ },
+ {
+  "n": 2,
+  "secs": 27.594,
+  "usage": {
+   "promptTokenCount": 916,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2411,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    },
+    {
+     "modality": "IMAGE",
+     "tokenCount": 560
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 375
+  }
+ },
+ {
+  "n": 3,
+  "secs": 28.4,
+  "usage": {
+   "promptTokenCount": 916,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2520,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 560
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 484
+  }
+ },
+ {
+  "n": 4,
+  "variant": "canvas",
+  "secs": 27.062,
+  "usage": {
+   "promptTokenCount": 954,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2560,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 560
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 394
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 486
+  }
+ },
+ {
+  "n": 5,
+  "variant": "canvas",
+  "secs": 30.048,
+  "usage": {
+   "promptTokenCount": 954,
+   "candidatesTokenCount": 1120,
+   "totalTokenCount": 2625,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "TEXT",
+     "tokenCount": 394
+    },
+    {
+     "modality": "IMAGE",
+     "tokenCount": 560
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    }
+   ],
+   "thoughtsTokenCount": 551
+  }
+ },
+ {
+  "n": 6,
+  "model": "gemini-nano-banana-2.1",
+  "variant": "scale",
+  "secs": 42.216,
+  "usage": {
+   "promptTokenCount": 1476,
+   "candidatesTokenCount": 1680,
+   "totalTokenCount": 5484,
+   "trafficType": "ON_DEMAND",
+   "promptTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1120
+    },
+    {
+     "modality": "TEXT",
+     "tokenCount": 356
+    }
+   ],
+   "candidatesTokensDetails": [
+    {
+     "modality": "IMAGE",
+     "tokenCount": 1680
+    }
+   ],
+   "thoughtsTokenCount": 2328
+  }
+ }
+]

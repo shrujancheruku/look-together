@@ -1,0 +1,11 @@
+{
+  "name": "sprite-bakeoff",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "gen": "node tools/gen.mjs",
+    "snap": "node tools/snap.mjs",
+    "page": "node tools/page.mjs"
+  },
+  "dependencies": { "sharp": "^0.34.0" }
+}

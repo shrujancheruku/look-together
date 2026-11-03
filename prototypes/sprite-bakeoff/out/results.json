@@ -1,0 +1,470 @@
+[
+ {
+  "n": 1,
+  "pixelify": {
+   "in": "out/raw-1.png",
+   "out": "out/art-1.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 19.8,
+    "y": 19.85,
+    "phase": [
+     0,
+     17
+    ],
+    "confidence": 5.8
+   },
+   "art": "159x66",
+   "offGridCells": "3.7%",
+   "colours": 84
+  },
+  "pieces": 6,
+  "extra": 0,
+  "sprites": {
+   "padL": {
+    "size": "58×30",
+    "target": "27×13",
+    "scale": 2.31,
+    "coloursRaw": 18,
+    "coloursSnap": 6,
+    "meanDeltaE": 0.8,
+    "outlineDark": 100
+   },
+   "padS": {
+    "size": "40×14",
+    "target": "17×7",
+    "scale": 2.35,
+    "coloursRaw": 17,
+    "coloursSnap": 6,
+    "meanDeltaE": 1,
+    "outlineDark": 100
+   },
+   "flower": {
+    "size": "36×24",
+    "target": "11×9",
+    "scale": 3.27,
+    "coloursRaw": 19,
+    "coloursSnap": 9,
+    "meanDeltaE": 4,
+    "outlineDark": 100
+   },
+   "koi": {
+    "size": "59×28",
+    "target": "18×8",
+    "scale": 3.5,
+    "coloursRaw": 29,
+    "coloursSnap": 9,
+    "meanDeltaE": 4.4,
+    "outlineDark": 92
+   },
+   "dfly1": {
+    "size": "37×27",
+    "target": "13×9",
+    "scale": 3,
+    "coloursRaw": 16,
+    "coloursSnap": 8,
+    "meanDeltaE": 4.2,
+    "outlineDark": 30
+   },
+   "dfly2": {
+    "size": "36×27",
+    "target": "13×9",
+    "scale": 3,
+    "coloursRaw": 17,
+    "coloursSnap": 8,
+    "meanDeltaE": 4.4,
+    "outlineDark": 32
+   }
+  }
+ },
+ {
+  "n": 2,
+  "pixelify": {
+   "in": "out/raw-2.png",
+   "out": "out/art-2.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 19.6,
+    "y": 19.6,
+    "phase": [
+     16,
+     8.5
+    ],
+    "confidence": 3.67
+   },
+   "art": "160x68",
+   "offGridCells": "6.5%",
+   "colours": 86
+  },
+  "pieces": 6,
+  "extra": 0,
+  "sprites": {
+   "padL": {
+    "size": "48×24",
+    "target": "27×13",
+    "scale": 1.85,
+    "coloursRaw": 24,
+    "coloursSnap": 8,
+    "meanDeltaE": 1.6,
+    "outlineDark": 100
+   },
+   "padS": {
+    "size": "34×13",
+    "target": "17×7",
+    "scale": 2,
+    "coloursRaw": 20,
+    "coloursSnap": 8,
+    "meanDeltaE": 1.2,
+    "outlineDark": 100
+   },
+   "flower": {
+    "size": "23×21",
+    "target": "11×9",
+    "scale": 2.33,
+    "coloursRaw": 21,
+    "coloursSnap": 11,
+    "meanDeltaE": 2.8,
+    "outlineDark": 94
+   },
+   "koi": {
+    "size": "48×21",
+    "target": "18×8",
+    "scale": 2.67,
+    "coloursRaw": 20,
+    "coloursSnap": 7,
+    "meanDeltaE": 3.5,
+    "outlineDark": 100
+   },
+   "dfly1": {
+    "size": "34×24",
+    "target": "13×9",
+    "scale": 2.67,
+    "coloursRaw": 17,
+    "coloursSnap": 8,
+    "meanDeltaE": 4.9,
+    "outlineDark": 100
+   },
+   "dfly2": {
+    "size": "30×24",
+    "target": "13×9",
+    "scale": 2.67,
+    "coloursRaw": 22,
+    "coloursSnap": 8,
+    "meanDeltaE": 4.9,
+    "outlineDark": 95
+   }
+  }
+ },
+ {
+  "n": 3,
+  "pixelify": {
+   "in": "out/raw-3.png",
+   "out": "out/art-3.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 20,
+    "y": 19.8,
+    "phase": [
+     6,
+     12.5
+    ],
+    "confidence": 2.77
+   },
+   "art": "158x66",
+   "offGridCells": "11.9%",
+   "colours": 158
+  },
+  "pieces": 7,
+  "extra": 1,
+  "sprites": {
+   "padL": {
+    "size": "42×22",
+    "target": "27×13",
+    "scale": 1.69,
+    "coloursRaw": 38,
+    "coloursSnap": 9,
+    "meanDeltaE": 1.2,
+    "outlineDark": 100
+   },
+   "padS": {
+    "size": "31×14",
+    "target": "17×7",
+    "scale": 2,
+    "coloursRaw": 25,
+    "coloursSnap": 9,
+    "meanDeltaE": 1.1,
+    "outlineDark": 100
+   },
+   "flower": {
+    "size": "20×18",
+    "target": "11×9",
+    "scale": 2,
+    "coloursRaw": 25,
+    "coloursSnap": 13,
+    "meanDeltaE": 1.9,
+    "outlineDark": 69
+   },
+   "koi": {
+    "size": "26×15",
+    "target": "18×8",
+    "scale": 1.88,
+    "coloursRaw": 24,
+    "coloursSnap": 8,
+    "meanDeltaE": 3.3,
+    "outlineDark": 100
+   },
+   "dfly1": {
+    "size": "39×25",
+    "target": "13×9",
+    "scale": 3,
+    "coloursRaw": 55,
+    "coloursSnap": 11,
+    "meanDeltaE": 4.3,
+    "outlineDark": 39
+   },
+   "dfly2": {
+    "size": "32×25",
+    "target": "13×9",
+    "scale": 2.78,
+    "coloursRaw": 61,
+    "coloursSnap": 11,
+    "meanDeltaE": 4.7,
+    "outlineDark": 43
+   }
+  }
+ },
+ {
+  "n": 4,
+  "pixelify": {
+   "in": "out/raw-4.png",
+   "out": "out/art-4.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 19.5,
+    "y": 19.8,
+    "phase": [
+     5.5,
+     18.5
+    ],
+    "confidence": 5.21
+   },
+   "art": "160x67",
+   "offGridCells": "14.7%",
+   "colours": 184
+  },
+  "pieces": 8,
+  "extra": 2,
+  "sprites": {
+   "padL": {
+    "size": "50×26",
+    "target": "27×13",
+    "scale": 2,
+    "coloursRaw": 39,
+    "coloursSnap": 9,
+    "meanDeltaE": 1,
+    "outlineDark": 100
+   },
+   "padS": {
+    "size": "32×14",
+    "target": "17×7",
+    "scale": 2,
+    "coloursRaw": 32,
+    "coloursSnap": 7,
+    "meanDeltaE": 1.1,
+    "outlineDark": 100
+   },
+   "flower": {
+    "size": "21×16",
+    "target": "11×9",
+    "scale": 1.91,
+    "coloursRaw": 24,
+    "coloursSnap": 10,
+    "meanDeltaE": 3.2,
+    "outlineDark": 96
+   },
+   "koi": {
+    "size": "25×18",
+    "target": "18×8",
+    "scale": 2.25,
+    "coloursRaw": 31,
+    "coloursSnap": 9,
+    "meanDeltaE": 3.8,
+    "outlineDark": 100
+   },
+   "dfly1": {
+    "size": "30×23",
+    "target": "13×9",
+    "scale": 2.56,
+    "coloursRaw": 48,
+    "coloursSnap": 11,
+    "meanDeltaE": 2.4,
+    "outlineDark": 42
+   },
+   "dfly2": {
+    "size": "30×23",
+    "target": "13×9",
+    "scale": 2.56,
+    "coloursRaw": 37,
+    "coloursSnap": 11,
+    "meanDeltaE": 2.4,
+    "outlineDark": 98
+   }
+  }
+ },
+ {
+  "n": 5,
+  "pixelify": {
+   "in": "out/raw-5.png",
+   "out": "out/art-5.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 19.7,
+    "y": 19.8,
+    "phase": [
+     12.5,
+     18.5
+    ],
+    "confidence": 3.83
+   },
+   "art": "159x67",
+   "offGridCells": "11.5%",
+   "colours": 136
+  },
+  "pieces": 6,
+  "extra": 0,
+  "sprites": {
+   "padL": {
+    "size": "30×59",
+    "target": "27×13",
+    "scale": 4.54,
+    "coloursRaw": 38,
+    "coloursSnap": 9,
+    "meanDeltaE": 1.3,
+    "outlineDark": 99
+   },
+   "padS": {
+    "size": "20×38",
+    "target": "17×7",
+    "scale": 5.43,
+    "coloursRaw": 25,
+    "coloursSnap": 8,
+    "meanDeltaE": 1.2,
+    "outlineDark": 99
+   },
+   "flower": {
+    "size": "25×24",
+    "target": "11×9",
+    "scale": 2.67,
+    "coloursRaw": 25,
+    "coloursSnap": 9,
+    "meanDeltaE": 2.9,
+    "outlineDark": 100
+   },
+   "koi": {
+    "size": "21×44",
+    "target": "18×8",
+    "scale": 5.5,
+    "coloursRaw": 26,
+    "coloursSnap": 9,
+    "meanDeltaE": 4.4,
+    "outlineDark": 100
+   },
+   "dfly1": {
+    "size": "28×22",
+    "target": "13×9",
+    "scale": 2.44,
+    "coloursRaw": 36,
+    "coloursSnap": 12,
+    "meanDeltaE": 4.1,
+    "outlineDark": 33
+   },
+   "dfly2": {
+    "size": "30×23",
+    "target": "13×9",
+    "scale": 2.56,
+    "coloursRaw": 41,
+    "coloursSnap": 10,
+    "meanDeltaE": 4.6,
+    "outlineDark": 28
+   }
+  }
+ },
+ {
+  "n": 6,
+  "pixelify": {
+   "in": "out/raw-6.png",
+   "out": "out/art-6.png",
+   "source": "3168x1344",
+   "grid": {
+    "x": 19.65,
+    "y": 19.55,
+    "phase": [
+     12.5,
+     7.5
+    ],
+    "confidence": 3.39
+   },
+   "art": "160x68",
+   "offGridCells": "4.4%",
+   "colours": 90
+  },
+  "pieces": 6,
+  "extra": 0,
+  "sprites": {
+   "padL": {
+    "size": "38×21",
+    "target": "27×13",
+    "scale": 1.62,
+    "coloursRaw": 28,
+    "coloursSnap": 11,
+    "meanDeltaE": 1.4,
+    "outlineDark": 100
+   },
+   "padS": {
+    "size": "18×8",
+    "target": "17×7",
+    "scale": 1.14,
+    "coloursRaw": 16,
+    "coloursSnap": 8,
+    "meanDeltaE": 1.1,
+    "outlineDark": 100
+   },
+   "flower": {
+    "size": "16×12",
+    "target": "11×9",
+    "scale": 1.45,
+    "coloursRaw": 22,
+    "coloursSnap": 11,
+    "meanDeltaE": 5.9,
+    "outlineDark": 100
+   },
+   "koi": {
+    "size": "23×12",
+    "target": "18×8",
+    "scale": 1.5,
+    "coloursRaw": 16,
+    "coloursSnap": 9,
+    "meanDeltaE": 4.5,
+    "outlineDark": 94
+   },
+   "dfly1": {
+    "size": "17×24",
+    "target": "13×9",
+    "scale": 2.67,
+    "coloursRaw": 23,
+    "coloursSnap": 7,
+    "meanDeltaE": 4.9,
+    "outlineDark": 65
+   },
+   "dfly2": {
+    "size": "24×18",
+    "target": "13×9",
+    "scale": 2,
+    "coloursRaw": 23,
+    "coloursSnap": 7,
+    "meanDeltaE": 5.4,
+    "outlineDark": 63
+   }
+  }
+ }
+]
