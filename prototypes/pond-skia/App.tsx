@@ -2,7 +2,7 @@
 // Answers "Does a hand-drawn Skia pond scene run smoothly on a mid-range Android?" and hosts the
 // blind read for "Which AI image tool paints the pond best?". Never merge.
 import React, { useEffect, useRef, useState } from "react";
-import { Platform, Pressable, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import { BackHandler, Platform, Pressable, ScrollView, Text, View, useWindowDimensions } from "react-native";
 import { useFrameCallback, useSharedValue } from "react-native-reanimated";
 import { Pond, cardRects, type Config, type Glass } from "./src/Pond";
 import { SETS } from "./src/sets";
@@ -73,6 +73,7 @@ export default function App() {
     if (!bench) return;
     if (bench.i >= BENCH.length) {
       console.log(`BENCH_DONE ${JSON.stringify({ skia: SKIA, os: Platform.OS, w, h, rows: bench.rows })}`);
+      if (AUTOBENCH && Platform.OS === "android") setTimeout(() => BackHandler.exitApp(), 1000); // ends a Test Lab Game Loop run
       return;
     }
     const [label, over] = BENCH[bench.i];
