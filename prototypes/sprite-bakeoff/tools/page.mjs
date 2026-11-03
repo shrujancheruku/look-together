@@ -24,6 +24,12 @@ const tRes = fs.existsSync("out/template-results.json") ? JSON.parse(fs.readFile
 const tRuns = runsLog.filter((r) => r.variant === "template");
 const thumbs = {};
 for (const r of tRuns) thumbs[r.n] = "data:image/jpeg;base64," + (await sharpLib(`out/raw-${r.n}.png`).resize(720).jpeg({ quality: 80 }).toBuffer()).toString("base64");
+// PixelLab trial runs, grouped by how they were asked.
+const plRuns = fs.existsSync("out/pl-runs.json") ? JSON.parse(fs.readFileSync("out/pl-runs.json")) : [];
+const plGroup = (r) => r.init ? (r.id === "dfly2" ? "Bitforge, frame 2 seeded from Pixen's frame 1" : "Bitforge, seeded with the kit's pad") : r.tag === "pixen" ? "Pixen (no palette option, snapped afterwards)" : r.tag === "bitforge-nostyle" ? "Bitforge, palette forced, no style image" : "Bitforge, palette forced, kit pad as style image";
+const PL_ORDER = ["Bitforge, seeded with the kit's pad", "Pixen (no palette option, snapped afterwards)", "Bitforge, palette forced, no style image", "Bitforge, frame 2 seeded from Pixen's frame 1", "Bitforge, palette forced, kit pad as style image"];
+const plDrawn = (f) => { const [w, h] = dims(f); return `${w}×${h}`; };
+const plSection = PL_ORDER.map((g) => { const rs = plRuns.filter((r) => plGroup(r) === g); if (!rs.length) return ""; return `<div class="plgroup"><h3>${g}</h3><div class="plrow">${rs.map((r) => { const name = r.file.replace(/^out\/pl-/, ""), snapF = `out/pls-${name}`; return `<figure class="pane plcard"><span class="tag">${SLOTS.find((x) => x.id === r.id).label}${r.big ? ", larger" : ""}</span><div class="pair">${pix(r.file, 6, "as returned")}${pix(snapF, 6, "snapped")}</div><figcaption>asked ${r.size} · drew ${plDrawn(snapF)}</figcaption></figure>`; }).join("")}</div></div>`; }).join("");
 const kit = { padL: "out/kit-padL.png", padS: "out/kit-padS.png", flower: "out/kit-flower.png" };
 const cost = runsLog.reduce((a, r) => a + PRICE[r.model ?? "gemini-3-pro-image"], 0);
 
@@ -102,6 +108,13 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   .tgrid .sheet { width: 100%; height: auto; border-radius: 6px; }
   .tgrid figcaption { color: var(--muted); font-size: 13px; } .tgrid figcaption b { color: var(--ink); }
   .strip .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; justify-content: center; }
+  .pl { display: grid; gap: 18px; } .pl h3 { font: 500 17px var(--display); margin: 0 0 8px; }
+  .plrow { display: flex; flex-wrap: wrap; gap: 12px; }
+  .plcard { margin: 0; align-content: start; gap: 6px; }
+  .pair { display: flex; gap: 14px; align-items: flex-end; }
+  .plcard figcaption { font: 11px var(--mono); color: #0d1a20; opacity: .75; }
+  body.deep .plcard figcaption { color: #e8f0f4; }
+  .key { font-size: 13px; }
   .none { color: var(--muted); font-size: 13px; font-style: italic; }
   dl { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; margin: 0; font: 12px/1.6 var(--mono); font-variant-numeric: tabular-nums; }
   dt { color: var(--muted); } dd { margin: 0; } dd em { font-style: normal; color: var(--bad); }
@@ -114,8 +127,8 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
 <main>
   <header class="lede">
     <h2>Which AI tool draws the sprite kit best?</h2>
-    <h1>Gemini plus pixelify: style yes, size no</h1>
-    <p>The same test set each time: a large and a small lily pad, the open flower, the koi and a 2-frame dragonfly, asked for in the chosen style with the kit's own pad, flower and ramps as the reference. Each sheet is pixelified, cut into sprites and snapped to that sprite's ramps. Retro Diffusion and PixelLab passed the terms gate but are not tested yet.</p>
+    <h1>Gemini gets the style, PixelLab gets the size</h1>
+    <p>The same test set each time: a large and a small lily pad, the open flower, the koi and a 2-frame dragonfly, asked for in the chosen style with the kit's own pad, flower and ramps as the reference. Each sheet is pixelified, cut into sprites and snapped to that sprite's ramps. PixelLab's free trial is further down. Retro Diffusion passed the terms gate but is not tested yet.</p>
   </header>
 
   <section class="finding">
@@ -138,6 +151,13 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
     <p>Each run got a layout template beside the style reference: a 132 × 56 grid of 24 px cells with one box per sprite at exactly its size in art pixels, and the instruction to paint one art pixel per cell. Nano Banana 2.1 followed it in <b>1 of 4</b> runs, and 3 Pro Image in <b>1 of 3</b>. Even where a sprite landed in its box, the model's pixel grid didn't line up with the cells, and at 18 × 8 and 13 × 9 the koi and dragonfly come back as noise. Only the large pad holds up.</p>
   </section>
   <div class="tgrid">${tRuns.map((r) => `<figure><img class="sheet" src="${thumbs[r.n]}" alt="Run ${r.n} as returned" width="720" height="305"><figcaption><b>Run ${r.n}</b> · ${model(r.n) === "gemini-3-pro-image" ? "3 Pro Image" : "Nano Banana 2.1"} · ${tRes[r.n] ? "read cell by cell below" : "ignored the template"}</figcaption>${tRes[r.n] ? `<div class="pane strip"><span class="tag">read cell by cell, snapped, at true size</span><div class="row">${SLOTS.map((sl) => pix(`out/t${r.n}-${sl.id}-snap.png`, 6, `${sl.label}, run ${r.n}`)).join("")}</div></div>` : ""}</figure>`).join("")}</div>
+
+  <section class="finding">
+    <h2>PixelLab, free trial (16 of 40 generations)</h2>
+    <p><b>Size is solved.</b> PixelLab draws on a canvas of exactly the size asked (16 px at the smallest), so every sprite lands within a few pixels of its target with no shrinking or grid guessing. The palette can be forced on Bitforge, and Pixen's colours snap cleanly.</p>
+    <p><b>Quality depends on the model.</b> Seeded with the kit's own pad, Bitforge keeps the shape and adds texture: the best pad on this page. Pixen draws the most readable flower and dragonfly. Text alone on Bitforge, or with the pad as its style image, gives blobs. The koi isn't readable at 18 × 8 or 24 × 12 on any model, and seeding frame 2 from frame 1 kept the pose, so wing frames still need a hand.</p>
+  </section>
+  <div class="pl">${plSection}<p class="key">Each card: as returned on the left, snapped to the sprite's ramps on the right, both at 6×.</p></div>
 
   <section>
     <h2>How to read a cell</h2>

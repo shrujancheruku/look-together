@@ -1,0 +1,258 @@
+[
+ {
+  "endpoint": "bitforge",
+  "id": "padL",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-padL-1.png",
+  "size": "27×13",
+  "canvas": "27×16",
+  "secs": 24.135,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "padL",
+  "big": false,
+  "n": 2,
+  "file": "out/pl-bitforge-padL-2.png",
+  "size": "27×13",
+  "canvas": "27×16",
+  "secs": 32.61,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": "out/kit-padL-27x16.png",
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "padS",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-padS-1.png",
+  "size": "17×7",
+  "canvas": "17×16",
+  "secs": 29.828,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "flower",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-flower-1.png",
+  "size": "11×9",
+  "canvas": "16×16",
+  "secs": 31.507,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "koi",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-koi-1.png",
+  "size": "18×8",
+  "canvas": "18×16",
+  "secs": 19.745,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "dfly1",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-dfly1-1.png",
+  "size": "13×9",
+  "canvas": "16×16",
+  "secs": 21.717,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "koi",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-bitforge-koi-big-1.png",
+  "size": "24×12",
+  "canvas": "24×16",
+  "secs": 31.257,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "bitforge",
+  "id": "dfly1",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-bitforge-dfly1-big-1.png",
+  "size": "20×14",
+  "canvas": "20×16",
+  "secs": 26.182,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null,
+  "tag": "bitforge"
+ },
+ {
+  "endpoint": "pixen",
+  "tag": "pixen",
+  "id": "padL",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-pixen-padL-1.png",
+  "size": "27×13",
+  "canvas": "28×28",
+  "secs": 39.885,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "pixen",
+  "tag": "pixen",
+  "id": "flower",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-pixen-flower-1.png",
+  "size": "11×9",
+  "canvas": "16×16",
+  "secs": 39.73,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "pixen",
+  "tag": "pixen",
+  "id": "koi",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-pixen-koi-big-1.png",
+  "size": "24×12",
+  "canvas": "24×24",
+  "secs": 44.129,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "pixen",
+  "tag": "pixen",
+  "id": "dfly1",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-pixen-dfly1-big-1.png",
+  "size": "20×14",
+  "canvas": "20×20",
+  "secs": 35.064,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "bitforge",
+  "tag": "bitforge-nostyle",
+  "id": "flower",
+  "big": false,
+  "n": 1,
+  "file": "out/pl-bitforge-nostyle-flower-1.png",
+  "size": "11×9",
+  "canvas": "16×16",
+  "secs": 26.066,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "bitforge",
+  "tag": "bitforge-nostyle",
+  "id": "koi",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-bitforge-nostyle-koi-big-1.png",
+  "size": "24×12",
+  "canvas": "24×16",
+  "secs": 36.916,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "bitforge",
+  "tag": "bitforge-nostyle",
+  "id": "dfly1",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-bitforge-nostyle-dfly1-big-1.png",
+  "size": "20×14",
+  "canvas": "20×16",
+  "secs": 30.3,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": null
+ },
+ {
+  "endpoint": "bitforge",
+  "tag": "bitforge-nostyle",
+  "id": "dfly2",
+  "big": true,
+  "n": 1,
+  "file": "out/pl-bitforge-nostyle-dfly2-big-1.png",
+  "size": "20×14",
+  "canvas": "20×20",
+  "secs": 32.628,
+  "usage": {
+   "type": "generations",
+   "generations": 1
+  },
+  "init": "out/pl-pixen-dfly1-big-1.png"
+ }
+]
