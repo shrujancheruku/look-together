@@ -1,0 +1,93 @@
+[
+ {
+  "id": "koi",
+  "file": "out/rd-koi-32x16-s7-1.png",
+  "blockout": "out/bo-koi-32x16.png",
+  "size": "32×16",
+  "seed": 7,
+  "strength": 0.55,
+  "cost": 0.18
+ },
+ {
+  "id": "koi",
+  "file": "out/rd-koi-32x16-s7-2.png",
+  "blockout": "out/bo-koi-32x16.png",
+  "size": "32×16",
+  "seed": 7,
+  "strength": 0.55,
+  "cost": 0.18
+ },
+ {
+  "id": "koi",
+  "file": "out/rd-koi-24x12-s7-1.png",
+  "blockout": "out/bo-koi-24x12.png",
+  "size": "24×12",
+  "seed": 7,
+  "strength": 0.7,
+  "cost": 0.18
+ },
+ {
+  "id": "dfly1",
+  "file": "out/rd-dfly1-20x14-s11-1.png",
+  "blockout": "out/bo-dfly1-20x14.png",
+  "size": "20×14",
+  "seed": 11,
+  "strength": 0.65,
+  "cost": 0.18
+ },
+ {
+  "id": "dfly2",
+  "file": "out/rd-dfly2-20x14-s11-1.png",
+  "blockout": "out/bo-dfly2-20x14.png",
+  "size": "20×14",
+  "seed": 11,
+  "strength": 0.65,
+  "cost": 0.18
+ },
+ {
+  "id": "padS",
+  "file": "out/rd-padS-17x12-s7-1.png",
+  "blockout": "out/bo-padS-17x12.png",
+  "size": "17×12",
+  "seed": 7,
+  "strength": 0.65,
+  "cost": 0.18
+ },
+ {
+  "id": "koi",
+  "file": "out/rd-koi-24x12-s7-k-1.png",
+  "blockout": "out/bo-koi-24x12.png",
+  "size": "24×12",
+  "seed": 7,
+  "strength": 0.7,
+  "cost": 0.18
+ },
+ {
+  "id": "dfly1",
+  "file": "out/rd-dfly1-20x14-s11-k-1.png",
+  "blockout": "out/bo-dfly1-20x14.png",
+  "size": "20×14",
+  "seed": 11,
+  "strength": 0.65,
+  "cost": 0.18
+ },
+ {
+  "id": "dfly2",
+  "file": "out/rd-dfly2-20x14-s11-k-1.png",
+  "blockout": "out/bo-dfly2-20x14.png",
+  "size": "20×14",
+  "seed": 11,
+  "strength": 0.65,
+  "cost": 0.18
+ },
+ {
+  "id": "dfly-anim",
+  "anim": true,
+  "file": "out/rd-anim-1.png",
+  "start": "out/dfly-start-32x32.png",
+  "frames": 4,
+  "motion": "dragonfly hovering in place seen from directly above, only the four wings beat up and down, body and head stay still",
+  "sheet": "64×64",
+  "cost": 0.25
+ }
+]

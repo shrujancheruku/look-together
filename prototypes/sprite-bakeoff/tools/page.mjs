@@ -30,6 +30,19 @@ const plGroup = (r) => r.init ? (r.id === "dfly2" ? "Bitforge, frame 2 seeded fr
 const PL_ORDER = ["Bitforge, seeded with the kit's pad", "Pixen (no palette option, snapped afterwards)", "Bitforge, palette forced, no style image", "Bitforge, frame 2 seeded from Pixen's frame 1", "Bitforge, palette forced, kit pad as style image"];
 const plDrawn = (f) => { const [w, h] = dims(f); return `${w}×${h}`; };
 const plSection = PL_ORDER.map((g) => { const rs = plRuns.filter((r) => plGroup(r) === g); if (!rs.length) return ""; return `<div class="plgroup"><h3>${g}</h3><div class="plrow">${rs.map((r) => { const name = r.file.replace(/^out\/pl-/, ""), snapF = `out/pls-${name}`; return `<figure class="pane plcard"><span class="tag">${SLOTS.find((x) => x.id === r.id).label}${r.big ? ", larger" : ""}</span><div class="pair">${pix(r.file, 6, "as returned")}${pix(snapF, 6, "snapped")}</div><figcaption>asked ${r.size} · drew ${plDrawn(snapF)}</figcaption></figure>`; }).join("")}</div></div>`; }).join("");
+// Retro Diffusion: each result beside the code-drawn blockout it started from.
+const rdRuns = fs.existsSync("out/rd-runs.json") ? JSON.parse(fs.readFileSync("out/rd-runs.json")) : [];
+const RD_NOTE = {
+  "out/rd-koi-32x16-s7-1.png": "strength 0.55", "out/rd-koi-32x16-s7-2.png": "strength 0.55, second image",
+  "out/rd-koi-24x12-s7-1.png": "strength 0.7; RD's background removal took the tail", "out/rd-koi-24x12-s7-k-1.png": "strength 0.7 on magenta; the palette repainted the magenta",
+  "out/rd-dfly1-20x14-s11-1.png": "RD's background removal took the wings", "out/rd-dfly2-20x14-s11-1.png": "frame 2, same seed",
+  "out/rd-dfly1-20x14-s11-k-1.png": "frame 1 on magenta, same seed", "out/rd-dfly2-20x14-s11-k-1.png": "frame 2 on magenta, same seed",
+  "out/rd-padS-17x12-s7-1.png": "redrawn round, not as the flat oval asked",
+};
+const rdCards = rdRuns.filter((r) => !r.anim).map((r) => `<figure class="pane plcard"><span class="tag">${SLOTS.find((x) => x.id === r.id).label} · ${r.size}</span><div class="pair">${pix(r.blockout, 6, "blockout")}<span class="arrow">→</span>${pix(r.file, 6, "result")}</div><figcaption>${RD_NOTE[r.file] ?? ""}</figcaption></figure>`).join("");
+const anim = rdRuns.find((r) => r.anim);
+const rdAnim = anim ? `<figure class="pane plcard"><span class="tag">Dragonfly wing-beat, 4 frames, $0.25</span><div class="pair">${[1, 2, 3, 4].map((i) => pix(`out/rd-anim-1-f${i}.png`, 5, `frame ${i}`)).join("")}<span class="arrow">=</span><span class="anim">${[1, 2, 3, 4].map((i) => `<span class="af af${i}">${pix(`out/rd-anim-1-f${i}.png`, 5, `animated frame ${i}`)}</span>`).join("")}</span></div><figcaption>advanced animation from the frame-2 dragonfly on a 32 × 32 canvas (its minimum); colours not yet snapped</figcaption></figure>` : "";
+const rdSpent = rdRuns.reduce((a, r) => a + (r.cost ?? 0), 0);
 const kit = { padL: "out/kit-padL.png", padS: "out/kit-padS.png", flower: "out/kit-flower.png" };
 const cost = runsLog.reduce((a, r) => a + PRICE[r.model ?? "gemini-3-pro-image"], 0);
 
@@ -115,6 +128,9 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   .plcard figcaption { font: 11px var(--mono); color: #0d1a20; opacity: .75; }
   body.deep .plcard figcaption { color: #e8f0f4; }
   .key { font-size: 13px; }
+  .arrow { color: #0d1a20; opacity: .6; font-size: 18px; align-self: center; }
+  .anim { display: grid; } .anim .af { grid-area: 1 / 1; visibility: hidden; }
+  body.f1 .anim .af1, body.f2 .anim .af2, body.f3 .anim .af3, body.f4 .anim .af4 { visibility: visible; }
   .none { color: var(--muted); font-size: 13px; font-style: italic; }
   dl { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; margin: 0; font: 12px/1.6 var(--mono); font-variant-numeric: tabular-nums; }
   dt { color: var(--muted); } dd { margin: 0; } dd em { font-style: normal; color: var(--bad); }
@@ -127,8 +143,8 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
 <main>
   <header class="lede">
     <h2>Which AI tool draws the sprite kit best?</h2>
-    <h1>Gemini gets the style, PixelLab gets the size</h1>
-    <p>The same test set each time: a large and a small lily pad, the open flower, the koi and a 2-frame dragonfly, asked for in the chosen style with the kit's own pad, flower and ramps as the reference. Each sheet is pixelified, cut into sprites and snapped to that sprite's ramps. PixelLab's free trial is further down. Retro Diffusion passed the terms gate but is not tested yet.</p>
+    <h1>Gemini, PixelLab and Retro Diffusion side by side</h1>
+    <p>The same test set each time: a large and a small lily pad, the open flower, the koi and a 2-frame dragonfly, asked for in the chosen style with the kit's own pad, flower and ramps as the reference. Each sheet is pixelified, cut into sprites and snapped to that sprite's ramps. PixelLab's free trial and Retro Diffusion's RD Pro are further down.</p>
   </header>
 
   <section class="finding">
@@ -158,6 +174,13 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
     <p><b>Quality depends on the model.</b> Seeded with the kit's own pad, Bitforge keeps the shape and adds texture: the best pad on this page. Pixen draws the most readable flower and dragonfly. Text alone on Bitforge, or with the pad as its style image, gives blobs. The koi isn't readable at 18 × 8 or 24 × 12 on any model, and seeding frame 2 from frame 1 kept the pose, so wing frames still need a hand.</p>
   </section>
   <div class="pl">${plSection}<p class="key">Each card: as returned on the left, snapped to the sprite's ramps on the right, both at 6×.</p></div>
+
+  <section class="finding">
+    <h2>Retro Diffusion, RD Pro from code-drawn blockouts ($${rdSpent.toFixed(2)} of $5)</h2>
+    <p><b>Exact size, our palette, and the best koi and dragonfly so far.</b> RD Pro draws at exactly the requested size (12 px minimum) and takes a starting image, so the koi and dragonfly start from rough shapes drawn in code. At strength 0.55 the koi reads clearly at 32 × 16. Its own animation mode turned one dragonfly into a real 4-frame wing-beat with the body held still, which nothing else here managed.</p>
+    <p><b>Watch the background.</b> RD's background removal takes pale parts (the koi's tail, the dragonfly's wings). Magenta keyed out by us fixes it when the palette isn't forced, but a forced palette repaints the magenta. The small pad came back round, not as the flat oval asked.</p>
+  </section>
+  <div class="pl"><div class="plrow">${rdAnim}${rdCards}</div></div>
 
   <section>
     <h2>How to read a cell</h2>
@@ -208,9 +231,12 @@ fs.writeFileSync("index.html", `<title>Sprite Kit Bake-off</title>
   $("bgDay").onclick = () => bg(null, $("bgDay")); $("bgDeep").onclick = () => bg("deep", $("bgDeep")); $("bgFlat").onclick = () => bg("flat", $("bgFlat"));
   const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let timer = null;
-  const play = (on) => { clearInterval(timer); timer = null; $("bPlay").setAttribute("aria-pressed", String(on)); if (on) timer = setInterval(() => document.body.classList.toggle("frame2"), 125); };
+  let tick = 0;
+  const step = () => { tick++; document.body.classList.toggle("frame2", tick % 2 === 1); document.body.classList.remove("f1", "f2", "f3", "f4"); document.body.classList.add("f" + (tick % 4 + 1)); };
+  const play = (on) => { clearInterval(timer); timer = null; $("bPlay").setAttribute("aria-pressed", String(on)); if (on) timer = setInterval(step, 125); };
   $("bPlay").onclick = () => play(!timer);
-  $("bStep").onclick = () => { play(false); document.body.classList.toggle("frame2"); };
+  $("bStep").onclick = () => { play(false); step(); };
+  document.body.classList.add("f1");
   play(!still);
 </script>
 `);
