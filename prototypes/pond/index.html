@@ -12,14 +12,14 @@
     - Home: a pond in a forest. Trees sway and drop the odd leaf. Settings is a moored rowboat top left; the
       primary action is a flowering lily pad bottom right, its label written on the pad.
     - An Inquiry is a lily: the Problem is its pad, the Paths its stem, the Recap its flower. Each Inquiry on
-      home shows how far it has grown.
+      home: an unfinished one is a lily pad that yellows as its 7 days run out; a Recap is the flower alone.
     - Probe list: Probes above, the person's Problem below; Finish Inquiry is the same bottom-right lily pad.
     - Path: a meandering brook runs through the water, babbling round stones, and you walk along it step by step
-      (‹ › or swipe). Submitting a Reflection skims a stone down the brook. The Path never moves when the
+      (‹ › or swipe). Submitting a Reflection skims a small stone down the brook. An offer to add a Probe floats
+      as a bud on the waterline and opens when tapped. The Path never moves when the
       keyboard opens: the keyboard slides over the empty water at the bottom.
     - Recap: the brook quietens and opens into a still pool, and the lily flowers.
-    - The AI notice shows once, at the start of each Inquiry (EU AI Act Art. 50), and once more if the model
-      signals softening; there is no label on every screen.
+    - The AI notice shows once, at the start of each Inquiry (EU AI Act Art. 50); no label on every screen.
     - Help and the Step-out still the water: no motion, no metaphor.
   Logo options (?logo=lily|lilysun|lilyripples). Voice warms along the current Path and when the model signals
   softening ("model: softening" in the bar).
@@ -124,8 +124,11 @@
   .ctrl { display:flex; align-items:center; gap:10px; padding:6px 22px 0; }
   .kbd { transform:translateY(100%); transition:transform .32s cubic-bezier(.3,.7,.3,1); display:grid !important; }
   #app.kb .kbd { transform:none; }
-  .skim { position:absolute; z-index:8; width:12px; height:5px; border-radius:50%; background:#6f716b; box-shadow:0 1px 0 rgba(255,255,255,.4) inset; }
+  .skim { position:absolute; z-index:3; width:7px; height:3px; border-radius:50%; background:#5f615b; opacity:.85; }
   .stage { flex:none; display:block; }
+  .bud { position:absolute; z-index:7; left:70%; top:calc(var(--wl) - 26px); background:none; border:none; padding:0; backdrop-filter:none; animation:pbob 4.5s ease-in-out infinite; }
+  .bud::after { content:""; position:absolute; left:-6px; right:-6px; bottom:-3px; height:8px; border:1px solid var(--rip); border-radius:50%; opacity:.5; }
+  .budcard { position:absolute; z-index:9; right:14px; width:270px; bottom:calc(100% - var(--wl) + 34px); font-size:14px; }
   .ailabel { font-variant:small-caps; letter-spacing:.06em; font-size:13px; }
   .mic { width:42px; height:42px; padding:0; border-radius:50%; display:flex; align-items:center; justify-content:center; }
   .mic.on { background:var(--acc); }
@@ -204,13 +207,12 @@ const rowboat = w => `<svg width="${w}" height="${w * .5}" viewBox="0 0 90 45">
   <line x1="62" y1="22" x2="84" y2="38" stroke="#6b4a2c" stroke-width="2.5" stroke-linecap="round"/></svg>`;
 const stone = (w, h) => `<svg width="${w}" height="${h}" viewBox="0 0 100 40" preserveAspectRatio="none"><ellipse cx="50" cy="22" rx="48" ry="17" fill="var(--stone)"/><ellipse cx="48" cy="18" rx="44" ry="13" fill="var(--stoneT)"/></svg>`;
 
-// an Inquiry is a lily: 0 = just the pad (the Problem), 1 = a stem with a bud (Paths walked), 2 = in flower (the Recap)
-function lilyStage(stage, w = 34) {
-  const st = stage ? `<path d="M30 40Q28 28 31 ${stage === 2 ? 19 : 16}" stroke="#4f7a3a" stroke-width="1.6" fill="none"/>` : '';
-  const top = stage === 1 ? `<ellipse cx="31" cy="12" rx="3.6" ry="6.5" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8"/>`
-    : stage === 2 ? [-60, -30, 0, 30, 60].map(a => `<ellipse cx="31" cy="10" rx="3.6" ry="9" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".7" transform="rotate(${a} 31 19)"/>`).join('') + '<circle cx="31" cy="16" r="2.2" fill="#f1cf5b"/>' : '';
-  return `<svg class="stage" width="${w}" height="${w * .83}" viewBox="0 0 60 50"><g transform="translate(6 33) scale(.48 .2)"><path d="${PAD_PATH}" fill="var(--pad)" stroke="var(--padR)" stroke-width="4"/></g>${st}${top}</svg>`;
-}
+// an Inquiry is a lily: its pad is the Problem, and it yellows as its 7 days run out; a Recap is the flower alone
+const padAge = d => d >= 5 ? ['var(--pad)', 'var(--padR)'] : d >= 3 ? ['#a59a3c', '#7d7428'] : ['#8a6a3a', '#634a26'];
+const padGlyph = (days = 7, w = 30) => { const [f, r] = padAge(days);
+  return `<svg class="stage" width="${w}" height="${w * .62}" viewBox="0 0 100 62"><g transform="translate(2 4) scale(.96 .56)"><path d="${PAD_PATH}" fill="${f}" stroke="${r}" stroke-width="3"/></g></svg>`; };
+const flowerGlyph = (w = 26) => `<svg class="stage" width="${w}" height="${w * .8}" viewBox="0 0 40 32">${[-60, -30, 0, 30, 60].map(a => `<ellipse cx="20" cy="17" rx="4.6" ry="11" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8" transform="rotate(${a} 20 28)"/>`).join('')}<circle cx="20" cy="24" r="3" fill="#f1cf5b"/></svg>`;
+const budGlyph = (w = 22) => `<svg width="${w}" height="${w * 1.2}" viewBox="0 0 20 24"><path d="M10 23Q9 18 10 13" stroke="#4f7a3a" stroke-width="1.4" fill="none"/><ellipse cx="10" cy="8" rx="4.4" ry="7" fill="#f6c3cf" stroke="#e38ba2" stroke-width=".8"/><path d="M10 2Q7 8 10 14Q13 8 10 2" fill="#eea7b8" opacity=".7"/></svg>`;
 function pondButton({ role, label, act, style, dry }) {
   const prim = role === 'primary', kind = 'boat';
   let obj, on = '', under = '';
@@ -231,9 +233,10 @@ const LOOK = (c, still, art) => `<g class="lk" ${still ? 'style="opacity:1"' : '
 // a lily on the waterline: the pad seen at an angle, the flower above it, its reflection faint below
 const lotusPetals = (cx, by, k, o = 1) => [-62, -31, 0, 31, 62].map(a => `<ellipse cx="${cx}" cy="${by - 11 * k}" rx="${4.6 * k}" ry="${11.5 * k}" fill="#f6c3cf" stroke="#e38ba2" stroke-width="${.8 * k}" opacity="${o}" transform="rotate(${a} ${cx} ${by})"/>`).join('') + `<circle cx="${cx}" cy="${by - 3 * k}" r="${3 * k}" fill="#f1cf5b" opacity="${o}"/>`;
 const padAt = (c, cx, y, w) => `<g transform="translate(${cx - w / 2} ${y - w * .12}) scale(${w / 100} ${w * .24 / 100})"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${c.padR}" stroke-width="4"/></g>`;
-const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) + `<g transform="translate(0 ${2 * y}) scale(1 -1)" opacity=".28">${lotusPetals(cx, y - 2 * k, k)}</g>`;
+const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) // the flower's reflection: broken pink strokes below the pad, never over it
+  + [[11, 16, .38], [15, 11, .26], [19, 5, .15]].map(([dy, w, o]) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="#e9a3b5" stroke-width="${1.6 * k}" stroke-linecap="round" opacity="${o}"/>`).join('');
 const sunArt = (c, cx, y, k) => `<circle cx="${cx + 4 * k}" cy="${y - 34 * k}" r="${17 * k}" fill="${c.sun}"/>` + [[14, 40], [22, 30], [30, 20], [38, 10]].map(([dy, w], n) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="${c.sun}" stroke-width="${3 * k}" stroke-linecap="round" opacity="${.8 - n * .17}"/>`).join('');
-const rippleArt = (c, cx, y, k) => [36, 47, 58].map((r, n) => `<ellipse cx="${cx}" cy="${y}" rx="${r * k}" ry="${r * .26 * k}" fill="none" stroke="${c.rip}" stroke-width="${(1.4 - n * .35) * k}" opacity="${.85 - n * .25}"/>`).join('');
+const rippleArt = (c, cx, y, k) => [38, 50].map((r, n) => `<ellipse cx="${cx}" cy="${y}" rx="${r * k}" ry="${r * .24 * k}" fill="none" stroke="${c.rip}" stroke-width="${.6 * k}" opacity="${.32 - n * .14}"/>`).join('');
 const LOGOS = {
   lily: { name: 'Lily on the water', mark: (c, still) => LOOK(c, still, '') + `<line x1="20" y1="80" x2="280" y2="80" stroke="${c.line}" stroke-opacity=".7"/>` + lilyArt(c, 64, 80, 1) + TG(c, still),
     icon: c => lilyArt(c, 50, 58, 1.25) },
@@ -313,10 +316,10 @@ const SAMPLE = 'I think I\'m scared that if I stop being the reliable one, nobod
 function seed() {
   const q = new URLSearchParams(location.search);
   return { season: q.get('season') || 'auto', still: false, soften: false,
-    logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lily', noticeAgain: false,
+    logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lilyripples', budOpen: false,
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
-    unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5, stage: 1 }, { problem: 'I keep putting off calling my father.', days: 2, stage: 0 }],
+    unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5 }, { problem: 'I keep putting off calling my father.', days: 2 }],
     past: [{ problem: 'I can\'t stop comparing myself to my brother.', day: 'Mon 2 Nov' }, { problem: 'I feel like I\'m wasting my life.', day: 'Thu 29 Oct' }] };
 }
 let S = seed();
@@ -341,9 +344,9 @@ function home() {
   return { wl: '27%',
     above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(51px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
     below: `<div class="scroll pad" style="padding-top:64px;padding-bottom:150px">
-      ${live ? `<div class="card tap float row" data-act="resume" style="align-items:flex-start">${lilyStage(inq().probes.some(p => p.status === 'looked') ? 1 : 0)}<div class="grow"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div></div>` : ''}
-      <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start">${lilyStage(u.stage)}<p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
-      <h3>Recaps</h3>${S.past.map(p => `<div class="card tap row" style="align-items:flex-start">${lilyStage(2)}<div class="grow"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div></div>`).join('')}</div>`,
+      ${live ? `<div class="card tap float row" data-act="resume" style="align-items:flex-start">${padGlyph(7)}<div class="grow"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div></div>` : ''}
+      <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start">${padGlyph(u.days)}<p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
+      <h3>Recaps</h3>${S.past.map(p => `<div class="card tap row" style="align-items:flex-start">${flowerGlyph()}<div class="grow"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div></div>`).join('')}</div>`,
     extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
       ${pondButton({ role: 'secondary', label: 'Settings', act: 'settings', style: 'left:12px;top:calc(var(--wl) + 4px)' })}
       ${pondButton({ role: 'primary', label: S.todayDone ? 'Next at 15:40' : 'New Inquiry', act: 'newLeaf', style: 'right:14px;bottom:30px', dry: S.todayDone })}
@@ -367,7 +370,7 @@ function probes() {
   return { wl: '64%',
     above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 4px">${W.pick()}</p>
       ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:17px;margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}</div>`,
-    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><div class="row" style="margin:8px 0 2px">${lilyStage(any ? 1 : 0, 30)}<p class="small mut" style="margin:0">Your Problem</p></div><p class="r" style="font-size:17px">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
+    below: `<div class="pad" style="padding-right:${any ? 22 : 22}px"><div class="row" style="margin:8px 0 2px">${padGlyph(7, 26)}<p class="small mut" style="margin:0">Your Problem</p></div><p class="r" style="font-size:17px">${esc(i.problem)}</p>${any ? `<p class="small mut" style="max-width:150px">${W.finish()}</p>` : ''}</div>`,
     extra: any ? pondButton({ role: 'primary', label: 'Finish Inquiry', act: 'finish', style: 'right:14px;bottom:30px' }) : '' };
 }
 function path() {
@@ -386,21 +389,23 @@ function path() {
     return { wl: '36%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px"><p class="small mut" style="margin:0">Looked at · ${W.outcome(s.outcome)}</p>
       ${s.openq ? `<p class="small mut" style="margin-top:10px">Open Question</p><p class="q">${s.openq}</p>` : `<p class="q mut" style="font-size:17px">${s.premise}</p>`}</div>`,
       below: `<div class="pad ${mv}" style="padding-top:26px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:16px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
-  const offer = vi === 1 && s.offer ? (p.offered ? `<p class="small mut">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>`
-    : `<div class="card offer">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Yes</button><button data-act="offer" data-a="no">No</button></div></div>`) : '';
+  const offer = vi === 1 && s.offer && p.offered ? `<p class="small mut" style="margin:6px 0 0">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>` : '';
+  // an offer to add a Probe floats as a bud on the waterline, and opens when tapped
+  const bud = vi === 1 && s.offer && !p.offered ? `<button class="bud" data-act="bud" aria-label="Another Probe might be here">${budGlyph()}</button>
+    ${S.budOpen ? `<div class="card budcard fadein">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Add it</button><button data-act="offer" data-a="no">Not now</button></div></div>` : ''}` : '';
   return { wl: '36%', // fixed, so the keyboard never moves anything
     above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;padding-bottom:26px;overflow-y:auto;min-height:0"><div style="margin-top:auto">
-      ${S.soften && writing ? '<p class="small mut" style="margin:0 0 8px">A reminder: this is an AI, not a person or a therapist.</p>' : ''}<div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
+      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}" style="margin:0">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
       ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div></div>`,
     below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:22px"><p class="premise">${W.under()} ${s.premise}</p></div>` : '')
       + (p.pending ? `<div class="pad" style="padding-top:26px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
         : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:26px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
-    extra: nav };
+    extra: nav + bud };
 }
 function recap() {
   const i = inq(), looked = i.probes.filter(p => p.status === 'looked'), notYet = i.probes.filter(p => p.status !== 'looked'), oqs = looked.map(p => PS[p.id].openq).filter(Boolean);
   return { wl: '22%',
-    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad row" style="padding-top:0;align-items:flex-end">${lilyStage(2, 44)}<div><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div></div>`,
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad row" style="padding-top:0;align-items:flex-end">${flowerGlyph(40)}<div><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div></div>`,
     below: `<div class="scroll pad" style="padding-top:18px">
       ${looked.map(p => `<div class="pair"><div class="pq" style="color:var(--wink)">${PS[p.id].premise} <span class="small" style="opacity:.75">· ${W.outcome(PS[p.id].outcome)}</span></div><div class="pl"></div>${PS[p.id].quote ? `<div class="pr">“${PS[p.id].quote}”</div>` : '<div class="pr" style="opacity:.6">—</div>'}</div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
@@ -438,7 +443,7 @@ function renderSide() {
   const sn = season(), bg = sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0';
   document.getElementById('side').innerHTML = `<div class="box"><h4>Logo options · click to use</h4><div class="logos">${Object.keys(LOGOS).map(k => `<div class="${S.logo === k ? 'on' : ''}" data-logo="${k}"><div style="background:linear-gradient(${bg});display:flex;justify-content:center">${wordmark(140, sn, true, k)}</div><span>${LOGOS[k].name}</span></div>`).join('')}</div></div>
     <div class="box"><h4>App icons · ${sn}</h4><div class="row" style="align-items:flex-end;flex-wrap:wrap">${Object.keys(LOGOS).map(k => appIcon(k === S.logo ? 62 : 46, sn, k)).join('')}${appIcon(30, sn)}</div></div>
-    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. A pond in a forest on home, a brook you walk along on a Path, a pool again at the Recap. An Inquiry is a lily: pad (Problem), stem (Paths), flower (Recap). Help and the Step-out still the water.</div>
+    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. A pond in a forest on home, a brook you walk along on a Path, a pool again at the Recap. An Inquiry is a lily: an unfinished one is a pad that yellows as its days run out, a finished one is the flower. Help and the Step-out still the water.</div>
     <div class="box"><h4>Not yet</h4>Animation is placeholder. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits between snappy and calm.</div>
     <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>logo: ${S.logo}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
 }
@@ -468,13 +473,14 @@ function walkBrook(vi) { // each step moves you a little way down the meander
   document.getElementById('creekg').style.transform = `translateX(${-vi * 330 - 60}px)`;
 }
 let rings = [], rafOn = false;
-function ripple(x, y, n = 3) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
+function ripple(x, y, n = 3, small) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, small, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
 function tick(t) {
   const c = document.getElementById('rip'), g = c.getContext('2d'); g.clearRect(0, 0, c.width, c.height);
   const col = getComputedStyle(document.getElementById('app')).getPropertyValue('--rip');
-  rings = rings.filter(o => t - o.born < 2600);
-  for (const o of rings) { const age = t - o.born; if (age < 0) continue; const r = 4 + age * .07;
-    g.globalAlpha = Math.max(0, 1 - age / 2600) * .9; g.strokeStyle = col; g.lineWidth = 1.2; g.beginPath(); g.ellipse(o.x, o.y, r, r * .28, 0, 0, Math.PI * 2); g.stroke(); }
+  const life = o => o.small ? 1100 : 2600;
+  rings = rings.filter(o => t - o.born < life(o));
+  for (const o of rings) { const age = t - o.born; if (age < 0) continue; const r = o.small ? 2 + age * .022 : 4 + age * .07;
+    g.globalAlpha = Math.max(0, 1 - age / life(o)) * (o.small ? .6 : .9); g.strokeStyle = col; g.lineWidth = 1.2; g.beginPath(); g.ellipse(o.x, o.y, r, r * .28, 0, 0, Math.PI * 2); g.stroke(); }
   if (rings.length) requestAnimationFrame(tick); else { rafOn = false; g.clearRect(0, 0, c.width, c.height); }
 }
 const wlPx = () => { const a = document.getElementById('app'); return a.getBoundingClientRect().height * parseFloat(getComputedStyle(a).getPropertyValue('--wl')) / 100; };
@@ -484,18 +490,17 @@ function drop(then, x = 195) {
   const d = document.createElement('div'); d.className = 'drop'; d.style.left = x + 'px'; app.appendChild(d);
   d.animate([{ top: '-20px' }, { top: (y - 8) + 'px' }], { duration: 650, easing: 'cubic-bezier(.5,0,1,1)' }).onfinish = () => { d.remove(); ripple(x, y); then(); };
 }
-function skim(then) { // a flat stone skips down the brook, forward, and sinks
-  if (S.still) return then();
-  const app = document.getElementById('app'), base = wlPx() + 150, hops = [[-20, 0], [90, 6], [170, 10], [232, 13], [276, 15], [306, 16]];
-  const st = document.createElement('div'); st.className = 'skim'; st.style.left = '0px'; st.style.top = base + 'px'; app.appendChild(st);
-  // arcs between hops: lift halfway through each segment
-  const kf = []; for (let k = 0; k < hops.length - 1; k++) { const [x0, y0] = hops[k], [x1, y1] = hops[k + 1], lift = 22 / (k + 1);
-    kf.push({ transform: `translate(${x0}px,${y0}px)`, offset: k / (hops.length - 1) }, { transform: `translate(${(x0 + x1) / 2}px,${(y0 + y1) / 2 - lift}px)`, offset: (k + .5) / (hops.length - 1) }); }
-  kf.push({ transform: `translate(${hops.at(-1)[0]}px,${hops.at(-1)[1]}px)`, offset: 1 });
-  const dur = 1700;
-  hops.slice(1).forEach(([x, dy], k) => setTimeout(() => ripple(x + 6, base + dy + 3, k === hops.length - 2 ? 3 : 1), dur * (k + 1) / (hops.length - 1)));
-  st.animate(kf, { duration: dur, easing: 'cubic-bezier(.2,.5,.4,1)', fill: 'forwards' }).onfinish = () => {
-    st.animate([{ opacity: 1 }, { opacity: 0, transform: `translate(${hops.at(-1)[0]}px,${hops.at(-1)[1] + 8}px)` }], { duration: 400, fill: 'forwards' }).onfinish = () => st.remove(); then(); };
+function skim() { // a small flat stone skips four times down the brook, each hop shorter and quicker, then sinks
+  if (S.still) return;
+  const app = document.getElementById('app'), y = wlPx() + 250, x0 = 70, hops = [72, 46, 28, 15], lifts = [9, 5, 2.6, 1.2];
+  const st = document.createElement('div'); st.className = 'skim'; st.style.left = x0 + 'px'; st.style.top = y + 'px'; app.appendChild(st);
+  const total = hops.reduce((a, b) => a + b, 0), dur = 760, kf = [{ transform: 'translate(0,0)', offset: 0 }];
+  let x = 0;
+  hops.forEach((h, k) => { const at = (x + h / 2) / total, end = (x + h) / total;
+    kf.push({ transform: `translate(${x + h / 2}px,${-lifts[k]}px)`, offset: at }, { transform: `translate(${x + h}px,0)`, offset: end });
+    x += h; const xx = x0 + x; setTimeout(() => ripple(xx + 4, y + 3, 1, true), dur * end); });
+  st.animate(kf, { duration: dur, easing: 'cubic-bezier(.15,.6,.45,1)', fill: 'forwards' }).onfinish = () =>
+    st.animate([{ opacity: .9, transform: `translate(${x}px,0)` }, { opacity: 0, transform: `translate(${x + 3}px,4px)` }], { duration: 260, fill: 'forwards' }).onfinish = () => st.remove();
 }
 function playSplash() {
   setTimeout(() => drop(() => { const mk = document.getElementById('mark'); if (!mk) return; mk.classList.add('show'); waveDown(18, 2600); }), S.still ? 0 : 700);
@@ -544,12 +549,12 @@ function submit(kind) {
   S.busy = true; if (document.activeElement) document.activeElement.blur(); S.kb = false;
   if (kind === 'problem') { render(); return drop(() => setTimeout(() => { S.busy = false; newToday(false); S.problemDraft = ''; S.screen = 'probes'; render(); }, 600)); }
   if (/hurt myself|end it|kill/i.test(v)) { S.busy = false; S.draft = ''; S.screen = 'stepout'; S.path = null; return render(); }
-  const p = probe(); p.pending = v; render(); // the Reflection settles below while a stone skims down the brook
-  skim(() => setTimeout(() => {
-    const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.busy = false;
+  const p = probe(); p.pending = v; render(); skim(); // a stone skims down the brook; the reply doesn't wait for it
+  setTimeout(() => {
+    const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.busy = false; S.budOpen = false;
     if (p.pos >= s.qs.length) p.status = 'looked';
     const st = steps(p); S.vi = p.status === 'looked' ? st.length : st.length - 1; S.justReplied = true; S.dir = 'next'; render();
-  }, 300));
+  }, 500);
 }
 function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: false, readAll: false, kb: false }, x); render(); }
 function jump(v) {
@@ -598,7 +603,7 @@ document.addEventListener('click', e => {
     openPath: () => { const p = inq().probes.find(x => x.id === el.dataset.pid), st = steps(p); go('path', { path: p.id, vi: p.status === 'looked' ? 0 : st.length - 1 }); },
     closePath: () => go('probes', { path: null }), readAll: () => { S.readAll = true; render(); }, closeRead: () => { S.readAll = false; render(); },
     prev: () => { S.vi = Math.max(0, S.vi - 1); S.dir = 'prev'; render(); }, next: () => { S.vi++; S.dir = 'next'; render(); },
-    reveal: () => { probe().reveal = true; render(); }, offer: () => { probe().offered = el.dataset.a; render(); },
+    reveal: () => { probe().reveal = true; render(); }, offer: () => { probe().offered = el.dataset.a; S.budOpen = false; render(); }, bud: () => { S.budOpen = !S.budOpen; render(); },
     submit: () => submit(kind), finish: () => { rippleAt(); inq().status = 'ended'; setTimeout(() => go('recap'), 350); }, worth: () => { inq().worth = el.dataset.w; render(); },
     mic: () => { S.dictating = !S.dictating; if (!S.dictating) { if (kind === 'problem') S.problemDraft += (S.problemDraft ? ' ' : '') + PROBLEM; else S.draft += (S.draft ? ' ' : '') + SAMPLE; } render(); },
     help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
