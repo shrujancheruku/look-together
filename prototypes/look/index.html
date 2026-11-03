@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE · Look Together look and voice</title>
+<!--
+  PROTOTYPE, throwaway. Answers: "What do Look Together's look and the voice of its copy feel like?"
+  (wayfinder ticket #54 on map #1). The quiet stack from prototypes/screens (variant A of #47), trimmed to it,
+  dressed three ways. The layout is settled, so these variants disagree on type, colour, spacing, icon style,
+  app icon and the voice of the app's own words, not on navigation. Switch with ?look=A|B|C, the floating bar,
+  or ← / →; light and dark with the bar too.
+    A  Paper   : warm paper and ink, serif for what the person reads and writes, soft cards, plain warm voice.
+    B  Dusk    : dark-first slate and sage, big rounded sans, lots of air, no borders, spare voice.
+    C  Ledger  : white, black, one blue, hairline rules and numbered Probes, literal voice that names the terms.
+  Everything is in memory; reload resets. Model replies are canned and the same in every look: only the app's
+  own words change.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens per look × theme ---------- */
+  #app[data-look=A] { --bg:#f6f1e8; --surface:#fffdf8; --ink:#2b2622; --mut:#786d62; --line:#e4dacb; --acc:#8a4b2f; --accInk:#fff; --accSoft:#f2e4d8; --kw:#efe0c2; --refl:#efe7da; --help:#2b2622;
+    --ui:"Inter",system-ui,sans-serif; --read:"Newsreader",Georgia,serif; --base:15px; --rad:12px; --radS:8px; --gap:14px; --stroke:1.4; --cap:round; }
+  #app[data-look=A].dark { --bg:#1c1916; --surface:#24201c; --ink:#ede6da; --mut:#a3988a; --line:#3a332c; --acc:#e0a07c; --accInk:#1c1916; --accSoft:#3a2a21; --kw:#4a3b26; --refl:#2d2823; --help:#ede6da; }
+  #app[data-look=B] { --bg:#eef1ef; --surface:#ffffff; --ink:#1f2a2e; --mut:#66767a; --line:#dde3e1; --acc:#3f7a63; --accInk:#fff; --accSoft:#dcebe4; --kw:#d3e8de; --refl:#e3ebe8; --help:#3f7a63;
+    --ui:"Figtree",system-ui,sans-serif; --read:"Figtree",system-ui,sans-serif; --base:17px; --rad:22px; --radS:16px; --gap:20px; --stroke:2; --cap:round; }
+  #app[data-look=B].dark { --bg:#141a1c; --surface:#1d2528; --ink:#e3ebe8; --mut:#8fa09f; --line:#2a3437; --acc:#8fc2a9; --accInk:#10201a; --accSoft:#21332d; --kw:#284036; --refl:#223034; --help:#8fc2a9; }
+  #app[data-look=C] { --bg:#ffffff; --surface:#ffffff; --ink:#111111; --mut:#666666; --line:#e2e2e2; --acc:#2350d8; --accInk:#fff; --accSoft:#eef2fd; --kw:transparent; --refl:#f4f4f4; --help:#111111;
+    --ui:"Inter",system-ui,sans-serif; --read:"Inter",system-ui,sans-serif; --base:15px; --rad:2px; --radS:2px; --gap:0px; --stroke:1.5; --cap:square; }
+  #app[data-look=C].dark { --bg:#0e0e0f; --surface:#0e0e0f; --ink:#f2f2f2; --mut:#9a9a9a; --line:#2a2a2a; --acc:#8aa6ff; --accInk:#0e0e0f; --accSoft:#161d38; --refl:#1a1a1a; --help:#f2f2f2; }
+
+  * { box-sizing:border-box; }
+  body { margin:0; background:#b9b9b4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; gap:24px; padding:16px 16px 140px; font:14px system-ui,sans-serif; }
+  #app { background:var(--bg); color:var(--ink); font:var(--base)/1.5 var(--ui); position:relative; overflow:hidden; border-radius:34px; box-shadow:0 8px 40px #0003; display:flex; flex-direction:column; width:390px; max-width:100%; height:800px; flex:none; }
+  #app.web { width:900px; border-radius:10px; }
+  .scroll { flex:1; overflow-y:auto; }
+  .pad { padding:16px 20px; } #app[data-look=B] .pad { padding:20px 24px; }
+  .narrow { max-width:620px; margin:0 auto; width:100%; }
+  .read { font-family:var(--read); }
+  h1 { font:500 26px/1.2 var(--read); margin:8px 0 8px; letter-spacing:-.01em; }
+  #app[data-look=B] h1 { font:600 30px/1.15 var(--read); } #app[data-look=C] h1 { font:600 22px/1.25 var(--ui); letter-spacing:-.02em; }
+  h2 { font:500 20px/1.3 var(--read); margin:6px 0 10px; } #app[data-look=C] h2 { font:600 17px var(--ui); }
+  h3 { font:500 12px/1 var(--ui); letter-spacing:.08em; text-transform:uppercase; color:var(--mut); margin:26px 0 10px; }
+  #app[data-look=B] h3 { font:500 15px/1 var(--ui); letter-spacing:0; text-transform:none; margin:32px 0 12px; }
+  #app[data-look=C] h3 { font:500 11px/1 "IBM Plex Mono",monospace; letter-spacing:.04em; color:var(--ink); border-bottom:1px solid var(--ink); padding-bottom:6px; margin:28px 0 0; }
+  p { margin:6px 0; } .mut { color:var(--mut); } .small { font-size:.85em; }
+  button { font:inherit; cursor:pointer; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:var(--radS); padding:10px 16px; }
+  #app[data-look=B] button { border:none; background:var(--accSoft); padding:13px 20px; }
+  button.pri { background:var(--acc); color:var(--accInk); border-color:var(--acc); font-weight:500; }
+  #app[data-look=B] button.pri { background:var(--acc); }
+  button.link { border:none !important; background:none !important; color:var(--acc); padding:4px 0 !important; }
+  button:disabled { opacity:.4; cursor:default; }
+  .row { display:flex; gap:10px; align-items:center; } .grow { flex:1; } .right { margin-left:auto; }
+  svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:var(--stroke); stroke-linecap:var(--cap); stroke-linejoin:round; vertical-align:middle; }
+  #app[data-look=B] svg.i { width:24px; height:24px; }
+
+  /* cards: A soft card, B borderless fill, C hairline row */
+  .card { background:var(--surface); border:1px solid var(--line); border-radius:var(--rad); padding:16px; margin:10px 0; }
+  #app[data-look=B] .card { border:none; padding:22px; margin:14px 0; }
+  #app[data-look=C] .card { border:none; border-bottom:1px solid var(--line); border-radius:0; padding:14px 0; margin:0; background:none; }
+  .card.tap { cursor:pointer; } #app[data-look=A] .card.tap:hover { border-color:var(--acc); } #app[data-look=C] .card.tap:hover { background:var(--accSoft); }
+  .probe { font:400 19px/1.4 var(--read); }
+  #app[data-look=B] .probe { font:500 19px/1.4 var(--read); } #app[data-look=C] .probe { font:400 16px/1.45 var(--ui); }
+  .num { display:none; } #app[data-look=C] .num { display:block; font:500 12px/1.9 "IBM Plex Mono",monospace; color:var(--mut); width:28px; flex:none; }
+  .kw { background:var(--kw); border-radius:3px; padding:0 2px; }
+  #app[data-look=C] .kw { text-decoration:underline; text-decoration-color:var(--acc); text-decoration-thickness:2px; text-underline-offset:3px; }
+  .status { font-size:.8em; color:var(--mut); margin-top:8px; }
+  #app[data-look=A] .status { font-style:italic; font-family:var(--read); font-size:.9em; }
+  #app[data-look=C] .status { font:12px "IBM Plex Mono",monospace; }
+
+  /* badge: time left */
+  .badge { font-size:.8em; color:var(--mut); white-space:nowrap; }
+  #app[data-look=A] .badge { font:italic 14px var(--read); }
+  #app[data-look=B] .badge::before { content:""; display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--acc); margin-right:7px; vertical-align:1px; opacity:.7; }
+  #app[data-look=C] .badge { font:500 11px "IBM Plex Mono",monospace; color:var(--ink); border:1px solid var(--line); padding:1px 6px; }
+
+  .topbar { display:flex; align-items:center; gap:10px; padding:52px 16px 10px; min-height:96px; background:var(--bg); }
+  #app.web .topbar { padding-top:14px; min-height:56px; }
+  #app[data-look=C] .topbar { border-bottom:1px solid var(--line); }
+  .topbar .title { flex:1; font-weight:500; font-size:.95em; text-align:center; color:var(--mut); }
+  .topbar .side { width:84px; display:flex; } .topbar .side.r { justify-content:flex-end; gap:6px; }
+  .iconbtn { border:none !important; background:none !important; padding:6px !important; color:var(--ink); display:flex; align-items:center; gap:2px; }
+
+  /* help: never red, never a siren */
+  .help { border:none !important; background:none !important; padding:6px 2px !important; color:var(--help); font-size:.9em; font-weight:500; display:flex; align-items:center; gap:6px; }
+  #app[data-look=A] .help::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--acc); }
+  #app[data-look=B] .help { background:var(--accSoft) !important; padding:7px 14px !important; border-radius:20px; }
+  #app[data-look=C] .help { border:1px solid var(--ink) !important; padding:3px 9px !important; font:500 12px "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.04em; }
+  .help.used { color:var(--acc); }
+
+  .composer { background:var(--surface); border-top:1px solid var(--line); padding:10px 14px 26px; }
+  #app[data-look=B] .composer { border:none; margin:0 12px 14px; border-radius:var(--rad); padding:14px 16px; }
+  .composer textarea { width:100%; min-height:76px; border:none; outline:none; resize:none; background:none; color:var(--ink); font:17px/1.5 var(--read); padding:4px 0; }
+  #app[data-look=C] .composer textarea { font:15px/1.5 var(--ui); }
+  .ailabel { font-size:11px; color:var(--mut); letter-spacing:.03em; }
+  #app[data-look=A] .ailabel { font-variant:small-caps; font-size:13px; letter-spacing:.06em; }
+  #app[data-look=C] .ailabel { font:11px "IBM Plex Mono",monospace; }
+  .mic { width:42px; height:42px; padding:0 !important; border-radius:50% !important; display:flex; align-items:center; justify-content:center; }
+  #app[data-look=C] .mic { border-radius:2px !important; }
+  .mic.on { background:var(--acc) !important; color:var(--accInk); border-color:var(--acc); }
+
+  .notice { background:var(--accSoft); border-radius:var(--rad); padding:12px 14px; font-size:.9em; margin:4px 0 16px; }
+  #app[data-look=C] .notice { background:none; border:1px solid var(--ink); }
+
+  /* the Path: A a page of print, B soft bubbles, C a labelled transcript */
+  .q { font:400 19px/1.45 var(--read); margin:18px 0 10px; position:relative; padding-right:28px; }
+  .r { font:16px/1.5 var(--read); color:var(--ink); margin:10px 0 18px; padding:2px 0 2px 14px; border-left:2px solid var(--line); }
+  #app[data-look=B] .q { background:var(--surface); border-radius:var(--rad) var(--rad) var(--rad) 6px; padding:16px 44px 16px 18px; margin-right:28px; font-size:18px; }
+  #app[data-look=B] .r { background:var(--refl); border:none; border-radius:var(--rad) var(--rad) 6px var(--rad); padding:14px 18px; margin-left:40px; }
+  #app[data-look=C] .q, #app[data-look=C] .r { font:15px/1.5 var(--ui); border:none; padding:10px 28px 10px 0; margin:0; border-bottom:1px solid var(--line); }
+  #app[data-look=C] .q::before, #app[data-look=C] .r::before { display:block; font:500 11px "IBM Plex Mono",monospace; color:var(--mut); margin-bottom:2px; }
+  #app[data-look=C] .q::before { content:"LOOK TOGETHER"; } #app[data-look=C] .r::before { content:"YOU"; }
+  .more { position:absolute; right:0; top:2px; border:none !important; background:none !important; color:var(--mut); padding:2px !important; }
+  #app[data-look=B] .more { right:12px; top:14px; }
+  .under { font:italic 15px var(--read); color:var(--mut); margin:4px 0 12px; } #app[data-look=C] .under { font:13px var(--ui); }
+  .closing { margin:20px 0 6px; padding:14px 16px; background:var(--accSoft); border-radius:var(--rad); }
+  #app[data-look=C] .closing { background:none; border-left:3px solid var(--acc); border-radius:0; }
+  .offer { margin:12px 0; padding:14px 16px; border:1px dashed var(--acc); border-radius:var(--rad); font-size:.95em; }
+  #app[data-look=B] .offer { border:none; background:var(--accSoft); }
+
+  .scrim { position:absolute; inset:0; background:#0006; z-index:10; display:flex; align-items:flex-end; }
+  .sheet { background:var(--bg); width:100%; max-height:88%; border-radius:var(--rad) var(--rad) 0 0; overflow:auto; padding:8px 0 24px; }
+  #app[data-look=A] .sheet { border-radius:20px 20px 0 0; } #app[data-look=B] .sheet { border-radius:28px 28px 0 0; }
+  .grab { width:40px; height:4px; background:var(--line); border-radius:4px; margin:4px auto 6px; }
+  .contact { background:var(--surface); border:1px solid var(--line); border-radius:var(--radS); padding:12px 14px; margin:8px 0; }
+  #app[data-look=B] .contact { border:none; }
+  label.chk { display:flex; gap:10px; padding:7px 0; align-items:center; }
+  input[type=checkbox] { accent-color:var(--acc); width:18px; height:18px; }
+  .setrow { display:block; width:100%; text-align:left; border:none !important; border-bottom:1px solid var(--line) !important; border-radius:0 !important; background:none !important; padding:14px 0 !important; }
+  .dots { display:flex; gap:6px; margin:10px 0 24px; } .dots i { width:7px; height:7px; border-radius:50%; background:var(--line); } .dots i.on { background:var(--ink); }
+  #app[data-look=C] .dots { font:12px "IBM Plex Mono",monospace; color:var(--mut); } #app[data-look=C] .dots i { display:none; }
+  .center { text-align:center; }
+
+  /* side panel: app icon + voice notes; prototype chrome, not design */
+  #side { width:280px; flex:none; font:13px/1.45 system-ui,sans-serif; color:#222; }
+  #side .box { background:#f4f4f2; border-radius:12px; padding:14px; margin-bottom:12px; }
+  #side h4 { margin:0 0 8px; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#666; }
+  #side .icons { display:flex; gap:14px; align-items:flex-end; }
+  #side .home { background:linear-gradient(160deg,#6b7b8c,#3a4654); border-radius:12px; padding:14px; display:flex; gap:14px; margin-top:10px; }
+  #side .home div { text-align:center; color:#fff; font-size:10px; } #side .home .blank { width:54px; height:54px; border-radius:13px; background:#ffffff33; }
+  @media (max-width:760px) { #side { display:none; } }
+  #proto { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#111; color:#fff; border-radius:16px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:12px/1.3 ui-monospace,Menlo,monospace; z-index:100; box-shadow:0 4px 20px #0006; max-width:calc(100vw - 24px); }
+  #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; }
+  #proto .vlabel { min-width:120px; text-align:center; font-weight:700; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="side"></div>
+<div id="proto"></div>
+<script>
+// ---------- the three looks: names, app icons, voice notes ----------
+const LOOKS = {
+  A: { name: 'Paper', voice: 'Plain and warm. Full sentences, second person, "we" for Look Together the company. Says what\'s happening and why, gently. Probes and the person\'s own words are set in a serif, like print; the app\'s controls are sans.',
+       icon: s => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#f3ece0"/><circle cx="40" cy="50" r="20" fill="none" stroke="#2b2622" stroke-width="4"/><circle cx="60" cy="50" r="20" fill="none" stroke="#8a4b2f" stroke-width="4"/></svg>` },
+  B: { name: 'Dusk', voice: 'Spare. As few words as will do, often a question; no "we", no "I". Dark first, so it feels like a quiet evening, not an app asking for attention. Big type, wide margins, nothing outlined.',
+       icon: s => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#1d2528"/><path d="M28 60a22 22 0 0 1 44 0" fill="#8fc2a9"/><line x1="20" y1="64" x2="80" y2="64" stroke="#e3ebe8" stroke-width="3" stroke-linecap="round"/></svg>` },
+  C: { name: 'Ledger', voice: 'Literal. Names the terms (Problem, Probe, Reflection, Assumption) and says exactly what happens, in the third person: "Look Together is an AI". No warmth added, no warmth removed. Numbered, ruled, like a notebook.',
+       icon: s => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#2350d8"/><circle cx="38" cy="44" r="7" fill="#fff"/><circle cx="62" cy="44" r="7" fill="#fff"/><rect x="30" y="62" width="40" height="5" fill="#fff"/></svg>` },
+};
+
+// ---------- the app's own words, per look (model replies are NOT here: they're the same in every look) ----------
+const COPY = {
+  A: {
+    onb: [
+      ['Look at a Problem together', 'Bring something in your life you have to face. Look Together draws out the beliefs underneath it and asks you about them. It gives no lessons and no answers.', 'Inspired by the approach of J. Krishnamurti. You don\'t need to know his work.'],
+      ['This is an AI, not therapy', 'Look Together is an AI. It isn\'t a therapist or a crisis service, and it won\'t tell you what\'s true. If you need someone, Help is at the top of every Inquiry.'],
+      ['What you write stays with you', w => w ? 'This browser keeps nothing once you close the tab, and we never store your Inquiries. Replies come from Google\'s Gemini, which may keep flagged text for up to 90 days.' : 'Your Inquiries are kept encrypted on this phone, and we never store them. Replies come from Google\'s Gemini, which may keep flagged text for up to 90 days.'],
+      ['Sign in to keep your daily Inquiry', 'We only use this to count your one Inquiry a day. It knows nothing of what you write.'],
+    ],
+    understand: 'I understand', next: 'Next', back: 'Back', news: 'Send me occasional news', adult: 'I\'m 18 or older.',
+    startQ: 'What are you facing today?', start: 'Start today\'s Inquiry', startNote: 'One a day, free.', todayLive: 'Today', done: 'Today\'s Inquiry is done.', nextAt: 'The next one opens at 15:40.',
+    unfinished: 'Unfinished', recaps: 'Recaps', left: n => `${n} days left`, steppedTag: 'paused for safety',
+    aiNotice: 'You\'re talking with an AI. It isn\'t therapy, and it won\'t judge what\'s true.', aiLabel: 'AI · not therapy',
+    problemT: 'What are you facing?', problemHelp: 'Something in your life you have to face and understand, not a task to fix. Write it the way it comes.',
+    problemPh: 'Write it as it comes…', reflPh: 'Take your time…', sentNote: 'Nothing is sent until you tap Submit.', submit: 'Submit', clear: 'Clear',
+    yourProblem: 'Your Problem', pick: 'Pick one to look at', notFit: 'This doesn\'t fit me', under: 'Underneath this:', ended: 'This Path has ended. You can read it back, but not carry it on.',
+    allDone: 'You\'ve looked at every Probe.', someDone: 'You can keep going, or finish here.', finish: 'Finish',
+    out: { challenged: 'you questioned this', rejected: 'this wasn\'t yours', unchallenged: 'left as it was', exploring: 'you\'re partway along this' },
+    looked: 'What you looked at', oq: 'Open Questions', notYet: 'Not looked at yet', worth: 'Was this worth your time?', worthOpts: ['Yes', 'Not sure', 'No'], share: 'Share', readPath: 'Read the Path',
+    help: 'Help', helpT: 'Paused', helpB: 'Nothing is lost. If you\'d like to talk to someone now:', helpBack: 'Back to my Inquiry', elsewhere: 'Somewhere else? findahelpline.com',
+    stepT: 'Let\'s stop here.', stepB: ['This is an AI, and it can\'t help with this the way a person can. It isn\'t a crisis service.', 'If you might be in danger, please reach out now:'], stepEnd: 'This Inquiry won\'t carry on.', close: 'Close',
+    reportT: 'Report this reply', reasons: ['It judged me or what I believe', 'It gave advice or answers', 'It sounded like therapy', 'It was harmful or upsetting', 'It didn\'t make sense'],
+    reportSend: 'Also send this one exchange so we can read it', reportOnly: 'Only your reasons are counted. We never see what you wrote.', send: 'Send', cancel: 'Cancel',
+    thanksT: 'Thank you', thanksB: 'This helps keep Look Together from judging or advising.',
+    limitT: 'Today\'s Inquiry is done.', limitB: 'The next one opens at 15:40. Your Recaps are here to read in the meantime.',
+    settings: 'Settings', inquiry: 'Inquiry', path: 'Path', recap: 'Recap', newInq: 'New Inquiry',
+  },
+  B: {
+    onb: [
+      ['Look at what you\'re facing.', 'Bring a Problem. See what you\'re assuming. No lessons. No answers.', 'Inspired by J. Krishnamurti\'s way of inquiry. No need to know him.'],
+      ['An AI. Not therapy.', 'Not a therapist. Not a crisis service. It won\'t tell you what\'s true. Help is always at the top.'],
+      ['Yours alone.', w => w ? 'Nothing kept once this tab closes. Never stored by us. Replies come from Gemini; Google may keep flagged text up to 90 days.' : 'Kept encrypted on this phone. Never stored by us. Replies come from Gemini; Google may keep flagged text up to 90 days.'],
+      ['Sign in.', 'Only to count one Inquiry a day. It never sees what you write.'],
+    ],
+    understand: 'Understood', next: 'Next', back: 'Back', news: 'Occasional news', adult: '18 or older.',
+    startQ: 'What\'s in front of you today?', start: 'Begin', startNote: 'One a day.', todayLive: 'Today', done: 'Done for today.', nextAt: 'Next at 15:40.',
+    unfinished: 'Still open', recaps: 'Recaps', left: n => `${n} days`, steppedTag: 'paused',
+    aiNotice: 'An AI. Not therapy. It won\'t judge what\'s true.', aiLabel: 'AI · not therapy',
+    problemT: 'What are you facing?', problemHelp: 'Something to face, not fix.',
+    problemPh: 'As it comes.', reflPh: 'Take your time.', sentNote: 'Sent only on Submit.', submit: 'Submit', clear: 'Clear',
+    yourProblem: 'Your Problem', pick: 'Where to look first?', notFit: 'Doesn\'t fit', under: 'Underneath:', ended: 'Ended. Read only.',
+    allDone: 'All looked at.', someDone: 'Go on, or finish.', finish: 'Finish',
+    out: { challenged: 'questioned', rejected: 'not yours', unchallenged: 'untouched', exploring: 'in progress' },
+    looked: 'Looked at', oq: 'Open Questions', notYet: 'Not yet', worth: 'Worth your time?', worthOpts: ['Yes', 'Not sure', 'No'], share: 'Share', readPath: 'Read it again',
+    help: 'Help', helpT: 'Paused.', helpB: 'Nothing is lost. Someone to talk to:', helpBack: 'Back', elsewhere: 'Elsewhere: findahelpline.com',
+    stepT: 'Stopping here.', stepB: ['This is an AI. It can\'t help with this the way a person can. It isn\'t a crisis service.', 'If you might be in danger, reach out now:'], stepEnd: 'This Inquiry won\'t continue.', close: 'Close',
+    reportT: 'Report', reasons: ['Judging', 'Advice or answers', 'Sounded like therapy', 'Harmful or upsetting', 'Made no sense'],
+    reportSend: 'Send this one exchange too', reportOnly: 'Only the reasons are counted. What you wrote stays here.', send: 'Send', cancel: 'Cancel',
+    thanksT: 'Thanks.', thanksB: 'It keeps replies from judging or advising.',
+    limitT: 'Done for today.', limitB: 'Next at 15:40.',
+    settings: 'Settings', inquiry: '', path: '', recap: '', newInq: '',
+  },
+  C: {
+    onb: [
+      ['How Look Together works', '1. You write a Problem.<br>2. Look Together finds the Assumptions under it and asks about each one as a Probe.<br>3. You pick a Probe and answer it, one Reflection at a time.', 'The approach comes from J. Krishnamurti. No prior knowledge is needed.'],
+      ['Look Together is an AI', 'It is not therapy or a crisis service. It does not decide whether anything you believe is true. Help is on every Inquiry screen.'],
+      ['Where your Inquiries are kept', w => w ? 'In this browser tab only. Closing it deletes them. They are not on our servers. Each Reflection is processed by Google Gemini; Google may keep flagged text for up to 90 days.' : 'On this phone, encrypted. Not on our servers. Each Reflection is processed by Google Gemini; Google may keep flagged text for up to 90 days.'],
+      ['Sign in', 'Your Account counts 1 Inquiry per day. It holds no Inquiry content.'],
+    ],
+    understand: 'I understand', next: 'Next', back: 'Back', news: 'Email me product news (optional)', adult: 'I confirm I am 18 or older.',
+    startQ: 'New Inquiry', start: 'Start today\'s Inquiry', startNote: '1 per day · free', todayLive: 'Today · in progress', done: 'Today\'s Inquiry: done', nextAt: 'Next available at 15:40',
+    unfinished: 'Unfinished', recaps: 'Recaps', left: n => `${n} DAYS LEFT`, steppedTag: 'stopped for safety',
+    aiNotice: 'AI. Not therapy. Does not judge what is true.', aiLabel: 'AI · NOT THERAPY',
+    problemT: 'Your Problem', problemHelp: 'Something you face and want to understand, not a task to fix. Up to 2,000 characters.',
+    problemPh: 'Write your Problem', reflPh: 'Write your Reflection', sentNote: 'Sent on Submit only.', submit: 'Submit', clear: 'Clear',
+    yourProblem: 'Problem', pick: 'Probes · pick one', notFit: 'This does not fit me', under: 'Assumption:', ended: 'Path ended · read-only',
+    allDone: 'All Probes looked at.', someDone: 'Finish now, or continue.', finish: 'Finish',
+    out: { challenged: 'CHALLENGED', rejected: 'REJECTED', unchallenged: 'UNCHALLENGED', exploring: 'IN PROGRESS' },
+    looked: 'Looked at', oq: 'Open Questions', notYet: 'Not looked at', worth: 'Worth your time?', worthOpts: ['Yes', 'Not sure', 'No'], share: 'Share', readPath: 'Read the Path',
+    help: 'Help', helpT: 'Inquiry paused', helpB: 'Nothing is lost. To talk to someone now:', helpBack: 'Back to the Inquiry', elsewhere: 'Other countries: findahelpline.com',
+    stepT: 'This Inquiry has stopped', stepB: ['Look Together is an AI and cannot help with this the way a person can. It is not a crisis service.', 'If you might be in danger, contact:'], stepEnd: 'This Inquiry will not resume.', close: 'Close',
+    reportT: 'Report this reply', reasons: ['Judged me or a belief', 'Gave advice or answers', 'Sounded like therapy', 'Harmful or upsetting', 'Did not make sense'],
+    reportSend: 'Include this one exchange (names masked)', reportOnly: 'Reasons only. Your text is not sent.', send: 'Send', cancel: 'Cancel',
+    thanksT: 'Report sent', thanksB: 'Reports are counted to find replies that judge or advise.',
+    limitT: 'Today\'s Inquiry: done', limitB: 'Next available at 15:40. Recaps remain readable.',
+    settings: 'Settings', inquiry: 'Inquiry', path: 'Path', recap: 'Recap', newInq: 'New Inquiry',
+  },
+};
+
+// ---------- icons: one set of paths, stroke width and caps come from the look ----------
+const IC = {
+  back: '<path d="M15 5l-7 7 7 7"/>', gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>', stop: '<rect x="7" y="7" width="10" height="10"/>',
+  more: '<circle cx="5" cy="12" r=".6"/><circle cx="12" cy="12" r=".6"/><circle cx="19" cy="12" r=".6"/>', listen: '<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9a4 4 0 0 1 0 6"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+};
+const ic = k => `<svg class="i" viewBox="0 0 24 24">${IC[k]}</svg>`;
+
+// ---------- mock data (from prototypes/screens) ----------
+const PS = {
+  p1: { probe: 'What would happen if you said <span class="kw">no</span> the next time?', premise: 'Saying no would cost me something I can\'t afford.',
+        qs: ['When you picture saying no, what exactly do you see happening?', 'Is that something you have seen happen, or something you expect?', 'What is it like to look at that expectation, rather than at the request?'],
+        rs: ['I imagine my manager going quiet and giving the good projects to someone else.', 'Honestly, I expect it. I have never actually tested it.', 'It feels smaller. Like a story I keep telling.'], outcome: 'challenged', quote: 'I have never actually tested it.' },
+  p2: { probe: 'Whose <span class="kw">resentment</span> is it, when you resent everyone?', premise: 'Other people cause my resentment.',
+        qs: ['When the resentment comes, where is your attention: on them, or on what you agreed to?', 'If no one had asked, would the resentment be there?'],
+        rs: ['On them. On how they just assume I\'ll do it.', 'Maybe not. But I was the one who said yes.'], outcome: 'rejected', quote: 'I was the one who said yes.',
+        offer: 'It sounds like there\'s another belief here: that being <span class="kw">useful</span> is what makes you worth keeping. Add it as a Probe?' },
+  p3: { probe: 'Is wanting to be <span class="kw">liked</span> the same as wanting to be kind?', premise: 'Being agreeable is the same as being kind.',
+        qs: ['When you say yes and resent it, is that kindness?', 'What would kindness look like here, if not agreeing?'], rs: ['No. It feels more like fear dressed up.', 'I don\'t know. Maybe telling the truth about my week.'], outcome: 'unchallenged', openq: 'What is kindness, when it isn\'t agreeing?' },
+  p4: { probe: 'What do you mean by <span class="kw">things</span> you don\'t want to do?', premise: 'I know clearly what I want and don\'t want.',
+        qs: ['Name one. What makes it unwanted?', 'Did you know that before you said yes, or only after?'], rs: ['The Friday reporting. It eats my evening.', 'Only after, mostly.'], outcome: 'challenged', quote: 'Only after, mostly.' },
+};
+const PROBLEM = 'I keep saying yes to things at work I don\'t want to do, and then I resent everyone.';
+function seed() {
+  const q = new URLSearchParams(location.search);
+  return { look: LOOKS[q.get('look')] ? q.get('look') : 'A', dark: q.get('theme') === 'dark', web: false,
+    onboarded: true, onb: 0, screen: 'home', path: null, sheet: null, helpUsed: false, dictating: false, draft: '', problemDraft: '', reasons: [], sendEx: false, todayDone: false,
+    today: null,
+    unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5 }, { problem: 'I keep putting off calling my father.', days: 2 }],
+    past: [{ problem: 'I can\'t stop comparing myself to my brother.', day: 'Mon 2 Nov' }, { problem: 'I feel like I\'m wasting my life.', day: 'Thu 29 Oct', stepped: true }] };
+}
+let S = seed();
+const T = () => COPY[S.look];
+const esc = t => String(t).replace(/</g, '&lt;');
+const inq = () => S.today;
+const anyEnded = () => inq() && inq().probes.some(p => p.status === 'looked');
+
+// ---------- screens ----------
+function topbar(title, left = '', right = '') { return `<div class="topbar"><div class="side">${left}</div><div class="title">${title}</div><div class="side r">${right}</div></div>`; }
+const backBtn = act => `<button class="iconbtn" data-act="${act}" aria-label="Back">${ic('back')}</button>`;
+const helpBtn = () => `<button class="help ${S.helpUsed ? 'used' : ''}" data-act="help">${T().help}</button>`;
+
+function onboarding() {
+  const t = T(), [title, body, foot] = t.onb[S.onb], b = typeof body === 'function' ? body(S.web) : body;
+  return `<div class="scroll pad narrow" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="dots">${t.onb.map((_, i) => `<i class="${i === S.onb ? 'on' : ''}"></i>`).join('')}${S.look === 'C' ? `${S.onb + 1} / 4` : ''}</div>
+    ${S.onb === 0 ? `<div style="margin-bottom:18px">${LOOKS[S.look].icon(64)}</div>` : ''}
+    <h1>${title}</h1><p class="${S.look === 'A' ? 'read' : ''}" style="font-size:1.05em">${b}</p>${foot ? `<p class="small mut" style="margin-top:18px">${foot}</p>` : ''}
+    ${S.onb === 3 ? `<div style="display:grid;gap:10px;margin-top:22px">${S.web ? '' : '<button data-act="signin">Continue with Apple</button>'}<button data-act="signin">Continue with Google</button><button data-act="signin">Email me a code</button>
+      <label class="chk small mut"><input type="checkbox"> ${t.news}</label><p class="small mut">${t.adult}</p></div>` : ''}
+    <div class="row" style="margin-top:28px">${S.onb ? `<button class="link" data-act="onbBack">${t.back}</button>` : ''}
+      ${S.onb < 3 ? `<button class="pri right" data-act="onbNext">${S.onb === 1 ? t.understand : t.next}</button>` : ''}</div></div>`;
+}
+
+function home() {
+  const t = T(), live = S.today && S.today.status === 'live';
+  const todayBlock = live ? `<div class="card tap" data-act="resume"><p class="small mut">${t.todayLive}</p><p class="probe">${esc(S.today.problem)}</p></div>`
+    : S.todayDone ? `<div class="card"><p><b>${t.done}</b></p><p class="mut">${t.nextAt}</p></div>`
+    : `<div class="card ${S.look === 'C' ? '' : 'center'}" style="${S.look === 'C' ? '' : 'padding:30px 20px'}"><p class="${S.look === 'C' ? 'small mut' : 'probe'}" style="margin-bottom:16px">${t.startQ}</p><button class="pri" data-act="start" ${S.look === 'C' ? 'style="width:100%"' : ''}>${t.start}</button><p class="small mut" style="margin-top:10px">${t.startNote}</p></div>`;
+  return topbar('', '', `<button class="iconbtn" data-act="settings" aria-label="${t.settings}">${ic('gear')}</button>`) + `<div class="scroll"><div class="pad narrow">
+    <div class="row" style="margin:-8px 0 8px">${S.look === 'A' ? `<h1 style="margin:0">Look Together</h1>` : S.look === 'B' ? `<h1 style="margin:0;font-weight:500">Evening.</h1>` : `<h1 style="margin:0">Look Together</h1>`}</div>
+    ${todayBlock}
+    <h3>${t.unfinished}</h3>${S.unfinished.map(u => `<div class="card tap" data-act="noop"><div class="row" style="align-items:flex-start"><p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${t.left(u.days)}</span></div></div>`).join('')}
+    <h3>${t.recaps}</h3>${S.past.map(p => `<div class="card tap" data-act="noop"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:4px 0 0">${p.day}${p.stepped ? ' · ' + t.steppedTag : ''}</p></div>`).join('')}
+  </div></div>`;
+}
+
+function composer(kind) {
+  const t = T(), v = kind === 'problem' ? S.problemDraft : S.draft;
+  return `<div class="composer"><div class="row"><span class="ailabel">${t.aiLabel}</span><span class="ailabel right">${t.sentNote}</span></div>
+    <textarea data-draft="${kind}" placeholder="${kind === 'problem' ? t.problemPh : t.reflPh}">${esc(v)}</textarea>
+    <div class="row"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
+      ${S.dictating ? '<span class="small mut">…</span>' : `<button class="link small" data-act="clear" data-kind="${kind}" style="color:var(--mut)">${t.clear}</button>`}
+      <button class="pri right" data-act="${kind === 'problem' ? 'submitProblem' : 'submit'}" ${v.trim() ? '' : 'disabled'}>${t.submit}</button></div></div>`;
+}
+
+function problemScreen() {
+  const t = T();
+  return topbar(t.newInq, backBtn('home'), helpBtn()) + `<div class="scroll pad narrow"><div class="notice">${t.aiNotice}</div>
+    <h1>${t.problemT}</h1><p class="mut">${t.problemHelp}</p><button class="link small" data-act="fill">(proto: fill example)</button></div>` + composer('problem');
+}
+
+function probeList() {
+  const t = T(), i = inq(), all = i.probes.every(p => p.status === 'looked');
+  return topbar(t.inquiry, backBtn('home'), helpBtn()) + `<div class="scroll"><div class="pad narrow">
+    <p class="small mut" style="margin:0">${t.yourProblem}</p><p class="read" style="font-size:1.05em">${esc(i.problem)}</p>
+    <h3>${t.pick}</h3>
+    ${i.probes.map((p, n) => `<div class="card tap" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><span class="num">${String(n + 1).padStart(2, '0')}</span>
+      <div class="grow"><div class="probe">${PS[p.id].probe}</div>${p.status !== 'open' ? `<div class="status">${t.out[p.status === 'looked' ? PS[p.id].outcome : 'exploring']}</div>` : ''}</div>
+      <button class="iconbtn" data-act="report" aria-label="Report" style="color:var(--mut)">${ic('more')}</button></div></div>`).join('')}
+    ${anyEnded() ? `<div class="${S.look === 'C' ? '' : 'center'}" style="margin:24px 0"><p class="mut small">${all ? t.allDone : t.someDone}</p><button class="pri" data-act="finish">${t.finish}</button></div>` : ''}
+  </div></div>`;
+}
+
+function pathScreen() {
+  const t = T(), p = inq().probes.find(x => x.id === S.path), s = PS[p.id], out = [], q = (h) => `<div class="q">${h}<button class="more" data-act="report" aria-label="Report">${ic('more')}</button></div>`;
+  out.push(q(`<span class="probe" style="font:inherit">${s.probe}</span>`));
+  if (p.reveal || p.status === 'looked') out.push(`<p class="under">${t.under} ${s.premise}</p>`);
+  for (let k = 0; k < p.pos; k++) {
+    out.push(`<div class="r">${esc(s.rs[k])}</div>`);
+    if (k === 0 && s.offer) out.push(p.offered ? `<p class="small mut">${p.offered === 'yes' ? '✓' : '–'}</p>` : `<div class="offer">${s.offer}<div class="row" style="margin-top:10px"><button class="pri" data-act="offer" data-a="yes">Yes</button><button data-act="offer" data-a="no">No</button></div></div>`);
+    if (k + 1 < s.qs.length) out.push(q(s.qs[k + 1]));
+  }
+  if (p.status === 'looked') out.push(`<div class="closing"><p class="small mut" style="margin-top:0">${t.out[s.outcome]}</p>${s.quote ? `<p class="read">“${s.quote}”</p>` : ''}${s.openq ? `<p class="small mut">${t.oq}</p><p class="read"><b>${s.openq}</b></p>` : ''}</div><p class="small mut center">${t.ended}</p>`);
+  else if (p.pos === 0 && !p.reveal) out.push(`<button class="link small" data-act="reveal">${t.notFit}</button>`);
+  out.push(`<div class="row" style="margin-top:6px"><button class="link small" data-act="noop" style="color:var(--mut);display:flex;gap:6px;align-items:center">${ic('listen')} listen</button></div>`);
+  return topbar(t.path, backBtn('closePath'), helpBtn()) + `<div class="scroll pad narrow">${out.join('')}</div>` + (p.status !== 'looked' ? composer('path') : '');
+}
+
+function recapScreen() {
+  const t = T(), i = inq(), looked = i.probes.filter(p => p.status === 'looked'), notYet = i.probes.filter(p => p.status !== 'looked');
+  const oqs = looked.map(p => PS[p.id].openq).filter(Boolean);
+  return topbar(t.recap, backBtn('home'), helpBtn()) + `<div class="scroll"><div class="pad narrow">
+    <p class="small mut" style="margin:0">Tue 3 Nov</p><h1 style="font-size:22px">${esc(i.problem)}</h1>
+    <h3>${t.looked}</h3>${looked.map(p => `<div class="card"><p class="small mut" style="margin-top:0">${PS[p.id].premise} · ${t.out[PS[p.id].outcome]}</p>${PS[p.id].quote ? `<p class="read" style="font-size:1.05em">“${PS[p.id].quote}”</p>` : ''}<button class="link small" data-act="openPath" data-pid="${p.id}">${t.readPath}</button></div>`).join('')}
+    ${oqs.length ? `<h3>${t.oq}</h3>${oqs.map(q => `<p class="read" style="font-size:1.1em">${q}</p>`).join('')}` : ''}
+    ${notYet.length ? `<h3>${t.notYet}</h3>${notYet.map(p => `<p class="mut">${PS[p.id].probe}</p>`).join('')}` : ''}
+    <h3>${t.worth}</h3><div class="row">${t.worthOpts.map(w => `<button class="${i.worth === w ? 'pri' : ''}" data-act="worth" data-w="${w}">${w}</button>`).join('')}</div>
+    <div class="row" style="margin-top:22px"><button data-act="noop">${t.share}</button></div></div></div>`;
+}
+
+const contacts = () => `<div class="contact"><b>988 Suicide &amp; Crisis Lifeline</b><br><span class="small">Call or text 988 · US</span></div><div class="contact"><b>Crisis Text Line</b><br><span class="small">Text HOME to 741741</span></div><p class="small mut">${T().elsewhere}</p>`;
+function stepOut() { const t = T(); return topbar('') + `<div class="scroll pad narrow"><h1>${t.stepT}</h1><p>${t.stepB[0]}</p><p>${t.stepB[1]}</p>${contacts()}<p class="small mut" style="margin-top:16px">${t.stepEnd}</p><button data-act="home" style="margin-top:12px">${t.close}</button></div>`; }
+function limit() { const t = T(); return topbar('', backBtn('home')) + `<div class="scroll pad narrow" style="padding-top:60px"><h1>${t.limitT}</h1><p class="mut">${t.limitB}</p></div>`; }
+function settings() {
+  const t = T(), r = l => `<button class="setrow" data-act="noop">${l}</button>`;
+  return topbar(t.settings, backBtn('home')) + `<div class="scroll pad narrow"><h3>Account</h3><p class="small mut">Apple · a…@privaterelay.appleid.com</p>${r('Region: United States')}${r('Crash reports: on')}
+    <h3>Inquiries</h3>${r('Export all')}${r('Import')}${r('Sent reports')}${r('<span style="color:var(--acc)">Delete everything for this Account</span>')}<h3>About</h3>${r('About Look Together')}${r('Privacy')}${r('Sign out')}</div>`;
+}
+
+function sheets() {
+  const t = T();
+  if (S.sheet === 'help') return `<div class="scrim"><div class="sheet"><div class="grab"></div><div class="pad"><h2>${t.helpT}</h2><p>${t.helpB}</p>${contacts()}<button class="pri" data-act="closeSheet" style="width:100%;margin-top:10px">${t.helpBack}</button></div></div></div>`;
+  if (S.sheet === 'report') return `<div class="scrim"><div class="sheet"><div class="grab"></div><div class="pad"><h2>${t.reportT}</h2>
+    ${t.reasons.map(r => `<label class="chk"><input type="checkbox" data-act="reason" value="${r}" ${S.reasons.includes(r) ? 'checked' : ''}> ${r}</label>`).join('')}
+    <label class="chk" style="margin-top:10px"><input type="checkbox" data-act="sendEx" ${S.sendEx ? 'checked' : ''}> ${t.reportSend}</label><p class="small mut">${t.reportOnly}</p>
+    <div class="row" style="margin-top:12px"><button data-act="closeSheet">${t.cancel}</button><button class="pri right" data-act="sendReport" ${S.reasons.length ? '' : 'disabled'}>${t.send}</button></div></div></div></div>`;
+  if (S.sheet === 'thanks') return `<div class="scrim"><div class="sheet"><div class="grab"></div><div class="pad"><h2>${t.thanksT}</h2><p>${t.thanksB}</p><button class="pri" data-act="closeSheet">OK</button></div></div></div>`;
+  return '';
+}
+
+// ---------- render ----------
+function render() {
+  const app = document.getElementById('app');
+  app.dataset.look = S.look; app.className = (S.dark ? 'dark ' : '') + (S.web ? 'web' : '');
+  let h;
+  if (!S.onboarded) h = onboarding();
+  else h = { home, problem: problemScreen, inquiry: () => S.path ? pathScreen() : probeList(), recap: recapScreen, stepout: stepOut, limit, settings }[S.screen]();
+  app.innerHTML = h + sheets();
+  renderSide(); renderProto();
+}
+function renderSide() {
+  const L = LOOKS[S.look];
+  document.getElementById('side').innerHTML = `<div class="box"><h4>App icon · ${S.look} ${L.name}</h4><div class="icons">${L.icon(96)}${L.icon(60)}${L.icon(32)}</div>
+    <div class="home"><div><span class="blank" style="display:block"></span>Notes</div><div>${L.icon(54)}<br>Look Together</div><div><span class="blank" style="display:block"></span>Maps</div></div></div>
+    <div class="box"><h4>Voice</h4>${L.voice}</div>
+    <div class="box"><h4>State</h4>screen: ${S.onboarded ? S.screen : 'onboarding ' + (S.onb + 1) + '/4'}${S.path ? ' / path ' + S.path : ''}<br>sheet: ${S.sheet || '-'} · help used: ${S.helpUsed}<br>theme: ${S.dark ? 'dark' : 'light'} · ${S.web ? 'web' : 'phone'}</div>`;
+}
+function renderProto() {
+  document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span><button data-p="prev">←</button><span class="vlabel">${S.look} (${LOOKS[S.look].name})</span><button data-p="next">→</button>
+    <button data-p="theme">${S.dark ? '☾ dark' : '☀ light'}</button><button data-p="web">${S.web ? 'web' : 'phone'}</button>
+    <select data-p="jump"><option value="">jump to…</option>${[['onb', 'onboarding'], ['home', 'home'], ['new', 'new Inquiry'], ['probes', 'Probe list, mid-way'], ['path', 'a Path, mid-way'], ['ended', 'an ended Path'], ['recap', 'Recap'], ['help', 'Help sheet'], ['report', 'report sheet'], ['stepout', 'Step-out'], ['limit', 'limit'], ['settings', 'settings']].map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>
+    <button data-p="reset">reset</button>`;
+}
+
+// ---------- actions ----------
+function newToday(midway) {
+  S.today = { problem: PROBLEM, status: 'live', worth: null, probes: ['p1', 'p2', 'p3', 'p4'].map(id => ({ id, status: 'open', pos: 0 })) };
+  S.todayDone = true;
+  if (midway) { Object.assign(S.today.probes[0], { status: 'looked', pos: 3 }); Object.assign(S.today.probes[1], { status: 'exploring', pos: 1 }); Object.assign(S.today.probes[2], { status: 'looked', pos: 2 }); }
+}
+function submitReflection() {
+  const p = inq().probes.find(x => x.id === S.path), s = PS[p.id];
+  if (/hurt myself|end it|kill/i.test(S.draft)) { S.draft = ''; inq().status = 'stepped'; S.screen = 'stepout'; S.path = null; return render(); }
+  p.status = 'exploring'; p.pos++; S.draft = '';
+  if (p.pos >= s.qs.length) p.status = 'looked';
+  render();
+}
+function jump(v) {
+  Object.assign(S, { onboarded: true, sheet: null, path: null });
+  if (v === 'onb') Object.assign(S, { onboarded: false, onb: 0 });
+  if (v === 'home') S.screen = 'home';
+  if (v === 'new') Object.assign(S, { today: null, todayDone: false, screen: 'problem' });
+  if (['probes', 'path', 'ended', 'recap', 'help', 'report'].includes(v)) { newToday(true); S.screen = 'inquiry'; }
+  if (v === 'path' || v === 'help' || v === 'report') S.path = 'p2';
+  if (v === 'ended') S.path = 'p1';
+  if (v === 'recap') { S.today.status = 'ended'; S.screen = 'recap'; }
+  if (v === 'help') S.sheet = 'help';
+  if (v === 'report') S.sheet = 'report';
+  if (v === 'stepout' || v === 'limit' || v === 'settings') S.screen = v;
+  render();
+}
+function setLook(l) { S.look = l; const u = new URL(location); u.searchParams.set('look', l); history.replaceState(null, '', u); render(); }
+const step = d => { const k = Object.keys(LOOKS); setLook(k[(k.indexOf(S.look) + d + k.length) % k.length]); };
+
+document.addEventListener('input', e => {
+  const k = e.target.dataset.draft; if (!k) return;
+  if (k === 'problem') S.problemDraft = e.target.value; else S.draft = e.target.value;
+  e.target.closest('.composer').querySelector('button.pri').disabled = !e.target.value.trim();
+});
+document.addEventListener('change', e => {
+  const a = e.target.dataset.act;
+  if (a === 'reason') { S.reasons = e.target.checked ? [...S.reasons, e.target.value] : S.reasons.filter(r => r !== e.target.value); render(); }
+  if (a === 'sendEx') { S.sendEx = e.target.checked; render(); }
+  if (e.target.dataset.p === 'jump') jump(e.target.value);
+});
+document.addEventListener('click', e => {
+  const pb = e.target.closest('button[data-p]');
+  if (pb) { const p = pb.dataset.p;
+    if (p === 'prev') step(-1); if (p === 'next') step(1);
+    if (p === 'theme') { S.dark = !S.dark; render(); } if (p === 'web') { S.web = !S.web; render(); }
+    if (p === 'reset') { const { look, dark, web } = S; S = seed(); Object.assign(S, { look, dark, web }); render(); }
+    return; }
+  const el = e.target.closest('[data-act]'); if (!el || el.tagName === 'INPUT') return;
+  e.stopPropagation();
+  const a = el.dataset.act, p = () => inq().probes.find(x => x.id === S.path);
+  ({
+    onbNext: () => { S.onb++; render(); }, onbBack: () => { S.onb--; render(); }, signin: () => { S.onboarded = true; S.screen = 'home'; render(); },
+    home: () => { S.screen = 'home'; S.path = null; render(); }, settings: () => { S.screen = 'settings'; render(); },
+    start: () => { S.screen = 'problem'; render(); }, fill: () => { S.problemDraft = PROBLEM; render(); },
+    submitProblem: () => { newToday(false); S.problemDraft = ''; S.screen = 'inquiry'; render(); },
+    resume: () => { S.screen = S.today.status === 'live' ? 'inquiry' : 'recap'; render(); },
+    openPath: () => { S.path = el.dataset.pid; S.screen = 'inquiry'; render(); }, closePath: () => { S.path = null; render(); },
+    reveal: () => { p().reveal = true; render(); }, offer: () => { p().offered = el.dataset.a; render(); },
+    submit: submitReflection, finish: () => { inq().status = 'ended'; S.screen = 'recap'; render(); }, worth: () => { inq().worth = el.dataset.w; render(); },
+    mic: () => { S.dictating = !S.dictating; if (!S.dictating) { const add = ' and I don\'t really know why I do it'; if (el.dataset.kind === 'problem') S.problemDraft += add; else S.draft += add; } render(); },
+    clear: () => { if (el.dataset.kind === 'problem') S.problemDraft = ''; else S.draft = ''; render(); },
+    help: () => { S.sheet = 'help'; S.helpUsed = true; render(); }, report: () => { S.sheet = 'report'; S.reasons = []; S.sendEx = false; render(); },
+    sendReport: () => { S.sheet = 'thanks'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
+  }[a] || (() => {}))();
+});
+document.addEventListener('keydown', e => {
+  if (e.target.closest('input,textarea,[contenteditable]')) return;
+  if (e.key === 'ArrowLeft') step(-1); if (e.key === 'ArrowRight') step(1);
+});
+render();
+</script>
+</body>
+</html>
