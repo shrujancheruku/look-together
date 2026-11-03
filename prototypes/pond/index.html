@@ -233,8 +233,16 @@ const LOOK = (c, still, art) => `<g class="lk" ${still ? 'style="opacity:1"' : '
 // a lily on the waterline: the pad seen at an angle, the flower above it, its reflection faint below
 const lotusPetals = (cx, by, k, o = 1) => [-62, -31, 0, 31, 62].map(a => `<ellipse cx="${cx}" cy="${by - 11 * k}" rx="${4.6 * k}" ry="${11.5 * k}" fill="#f6c3cf" stroke="#e38ba2" stroke-width="${.8 * k}" opacity="${o}" transform="rotate(${a} ${cx} ${by})"/>`).join('') + `<circle cx="${cx}" cy="${by - 3 * k}" r="${3 * k}" fill="#f1cf5b" opacity="${o}"/>`;
 const padAt = (c, cx, y, w) => `<g transform="translate(${cx - w / 2} ${y - w * .12}) scale(${w / 100} ${w * .24 / 100})"><path d="${PAD_PATH}" fill="${c.pad}" stroke="${c.padR}" stroke-width="4"/></g>`;
-const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) // the flower's reflection: broken pink strokes below the pad, never over it
-  + [[11, 16, .38], [15, 11, .26], [19, 5, .15]].map(([dy, w, o]) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="#e9a3b5" stroke-width="${1.6 * k}" stroke-linecap="round" opacity="${o}"/>`).join('');
+let RID = 0;
+// the flower's reflection: the lotus flipped below the pad (never over it), squashed, and cut into bands that the
+// water shifts a little sideways and fades, so it reads as a rippled reflection of the same shape
+function lotusReflection(cx, y, k) {
+  const id = 'rf' + (++RID), by = y - 2 * k, yb = y + 7 * k, h = 18 * k, n = 5, bh = h / n;
+  const shifts = [0, 1.8, -1.4, 2.2, -1.8], ops = [.5, .4, .3, .2, .12];
+  return `<defs>${shifts.map((_, i) => `<clipPath id="${id}${i}"><rect x="${cx - 32 * k}" y="${yb + i * bh}" width="${64 * k}" height="${bh * .74}"/></clipPath>`).join('')}</defs>`
+    + shifts.map((dx, i) => `<g clip-path="url(#${id}${i})" opacity="${ops[i]}"><g transform="translate(${dx * k} ${yb}) scale(1 -.72) translate(0 ${-by})">${lotusPetals(cx, by, k)}</g></g>`).join('');
+}
+const lilyArt = (c, cx, y, k) => padAt(c, cx, y, 54 * k) + lotusPetals(cx, y - 2 * k, k) + lotusReflection(cx, y, k);
 const sunArt = (c, cx, y, k) => `<circle cx="${cx + 4 * k}" cy="${y - 34 * k}" r="${17 * k}" fill="${c.sun}"/>` + [[14, 40], [22, 30], [30, 20], [38, 10]].map(([dy, w], n) => `<line x1="${cx - w * k / 2}" y1="${y + dy * k}" x2="${cx + w * k / 2}" y2="${y + dy * k}" stroke="${c.sun}" stroke-width="${3 * k}" stroke-linecap="round" opacity="${.8 - n * .17}"/>`).join('');
 const rippleArt = (c, cx, y, k) => [38, 50].map((r, n) => `<ellipse cx="${cx}" cy="${y}" rx="${r * k}" ry="${r * .24 * k}" fill="none" stroke="${c.rip}" stroke-width="${.6 * k}" opacity="${.32 - n * .14}"/>`).join('');
 const LOGOS = {
