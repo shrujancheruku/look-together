@@ -3,7 +3,7 @@
 // scene.json shape.
 export type Season = "spring" | "autumn";
 export type Layers = Record<"sky" | "bank" | "water" | "wash" | "line", number>;
-export type LayerSet = { label: string; width: number; height: number; seasons: Record<Season, Layers>; sprites: number };
+export type LayerSet = { kind?: "pixel"; label: string; width: number; height: number; seasons: Record<Season, Layers>; sprites: number };
 
 const standin = require("../assets/sets/standin/scene.json");
 const standinHalf = require("../assets/sets/standin-half/scene.json");
@@ -25,6 +25,8 @@ export const SETS: LayerSet[] = [
     },
     sprites: require("../assets/sets/standin-half/sprites.webp"),
   },
+  // Pixel art: drawn by PixelPond from assets/sets/pixel/scene.json; the layer fields are unused.
+  { kind: "pixel", label: "Pixel (hi-bit)", width: 214, height: 384, seasons: {} as LayerSet["seasons"], sprites: 0 },
 ];
 
 export const SPRITE = { cell: 128, drop: [0, 8], leaf: [8, 4], row: { spring: 0, autumn: 1 } } as const;

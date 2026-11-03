@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BackHandler, Platform, Pressable, ScrollView, Text, View, useWindowDimensions } from "react-native";
 import { useFrameCallback, useSharedValue } from "react-native-reanimated";
 import { Pond, cardRects, type Config, type Glass } from "./src/Pond";
+import { PixelPond } from "./src/PixelPond";
 import { SETS } from "./src/sets";
 
 const SKIA = process.env.EXPO_PUBLIC_SKIA ?? "v2";
@@ -27,6 +28,9 @@ const BENCH: [string, Partial<Config>][] = [
   ["half-res ×4 @30", { set: 1, glass: "skia4" }],
   ["autumn ×4 @30", { season: "autumn", glass: "skia4" }],
   ["still water ×4", { glass: "skia4", still: true }],
+  ["pixel ×4 @30", { set: 2, glass: "skia4" }],
+  ["pixel ×4 @30, 48 leaves", { set: 2, glass: "skia4", sprites: 48 }],
+  ["pixel ×4 uncapped", { set: 2, glass: "skia4", artFps: 0 }],
 ];
 const WARMUP = 2500, MEASURE = 6000;
 
@@ -34,7 +38,11 @@ type Stats = { fps: number; p50: number; p95: number; jank: number; draws: numbe
 
 export default function App() {
   const { width: w, height: h } = useWindowDimensions();
-  const [cfg, setCfg] = useState<Config>(BASE);
+  const [cfg, setCfg] = useState<Config>(() => {
+    if (Platform.OS !== "web") return BASE;
+    const q = new URLSearchParams(window.location.search); // web only: ?set=2&season=autumn
+    return { ...BASE, ...(q.get("set") ? { set: Number(q.get("set")) } : {}), ...(q.get("season") ? { season: q.get("season") as Config["season"] } : {}) };
+  });
   const [stats, setStats] = useState<Stats | null>(null);
   const [hud, setHud] = useState(true);
   const [bench, setBench] = useState<{ i: number; rows: (Stats & { label: string })[] } | null>(null);
@@ -93,7 +101,7 @@ export default function App() {
   }, []);
 
   const set = (p: Partial<Config>) => setCfg((c) => ({ ...c, ...p }));
-  const layerMB = Math.round((SETS[cfg.set].width * SETS[cfg.set].height * 4 * 5) / 1e6);
+  const layerMB = Math.round((SETS[cfg.set].width * SETS[cfg.set].height * 4 * (SETS[cfg.set].kind === "pixel" ? 1 : 5)) / 1e5) / 10;
   const cards = cardRects(w, h, cfg.glass);
   const ink = cfg.season === "spring" ? "#1f2e36" : "#f4eadc";
   const halo = cfg.season === "spring" ? "rgba(255,255,255,0.9)" : "rgba(20,16,36,0.9)";
@@ -101,7 +109,9 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#000" }}>
-      <Pond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} />
+      {SETS[cfg.set].kind === "pixel"
+        ? <PixelPond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} />
+        : <Pond key={JSON.stringify(rest)} cfg={cfg} w={w} h={h} draws={draws} />}
 
       {cards.map((c, i) => (
         <View key={i} pointerEvents="none" style={{ position: "absolute", left: c.x + 18, top: c.y + 14, width: c.width - 36 }}>

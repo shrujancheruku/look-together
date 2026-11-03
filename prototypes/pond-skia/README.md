@@ -17,6 +17,12 @@ The layers are procedural stand-ins from `tools/gen-standins.tsx`, at 1242×2688
 | `tools/testlab.sh` | Runs a bench APK as a Firebase Test Lab Game Loop and prints its `BENCH` lines |
 | `eas.json` | `proto` / `proto-v3` (interactive), `bench` / `bench-v3` (bench on launch) |
 
+## Pixel style (exploration)
+
+A second style, switched with the **Pixel (hi-bit)** chip (web: `?set=2&season=autumn`). `src/PixelPond.tsx` draws a 214×384 art-pixel scene scaled to the screen by a whole number of device pixels, sampled nearest-neighbour. `src/pixel.ts` moves the water shimmer, ripples and twinkles in whole art pixels, and the glass is the same shader in frost mode (3-art-pixel cells, tinted, colour stepped), clipped to cards with notched corners.
+
+Assets: `tools/gen-pixel.mjs` asks Gemini 3 Pro Image for them (raw output in `assets/pixel-raw/`, about $0.13 each). `tools/pixelify.mjs` finds the fake pixel grid, takes one median colour per cell, caps the palette and keys out magenta. `tools/pixel-manifest.mjs` finds each sprite's box and writes `scene.json`.
+
 ## Run
 
 ```sh
@@ -34,4 +40,6 @@ tools/testlab.sh bench.apk a16x,35 a36xq,36         # Test Lab Galaxy A16 5G and
 - **Headless works in Node.** `drawOffscreen` renders the full scene, shader and `BackdropFilter` glass included, from a script bundled by esbuild with `react-native` aliased to `react-native-web` (`tools/run.mjs`). Pure code (`sksl.ts`, `layout.ts`) must stay free of asset `require`s so CI can import it.
 - **Skia 2.14 paths are built with `Skia.PathBuilder`**, not `Skia.Path.Make().moveTo`.
 - **Still water stops redrawing** by not advancing the art clock: unchanged uniforms mean no new Skia frames.
+- **Skia web has no runtime-shader image filters** (`MakeRuntimeShader` throws "Not implemented on React Native Web"), so a pixelating backdrop filter breaks the canvas on web; the pixel glass is drawn by the scene shader instead.
+- **Gemini's pixel art is not on a true grid.** Its pixel size is fractional (7.11, 17.2, 22.95 image px), mixed within one image unless a canvas size is named, and edges are soft. Naming a canvas ("a 216 x 384 canvas upscaled 7x") got 214×384; naming sprite sizes in art pixels got scene-scale sprites that snap at 0.1% off-grid. Horizons ignored the prompt both times.
 - **First contrast run:** on the glass cards, text passes with the soft halo in both seasons (≥5.7:1 at the worst 5%). Bare spring text over the water fails (3.7:1), so it needs the firm halo (14:1 on its inner colour).
