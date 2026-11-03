@@ -9,7 +9,8 @@
   Built on the pond prototype from #54 (below). Three ways to show the same draft wording, switchable via
   ?variant=A|B|C (or ← → / the bottom bar):
     A  Inline: the explanation is a line of the screen itself, above the waterline. Gone the next time.
-    B  Leaf note: a note floats on the water by the thing it explains, with "Got it".
+    B  Leaf note (CHOSEN, round 2): a note beside the thing it explains, no arrow, the rest of the screen dimmed,
+       with "Got it". Round 2 also adds a welcome screen drawing a whole Inquiry, and warm intro copy.
     C  Still pool: a short card on still water before the step, with "Go on".
   ?origin=intro|splash|signin places the "inspired by" line. Start with ?jump=intro (the default) to walk the
   whole intro, sign-in and first Inquiry. Settings has "Show the guide again".
@@ -185,12 +186,18 @@
   .gskip { font-size:12px; }
   .coach { position:absolute; z-index:12; width:270px; font-size:14px; background:rgba(255,255,255,.9) !important; color:#1f2e36; box-shadow:0 4px 18px var(--shade); }
   #app.evening .coach { background:rgba(30,26,50,.92) !important; color:#f4eadc; }
-  .coach .tail { position:absolute; width:12px; height:12px; background:inherit; transform:rotate(45deg); }
+  .coach { animation:fade .6s ease both; }
+  .spot { position:absolute; z-index:11; pointer-events:none; border-radius:18px; box-shadow:0 0 0 2000px rgba(8,16,22,.5); transition:all .35s ease; }
   .coach .ttl { font:500 16px "Newsreader",serif; margin:0 0 2px; }
   .gpool { position:absolute; inset:0; z-index:15; display:flex; flex-direction:column; }
   .gpool .ab { height:58%; display:flex; flex-direction:column; justify-content:flex-end; padding:0 30px 26px; background:linear-gradient(var(--sky1),var(--sky2)); }
   .gpool .bl { flex:1; background:linear-gradient(var(--wat1),var(--wat2)); border-top:1px solid var(--rip); display:flex; flex-direction:column; align-items:center; padding-top:30px; gap:10px; color:var(--wink); }
   .gpool h1 { font-size:24px; }
+  .flow { display:flex; align-items:flex-start; margin:18px -8px 4px; }
+  .fstep { flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:2px; font-size:12px; line-height:1.25; }
+  .fstep .fg { height:34px; display:grid; place-items:end center; margin-bottom:4px; }
+  .fstep b { font-weight:500; font-size:12.5px; } .fstep span { color:var(--mut); font-size:11px; }
+  .farrow { font-style:normal; color:var(--mut); padding-top:10px; }
   .signbtn { width:100%; margin:5px 0; padding:12px; }
   #side .gl { padding:6px 8px; border-radius:8px; margin:2px 0; font-size:12.5px; } #side .gl.cur { background:#e3eedb; } #side .gl.done { opacity:.5; }
   #side .gl b { display:block; font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:#666; }
@@ -335,27 +342,27 @@ const W = {
 const GUIDE = {
   inquiry: { at: 'Home, first time', title: 'Your first Inquiry',
     text: 'An Inquiry is one sitting with one thing in your life. You have one a day. Tap New Inquiry to begin.',
-    coach: 'right:24px;bottom:150px', tail: 'right:60px;bottom:-6px' },
+    target: '.pobj[data-act=newLeaf]', place: 'above' },
   problem: { at: 'Writing the Problem', title: 'A Problem',
     text: 'Every Inquiry starts with a Problem: something you\'re facing, to look at rather than fix. Write it as it comes, or tap the mic and say it.',
-    coach: 'left:20px;bottom:calc(100% - var(--wl) + 14px)', tail: 'left:24px;bottom:-6px' },
+    target: '.below', place: 'above' },
   probes: { at: 'The Breakdown', title: 'The Breakdown',
     text: 'Under what you wrote are things you may be taking for granted. Each question here is a Probe that pokes at one of them. Pick the one that catches you.',
-    coach: 'left:50px;top:300px', tail: 'left:40px;top:-6px' },
+    target: '[data-act=openPath]', place: 'below' },
   path: { at: 'First step of a Path', title: 'A Path',
     text: 'The app asks, and you answer with a Reflection, written or spoken. You can change it until you tap Submit. If a question doesn\'t fit you, say so.',
-    coach: 'left:20px;bottom:calc(100% - var(--wl) + 14px)', tail: 'left:30px;bottom:-6px' },
+    target: '.below', place: 'above' },
   closing: { at: 'A Path ends', title: 'The end of a Path',
     text: 'A Path ends when there\'s nothing more to ask. Sometimes it hands you an Open Question: one to keep with you, not to answer now.',
-    coach: 'left:20px;bottom:calc(100% - var(--wl) + 14px)', tail: 'left:30px;bottom:-6px' },
+    target: '.above .grow', place: 'below' },
   finish: { at: 'Back on the Probes', title: 'Go on, or finish',
     text: 'You can walk another Path, or finish whenever you like. Finish Inquiry gathers what you looked at into a Recap.',
-    coach: 'right:24px;bottom:150px', tail: 'right:60px;bottom:-6px' },
+    target: '.pobj[data-act=finish]', place: 'above' },
   recap: { at: 'The Recap', title: 'Your Recap',
     text: 'This is what you looked at, in your own words. It isn\'t a verdict. It stays on this device, and you can come back to it from home.',
-    coach: 'left:60px;bottom:calc(100% - var(--wl) + 14px)', tail: 'left:30px;bottom:-6px' },
+    target: '.below .pair', place: 'below' },
 };
-const VARIANTS = { A: 'Inline line', B: 'Leaf note', C: 'Still pool card' };
+const VARIANTS = { B: 'Leaf note (chosen)', A: 'Inline line', C: 'Still pool card' };
 function guideKey() { // which explanation belongs to what's on screen now
   if (!S.guiding || S.sheet) return null;
   const k = (() => {
@@ -369,17 +376,30 @@ function guideKey() { // which explanation belongs to what's on screen now
     return null; })();
   return k && !S.done.has(k) ? k : null;
 }
-const skipLink = k => k === 'inquiry' ? ` <button class="link gskip mut" data-act="skipGuide">Skip the guide</button>` : '';
+const skipLink = k => k === 'inquiry' ? ` <button class="link gskip mut right" data-act="skipGuide">Skip the guide</button>` : '';
 function inlineGuide() { // variant A: the explanation is part of the screen
   const k = S.variant === 'A' && guideKey(); if (!k) return '';
   S.inlineShown = k;
   return `<p class="guide fadein">${GUIDE[k].text}${skipLink(k)}</p>`;
 }
-function coachNote() { // variant B: a note floats by the thing it explains
+function coachNote() { // variant B: a note floats by the thing it explains, and the rest of the screen dims
+  if (S.skipNote) return `<div class="spot" style="inset:0;box-shadow:none;background:rgba(8,16,22,.5)"></div><div class="card coach fadein" style="left:50%;top:40%;transform:translate(-50%,-50%)">
+    <p class="ttl">The guide is off</p><p style="margin:0 0 8px">Whenever you'd like it back, it's in Settings, under "Show the guide again".</p><button class="pri" data-act="skipNoteOk">OK</button></div>`;
   const k = S.variant === 'B' && guideKey(); if (!k) return '';
   const g = GUIDE[k];
-  return `<div class="card coach fadein" style="${g.coach}"><span class="tail" style="${g.tail}"></span>
+  return `<div class="spot" id="spot"></div><div class="card coach" id="coach" data-target="${g.target}" data-place="${g.place}" style="visibility:hidden">
     <p class="ttl">${g.title}</p><p style="margin:0 0 8px">${g.text}</p><div class="row"><button class="pri" data-act="gotIt" data-k="${k}">Got it</button>${skipLink(k)}</div></div>`;
+}
+function placeCoach() { // cut the dim around the element the note is about, and set the note beside it
+  const c = document.getElementById('coach'), sp = document.getElementById('spot'); if (!c) return;
+  const app = document.getElementById('app'), ar = app.getBoundingClientRect(), t = document.querySelector('#ui ' + c.dataset.target);
+  if (!t) { sp.style.cssText = 'inset:0;box-shadow:none;background:rgba(8,16,22,.5)'; c.style.cssText = 'left:60px;top:200px'; return; }
+  const tr = t.getBoundingClientRect(), m = 6, x = tr.left - ar.left - m, y = tr.top - ar.top - m, w = tr.width + 2 * m, h = tr.height + 2 * m;
+  Object.assign(sp.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+  const cw = c.offsetWidth, ch = c.offsetHeight, gap = 14;
+  const left = Math.min(Math.max(x + w / 2 - cw / 2, 14), ar.width - cw - 14);
+  const top = c.dataset.place === 'below' ? Math.min(y + h + gap, ar.height - ch - 14) : Math.max(y - gap - ch, 14);
+  Object.assign(c.style, { left: left + 'px', top: top + 'px', visibility: 'visible' });
 }
 function poolCard() { // variant C: a short card on still water before the step
   const k = S.variant === 'C' && guideKey(); if (!k) return '';
@@ -391,21 +411,29 @@ function poolCard() { // variant C: a short card on still water before the step
 // ---------- the intro, before sign-in and before any model call ----------
 const ORIGIN = 'Inspired by the way J. Krishnamurti asked questions.';
 const originLine = where => S.origin === where ? `<p class="small mut" style="margin-top:14px">${ORIGIN}</p>` : '';
+// the whole of an Inquiry at a glance, drawn as the lily it grows into: pad, ripples, brook, flower
+const FLOW = [
+  [() => padGlyph(7, 40), 'Bring a Problem', 'whatever you\'re facing'],
+  [() => `<svg width="40" height="25" viewBox="0 0 40 25">${[6, 11, 16].map((r, k) => `<ellipse cx="20" cy="13" rx="${r + 2}" ry="${(r + 2) * .45}" fill="none" stroke="var(--ink)" stroke-width="1" opacity="${.7 - k * .2}"/>`).join('')}</svg>`, 'See what\'s beneath', 'Probes ask about it'],
+  [() => `<svg width="40" height="25" viewBox="0 0 40 25"><path d="M2 18C10 4 18 22 26 10S36 6 38 8" stroke="var(--ink)" stroke-width="1.4" fill="none" opacity=".7"/><circle cx="14" cy="13" r="2" fill="var(--ink)" opacity=".6"/><circle cx="30" cy="9" r="2" fill="var(--ink)" opacity=".6"/></svg>`, 'Follow a Path', 'answer in your own words'],
+  [() => flowerGlyph(34), 'Keep a Recap', 'what you looked at'],
+];
+const flowDiagram = () => `<div class="flow">${FLOW.map(([g, t, s], k) => `<div class="fstep"><div class="fg">${g()}</div><b>${t}</b><span>${s}</span></div>${k < FLOW.length - 1 ? '<i class="farrow">›</i>' : ''}`).join('')}</div>`;
 const INTRO = [
-  () => ({ h: 'A place to look at what you\'re facing.', p: 'You bring something in your life. The app draws out what you might be assuming underneath it, and asks you about it. It won\'t tell you what\'s true.', extra: originLine('intro'), btn: 'Go on' }),
-  () => ({ h: 'It\'s an AI.', p: 'Not a person, not therapy, and not a crisis service. If you\'re struggling, Help is at the top of every Inquiry.', extra: `<button class="link small mut" data-act="help" style="margin-top:8px">Need help now?</button>`, btn: 'I understand' }),
-  () => ({ h: 'What you write stays with you.', p: 'Your Inquiries are kept on this device, encrypted. We never see them, and no Inquiry ever reads an earlier one. You can delete anything.', extra: '', btn: 'Go on' }),
+  () => ({ h: 'Welcome. We\'re glad you\'re here.', p: 'Look Together is a quiet place to look at your own thinking. It won\'t judge you or tell you what\'s right. It simply gives you a way to slow down, examine your thoughts, and see what lies underneath them.', pre: flowDiagram(), extra: originLine('intro'), btn: 'Go on' }),
+  () => ({ h: 'Before we begin, one thing to know.', p: 'You\'ll be talking with an AI, not a person. It\'s here to help you reflect, but it isn\'t therapy, and it isn\'t a crisis service. If things ever feel like too much, Help is always at the top of an Inquiry.', extra: `<button class="link small mut" data-act="help" style="margin-top:8px;align-self:flex-start">Need help now?</button>`, btn: 'I understand' }),
+  () => ({ h: 'What you write stays with you.', p: 'Your Inquiries are kept on this device, encrypted. We never see them, and each Inquiry starts fresh, without reading the ones before. You can delete anything, any time.', extra: '', btn: 'Go on' }),
 ];
 function intro() {
   const n = S.intro, s = INTRO[n]();
-  return { wl: '58%',
-    above: `${topbar(n ? backBtn('introBack', 'Back') : '')}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 30px 26px"><h1>${s.h}</h1><p class="read" style="font-size:18px;margin:0">${s.p}</p>${s.extra}</div>`,
+  return { wl: s.pre ? '72%' : '58%',
+    above: `${topbar(n ? backBtn('introBack', 'Back') : '')}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px 22px"><h1>${s.h}</h1><p class="read" style="font-size:17px;margin:0">${s.p}</p>${s.pre || ''}${s.extra}</div>`,
     below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${s.btn}</button>
       <div class="dotsrow" style="margin-top:22px">${INTRO.map((_, k) => `<i class="${k === n ? 'on' : ''}"></i>`).join('')}</div></div>` };
 }
 function signin() {
   return { wl: '46%',
-    above: `${topbar(backBtn('introBack', 'Back'))}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 30px 22px"><h1>Sign in</h1><p class="read" style="font-size:18px;margin:0">So your Inquiry a day follows you. Your Account knows nothing of your Inquiries.</p>${originLine('signin')}</div>`,
+    above: `${topbar(backBtn('introBack', 'Back'))}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding:0 30px 22px"><h1>Almost there.</h1><p class="read" style="font-size:18px;margin:0">Sign in so your Inquiry each day can follow you to any device. Your Account only knows who you are, never what you write.</p>${originLine('signin')}</div>`,
     below: `<div class="pad" style="padding:26px 30px 0">${['Continue with Apple', 'Continue with Google', 'Email me a code'].map(l => `<button class="signbtn ${l.includes('Apple') ? 'pri' : ''}" data-act="signedIn">${l}</button>`).join('')}</div>` };
 }
 
@@ -431,8 +459,8 @@ function seed() {
     logo: LOGOS[q.get('logo')] ? q.get('logo') : 'lilyripples', budOpen: false,
     screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
-    variant: VARIANTS[q.get('variant')] ? q.get('variant') : 'A', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
-    intro: 0, guiding: true, done: new Set(), inlineShown: null,
+    variant: VARIANTS[q.get('variant')] ? q.get('variant') : 'B', origin: ['intro', 'splash', 'signin'].includes(q.get('origin')) ? q.get('origin') : 'intro',
+    intro: 0, guiding: true, skipNote: false, done: new Set(), inlineShown: null,
     // a first-time person: nothing on the pond yet
     unfinished: [], past: [] };
 }
@@ -558,6 +586,7 @@ function render() {
   if (S.screen === 'path') walkBrook(S.vi);
   if (S.screen === 'home') startLeafFall();
   lastScreen = S.screen; S.justReplied = false; S.dir = null;
+  placeCoach(); setTimeout(placeCoach, 800); // again once screens have finished sliding in
   renderSide(); renderProto();
 }
 function renderSide() {
@@ -565,7 +594,7 @@ function renderSide() {
   const cur = guideKey();
   document.getElementById('side').innerHTML = `<div class="box"><h4>Variant ${S.variant} · ${VARIANTS[S.variant]}</h4>${{
       A: 'The explanation is a line of the screen itself, above the waterline, in the app\'s voice. Nothing to dismiss; it\'s gone the next time.',
-      B: 'A note floats on the water by the thing it explains, and waits for "Got it". The screen behind stays live.',
+      B: 'Chosen. A note sits beside the thing it explains, with no arrow; everything else dims. It waits for "Got it". Skipping says where to turn the guide back on.',
       C: 'A short card on still water comes before the step. "Go on" lets the step appear.' }[S.variant]}
       <p style="margin:8px 0 0">"Skip the guide" sits only on the first explanation. Settings has "Show the guide again" for the next Inquiry. "Inspired by" line: <b>${S.origin}</b>.</p></div>
     <div class="box"><h4>The wording · in order</h4>${Object.entries(GUIDE).map(([k, g]) => `<div class="gl ${k === cur ? 'cur' : ''} ${S.done.has(k) ? 'done' : ''}"><b>${g.at}</b>${g.text}</div>`).join('')}
@@ -741,7 +770,7 @@ document.addEventListener('click', e => {
     introBack: () => S.screen === 'signin' ? go('intro', { intro: INTRO.length - 1 }) : go('intro', { intro: Math.max(0, S.intro - 1) }),
     signedIn: () => go('home'),
     gotIt: () => { S.done.add(el.dataset.k); render(); },
-    skipGuide: () => { S.guiding = false; S.inlineShown = null; render(); },
+    skipGuide: () => { S.guiding = false; S.inlineShown = null; S.skipNote = true; render(); }, skipNoteOk: () => { S.skipNote = false; render(); },
     guideAgain: () => { S.guiding = true; S.done = new Set(); S.inlineShown = null; S.today = null; S.todayDone = false; render(); },
   }[a] || (() => {}))();
 });
