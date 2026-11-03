@@ -207,6 +207,7 @@
   .rseg { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; margin:0 0 14px; overflow:hidden; backdrop-filter:blur(6px); }
   .rseg .rtop { padding:12px 16px 10px; }
   .rseg .rlab { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--wmut); margin-bottom:4px; }
+  .rseg .rprobe { font:italic 14px/1.35 "Newsreader",serif; } .rseg .chip { flex:none; white-space:nowrap; }
   .rseg .chip { border:1px solid var(--glassB); border-radius:10px; padding:1px 8px; font-size:11.5px; }
   .rseg .rprem { font:400 17px/1.4 "Newsreader",serif; margin:0; }
   .rseg .rq { border-top:1px solid var(--rip); padding:10px 16px 12px; background:linear-gradient(rgba(110,151,160,.3),transparent); }
@@ -439,7 +440,7 @@ const BEATS = [
   { step: 'See what\'s beneath', h: 'Then we look underneath it.', p: 'The app draws out what you might be taking for granted, and asks a gentle question about each. These questions are Probes.', g: 'ripples' },
   { step: 'Follow a Path', h: 'You follow a Path.', p: 'Pick the Probe that catches you, and follow it one question at a time, answering in your own words.', g: 'brook' },
   { step: 'Keep a Recap', h: 'And keep what you saw.', p: 'When you\'re ready, you finish with a Recap of what you looked at, kept on your device, just for you.', g: 'flower' },
-  { h: 'No judging, ever.', p: 'It won\'t tell you what\'s right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours.', g: null, last: true },
+  { h: 'No judging, ever.', p: 'It won\'t tell you what\'s right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours.', g: 'flower', last: true },
 ];
 function welcome() {
   const b = S.wb, B = BEATS[b], mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : 'fadein';
@@ -453,7 +454,7 @@ function welcome() {
     below: `<div class="pad center" style="padding-top:30px"><button class="pri" data-act="introNext">${B.last ? 'Go on' : b ? 'Next' : 'Show me'}</button>
       <div class="dotsrow" style="margin-top:22px">${BEATS.map((_, k) => `<i class="${k === b ? 'on' : ''}"></i>`).join('')}</div><p class="small mut" style="margin-top:14px">${b ? '' : 'Swipe, scroll or tap'}</p></div>`,
     // the glyph for this beat rises out of the water onto the waterline
-    extra: B.g ? `<div class="wglyph"><div class="wg">${GLYPH[B.g](96)}</div><div class="wr">${GLYPH[B.g](96)}</div></div>` : B.last ? `<div class="wglyph"><div class="wg">${lotus(70, true)}</div></div>` : '' };
+    extra: B.g ? `<div class="wglyph" style="${S.prevWb != null && BEATS[S.prevWb].g === B.g ? 'animation:none' : ''}"><div class="wg">${GLYPH[B.g](96)}</div><div class="wr">${GLYPH[B.g](96)}</div></div>` : '' };
 }
 const INTRO = [
   null, // the welcome, drawn by welcome()
@@ -563,7 +564,7 @@ function path() {
   const root = `<button class="pri" data-act="closePath">${W.toProbes()}</button>`;
   const head = topbar(backBtn('closePath', 'Probes'), helpBtn());
   if (S.readAll) return { wl: '12%', above: topbar(backBtn('closeRead', 'Path'), helpBtn()),
-    below: `<div class="scroll pad" style="padding-top:18px">${st.filter(x => x.r).map(x => `<div class="pair"><div class="pq" style="color:var(--wink)">${x.q}</div><div class="pl"></div><div class="pr">${esc(x.r)}</div></div>`).join('')}
+    below: `<div class="scroll pad" style="padding-top:18px">${st.filter(x => x.r).map(x => `<div class="rseg"><div class="rtop"><p class="rprem">${x.q}</p></div><div class="rq"><p class="rquote" style="font-style:normal">${esc(x.r)}</p></div></div>`).join('')}
       <div class="center" style="margin:20px 0 40px">${root}</div></div>` };
   if (looked && vi === st.length) // the closing view: what the app hands back above, the person's own words below, and the way back to the root
     return { wl: '36%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:26px">${inlineGuide()}<p class="small mut" style="margin:0">Looked at · ${W.outcome(s.outcome)}</p>
@@ -589,7 +590,7 @@ function recap() {
     above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0">${g}</div><div class="pad row" style="padding-top:0;align-items:flex-end">${flowerGlyph(40)}<div><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px;margin:0">What you looked at</p></div></div>`,
     below: `<div class="scroll pad" style="padding-top:18px">
       <h3 style="margin-top:0">Assumptions</h3>
-      ${looked.map((p, k) => `<div class="rseg"><div class="rtop"><div class="rlab">Assumption ${k + 1}<span class="chip">${W.outcome(PS[p.id].outcome)}</span></div><p class="rprem">${PS[p.id].premise}</p></div>
+      ${looked.map(p => `<div class="rseg"><div class="rtop"><div class="rlab"><span class="grow rprobe">${PS[p.id].probe}</span><span class="chip">${W.outcome(PS[p.id].outcome)}</span></div><p class="rprem">${PS[p.id].premise}</p></div>
         <div class="rq"><div class="rlab">In your words</div>${PS[p.id].quote ? `<p class="rquote">“${PS[p.id].quote}”</p>` : '<p class="rquote" style="opacity:.6">Nothing quoted</p>'}</div></div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
       ${notYet.length ? `<h3>Not looked at yet</h3>${notYet.map(p => `<p style="opacity:.75">${PS[p.id].probe}</p>`).join('')}` : ''}
@@ -807,7 +808,7 @@ document.addEventListener('click', e => {
     help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
     introNext: () => welcomeStep(1) || (S.intro < INTRO.length - 1 ? go('intro', { intro: S.intro + 1 }) : go('signin')),
     introBack: () => welcomeStep(-1) || (S.screen === 'signin' ? go('intro', { intro: INTRO.length - 1 }) : go('intro', { intro: Math.max(0, S.intro - 1), wb: S.intro === 1 ? BEATS.length - 1 : S.wb })),
-    welcomeEnd: () => { S.wb = BEATS.length - 1; S.dir = 'next'; render(); },
+    welcomeEnd: () => { S.prevWb = S.wb; S.wb = BEATS.length - 1; S.dir = 'next'; render(); },
     signedIn: () => go('home'),
     gotIt: () => { S.done.add(el.dataset.k); render(); },
     skipGuide: () => { S.guiding = false; S.inlineShown = null; S.skipNote = true; render(); }, skipNoteOk: () => { S.skipNote = false; render(); },
@@ -818,7 +819,7 @@ document.addEventListener('click', e => {
 function welcomeStep(d) { // moves within the welcome's beats; false once past either end
   if (S.screen !== 'intro' || S.intro !== 0) return false;
   const nb = S.wb + d; if (nb < 0 || nb >= BEATS.length) return false;
-  S.wb = nb; S.dir = d > 0 ? 'next' : 'prev'; render(); return true;
+  S.prevWb = S.wb; S.wb = nb; S.dir = d > 0 ? 'next' : 'prev'; render(); return true;
 }
 let wheelAt = 0;
 document.addEventListener('wheel', e => { if (S.screen !== 'intro' || S.intro || !document.getElementById('app').contains(e.target)) return;
