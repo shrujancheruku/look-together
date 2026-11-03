@@ -37,5 +37,6 @@ module.exports = {
     web: { favicon: "./assets/favicon.png" },
     plugins: [["expo-build-properties", { android: { minSdkVersion: v3 ? 26 : 24 } }], withTestLoop],
     owner: "shrujancheruku",
+    extra: { eas: { projectId: "3dde13b0-8fcf-456e-9c4e-48c05dd32263" } },
   },
 };
