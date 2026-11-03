@@ -5,42 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PROTOTYPE · Look Together pond</title>
 <!--
-  PROTOTYPE, throwaway. Second round of "What do Look Together's look and the voice of its copy feel like?"
-  (wayfinder ticket #54 on map #1), after none of prototypes/look won. Brainstorm material, not decisions.
-  The idea: everything floats on one reflecting pool. One rule throughout: the app's words sit ABOVE the
-  waterline (the sky), the person's words BELOW it (the reflection).
-    - Opening: a still sky reflected, a drop falls, the ripples bring up "Look" above and "Together" below.
-    - Home: settings is a leaf top right; New Inquiry is a leaf bottom right; the person's Inquiries float.
-    - Path: each step is two halves, the app's question above and the person's Reflection below; swipe or
-      use ‹ › to move between steps. "Read it all" shows the Path as a column of mirrored pairs.
-    - Submitting a Reflection is a drop; the reply comes as the water settles.
-    - Help and the Step-out still the pool: no motion, no metaphor.
-  Keyboard handling, three ways (?kb=rise|full|after): the waterline rises; a full-screen still-water
-  editor; or no halves until the step is submitted. The keyboard is faked on desktop so the clash shows.
-  Jump straight to a screen with ?jump=home|new|probes|path|pathmid|ended|recap|help|stepout.
-  Seasons: spring morning / autumn evening (?season=morning|evening|auto, auto by the clock).
-  Voice warms the further into the Dialogue the person gets (by submitted Reflections): spare → plain → warm.
-  Model replies are canned; in the real app the prompt would warm the same way.
-  Everything is in memory; reload resets. Phone only; the wide-web panes aren't dressed.
+  PROTOTYPE, throwaway. "What do Look Together's look and the voice of its copy feel like?" (wayfinder ticket #54
+  on map #1), round 3. Brainstorm material, not decisions. The idea: everything floats on one reflecting pool in a
+  forest. One rule throughout: the app's words sit ABOVE the waterline, the person's BELOW it (upright, never flipped).
+    - Opening: still sky reflected, a drop falls, the ripples bring up "Look" above and "Together" below.
+    - Home: a pond in the forest. Trees behind the wordmark sway and drop the odd leaf onto the water. Settings
+      is a floating leaf top left; New Inquiry is the floating leaf bottom right, with a clear label (home only).
+    - Probe list: Probes above the waterline, the person's Problem below.
+    - Path: the pond becomes a slow stream flowing right, the way forward; ‹ › or swipe move with it. Each step is
+      two halves: the app's question above, the Reflection below. The waterline sits high so the keyboard can grow
+      into the space below without moving much. An ended Path leads back to the Probes.
+    - Recap: the stream slows and opens out into a still pool.
+    - Help and the Step-out still the water: no motion, no metaphor.
+  Voice warms along the current Path (spare on its first step, plain on its second, warm after), and jumps to warm
+  when the model signals softening (toggle "model: softening" in the bar). The prompt would warm the same way.
+  ANIMATION IS PLACEHOLDER. Making it smooth, natural and relaxing is heavy work for later, as is finding timing
+  that sits between snappy and calm.
+  ?jump=home|new|probes|path|pathmid|ended|recap|help|stepout  ?season=morning|evening|auto
+  Everything is in memory; reload resets. Phone only.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   @property --wl { syntax:'<percentage>'; inherits:true; initial-value:50%; }
   #app.morning { --sky1:#c9dfec; --sky2:#f7efe0; --wat1:#dfe8de; --wat2:#6e97a0; --ink:#1f2e36; --wink:#0e2a31; --mut:#5d6d72; --wmut:#2f5058;
-    --glass:rgba(255,255,255,.42); --glassB:rgba(255,255,255,.6); --acc:#4f7a3a; --leaf:#7fa65a; --leafV:#4f7a3a; --drop:#ffffff; --rip:rgba(255,255,255,.75); --still:#9fbcc0; }
+    --glass:rgba(255,255,255,.42); --glassB:rgba(255,255,255,.6); --acc:#4f7a3a; --leaf:#7fa65a; --leafV:#4f7a3a; --drop:#ffffff; --rip:rgba(255,255,255,.75); --still:#9fbcc0; --shade:rgba(20,50,60,.28); }
   #app.evening { --sky1:#1e1a32; --sky2:#c07a4c; --wat1:#6a4a44; --wat2:#14142a; --ink:#f4eadc; --wink:#f1e5d4; --mut:#cdbfae; --wmut:#cdb9a6;
-    --glass:rgba(24,20,44,.42); --glassB:rgba(255,220,180,.18); --acc:#e09a5c; --leaf:#c8692e; --leafV:#7d3a17; --drop:#ffe6c8; --rip:rgba(255,214,170,.55); --still:#2a2638; }
+    --glass:rgba(24,20,44,.42); --glassB:rgba(255,220,180,.18); --acc:#e09a5c; --leaf:#c8692e; --leafV:#7d3a17; --drop:#ffe6c8; --rip:rgba(255,214,170,.55); --still:#2a2638; --shade:rgba(0,0,0,.4); }
 
   * { box-sizing:border-box; }
   body { margin:0; background:#b9b9b4; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; gap:24px; padding:16px 16px 150px; font:13px system-ui,sans-serif; }
   #app { --wl:50%; position:relative; overflow:hidden; width:390px; max-width:100%; height:800px; flex:none; border-radius:34px; box-shadow:0 8px 40px #0003;
     font:15px/1.5 "Inter",system-ui,sans-serif; color:var(--ink); transition:--wl .9s cubic-bezier(.4,.1,.2,1); }
   .sky { position:absolute; inset:0 0 auto 0; height:var(--wl); background:linear-gradient(var(--sky1),var(--sky2)); }
-  .water { position:absolute; inset:var(--wl) 0 0 0; background:linear-gradient(var(--wat1),var(--wat2)); }
+  .water { position:absolute; inset:var(--wl) 0 0 0; background:linear-gradient(var(--wat1),var(--wat2)); overflow:hidden; }
   .water::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(transparent 0 7px, rgba(255,255,255,.05) 7px 8px); }
+  /* the stream: streaks drifting right, faded in and slowed by JS */
+  .flow { position:absolute; inset:0; opacity:0; background-image:
+      radial-gradient(ellipse 34px 1.2px at 50% 50%, var(--rip), transparent),
+      radial-gradient(ellipse 18px 1px at 50% 50%, var(--rip), transparent);
+    background-size:160px 22px, 97px 13px; background-position:0 0, 40px 6px; }
   .wline { position:absolute; left:0; right:0; top:var(--wl); height:1px; background:var(--rip); opacity:.7; }
   #rip { position:absolute; inset:0; pointer-events:none; z-index:3; }
+  #ui { position:absolute; inset:0; }
   .layer { position:absolute; inset:0; z-index:4; display:flex; flex-direction:column; }
   .above { height:var(--wl); display:flex; flex-direction:column; min-height:0; }
   .below { flex:1; min-height:0; display:flex; flex-direction:column; color:var(--wink); }
@@ -57,130 +64,174 @@
   button.link { background:none; border:none; padding:4px 0; backdrop-filter:none; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
   button:disabled { opacity:.4; }
   .row { display:flex; gap:10px; align-items:center; } .grow { flex:1; } .right { margin-left:auto; } .center { text-align:center; }
-  .topbar { display:flex; align-items:center; padding:50px 16px 6px; min-height:90px; flex:none; }
-  .topbar .t { flex:1; text-align:center; font-size:13px; color:var(--mut); }
-  .topbar .s { width:80px; display:flex; } .topbar .s.r { justify-content:flex-end; }
-  .iconbtn { background:none; border:none; padding:6px; backdrop-filter:none; }
+  .topbar { display:flex; align-items:center; padding:50px 14px 6px; min-height:90px; flex:none; }
+  .topbar .s { flex:1; display:flex; } .topbar .s.r { justify-content:flex-end; }
+  .back { background:none; border:none; backdrop-filter:none; padding:6px 4px; display:flex; align-items:center; gap:2px; font-size:14px; }
   .help { background:none; border:none; padding:6px 2px; backdrop-filter:none; font-weight:500; font-size:14px; display:flex; gap:6px; align-items:center; }
   .help::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--acc); }
   .card { background:var(--glass); border:1px solid var(--glassB); border-radius:16px; padding:14px 16px; margin:10px 0; backdrop-filter:blur(6px); }
   .card.tap { cursor:pointer; }
   .float { animation:bob 7s ease-in-out infinite; } .float:nth-child(2n) { animation-delay:-2.5s; } .float:nth-child(3n) { animation-delay:-4.8s; }
   @keyframes bob { 50% { transform:translateY(3px) rotate(-.3deg); } }
-  #app.still .float, #app.still .leafbtn { animation:none; }
+  #app.still .float, #app.still .fleaf .lf, #app.still .fleaf .ring, #app.still .sway { animation:none !important; }
   .badge { font:italic 14px "Newsreader",serif; white-space:nowrap; }
 
-  /* leaves */
-  .leafbtn { position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; flex-direction:column; align-items:center; gap:2px; animation:drift 9s ease-in-out infinite; }
-  .leafbtn span { font-size:11px; color:var(--wink); text-shadow:0 1px 3px rgba(0,0,0,.25); }
-  @keyframes drift { 50% { transform:translate(-3px,2px) rotate(4deg); } }
-  .leafbtn.dry svg path:first-child { fill:#a99a7c; } .leafbtn.dry { opacity:.75; }
-  .leafnote { position:absolute; right:20px; bottom:120px; z-index:7; width:220px; }
+  /* forest behind the wordmark, and its reflection on the water */
+  .trees { position:absolute; left:0; right:0; z-index:2; pointer-events:none; }
+  .trees.top { top:calc(var(--wl) - 150px); height:150px; }
+  .trees.refl { top:var(--wl); height:150px; transform:scaleY(-1); opacity:.22; filter:blur(1.5px); }
+  .sway { transform-box:fill-box; transform-origin:50% 100%; animation:sway 6s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform:rotate(-1.4deg); } to { transform:rotate(1.6deg) skewX(1deg); } }
+  .flyer { position:absolute; z-index:5; pointer-events:none; }
+
+  /* leaves floating on the water: flattened by perspective, a shadow, rings */
+  .fleaf { position:absolute; z-index:6; background:none; border:none; padding:0; backdrop-filter:none; display:flex; align-items:center; gap:10px; }
+  .fleaf .body { position:relative; display:grid; place-items:center; }
+  .fleaf .lf { position:relative; z-index:2; animation:float 6.5s ease-in-out infinite; transform-origin:50% 60%; }
+  .fleaf .lf svg { transform:scaleY(.72); display:block; }
+  .fleaf .shadow { position:absolute; inset:30% 6% 4% 10%; background:radial-gradient(ellipse at 50% 50%, var(--shade), transparent 70%); filter:blur(3px); transform:translate(3px,5px); }
+  .fleaf .ring { position:absolute; left:50%; top:58%; width:120%; height:44%; margin:-22% 0 0 -60%; border:1px solid var(--rip); border-radius:50%; opacity:0; animation:ringout 6s ease-out infinite; }
+  .fleaf .ring.r2 { animation-delay:-3s; }
+  @keyframes float { 0%,100% { transform:translateY(0) rotate(0); } 30% { transform:translateY(1.5px) rotate(2deg); } 70% { transform:translateY(-1px) rotate(-1.5deg); } }
+  @keyframes ringout { 0% { transform:scale(.7); opacity:.55; } 100% { transform:scale(1.7); opacity:0; } }
+  .fleaf .lbl { font-size:12px; color:var(--wink); }
+  .fleaf.primary .lbl { order:-1; font:600 16px "Inter",sans-serif; background:var(--ink); color:var(--sky2); padding:12px 18px; border-radius:24px; box-shadow:0 6px 18px var(--shade); }
+  #app.evening .fleaf.primary .lbl { background:var(--acc); color:#1e1a32; }
+  .fleaf.primary.dry .lbl { background:var(--glass); color:var(--wink); font-weight:500; box-shadow:none; }
+  .fleaf.dry svg path:first-child { fill:#a99a7c; } .fleaf.dry .ring { display:none; }
+  .leafnote { position:absolute; right:20px; bottom:120px; z-index:7; width:230px; }
 
   /* Path halves */
   .q { font:400 22px/1.4 "Newsreader",serif; }
-  #app.kb .q { font-size:17px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  #app.kb .q { font-size:18px; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
   .r { font:400 18px/1.5 "Newsreader",serif; }
   .under { font:italic 15px "Newsreader",serif; color:var(--wmut); margin-bottom:10px; }
   .stepnav { position:absolute; left:0; right:0; top:calc(var(--wl) - 17px); z-index:6; display:flex; align-items:center; padding:0 8px; pointer-events:none; }
-  .stepnav button { pointer-events:auto; background:var(--glass); width:34px; height:34px; padding:0; border-radius:50%; }
+  .stepnav button { pointer-events:auto; background:var(--glass); width:34px; height:34px; padding:0; border-radius:50%; display:grid; place-items:center; }
   .dotsrow { flex:1; display:flex; justify-content:center; gap:7px; }
   .dotsrow i { width:6px; height:6px; border-radius:50%; background:var(--rip); opacity:.5; } .dotsrow i.on { opacity:1; transform:scale(1.4); }
-  .dotsrow i.end { border-radius:1px; transform:rotate(45deg); }
+  .dotsrow i.end { border-radius:1px; transform:rotate(45deg); } .dotsrow i.end.on { transform:rotate(45deg) scale(1.4); }
+  .fromR { animation:fromR .7s ease both; } .fromL { animation:fromL .7s ease both; }
+  @keyframes fromR { from { opacity:0; transform:translateX(28px); } } @keyframes fromL { from { opacity:0; transform:translateX(-28px); } }
   textarea.ref { width:100%; flex:1; min-height:80px; background:none; border:none; outline:none; resize:none; color:var(--wink); font:18px/1.5 "Newsreader",serif; padding:0; }
   textarea.ref::placeholder { color:var(--wmut); }
   .ctrl { display:flex; align-items:center; gap:10px; padding:8px 22px 26px; }
   #app.kb .ctrl { padding-bottom:10px; }
+  #app.kb .below { padding-bottom:280px; }
   .ailabel { font-variant:small-caps; letter-spacing:.06em; font-size:13px; }
   .mic { width:42px; height:42px; padding:0; border-radius:50%; display:flex; align-items:center; justify-content:center; }
   .mic.on { background:var(--acc); }
   svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
-  .docked { background:var(--sky2); color:var(--ink); border-top:1px solid var(--glassB); position:absolute; left:0; right:0; bottom:0; z-index:7; padding:10px 18px 0; }
-  .docked textarea.ref { color:var(--ink); min-height:60px; } .docked textarea.ref::placeholder { color:var(--mut); }
-  #app.kb .docked { bottom:280px; }
   .offer { margin-top:12px; font-size:14px; }
 
-  /* read-back: mirrored pairs */
+  /* read-back and Recap: mirrored pairs */
   .pair { margin:4px 0 18px; }
   .pair .pq { font:400 17px/1.4 "Newsreader",serif; padding:0 0 8px; }
   .pair .pl { height:1px; background:var(--rip); opacity:.8; }
-  .pair .pr { font:400 16px/1.5 "Newsreader",serif; padding:8px 12px 10px; background:linear-gradient(rgba(110,151,160,.35),transparent); color:inherit; }
+  .pair .pr { font:400 16px/1.5 "Newsreader",serif; padding:8px 12px 10px; background:linear-gradient(rgba(110,151,160,.35),transparent); }
   #app.evening .pair .pr { background:linear-gradient(rgba(106,74,68,.5),transparent); }
 
-  .settling { filter:url(#wave); }
   .fadein { animation:fade 1.1s ease both; } @keyframes fade { from { opacity:0; transform:translateY(-6px); } }
   .rise { animation:rise 1.1s ease both; } @keyframes rise { from { opacity:0; transform:translateY(14px); } }
   .drop { position:absolute; left:50%; width:9px; height:13px; margin-left:-4px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:var(--drop); z-index:8; top:-20px; box-shadow:0 0 6px var(--drop); }
 
-  /* splash */
+  /* opening */
   .mark { position:absolute; left:0; right:0; top:calc(var(--wl) - 80px); height:160px; z-index:5; display:flex; justify-content:center; }
-  .mark .lk, .mark .tg { opacity:0; transition:opacity 1.4s ease; } .mark.show .lk { opacity:1; } .mark.show .tg { opacity:.6; transition-delay:.5s; }
+  .mark .lk, .mark .tg { opacity:0; transition:opacity 1.4s ease; } .mark.show .lk { opacity:1; } .mark.show .tg { opacity:.62; transition-delay:.5s; }
   .hint { position:absolute; bottom:60px; left:0; right:0; text-align:center; color:var(--wmut); opacity:0; transition:opacity 1s 2.2s; z-index:5; } .mark.show ~ .hint { opacity:1; }
 
-  /* still screens: help, step-out */
+  /* still screens */
   .scrim { position:absolute; inset:0; z-index:20; background:rgba(0,0,0,.35); display:flex; align-items:flex-end; }
   .sheet { background:var(--still); color:var(--ink); width:100%; border-radius:24px 24px 0 0; padding:18px 22px 30px; }
   #app.evening .sheet { color:var(--wink); }
   .contact { background:var(--glass); border-radius:12px; padding:12px 14px; margin:8px 0; }
   .plain { position:absolute; inset:0; z-index:20; background:var(--still); padding:90px 24px 24px; }
   #app.evening .plain { color:var(--wink); }
-  .full { position:absolute; inset:0; z-index:15; background:linear-gradient(var(--wat1),var(--wat2)); color:var(--wink); display:flex; flex-direction:column; padding:56px 22px 290px; }
 
   .kbd { position:absolute; left:0; right:0; bottom:0; height:280px; background:#d1d3d9; z-index:30; display:none; padding:8px 4px; }
   #app.evening .kbd { background:#2b2b2f; }
   #app.kb .kbd { display:grid; grid-template-columns:repeat(10,1fr); grid-auto-rows:44px; gap:8px 5px; }
   .kbd b { background:#fff; border-radius:5px; box-shadow:0 1px 0 #888; } #app.evening .kbd b { background:#555; }
   .kbd .done { grid-column:span 3; font:500 14px system-ui; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#123; }
+  #app.evening .kbd .done { color:#eee; }
 
-  /* side panel + prototype chrome */
   #side { width:300px; flex:none; color:#222; }
   #side .box { background:#f4f4f2; border-radius:12px; padding:14px; margin-bottom:12px; line-height:1.45; }
   #side h4 { margin:0 0 8px; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#666; }
   @media (max-width:760px) { #side { display:none; } }
   #proto { position:fixed; left:50%; bottom:12px; transform:translateX(-50%); background:#111; color:#fff; border-radius:16px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; font:12px/1.3 ui-monospace,Menlo,monospace; z-index:100; box-shadow:0 4px 20px #0006; max-width:calc(100vw - 24px); }
-  #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; backdrop-filter:none; }
+  #proto button, #proto select { background:#333; color:#fff; border:1px solid #555; border-radius:8px; padding:4px 8px; font:inherit; }
+  #proto button.on { background:#6a5; border-color:#8c7; }
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute"><filter id="wave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="1" seed="3"/><feDisplacementMap id="wavemap" in="SourceGraphic" scale="0"/></filter></svg>
-<div id="app"></div>
+<svg width="0" height="0" style="position:absolute"><filter id="wave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.09" numOctaves="1" seed="3"/><feDisplacementMap id="wavemap" in="SourceGraphic" scale="0"/></filter>
+  <filter id="softwave"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.12" numOctaves="1" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.5"/></filter></svg>
+<div id="app"><div class="sky"></div><div class="water"><div class="flow" id="flow"></div></div><div class="wline"></div><canvas id="rip" width="390" height="800"></canvas><div id="ui"></div></div>
 <div id="side"></div>
 <div id="proto"></div>
 <script>
 // ---------- art ----------
 const LEAF = (w, rot = 0, fill = 'var(--leaf)') => `<svg width="${w}" height="${w * .62}" viewBox="0 0 50 31" style="transform:rotate(${rot}deg)"><path d="M3 28C8 10 24 2 47 3C44 19 30 30 3 28Z" fill="${fill}"/><path d="M5 27C18 19 30 12 44 5" stroke="var(--leafV)" stroke-width="1.3" fill="none"/></svg>`;
-function wordmark(w, season) { // leaf on the water; "Look" above, "Together" its reflection below
-  const c = season === 'evening' ? { ink: '#f4eadc', leaf: '#c8692e', v: '#7d3a17', line: '#ffd6aa' } : { ink: '#1f2e36', leaf: '#7fa65a', v: '#4f7a3a', line: '#ffffff' };
-  const leaf = `<path d="M222 78C227 66 240 61 256 62C254 72 244 79 222 78Z" fill="${c.leaf}"/><path d="M224 77C234 72 243 67 254 63" stroke="${c.v}" stroke-width="1.2" fill="none"/>`;
+const PAL = { morning: { ink: '#1f2e36', leaf: '#7fa65a', v: '#4f7a3a', line: '#ffffff' }, evening: { ink: '#f4eadc', leaf: '#c8692e', v: '#7d3a17', line: '#ffd6aa' } };
+function wordmark(w, sn, still) { // a leaf on the water; "Look" above, "Together" upright in the reflection
+  const c = PAL[sn], leaf = `<path d="M222 78C227 66 240 61 256 62C254 72 244 79 222 78Z" fill="${c.leaf}"/><path d="M224 77C234 72 243 67 254 63" stroke="${c.v}" stroke-width="1.2" fill="none"/>`;
   return `<svg width="${w}" viewBox="0 0 300 160">
-    <g class="lk"><text x="150" y="58" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Look</text>${leaf}</g>
+    <g class="lk" ${still ? 'style="opacity:1"' : ''}><text x="150" y="62" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Look</text>${leaf}</g>
     <line x1="40" y1="80" x2="260" y2="80" stroke="${c.line}" stroke-opacity=".7"/>
-    <g class="tg" transform="translate(0 160) scale(1 -1)" filter="url(#wave)"><text x="150" y="58" text-anchor="middle" font-family="Newsreader,serif" font-size="54" fill="${c.ink}">Together</text><g opacity=".7">${leaf}</g></g></svg>`;
+    <g class="tg" ${still ? 'style="opacity:.62"' : ''} filter="url(#${still ? 'softwave' : 'wave'})"><text x="150" y="128" text-anchor="middle" font-family="Newsreader,serif" font-size="46" fill="${c.ink}">Together</text>
+      <g transform="translate(0 160) scale(1 -1)" opacity=".5">${leaf}</g></g></svg>`;
 }
-function appIcon(s, season) {
-  const e = season === 'evening', id = 'g' + s + season;
+function appIcon(s, sn) {
+  const e = sn === 'evening', id = 'g' + s + sn;
   return `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><defs><linearGradient id="${id}s" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#1e1a32' : '#c9dfec'}"/><stop offset="1" stop-color="${e ? '#c07a4c' : '#f7efe0'}"/></linearGradient>
     <linearGradient id="${id}w" x2="0" y2="1"><stop offset="0" stop-color="${e ? '#6a4a44' : '#dfe8de'}"/><stop offset="1" stop-color="${e ? '#14142a' : '#6e97a0'}"/></linearGradient><clipPath id="${id}c"><rect width="100" height="100" rx="22"/></clipPath></defs>
     <g clip-path="url(#${id}c)"><rect width="100" height="56" fill="url(#${id}s)"/><rect y="56" width="100" height="44" fill="url(#${id}w)"/>
     <path d="M26 56C33 38 52 30 76 31C73 46 58 57 26 56Z" fill="${e ? '#c8692e' : '#7fa65a'}"/><path d="M26 56C33 74 52 82 76 81C73 66 58 55 26 56Z" fill="${e ? '#c8692e' : '#7fa65a'}" opacity=".35"/>
     <line x1="0" y1="56" x2="100" y2="56" stroke="#fff" stroke-opacity=".6"/></g></svg>`;
 }
+// trees: spring greens with blossom in the morning, autumn rust and gold in the evening
+const CROWNS = { morning: ['#7fae5c', '#93c06a', '#5f9446', '#a9cc7a'], evening: ['#c8692e', '#d9913a', '#a4471f', '#e0b04a'] };
+const TREES = [ // x, base y, scale, distance (0 near, 1 far)
+  [-6, 150, 1.25, 0], [42, 150, .95, 0], [88, 150, .7, .6], [128, 150, .5, 1], [262, 150, .55, 1], [300, 150, .8, .6], [338, 150, 1.15, 0], [386, 150, .9, 0]];
+function forest(sn) {
+  const cs = CROWNS[sn], trunk = sn === 'evening' ? '#3a2522' : '#5a4636';
+  return `<svg viewBox="0 0 390 150" width="390" height="150" preserveAspectRatio="none">${TREES.map(([x, y, s, far], n) => {
+    const c = k => cs[(n + k) % cs.length], h = 70 * s, r = 26 * s;
+    const blossom = sn === 'morning' && !far ? [0, 1, 2].map(k => `<circle cx="${x + (k - 1) * r * .6}" cy="${y - h - r * .6 + k * 6}" r="${2.2 * s}" fill="#f4c9d2"/>`).join('') : '';
+    return `<g class="sway" style="animation-duration:${5 + (n % 3) * 1.3}s;animation-delay:-${n * .9}s;opacity:${1 - far * .45}">
+      <rect x="${x - 3 * s}" y="${y - h}" width="${6 * s}" height="${h}" fill="${trunk}"/>
+      <circle cx="${x}" cy="${y - h - r * .4}" r="${r}" fill="${c(0)}"/><circle cx="${x - r * .75}" cy="${y - h + r * .3}" r="${r * .8}" fill="${c(1)}"/>
+      <circle cx="${x + r * .75}" cy="${y - h + r * .25}" r="${r * .85}" fill="${c(2)}"/><circle cx="${x + r * .1}" cy="${y - h - r * 1.2}" r="${r * .7}" fill="${c(3)}"/>${blossom}</g>`; }).join('')}</svg>`;
+}
 const IC = { back: '<path d="M15 5l-7 7 7 7"/>', l: '<path d="M15 5l-7 7 7 7"/>', r: '<path d="M9 5l7 7-7 7"/>', mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
   stop: '<rect x="7" y="7" width="10" height="10"/>', more: '<circle cx="5" cy="12" r=".7"/><circle cx="12" cy="12" r=".7"/><circle cx="19" cy="12" r=".7"/>' };
 const ic = k => `<svg class="i" viewBox="0 0 24 24">${IC[k]}</svg>`;
+function floatLeaf({ w, rot, fill, label, act, style, primary, dry, aria }) {
+  return `<button class="fleaf ${primary ? 'primary' : ''} ${dry ? 'dry' : ''}" style="${style}" data-act="${act}" aria-label="${aria || label}">
+    <span class="body"><span class="ring"></span><span class="ring r2"></span><span class="shadow"></span><span class="lf">${LEAF(w, rot, fill)}</span></span>${label ? `<span class="lbl">${label}</span>` : ''}</button>`;
+}
 
-// ---------- voice: spare → plain → warm, by how far into the Dialogue the person is ----------
-const tier = () => S.depth === 0 ? 0 : S.depth < 3 ? 1 : 2;
+// ---------- voice: warms along the current Path, or at once when the model signals softening ----------
 const TIER = ['spare', 'plain', 'warm'];
+function tier() {
+  if (S.soften) return 2;
+  if (S.screen === 'path') return Math.min(2, S.vi);
+  if (S.screen === 'recap') return 2;
+  return 0;
+}
 const V = (...a) => a[Math.min(tier(), a.length - 1)];
 const W = {
-  problemT: () => 'What are you facing?', problemHelp: () => 'Something to face, not fix.', problemPh: () => 'As it comes.',
+  problemT: () => V('What are you facing?', 'What are you facing?', 'What would you like to look at?'),
+  problemHelp: () => V('Something to face, not fix.', 'Something in your life to face, not fix.', 'Something in your life you\'d like to face, not fix. Write it however it comes.'),
+  problemPh: () => V('As it comes.', 'Write it as it comes.', 'However it comes is fine.'),
   pick: () => V('Where to look first?', 'Pick one to look at.', 'Where would you like to look next?'),
   reflPh: () => V('As it comes.', 'Take your time.', 'Take all the time you need.'),
   notFit: () => V('Doesn\'t fit', 'This doesn\'t fit me', 'This doesn\'t sound like me'),
   under: () => V('Underneath:', 'Underneath this:', 'What might be underneath:'),
   sent: () => V('Sent on Submit.', 'Nothing is sent until you tap Submit.', 'Nothing goes anywhere until you tap Submit.'),
   ended: () => V('Ended. Read only.', 'This Path has ended. You can read it back.', 'This Path has ended. It\'s here whenever you want to read it back.'),
+  toProbes: () => V('Back to the Probes', 'Back to your Probes'), // a button: stays short even when the voice is warm
   finish: () => V('Go on, or finish.', 'You can keep going, or finish here.', 'You can keep going, or let it rest and finish here.'),
   waiting: () => V('…', 'Letting it settle…', 'Letting that settle for a moment…'),
   outcome: o => ({ challenged: 'you questioned this', rejected: 'this wasn\'t yours', unchallenged: 'left as it was' })[o],
@@ -204,8 +255,8 @@ const PROBLEM = 'I keep saying yes to things at work I don\'t want to do, and th
 const SAMPLE = 'I think I\'m scared that if I stop being the reliable one, nobody will need me.';
 function seed() {
   const q = new URLSearchParams(location.search);
-  return { season: q.get('season') || 'auto', kbMode: ['rise', 'full', 'after'].includes(q.get('kb')) ? q.get('kb') : 'rise', still: false,
-    screen: 'splash', path: null, vi: 0, readAll: false, sheet: null, full: false, kb: false, depth: 0, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false, helpUsed: false,
+  return { season: q.get('season') || 'auto', still: false, soften: false,
+    screen: 'splash', path: null, vi: 0, dir: null, readAll: false, sheet: null, kb: false, draft: '', problemDraft: '', dictating: false, busy: false, leafNote: false,
     today: null, todayDone: false,
     unfinished: [{ problem: 'I\'m always tired and I don\'t know why.', days: 5 }, { problem: 'I keep putting off calling my father.', days: 2 }],
     past: [{ problem: 'I can\'t stop comparing myself to my brother.', day: 'Mon 2 Nov' }, { problem: 'I feel like I\'m wasting my life.', day: 'Thu 29 Oct' }] };
@@ -218,84 +269,80 @@ const probe = () => inq().probes.find(p => p.id === S.path);
 function steps(p) { const s = PS[p.id], n = p.status === 'looked' ? s.qs.length : p.pos + 1;
   return Array.from({ length: n }, (_, k) => ({ q: k === 0 ? s.probe : s.qs[k], r: k < p.pos ? s.rs[k] : null })); }
 
-// ---------- screens: each returns { wl, above, below, extra } ----------
-const topbar = (l = '', t = '', r = '') => `<div class="topbar"><div class="s">${l}</div><div class="t">${t}</div><div class="s r">${r}</div></div>`;
-const backBtn = a => `<button class="iconbtn" data-act="${a}" aria-label="Back">${ic('back')}</button>`;
+// ---------- screens: each returns { wl, kbWl?, above, below, extra } ----------
+const topbar = (l = '', r = '') => `<div class="topbar"><div class="s">${l}</div><div class="s r">${r}</div></div>`;
+const backBtn = (a, label) => `<button class="back" data-act="${a}">${ic('back')}${label}</button>`;
 const helpBtn = () => `<button class="help" data-act="help">Help</button>`;
-const leafColour = d => d >= 5 ? 'var(--leaf)' : d >= 3 ? '#c9a043' : '#8a5a3a'; // the leaf browns as its 7 days run out
+const leafColour = d => d >= 5 ? 'var(--leaf)' : d >= 3 ? '#c9a043' : '#8a5a3a'; // an Unfinished leaf browns as its 7 days run out
 
 function splash() {
   return { wl: '50%', above: '', below: '', extra: `<div class="mark" id="mark">${wordmark(300, season())}</div><p class="hint small">tap anywhere</p>` };
 }
 function home() {
-  const live = inq() && inq().status === 'live';
-  return { wl: '24%',
-    above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(42px)">${wordmark(170, season()).replace(/class="(lk|tg)"/g, 'class="$1" style="opacity:1"')}</div>`,
-    below: `<div class="scroll pad" style="padding-top:56px;padding-bottom:120px">
+  const live = inq() && inq().status === 'live', sn = season();
+  return { wl: '33%',
+    above: `<div style="flex:1;display:flex;align-items:flex-end;justify-content:center;transform:translateY(54px);position:relative;z-index:3">${wordmark(190, sn, true)}</div>`,
+    below: `<div class="scroll pad" style="padding-top:74px;padding-bottom:140px">
       ${live ? `<div class="card tap float" data-act="resume"><p class="small mut" style="margin:0">Today</p><p class="read" style="font-size:18px;margin:2px 0 0">${esc(inq().problem)}</p></div>` : ''}
       <h3>Unfinished</h3>${S.unfinished.map(u => `<div class="card tap float"><div class="row" style="align-items:flex-start"><span>${LEAF(22, -20, leafColour(u.days))}</span><p class="grow" style="margin:0">${esc(u.problem)}</p><span class="badge">${u.days} days left</span></div></div>`).join('')}
       <h3>Recaps</h3>${S.past.map(p => `<div class="card tap"><p style="margin:0">${esc(p.problem)}</p><p class="small mut" style="margin:2px 0 0">${p.day}</p></div>`).join('')}</div>`,
-    extra: `<button class="leafbtn" style="right:18px;top:calc(var(--wl) - 22px)" data-act="settings" aria-label="Settings">${LEAF(46, 160)}<span>Settings</span></button>
-      <button class="leafbtn ${S.todayDone ? 'dry' : ''}" style="right:22px;bottom:30px" data-act="newLeaf" aria-label="New Inquiry">${LEAF(76, -15)}<span>${S.todayDone ? 'Next at 15:40' : 'New Inquiry'}</span></button>
+    extra: `<div class="trees top">${forest(sn)}</div><div class="trees refl">${forest(sn)}</div>
+      ${floatLeaf({ w: 44, rot: 20, label: 'Settings', act: 'settings', style: 'left:16px;top:calc(var(--wl) + 8px);flex-direction:column;gap:0' })}
+      ${floatLeaf({ w: 70, rot: -15, label: S.todayDone ? 'Next at 15:40' : '＋ New Inquiry', act: 'newLeaf', style: 'right:18px;bottom:34px', primary: true, dry: S.todayDone, aria: 'New Inquiry' })}
       ${S.leafNote ? `<div class="card leafnote fadein"><p style="margin:0"><b>Today's Inquiry is done.</b></p><p class="small mut" style="margin:2px 0 0">The next one opens at 15:40.</p></div>` : ''}` };
 }
 
-// the composer below the waterline, shaped by the keyboard mode
 function writeHalf(kind) {
   const v = kind === 'problem' ? S.problemDraft : S.draft, ph = kind === 'problem' ? W.problemPh() : W.reflPh();
-  const ctrl = `<div class="ctrl"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
+  return `<div class="pad grow" style="display:flex;flex-direction:column;padding-top:24px"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea><p class="small mut" style="margin:0">${W.sent()}</p></div>
+    <div class="ctrl"><button class="mic ${S.dictating ? 'on' : ''}" data-act="mic" data-kind="${kind}" aria-label="Dictate">${ic(S.dictating ? 'stop' : 'mic')}</button>
     <span class="ailabel">ai · not therapy</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div>`;
-  if (S.kbMode === 'full') return `<div class="pad grow" data-act="openFull" data-kind="${kind}" style="cursor:text">${v ? `<p class="r">${esc(v)}</p>` : `<p class="r" style="color:var(--wmut)">${ph}</p>`}<p class="small mut">${W.sent()}</p></div>${ctrl}`;
-  return `<div class="pad grow" style="display:flex;flex-direction:column"><textarea class="ref" data-draft="${kind}" placeholder="${ph}">${esc(v)}</textarea><p class="small mut" style="margin:0">${W.sent()}</p></div>${ctrl}`;
-}
-function docked(kind) { // "after" mode: a plain composer, no halves until submitted
-  const v = kind === 'problem' ? S.problemDraft : S.draft;
-  return `<div class="docked"><textarea class="ref" data-draft="${kind}" placeholder="${kind === 'problem' ? W.problemPh() : W.reflPh()}">${esc(v)}</textarea>
-    <div class="ctrl" style="padding:6px 0 22px"><button class="mic" data-act="mic" data-kind="${kind}">${ic('mic')}</button><span class="ailabel mut">ai · not therapy</span><button class="pri right" data-act="submit" data-kind="${kind}" ${v.trim() ? '' : 'disabled'}>Submit</button></div></div>`;
 }
 
 function problem() {
-  const after = S.kbMode === 'after';
-  return { wl: after ? '100%' : '50%',
-    above: `${topbar(backBtn('home'), '', helpBtn())}<div class="pad"><p class="small mut">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut">${W.problemHelp()}</p><button class="link small mut" data-act="fill">(proto: fill example)</button></div>`,
-    below: after ? '' : writeHalf('problem'), extra: after ? docked('problem') : '' };
+  return { wl: '42%', kbWl: '34%',
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:20px"><p class="small mut">You're talking with an AI. It isn't therapy, and it won't judge what's true.</p><h1>${W.problemT()}</h1><p class="mut" style="margin:0">${W.problemHelp()}</p><button class="link small mut" data-act="fill" style="align-self:flex-start">(proto: fill example)</button></div>`,
+    below: writeHalf('problem') };
 }
 function probes() {
   const i = inq(), any = i.probes.some(p => p.status === 'looked');
   return { wl: '66%',
-    above: `${topbar(backBtn('home'), '', helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 6px">${W.pick()}</p>
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="scroll pad" style="padding-top:0"><p class="read" style="font-size:19px;margin:0 0 6px">${W.pick()}</p>
       ${i.probes.map(p => `<div class="card tap float" data-act="openPath" data-pid="${p.id}"><div class="row" style="align-items:flex-start"><p class="read grow" style="font-size:17px;margin:0">${PS[p.id].probe}</p>${p.status === 'looked' ? `<span style="opacity:.8">${LEAF(18, 10)}</span>` : p.pos ? '<span class="small mut">…</span>' : ''}</div></div>`).join('')}
       ${any ? `<div class="center" style="margin:10px 0"><p class="small mut">${W.finish()}</p><button class="pri" data-act="finish">Finish</button></div>` : ''}</div>`,
     below: `<div class="pad"><p class="small mut" style="margin:6px 0 2px">Your Problem</p><p class="r" style="font-size:17px">${esc(i.problem)}</p></div>` };
 }
 function path() {
   const p = probe(), s = PS[p.id], st = steps(p), looked = p.status === 'looked', last = looked ? st.length : st.length - 1;
-  const vi = Math.min(S.vi, last), cur = st[vi], writing = !looked && vi === st.length - 1;
+  const vi = Math.min(S.vi, last), cur = st[vi], writing = !looked && vi === st.length - 1, mv = S.dir === 'next' ? 'fromR' : S.dir === 'prev' ? 'fromL' : '';
   const nav = `<div class="stepnav"><button data-act="prev" ${vi ? '' : 'disabled'} aria-label="Previous step">${ic('l')}</button>
     <div class="dotsrow">${st.map((_, k) => `<i class="${k === vi ? 'on' : ''}"></i>`).join('')}${looked ? `<i class="end ${vi === st.length ? 'on' : ''}"></i>` : ''}</div>
     <button data-act="next" ${vi < last ? '' : 'disabled'} aria-label="Next step">${ic('r')}</button></div>`;
   const read = `<button class="link small mut" data-act="readAll">Read it all</button>`;
-  if (S.readAll) return { wl: '14%', above: topbar(`<button class="iconbtn" data-act="closeRead">${ic('back')}</button>`, '', helpBtn()),
-    below: `<div class="scroll pad">${st.filter(x => x.r).map(x => `<div class="pair"><div class="pq" style="color:var(--wink)">${x.q}</div><div class="pl"></div><div class="pr">${esc(x.r)}</div></div>`).join('')}</div>` };
-  if (looked && vi === st.length) // the closing view: what the app hands back above, the person's own words below
-    return { wl: '50%', above: `${topbar(backBtn('closePath'), '', helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end"><p class="small mut">Looked at · ${W.outcome(s.outcome)}</p>
+  const root = `<button class="pri" data-act="closePath">${W.toProbes()}</button>`;
+  const head = topbar(backBtn('closePath', 'Probes'), helpBtn());
+  if (S.readAll) return { wl: '14%', above: topbar(backBtn('closeRead', 'Path'), helpBtn()),
+    below: `<div class="scroll pad">${st.filter(x => x.r).map(x => `<div class="pair"><div class="pq" style="color:var(--wink)">${x.q}</div><div class="pl"></div><div class="pr">${esc(x.r)}</div></div>`).join('')}
+      <div class="center" style="margin:20px 0 40px">${root}</div></div>` };
+  if (looked && vi === st.length) // the closing view: what the app hands back above, the person's own words below, and the way back to the root
+    return { wl: '42%', above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px"><p class="small mut">Looked at · ${W.outcome(s.outcome)}</p>
       ${s.openq ? `<p class="small mut" style="margin-top:12px">Open Question</p><p class="q">${s.openq}</p>` : `<p class="q mut" style="font-size:17px">${s.premise}</p>`}</div>`,
-      below: `<div class="pad" style="padding-top:28px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p>${read}</div>`, extra: nav };
-  const after = S.kbMode === 'after' && writing;
+      below: `<div class="pad ${mv}" style="padding-top:28px">${s.quote ? `<p class="r">“${s.quote}”</p>` : ''}<p class="small mut">${W.ended()}</p><div class="row" style="margin-top:18px">${root}<span class="right">${read}</span></div></div>`, extra: nav };
   const offer = vi === 1 && s.offer ? (p.offered ? `<p class="small mut">${p.offered === 'yes' ? 'Added to your Probes.' : 'Left out.'}</p>`
     : `<div class="card offer">${s.offer}<div class="row" style="margin-top:8px"><button class="pri" data-act="offer" data-a="yes">Yes</button><button data-act="offer" data-a="no">No</button></div></div>`) : '';
-  return { wl: after && !p.pending ? '100%' : '50%',
-    above: `${topbar(backBtn('closePath'), '', helpBtn())}<div class="pad grow" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px">
-      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}">${cur.q}</p><button class="iconbtn mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div>`,
+  return { wl: '42%', kbWl: '34%',
+    above: `${head}<div class="pad grow ${mv}" style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:30px">
+      <div class="row" style="align-items:flex-start"><p class="q grow ${S.justReplied ? 'fadein' : ''}">${cur.q}</p><button class="back mut" data-act="noop" aria-label="Report">${ic('more')}</button></div>${offer}
+      ${writing && vi === 0 && !p.reveal && !p.pending ? `<button class="link small mut" data-act="reveal" style="align-self:flex-start">${W.notFit()}</button>` : ''}</div>`,
     below: (vi === 0 && p.reveal ? `<div class="pad rise" style="padding-bottom:0;padding-top:24px"><p class="under">${W.under()} ${s.premise}</p></div>` : '')
-      + (p.pending ? `<div class="pad" style="padding-top:28px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>` : after ? '' : writing ? writeHalf('path')
-        : `<div class="pad" style="padding-top:28px"><p class="r settling-target">${esc(cur.r)}</p>${vi === 0 ? '' : ''}${read}</div>`),
-    extra: nav + (after && !p.pending ? docked('path') : '') };
+      + (p.pending ? `<div class="pad" style="padding-top:28px"><p class="r">${esc(p.pending)}</p><p class="small mut">${W.waiting()}</p></div>`
+        : writing ? writeHalf('path') : `<div class="pad ${mv}" style="padding-top:28px"><p class="r">${esc(cur.r)}</p>${read}</div>`),
+    extra: nav };
 }
 function recap() {
   const i = inq(), looked = i.probes.filter(p => p.status === 'looked'), notYet = i.probes.filter(p => p.status !== 'looked'), oqs = looked.map(p => PS[p.id].openq).filter(Boolean);
   return { wl: '30%',
-    above: `${topbar(backBtn('home'), '', helpBtn())}<div class="pad" style="padding-top:0"><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px">What you looked at</p></div>`,
+    above: `${topbar(backBtn('home', 'Home'), helpBtn())}<div class="pad" style="padding-top:0"><p class="small mut" style="margin:0">Recap · Tue 3 Nov</p><p class="read" style="font-size:19px">What you looked at</p></div>`,
     below: `<div class="scroll pad">
       ${looked.map(p => `<div class="pair"><div class="pq" style="color:var(--wink)">${PS[p.id].premise} <span class="small" style="opacity:.75">· ${W.outcome(PS[p.id].outcome)}</span></div><div class="pl"></div>${PS[p.id].quote ? `<div class="pr">“${PS[p.id].quote}”</div>` : '<div class="pr" style="opacity:.6">—</div>'}</div>`).join('')}
       ${oqs.length ? `<h3>Open Questions</h3>${oqs.map(q => `<div class="card float row">${LEAF(22, -10)}<p class="read grow" style="margin:0;font-size:17px">${q}</p></div>`).join('')}` : ''}
@@ -304,53 +351,61 @@ function recap() {
       <div style="height:40px"></div></div>` };
 }
 function settingsScreen() {
-  return { wl: '18%', above: topbar(backBtn('home'), 'Settings'), below: `<div class="scroll pad">${['Region: United States', 'Season: follows the time of day', 'Crash reports: on', 'Export all', 'Import', 'Sent reports', 'About Look Together', 'Privacy', 'Sign out'].map(l => `<div class="card" style="margin:6px 0">${l}</div>`).join('')}</div>` };
+  return { wl: '18%', above: topbar(backBtn('home', 'Home')), below: `<div class="scroll pad">${['Region: United States', 'Season: follows the time of day', 'Crash reports: on', 'Export all', 'Import', 'Sent reports', 'About Look Together', 'Privacy', 'Sign out'].map(l => `<div class="card" style="margin:6px 0">${l}</div>`).join('')}</div>` };
 }
 const contacts = `<div class="contact"><b>988 Suicide &amp; Crisis Lifeline</b><br><span class="small">Call or text 988 · US</span></div><div class="contact"><b>Crisis Text Line</b><br><span class="small">Text HOME to 741741</span></div><p class="small">Somewhere else? findahelpline.com</p>`;
 
 // ---------- render ----------
+let lastScreen = null;
 function render() {
   const app = document.getElementById('app');
   app.className = season() + (S.still || S.sheet || S.screen === 'stepout' ? ' still' : '') + (S.kb ? ' kb' : '');
   let sc;
   if (S.screen === 'stepout') sc = { wl: '100%', above: '', below: '', extra: `<div class="plain"><h1>Let's stop here.</h1><p>This is an AI, and it can't help with this the way a person can. It isn't a crisis service.</p><p>If you might be in danger, please reach out now:</p>${contacts}<p class="small" style="margin-top:14px">This Inquiry won't carry on.</p><button data-act="home" style="margin-top:10px">Close</button></div>` };
   else sc = { splash, home, problem, probes, path, recap, settings: settingsScreen }[S.screen]();
-  S.wlBase = sc.wl;
-  app.style.setProperty('--wl', S.kb && S.kbMode === 'rise' ? '26%' : sc.wl);
+  S.sc = sc;
+  app.style.setProperty('--wl', S.kb && sc.kbWl ? sc.kbWl : sc.wl);
   const sheet = S.sheet === 'help' ? `<div class="scrim"><div class="sheet"><h1 style="font-size:22px">Paused</h1><p>Nothing is lost. If you'd like to talk to someone now:</p>${contacts}<button class="pri" data-act="closeSheet" style="width:100%;margin-top:8px">Back to my Inquiry</button></div></div>` : '';
-  const full = S.full ? `<div class="full"><div class="row"><button class="link small" data-act="closeFull">Done</button><span class="ailabel right">ai · not therapy</span></div>
-    <textarea class="ref" id="fullta" data-draft="${S.full}" placeholder="${S.full === 'problem' ? W.problemPh() : W.reflPh()}" style="margin-top:14px">${esc(S.full === 'problem' ? S.problemDraft : S.draft)}</textarea>
-    <div class="row"><button class="mic" data-act="mic" data-kind="${S.full}">${ic('mic')}</button><button class="pri right" data-act="submit" data-kind="${S.full}">Submit</button></div></div>` : '';
-  app.innerHTML = `<div class="sky"></div><div class="water"></div><div class="wline"></div><canvas id="rip" width="390" height="800"></canvas>
-    <div class="layer"><div class="above">${sc.above}</div><div class="below">${sc.below}</div></div>${sc.extra || ''}${full}${sheet}
-    <div class="kbd" id="kbd">${'<b></b>'.repeat(27)}<span class="done kbdone">done</span></div>`;
-  if (S.full) { S.kb = true; app.classList.add('kb'); document.getElementById('fullta').focus(); }
-  if (S.screen === 'splash') playSplash();
-  S.justReplied = false;
+  document.getElementById('ui').innerHTML = `<div class="layer"><div class="above">${sc.above}</div><div class="below">${sc.below}</div></div>${sc.extra || ''}${sheet}
+    <div class="kbd">${'<b></b>'.repeat(27)}<span class="done kbdone">done</span></div>`;
+  if (S.screen === 'splash' && lastScreen !== 'splash') playSplash();
+  // the water: a stream along a Path, slowing into a pool at the Recap, still everywhere else
+  if (S.screen !== lastScreen) flowTo(S.screen === 'path' ? 1 : 0, S.screen === 'recap' ? 4000 : 1400);
+  if (S.screen === 'home') startLeafFall();
+  lastScreen = S.screen; S.justReplied = false; S.dir = null;
   renderSide(); renderProto();
 }
 function renderSide() {
   const sn = season();
-  document.getElementById('side').innerHTML = `<div class="box"><h4>Wordmark · ${sn}</h4><div style="background:linear-gradient(${sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0'});border-radius:10px">${wordmark(270, sn)}</div></div>
+  document.getElementById('side').innerHTML = `<div class="box"><h4>Wordmark · ${sn}</h4><div style="background:linear-gradient(${sn === 'evening' ? '#1e1a32,#c07a4c 50%,#6a4a44 50%,#14142a' : '#c9dfec,#f7efe0 50%,#dfe8de 50%,#6e97a0'});border-radius:10px">${wordmark(270, sn, true)}</div></div>
     <div class="box"><h4>App icon</h4><div class="row" style="align-items:flex-end">${appIcon(88, sn)}${appIcon(58, sn)}${appIcon(30, sn)}${appIcon(58, sn === 'evening' ? 'morning' : 'evening')}</div></div>
-    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below. Leaves are things you can pick up: settings (home only, since Help holds the top right on Inquiry screens) and New Inquiry. Help and the Step-out still the water.</div>
-    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b> (${S.depth} Reflections in)<br>keyboard: ${S.kbMode}${S.kb ? ' · open' : ''}<br>season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
+    <div class="box"><h4>The rule</h4>The app's words above the waterline, the person's below, always upright. The pool is a pond in a forest on home, a stream flowing right (forward) along a Path, and a pool again at the Recap. Help and the Step-out still the water.</div>
+    <div class="box"><h4>Not yet</h4>Animation is placeholder. Smooth, natural, relaxing motion is heavy work for later, as is timing that sits between snappy and calm.</div>
+    <div class="box"><h4>State</h4>screen: ${S.screen}${S.path ? ' / ' + S.path + ' step ' + (S.vi + 1) : ''}${S.readAll ? ' (read it all)' : ''}<br>voice: <b>${TIER[tier()]}</b>${S.soften ? ' (model is softening)' : S.screen === 'path' ? ' (step ' + (S.vi + 1) + ' of the Path)' : ''}<br>keyboard: ${S.kb ? 'open' : 'closed'} · season: ${sn}${S.season === 'auto' ? ' (auto)' : ''}</div>`;
 }
 function renderProto() {
   document.getElementById('proto').innerHTML = `<span>PROTOTYPE</span>
     <select data-p="season">${['auto', 'morning', 'evening'].map(v => `<option ${S.season === v ? 'selected' : ''}>${v}</option>`).join('')}</select>
-    <select data-p="kb">${[['rise', 'kb: waterline rises'], ['full', 'kb: full-screen editor'], ['after', 'kb: halves after submit']].map(([v, l]) => `<option value="${v}" ${S.kbMode === v ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    <button data-p="soften" class="${S.soften ? 'on' : ''}">model: ${S.soften ? 'softening' : 'neutral'}</button>
     <button data-p="still">${S.still ? 'motion: reduced' : 'motion: on'}</button>
     <select data-p="jump"><option value="">jump to…</option>${[['splash', 'opening'], ['home', 'home'], ['new', 'new Inquiry'], ['probes', 'Probe list'], ['path', 'a Path, writing'], ['pathmid', 'a Path, read back'], ['ended', 'an ended Path'], ['recap', 'Recap'], ['help', 'Help'], ['stepout', 'Step-out']].map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>
     <button data-p="reset">reset</button><span style="opacity:.6">type "hurt myself" → Step-out</span>`;
 }
 
-// ---------- water: ripples, drops, settling ----------
+// ---------- water: stream, ripples, drops, settling, falling leaves ----------
+let flowAnim = null, flowRate = 0, flowRaf = null;
+function flowTo(target, ms) {
+  const el = document.getElementById('flow');
+  if (!flowAnim) { flowAnim = el.animate([{ backgroundPosition: '0 0, 40px 6px' }, { backgroundPosition: '320px 0, 234px 6px' }], { duration: 9000, iterations: Infinity }); flowAnim.playbackRate = 0; }
+  if (S.still) target = 0;
+  cancelAnimationFrame(flowRaf); const from = flowRate, t0 = performance.now();
+  (function f(t) { const k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3); flowRate = from + (target - from) * e;
+    flowAnim.playbackRate = Math.max(flowRate, 0.0001); el.style.opacity = String(flowRate * .55); if (k < 1) flowRaf = requestAnimationFrame(f); })(t0);
+}
 let rings = [], rafOn = false;
-function ripple(x, y, n = 3) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, r: 2, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
+function ripple(x, y, n = 3) { if (S.still) return; for (let k = 0; k < n; k++) rings.push({ x, y, born: performance.now() + k * 260 }); if (!rafOn) { rafOn = true; requestAnimationFrame(tick); } }
 function tick(t) {
-  const c = document.getElementById('rip'); if (!c) { rafOn = false; return; }
-  const g = c.getContext('2d'); g.clearRect(0, 0, c.width, c.height);
+  const c = document.getElementById('rip'), g = c.getContext('2d'); g.clearRect(0, 0, c.width, c.height);
   const col = getComputedStyle(document.getElementById('app')).getPropertyValue('--rip');
   rings = rings.filter(o => t - o.born < 2600);
   for (const o of rings) { const age = t - o.born; if (age < 0) continue; const r = 4 + age * .07;
@@ -364,59 +419,72 @@ function drop(then, x = 195) {
   const d = document.createElement('div'); d.className = 'drop'; d.style.left = x + 'px'; app.appendChild(d);
   d.animate([{ top: '-20px' }, { top: (y - 8) + 'px' }], { duration: 650, easing: 'cubic-bezier(.5,0,1,1)' }).onfinish = () => { d.remove(); ripple(x, y); then(); };
 }
-function settle(el) { // a brief wobble, as if seen through water, that stills
-  if (S.still || !el) return; const m = document.getElementById('wavemap'); el.classList.add('settling'); const t0 = performance.now();
-  (function f(t) { const k = Math.min(1, (t - t0) / 1400); m.setAttribute('scale', String(14 * (1 - k))); if (k < 1) requestAnimationFrame(f); else el.classList.remove('settling'); })(t0);
-}
 function playSplash() {
-  const app = document.getElementById('app');
-  setTimeout(() => drop(() => { const mk = document.getElementById('mark'); if (!mk) return; mk.classList.add('show'); settleMark(mk); }), S.still ? 0 : 700);
+  setTimeout(() => drop(() => { const mk = document.getElementById('mark'); if (!mk) return; mk.classList.add('show'); waveDown(18, 2600); }), S.still ? 0 : 700);
 }
-function settleMark(mk) { if (S.still) return; const m = document.getElementById('wavemap'), t0 = performance.now();
-  (function f(t) { const k = Math.min(1, (t - t0) / 2600); m.setAttribute('scale', String(18 * (1 - k))); if (k < 1 && document.getElementById('mark')) requestAnimationFrame(f); })(t0); }
+function waveDown(from, ms) { if (S.still) return; const m = document.getElementById('wavemap'), t0 = performance.now();
+  (function f(t) { const k = Math.min(1, (t - t0) / ms); m.setAttribute('scale', String(from * (1 - k))); if (k < 1) requestAnimationFrame(f); })(t0); }
+let leafTimer = null;
+function startLeafFall() { // now and then a leaf comes off a tree and drifts down onto the pond
+  clearTimeout(leafTimer);
+  leafTimer = setTimeout(function fall() {
+    if (S.screen !== 'home') return;
+    if (!S.still && !S.sheet) {
+      const app = document.getElementById('app'), wl = wlPx(), left = Math.random() < .5;
+      const x0 = left ? 20 + Math.random() * 70 : 290 + Math.random() * 70, y0 = wl - 110 + Math.random() * 40;
+      const x1 = x0 + (left ? 1 : -1) * (60 + Math.random() * 90), y1 = wl + 20 + Math.random() * 50;
+      const el = document.createElement('div'); el.className = 'flyer'; el.innerHTML = LEAF(14 + Math.random() * 6, Math.random() * 360, CROWNS[season()][Math.floor(Math.random() * 4)]);
+      el.style.left = x0 + 'px'; el.style.top = y0 + 'px'; app.appendChild(el);
+      const dx = x1 - x0, dy = y1 - y0;
+      el.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: `translate(${dx * .35}px,${dy * .3}px) rotate(120deg)` }, { transform: `translate(${dx * .55}px,${dy * .55}px) rotate(60deg)` },
+        { transform: `translate(${dx * .85}px,${dy * .8}px) rotate(200deg)` }, { transform: `translate(${dx}px,${dy}px) rotate(170deg) scaleY(.7)` }], { duration: 6000 + Math.random() * 2000, easing: 'ease-in-out', fill: 'forwards' })
+        .onfinish = () => { ripple(x1 + 8, y1 + 6, 2); el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 4000, delay: 2500, fill: 'forwards' }).onfinish = () => el.remove(); };
+    }
+    leafTimer = setTimeout(fall, 3500 + Math.random() * 5000);
+  }, 1200);
+}
 
-// ---------- keyboard (faked) ----------
+// ---------- keyboard (faked): the waterline sits high already, so it moves only a little ----------
 function setKb(on) {
   if (S.kb === on) return; S.kb = on; const app = document.getElementById('app');
   app.classList.toggle('kb', on);
-  if (S.kbMode === 'rise') app.style.setProperty('--wl', on ? '26%' : S.wlBase);
+  if (S.sc.kbWl) app.style.setProperty('--wl', on ? S.sc.kbWl : S.sc.wl);
   renderSide();
 }
 document.addEventListener('focusin', e => { if (e.target.matches('textarea.ref')) setKb(true); });
-document.addEventListener('focusout', e => { if (e.target.matches('textarea.ref') && !S.full) setTimeout(() => { if (!document.activeElement.matches('textarea.ref')) setKb(false); }, 60); });
-document.addEventListener('mousedown', e => { if (e.target.closest('.kbd')) { e.preventDefault(); if (e.target.closest('.kbdone')) { if (S.full) { S.full = false; S.kb = false; render(); } else document.activeElement.blur(); } } });
+document.addEventListener('focusout', e => { if (e.target.matches('textarea.ref')) setTimeout(() => { if (!document.activeElement.matches('textarea.ref')) setKb(false); }, 60); });
+document.addEventListener('mousedown', e => { if (e.target.closest('.kbd')) { e.preventDefault(); if (e.target.closest('.kbdone')) document.activeElement.blur(); } });
 
 // ---------- actions ----------
 function newToday(midway) {
   S.today = { problem: PROBLEM, status: 'live', worth: null, probes: ['p1', 'p2', 'p3', 'p4'].map(id => ({ id, status: 'open', pos: 0 })) };
   S.todayDone = true;
-  if (midway) { Object.assign(S.today.probes[0], { status: 'looked', pos: 3 }); Object.assign(S.today.probes[1], { pos: 1 }); Object.assign(S.today.probes[2], { status: 'looked', pos: 2 }); S.depth = 6; }
+  if (midway) { Object.assign(S.today.probes[0], { status: 'looked', pos: 3 }); Object.assign(S.today.probes[1], { pos: 1 }); Object.assign(S.today.probes[2], { status: 'looked', pos: 2 }); }
 }
 function submit(kind) {
   if (S.busy) return;
   const v = (kind === 'problem' ? S.problemDraft : S.draft).trim(); if (!v) return;
-  S.full = false; S.kb = false; S.busy = true; if (document.activeElement) document.activeElement.blur();
+  S.busy = true; if (document.activeElement) document.activeElement.blur(); S.kb = false;
   if (kind === 'problem') { render(); return drop(() => setTimeout(() => { S.busy = false; newToday(false); S.problemDraft = ''; S.screen = 'probes'; render(); }, 600)); }
   if (/hurt myself|end it|kill/i.test(v)) { S.busy = false; S.draft = ''; S.screen = 'stepout'; S.path = null; return render(); }
-  // show the Reflection settle into the lower half while the reply is awaited
-  const p = probe(); p.pending = v; render();
+  const p = probe(); p.pending = v; render(); // the Reflection settles below while the reply is awaited
   drop(() => setTimeout(() => {
-    const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.depth++; S.busy = false;
+    const s = PS[p.id]; s.rs[p.pos] = v; p.pos++; p.pending = null; S.draft = ''; S.busy = false;
     if (p.pos >= s.qs.length) p.status = 'looked';
-    const st = steps(p); S.vi = p.status === 'looked' ? st.length : st.length - 1; S.justReplied = true; render();
+    const st = steps(p); S.vi = p.status === 'looked' ? st.length : st.length - 1; S.justReplied = true; S.dir = 'next'; render();
   }, 700));
 }
-function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: false, readAll: false, full: false, kb: false }, x); render(); }
+function go(screen, x = {}) { Object.assign(S, { screen, sheet: null, leafNote: false, readAll: false, kb: false }, x); render(); }
 function jump(v) {
-  Object.assign(S, { sheet: null, path: null, vi: 0, readAll: false, full: false, kb: false, leafNote: false });
+  Object.assign(S, { sheet: null, path: null, vi: 0, readAll: false, kb: false, leafNote: false });
   if (v === 'splash' || v === 'home') return go(v);
-  if (v === 'new') { S.today = null; S.todayDone = false; S.depth = 0; return go('problem'); }
+  if (v === 'new') { S.today = null; S.todayDone = false; return go('problem'); }
   newToday(true);
   if (v === 'probes') return go('probes');
   if (v === 'path') return go('path', { path: 'p2', vi: 1 });
   if (v === 'pathmid') return go('path', { path: 'p1', vi: 1 });
   if (v === 'ended') return go('path', { path: 'p1', vi: 3 });
-  if (v === 'recap') { S.today.status = 'ended'; return go('recap'); }
+  if (v === 'recap') { S.today.status = 'ended'; lastScreen = 'path'; flowTo(1, 1); return go('recap'); }
   if (v === 'help') { go('path', { path: 'p2', vi: 1 }); S.sheet = 'help'; return render(); }
   if (v === 'stepout') return go('stepout');
 }
@@ -424,17 +492,19 @@ function jump(v) {
 document.addEventListener('input', e => {
   const k = e.target.dataset.draft; if (!k) return;
   if (k === 'problem') S.problemDraft = e.target.value; else S.draft = e.target.value;
-  document.querySelectorAll(`button[data-act=submit]`).forEach(b => b.disabled = !e.target.value.trim());
+  document.querySelectorAll('button[data-act=submit]').forEach(b => b.disabled = !e.target.value.trim());
 });
 document.addEventListener('change', e => {
   const p = e.target.dataset.p;
   if (p === 'season') { S.season = e.target.value; render(); }
-  if (p === 'kb') { S.kbMode = e.target.value; S.kb = false; S.full = false; render(); }
   if (p === 'jump') jump(e.target.value);
 });
 document.addEventListener('click', e => {
   const pb = e.target.closest('button[data-p]');
-  if (pb) { if (pb.dataset.p === 'still') { S.still = !S.still; render(); } if (pb.dataset.p === 'reset') { const { season, kbMode, still } = S; S = seed(); Object.assign(S, { season, kbMode, still, screen: 'home' }); render(); } return; }
+  if (pb) { const p = pb.dataset.p;
+    if (p === 'still') { S.still = !S.still; flowTo(S.screen === 'path' ? 1 : 0, 300); render(); }
+    if (p === 'soften') { S.soften = !S.soften; render(); }
+    if (p === 'reset') { const { season, still } = S; S = seed(); Object.assign(S, { season, still, screen: 'home' }); render(); } return; }
   if (S.screen === 'splash' && e.target.closest('#app')) { const r = document.getElementById('app').getBoundingClientRect(); ripple(e.clientX - r.left, Math.max(wlPx() + 4, e.clientY - r.top), 2); return setTimeout(() => go('home'), S.still ? 0 : 500); }
   const el = e.target.closest('[data-act]');
   if (!el) { // a tap on open water ripples
@@ -443,18 +513,16 @@ document.addEventListener('click', e => {
   const a = el.dataset.act, kind = el.dataset.kind;
   ({
     home: () => go('home', { path: null }), settings: () => go('settings'),
-    newLeaf: () => { if (S.todayDone) { S.leafNote = !S.leafNote; return render(); } const r = el.getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + 38, r.top - ar.top + 30, 2); setTimeout(() => go('problem'), 350); },
+    newLeaf: () => { if (S.todayDone) { S.leafNote = !S.leafNote; return render(); } const r = el.querySelector('.lf').getBoundingClientRect(), ar = document.getElementById('app').getBoundingClientRect(); ripple(r.left - ar.left + r.width / 2, r.top - ar.top + r.height / 2, 2); setTimeout(() => go('problem'), 350); },
     resume: () => go('probes'), fill: () => { S.problemDraft = PROBLEM; render(); },
     openPath: () => { const p = inq().probes.find(x => x.id === el.dataset.pid), st = steps(p); go('path', { path: p.id, vi: p.status === 'looked' ? 0 : st.length - 1 }); },
     closePath: () => go('probes', { path: null }), readAll: () => { S.readAll = true; render(); }, closeRead: () => { S.readAll = false; render(); },
-    prev: () => { S.vi = Math.max(0, S.vi - 1); render(); }, next: () => { S.vi++; render(); },
+    prev: () => { S.vi = Math.max(0, S.vi - 1); S.dir = 'prev'; render(); }, next: () => { S.vi++; S.dir = 'next'; render(); },
     reveal: () => { probe().reveal = true; render(); }, offer: () => { probe().offered = el.dataset.a; render(); },
     submit: () => submit(kind), finish: () => { inq().status = 'ended'; go('recap'); }, worth: () => { inq().worth = el.dataset.w; render(); },
-    openFull: () => { S.full = kind; render(); }, closeFull: () => { S.full = false; S.kb = false; render(); },
     mic: () => { S.dictating = !S.dictating; if (!S.dictating) { if (kind === 'problem') S.problemDraft += (S.problemDraft ? ' ' : '') + PROBLEM; else S.draft += (S.draft ? ' ' : '') + SAMPLE; } render(); },
     help: () => { S.sheet = 'help'; render(); }, closeSheet: () => { S.sheet = null; render(); }, noop: () => {},
   }[a] || (() => {}))();
-  if (a === 'prev' || a === 'next') settle(document.querySelector('.below .r'));
 });
 
 // swipe between steps on the Path, but not from the screen edges (the system Back gesture lives there)
