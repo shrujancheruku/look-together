@@ -90,25 +90,20 @@
 const D = [
 { id:"welcome", title:"Welcome", intro:"Six steps, warm throughout. Refined from What does the guided first Inquiry say at each step? The drawings grow the lily step by step.", items:[
   { where:"Step 1 of 6", tag:"decided", lines:[["h","Welcome. We're glad you're here."],["a","Look Together is a quiet place to look at your own thinking."],["b","Next | Skip"]] },
-  { where:"Step 2: Bring a Problem", tag:"new", src:"tightened", lines:[["h","Bring a Problem."],["a","You start with something you're facing. It isn't here to be fixed, only looked at."]] },
+  { where:"Step 2: Bring a Problem", tag:"new", src:"names the Inquiry", lines:[["h","Bring a Problem."],["a","An Inquiry is one sitting with one thing in your life. It starts with something you're facing, to look at rather than fix."]] },
   { where:"Step 3: See what's beneath", tag:"new", src:"Probes named", lines:[["h","See what's beneath it."],["a","Under what you bring are things you may be taking for granted. Each one becomes a Probe: a question that pokes at it."]] },
   { where:"Step 4: Follow a Path", tag:"new", lines:[["h","Follow a Path."],["a","Pick the Probe that catches you, and follow it one question at a time. You answer in your own words, typed or spoken."]] },
   { where:"Step 5: Keep a Recap", tag:"new", src:"web differs", alts:[
     { label:"Native", lines:[["h","Keep what you saw."],["a","When you finish, a Recap gathers what you looked at, in your own words. It's kept on your device, just for you."]] },
     { label:"Web", lines:[["h","Keep what you saw."],["a","When you finish, a Recap gathers what you looked at, in your own words. It's yours to export. Nothing is kept once you close the tab."]] } ],
     q:"Both lines are needed, one per platform. Pick only if one reads wrong." },
-  { where:"Step 6: No judging, ever", tag:"decided", lines:[["h","No judging, ever."],["a","It won't tell you what's right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours."],["n","Inspired by the way J. Krishnamurti asked questions."],["b","Begin"]] },
+  { where:"Step 6: No judging, ever", tag:"decided", src:"“we”, not “it”", lines:[["h","No judging, ever."],["a","We won't tell you what's right or wrong, or what you should think. We offer a way to examine your own thoughts, and the looking is yours."],["n","Inspired by the way J. Krishnamurti asked questions."],["b","Begin"]] },
   { where:"Screen reader", tag:"decided", lines:[["s","Step 2 of 6"],["s","Next · Back · Skip"]] },
 ]},
 { id:"intro", title:"AI notice, privacy, sign-in", intro:"After the welcome and before any model call. These are the screens that carry the headline promises.", items:[
   { where:"AI notice (once, in the intro)", tag:"legal", src:"decided, legal reviews the not-therapy line", lines:[["h","Before we begin, one thing to know."],["a","You'll be talking with an AI, not a person. It's here to help you reflect, but it isn't therapy, and it isn't a crisis service. If things ever feel like too much, Help is always at the top of an Inquiry."],["b","I understand"],["n","Need help now?"]] },
-  { where:"AI notice at the start of every Inquiry (EU AI Act Art. 50)", tag:"legal", q:"How compact can the per-Inquiry notice be, and does it sit above the composer or before it?", alts:[
-    { label:"A · one line above the composer", lines:[["n","You're writing to an AI, not a person. It isn't therapy or a crisis service."]] },
-    { label:"B · one line, Help named", lines:[["n","This is an AI, not a person, and not a crisis service. Help is at the top right."]] },
-    { label:"C · a moment before the composer, dismissed by writing", lines:[["a","You're about to write to an AI. It isn't a person, a therapist or a crisis service."],["b","Go on"]] } ] },
-  { where:"Privacy, iOS", tag:"legal", src:"merges #55, #46 and #37", q:"How much belongs on this one screen? A keeps the screen short and moves Google's 90-day abuse logging, crash reports and Reports to the linked page. B puts the model and region on the screen too.", alts:[
-    { label:"A · short, with a link", lines:[["h","What you write stays with you."],["a","Your Inquiries stay on your phone and in your phone's own backup, locked so neither we nor Apple can read them. Each Inquiry starts fresh, without reading the ones before. Export or delete anything, any time."],["a","We know who you are, never what you said."],["n","How your words are handled ›"],["b","Next"]] },
-    { label:"B · names the model and region", lines:[["h","What you write stays with you."],["a","Your Inquiries stay on your phone and in your phone's own backup, locked so neither we nor Apple can read them. Each Inquiry starts fresh, without reading the ones before."],["a","To reply, the app sends what you write to Google's Gemini, in the European Union. We don't keep it."],["n","How your words are handled ›"],["b","Next"]] } ] },
+  { where:"AI notice at the start of every Inquiry (EU AI Act Art. 50), one line above the composer", tag:"legal", lines:[["n","You're writing to an AI, not a person. This isn't therapy or a crisis service."]] },
+  { where:"Privacy, iOS", tag:"legal", lines:[["h","What you write stays with you."],["a","Your Inquiries stay on your phone and in your phone's own backup, locked so neither we nor Apple can read them. Each Inquiry starts fresh, without reading the ones before. Export or delete anything, any time."],["a","We know who you are, never what you said."],["n","How your words are handled ›"],["b","Next"]] },
   { where:"Privacy, Android / Web", tag:"legal", lines:[["n","Android: the same as iOS, with “Google” for “Apple”."],["a","Web: Nothing is kept after you close this tab. Export to keep or reload an Inquiry."]] },
   { where:"How your words are handled (linked page)", tag:"legal", src:"plain summary; the policy itself is separate", lines:[
     ["h","How your words are handled"],
@@ -124,7 +119,7 @@ const D = [
   { where:"Second device, starting empty", tag:"new", lines:[["a","Inquiries stay on the device they were made on, so this one starts empty. To bring them here, export them on the other device and import the file."],["b","Got it"],["n","Import a file"]] },
 ]},
 { id:"guide", title:"Guide notes", intro:"Leaf notes beside what they explain, first Inquiry only. Refined lightly; most of these were decided.", items:[
-  { where:"Home, first time", tag:"decided", lines:[["a","An Inquiry is one sitting with one thing in your life. You have one a day. Tap New Inquiry to begin."],["b","Got it"],["n","Skip the guide"]] },
+  { where:"Home, first time", tag:"new", src:"definition moved to the welcome", lines:[["a","You have one Inquiry a day. Tap New Inquiry to begin."],["b","Got it"],["n","Skip the guide"]] },
   { where:"Problem", tag:"new", src:"“say it” → “dictate”", lines:[["a","Every Inquiry starts with a Problem: something you're facing, to look at rather than fix. Write it as it comes, or tap the mic and say it."]] },
   { where:"Breakdown", tag:"decided", lines:[["a","Under what you wrote are things you may be taking for granted. Each question here is a Probe that pokes at one of them. Pick the one that catches you."]] },
   { where:"Path", tag:"decided", lines:[["a","The app asks, and you answer with a Reflection, written or spoken. You can change it until you tap Submit. If a question doesn't fit you, say so."]] },
@@ -136,26 +131,17 @@ const D = [
 ]},
 { id:"home", title:"Home and the limit", intro:"Buttons stay short. No meter during use, no upsell at the limit.", items:[
   { where:"Lily pads and labels", tag:"decided", lines:[["b","New Inquiry | Finish Inquiry | Settings"],["n","Unfinished · Older Recaps"],["n","Days left: “5 days left” · “1 day left” · “Last day”"]] },
-  { where:"Used up: dry pad and limit screen", tag:"new", q:"Rolling 24 hours means the next one is nearly always tomorrow. Say “tomorrow”?", alts:[
-    { label:"A · as decided", lines:[["n","Pad: Next at 15:40"],["h","Today's Inquiry is done."],["a","The next opens at 15:40."]] },
-    { label:"B · says tomorrow", lines:[["n","Pad: Next tomorrow, 15:40"],["h","Today's Inquiry is done."],["a","The next opens tomorrow at 15:40. Your Recaps are here whenever you'd like to read them."]] } ] },
+  { where:"Used up: dry pad and limit screen", tag:"decided", lines:[["n","Pad: Next at 15:40"],["h","Today's Inquiry is done."],["a","The next opens at 15:40."]] },
   { where:"Home with no Recaps yet (after the first day)", tag:"new", lines:[["a","Your Recaps will float here."]] },
-  { where:"Busy: spend ceiling, turn meter, or the region paused", tag:"new", q:"Should the founder's pause switch say something different from “busy”?", alts:[
-    { label:"A · one line for all three", lines:[["a","Look Together is busy right now. Your words are kept; try again in a little while."]] },
-    { label:"B · the pause gets its own line", lines:[["a","Busy: Look Together is busy right now. Your words are kept; try again in a little while."],["a","Paused: New Inquiries are paused for a little while. Your unfinished Inquiries and Recaps are all here."]] } ] },
+  { where:"Busy: spend ceiling, turn meter, or the region paused", tag:"decided", lines:[["a","Look Together is busy right now. Your words are kept; try again in a little while."]] },
   { where:"Unfinished Inquiry ended after 7 days", tag:"new", lines:[["n","On home, once: “An Inquiry from 27 Oct was gathered into a Recap after 7 days away.”"]] },
   { where:"Daily reminder (native, local notification)", tag:"new", lines:[["a","Today's Inquiry is open."],["n","Never names a Problem or an unfinished Inquiry, since it shows on a lock screen."]] },
   { where:"Screen reader", tag:"decided", lines:[["s","New Inquiry, next available at 15:40"],["s","<first line of the Problem>, unfinished, 5 days left"],["s","<Recap title>, Recap, 3 November"],["s","Older Recaps"]] },
 ]},
 { id:"problem", title:"The Problem", intro:"The composer and what comes back before the Breakdown.", items:[
-  { where:"Composer", tag:"new", q:"The word for sending a Problem. Reflections use Submit.", alts:[
-    { label:"A · Submit, like a Reflection", lines:[["y","What are you facing?"],["b","Submit"]] },
-    { label:"B · Begin", lines:[["y","What are you facing?"],["b","Begin"]] },
-    { label:"C · Look at this", lines:[["y","Write what you're facing, as it comes."],["b","Look at this"]] } ] },
+  { where:"Composer", tag:"decided", lines:[["y","What are you facing?"],["b","Begin"]] },
   { where:"Near the cap", tag:"new", lines:[["n","1,940 / 2,000"],["n","At 2,000: “That's as much as one Problem can hold.”"]] },
-  { where:"Waiting for the Breakdown", tag:"new", alts:[
-    { label:"A · as decided", lines:[["n","Looking…"]] },
-    { label:"B · for the longer wait", lines:[["n","Looking underneath…"]] } ] },
+  { where:"Waiting for the Breakdown", tag:"decided", lines:[["n","Looking…"]] },
   { where:"Decline (not a Problem)", tag:"decided", lines:[["a","Look Together looks at something in your own life that you're facing. Is there something going on for you behind this?"]] },
   { where:"Offer to reword the Problem (model writes the reword)", tag:"new", lines:[["a","Put your Problem this way?"],["y","<proposed wording>"],["b","Use this | Keep mine"]] },
 ]},
@@ -180,18 +166,14 @@ const D = [
 ]},
 { id:"noanswer", title:"When there's no answer", intro:"Never “error” or “safety”. Words always come back.", items:[
   { where:"Any failure, after the backend's retry", tag:"decided", lines:[["a","That didn't go through. Your words are still here."],["b","Try again"]] },
-  { where:"Reply blocked while the classifier passed", tag:"new", src:"decided text speaks as “I”", q:"The app's fixed copy speaks as “we”/no one, and the model asks the questions. Should this line drop the “I”?", alts:[
-    { label:"A · as decided", lines:[["a","I couldn't find a way to respond to that. You could put it differently, or go back and pick another Probe."]] },
-    { label:"B · no first person", lines:[["a","There's no answer to that here. You could put it differently, or go back and pick another Probe."]] } ] },
+  { where:"Reply blocked while the classifier passed", tag:"decided", src:"no first person", lines:[["a","There's no answer to that here. You could put it differently, or go back and pick another Probe."]] },
   { where:"Update needed (native)", tag:"new", lines:[["h","A newer Look Together is ready."],["a","Update to carry on with your Inquiry. It will be waiting just as you left it. Your Recaps, export and Help still work."],["b","Update"]] },
   { where:"Update needed (web)", tag:"new", lines:[["h","Look Together has changed since you opened this tab."],["a","Export your Inquiry, then reload to carry on where you were."],["b","Export, then reload"]] },
   { where:"Import or open failures", tag:"new", lines:[["n","Newer file: “Update the app to open this file.”"],["n","Wrong file: “This file isn't an export from Look Together, or it's been changed.”"],["n","Migration failed: “Your Inquiries couldn't be opened. Nothing has been lost. Update the app, or write to us at <address>.”"]] },
 ]},
 { id:"help", title:"Help and the Step-out", intro:"Still water, no metaphor, just the contacts. Drafted here; the Step-out handoff locks only after legal review.", items:[
-  { where:"Help (tapped by the person; pauses)", tag:"legal", lines:[["h","Need help now?"],["a","If you're in danger or thinking about harming yourself, please reach someone now."],["n","Emergency · 911"],["n","988 Suicide & Crisis Lifeline · call or text 988"],["n","Not in the United States? Change country"],["b","Back to my Inquiry"]] },
-  { where:"Step-out (fixed, app-owned)", tag:"legal", q:"Does the varying sentence name what the app noticed, or stay general?", alts:[
-    { label:"A · names it gently", lines:[["h","This Inquiry stops here."],["a","Self: What you wrote sounds like you may be thinking about harming yourself."],["a","Others: What you wrote sounds like someone could get hurt."],["a","Danger: What you wrote sounds like you may not be safe right now."],["a","Look Together is an AI, not a person, and it isn't a crisis service. The people at these numbers can help, right now."],["n","<contacts>"],["n","Start a new Inquiry"]] },
-    { label:"B · stays general", lines:[["h","This Inquiry stops here."],["a","What you wrote sounds like more than an Inquiry should hold. You deserve to talk to a person."],["a","Look Together is an AI, not a person, and it isn't a crisis service. The people at these numbers can help, right now."],["n","<contacts>"],["n","Start a new Inquiry"]] } ] },
+  { where:"Help (tapped by the person; pauses)", tag:"legal", lines:[["h","Need help now?"],["a","If you're in danger or thinking about harming yourself, please reach someone now."],["n","Emergency · 911"],["n","988 Suicide & Crisis Lifeline · call or text 988"],["n","Contacts for where you are, from your last connection (else the device region)."],["n","Not in the United States? Change country"],["b","Back to my Inquiry"]] },
+  { where:"Step-out (fixed, app-owned)", tag:"legal", src:"names it gently, with “deserve”", lines:[["h","This Inquiry stops here."],["a","Self: What you wrote sounds like you may be thinking about harming yourself."],["a","Others: What you wrote sounds like someone could get hurt."],["a","Danger: What you wrote sounds like you may not be safe right now."],["a","Look Together is an AI, not a person, and it isn't a crisis service. You deserve to talk with someone who can help, and the people at these numbers can, right now."],["n","<contacts>"],["n","Start a new Inquiry"]] },
   { where:"Screen reader", tag:"decided", lines:[["s","Focus lands on the first contact; numbers are callable."]] },
 ]},
 { id:"report", title:"Reports", intro:"A quiet ⋯ menu on each Probe and Path reply.", items:[
@@ -203,7 +185,7 @@ const D = [
 ]},
 { id:"settings", title:"Settings, export and delete", intro:"From the rowboat on home.", items:[
   { where:"Settings list", tag:"new", lines:[
-    ["n","Where replies are made · United States / European Union"],
+    ["n","Where replies are made · European Union (read-only; chosen at the start)"],
     ["n","Still water · System / On / Off · “No moving water, trees or ripples.”"],
     ["n","Season · Follow the clock / Spring morning / Autumn evening"],
     ["n","Daily reminder (native)"],
@@ -211,8 +193,8 @@ const D = [
     ["n","Show the guide again"],
     ["n","Export all · Import · Sent reports"],
     ["n","About · Sign out · Delete everything · Delete account"]] },
-  { where:"Region", tag:"new", lines:[["a","Replies are made in the region you choose. We picked the closer one when you arrived. Your Account and counts live there too."]] },
-  { where:"Share and export", tag:"decided", lines:[["b","PDF | Text | Copy"],["n","More formats: JSON"],["n","☐ Include the Paths"],["a","Anyone with the file can read it."],["n","PDF footer: Made with Look Together"],["n","Stepped out: This Inquiry ended early."]] },
+  { where:"Region", tag:"new", lines:[["a","Replies are made in the European Union, the region you chose when you joined. Your Account and counts live there too."]] },
+  { where:"Share and export", tag:"decided", lines:[["b","PDF | Text | JSON"],["n","☐ Include the Paths"],["a","Anyone with the file can read it."],["n","PDF footer: Made with Look Together"],["n","Stepped out: This Inquiry ended early."]] },
   { where:"Delete one Inquiry", tag:"new", lines:[["a","Delete this Inquiry? It can't be undone."],["b","Delete | Cancel"]] },
   { where:"Delete everything", tag:"new", lines:[["a","Delete every Inquiry and draft for this Account on this phone? It can't be undone."],["b","Export all first | Delete everything | Cancel"]] },
   { where:"Sign out", tag:"new", lines:[["a","Your Inquiries stay on this phone, hidden until you sign in again."],["b","Sign out | Cancel"]] },
