@@ -671,23 +671,6 @@ function blob(g, cx, cy, rx, ry, ramp, seed = 0) { // a whole leafy mass: a lump
     setp(g, x, y, code(ramp, rim && dy > -.2 ? 0 : 1 + Math.round(clamp(rim ? v + .2 : v, 0, 1) * (n - 2))));
   }
 }
-function grove(g, cx, base, P) { // a stand of bamboo as one mass: overlapping clumps of leaves, a few culms at the foot
-  for (const dx of [-6, -2, 3, 7]) rect(g, cx + dx, base - 12, cx + dx + 1, base, (x, y) => (base - y) % 5 === 0 ? P.leafD : P.leafL);
-  for (const [dx, dy, rx, ry, k] of [[-5, -34, 6, 9, 1], [5, -38, 6, 10, 2], [0, -26, 9, 9, 3], [-8, -17, 7, 7, 4], [8, -18, 7, 7, 5]]) blob(g, cx + dx, base + dy, rx, ry, R.leafA, k);
-}
-function weeping(g, cx, cy, r, base, P) { // a willow as one mass: a dome, a curtain falling past it, the trunk in the gap
-  const n = N[R.leafC], rw = r * 1.25;
-  rect(g, cx - 1, cy, cx + 2, base, P.woodD);
-  for (let x = Math.round(cx - rw); x <= cx + rw; x++) { const u = (x - cx) / rw, t = Math.round(cy - r * .8 * Math.sqrt(Math.max(0, 1 - u * u))),
-      bot = Math.min(base - 1, Math.round(cy + r * (.35 + 1.1 * Math.abs(u) ** .7) + hash2(x, 2, 57) * 3));
-    for (let y = t; y < bot; y++) { const v = .7 - u * .3 - (y - t) / (bot - t + 1) * .45 - (x % 3 === 0 ? .12 : 0) + (hash2(x, y >> 2, 56) - .5) * .2;
-      setp(g, x, y, code(R.leafC, y === bot - 1 ? 1 : 1 + Math.round(clamp(v, 0, 1) * (n - 2)))); } }
-}
-function frond(g, x0, y0, a, len, P) { // a palm leaf as one tapered shape, drooping at the tip
-  const ca = Math.cos(a), sa = Math.sin(a);
-  for (let r = 0; r <= len; r += .5) { const px = x0 + ca * r, py = y0 + sa * r * .6 + r * r * .028, w = 2.6 * Math.sin(Math.PI * Math.min(1, (r + 2) / (len + 2)));
-    for (let q = -w; q <= w; q += .5) setp(g, px, py + q, q < -w / 3 ? P.leafL : q > w / 3 ? P.leafD : P.leaf); }
-}
 function piles(g, x0, x1, deck, every, c) { for (let x = x0 + 2; x < x1 - 1; x += every) rect(g, x, deck, x + 1, WY + 1, c); }
 
 // ---------- bridges: side view, the deck from xa to xb. Kept low and quiet: the islets are the places, the bridges only join them ----------
@@ -778,7 +761,9 @@ const ISLETS = {
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, hx - 3], flowers: [P.gold, P.straw], fd: .08 });
     for (let y = b - 34; y < b; y++) { const v = (y - b + 34) / 34, w = Math.round(5 + Math.sin(Math.PI * Math.min(1, v * .8 + .15)) * 5); // the baobab: a bottle of a trunk
       rect(g, bx - w, y, bx + w + 1, y + 1, (x) => x > bx + w * .4 || hash2(x, y >> 1, 73) > .85 ? P.stoneD : P.stone); }
-    rect(g, bx - 8, b - 38, bx + 9, b - 34, (x) => x > bx + 3 ? P.stoneD : P.stone); blob(g, bx, b - 42, 22, 6, R.leafA, 3); // its crown, flat and wide
+    for (const [dx, len, rise] of [[-3, -15, .5], [-1, -7, 1.2], [1, 8, 1.1], [3, 16, .45]]) { const s = Math.sign(len); let ex = 0, ey = 0; // short arms, little crowns
+      for (let i = 0; i <= Math.abs(len); i++) { ex = bx + dx + s * i; ey = b - 34 - Math.round(i * rise); setp(g, ex, ey, P.stoneD); setp(g, ex, ey + 1, P.stoneD); }
+      tree(g, ex, ey - 3, 6, R.leafA, ey + 1); }
     const ww = 17; // a painted house: white walls, black lines, blocks of colour
     rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = x - hx + ww, v = b - y, k = u % 8;
       if (v === 1 || v === 8 || v === 17 || (v > 8 && k === 0)) return P.woodD;
@@ -790,8 +775,8 @@ const ISLETS = {
     const rx = cx + 44, rw = 11; rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => y > b - 4 ? P.wood1 : x > rx + 6 ? P.wood : P.woodL); rect(g, rx - 2, b - 9, rx + 3, b, P.woodD); // a plain round house
     for (let j = 0; j < 13; j++) { const w = Math.round((rw + 3) * (1 - j / 13)); rect(g, rx - w, b - 14 - j, rx + w + 1, b - 13 - j, (x) => (x + j) % 3 ? P.straw : P.woodL); }
     for (const [ox, oy] of [[cx + 26, 0], [cx + 29, 0], [cx + 27, -4]]) { rect(g, ox - 1, b - 4 + oy, ox + 2, b + oy, P.wood); setp(g, ox, b - 5 + oy, P.wood1); } // clay pots
-    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) rect(g, ax + Math.round(j * .15) - 1, at - j, ax + Math.round(j * .15) + 1, at - j + 1, j % 5 ? P.woodD : P.wood1); // an acacia, its crown flat
-    blob(g, ax + 3, at - 25, 14, 4, R.leafA, 5); },
+    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) setp(g, ax + Math.round(j * .15), at - j, P.woodD); // an acacia, its crown flat
+    for (const [w, dy] of [[9, 0], [13, 1], [12, 2], [7, 3]]) rect(g, ax + 3 - w, at - 25 + dy, ax + 4 + w, at - 24 + dy, (x) => dy === 0 ? P.leafL : hash2(x, dy, 71) > .6 ? P.leafD : P.leaf); },
   persian(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), px = cx + 4, W2 = 28, H2 = 30;
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, px - 11], flowers: [P.pink, P.red], fd: .08 });
     const cypress = (x, hh) => { const t = top(x); rect(g, x, t - 3, x + 1, t, P.woodD);
@@ -815,8 +800,15 @@ const ISLETS = {
     roof(g, cx, b - 29, 36, 7, P.teal, P.stoneDD, 4);
     rect(g, cx - 14, b - 42, cx + 15, b - 35, (x) => x % 4 === 0 ? P.red : P.woodD);
     roof(g, cx, b - 41, 25, 7, P.teal, P.stoneDD, 3); rect(g, cx, b - 52, cx + 1, b - 47, P.gold); setp(g, cx, b - 53, P.gold);
-    grove(g, cx - 62, top(cx - 62) + 1, P); rock(g, cx - 44, b + 1, 5, 6, true); // a bamboo grove, a mossy stone
-    weeping(g, cx + 60, b - 30, 15, top(cx + 60) + 1, P); },
+    for (const [dx, hh, lean] of [[-72, 42, -4], [-67, 52, -1], [-62, 38, 2], [-57, 47, 4]]) { const x0 = cx + dx, t = top(x0), at = (j) => x0 + Math.round(lean * (j / hh) ** 2); // a clump of bamboo: jointed canes, sprays of leaves up top
+      for (let j = 0; j < hh; j++) { const node = j % 7 === 6; setp(g, at(j), t - j, node ? P.leafD : P.leafL); setp(g, at(j) + 1, t - j, node ? P.leafD : P.leaf); }
+      for (let j = Math.round(hh * .5); j < hh - 3; j += 7) { const side = (j / 7 | 0) % 2 ? 1 : -1; blob(g, at(j) + side * 5, t - j - 1, 5, 2, R.leafA, j + dx); }
+      blob(g, at(hh) + 1, t - hh, 5, 3, R.leafA, dx); }
+    const px = cx + 60, pb = top(px), trunk = (j) => px + Math.round(3 * Math.sin(j / 38 * Math.PI)); // a cloud-pruned pine: a crooked trunk, its foliage in layered pads
+    for (let j = 0; j < 38; j++) rect(g, trunk(j) - 1, pb - j, trunk(j) + 2, pb - j + 1, (x) => x > trunk(j) ? P.woodD : P.wood1);
+    for (const [dx, dy, rx, ry] of [[-12, -15, 9, 3.5], [13, -22, 11, 4], [-10, -29, 10, 3.5], [2, -39, 11, 5]]) {
+      const j0 = -dy - 3, x0 = trunk(j0), n = Math.abs(dx); for (let i = 0; i <= n; i++) rect(g, x0 + Math.sign(dx) * i, pb - j0 - Math.round(i / n * 3), x0 + Math.sign(dx) * i + 1, pb - j0 - Math.round(i / n * 3) + 2, P.woodD);
+      blob(g, px + dx, pb + dy, rx, ry, R.leafA, dx + dy); } },
   lighthouse(g, cx, P) { const h = 26, b = WY - h, top = mound(g, cx, HW, h, "rock"), tx = cx - 16, kx = cx + 30;
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, kx - 1], flowers: [P.white, P.pink], fd: .05 });
     for (let j = 0; j < 64; j++) { const w = Math.round(10 - j * .06), y = b - 1 - j, red = Math.floor(j / 11) % 2;
@@ -864,7 +856,8 @@ const ISLETS = {
     const palm = (x0, hgt, lean) => { const y0 = top(x0); let x = x0;
       for (let j = 0; j < hgt; j++) { x = x0 + lean * (j / hgt) ** 2; setp(g, x, y0 - j, j % 4 === 0 ? P.woodD : P.wood); setp(g, x + 1, y0 - j, j % 4 === 0 ? P.woodD : P.wood1); }
       const tx = x, ty = y0 - hgt;
-      for (const a of [-2.95, -2.35, -1.75, -1.25, -.75, -.15]) frond(g, tx, ty, a, a < -1.1 && a > -1.9 ? 13 : 20, P);
+      for (const a of [-3, -2.6, -2.1, -1.6, -1.1, -.6, -.15]) for (let r = 1; r < 22; r += .5) { const fx = tx + Math.cos(a) * r, fy = ty + Math.sin(a) * r * .55 + r * r * .03;
+        setp(g, fx, fy, P.leaf); if (r > 4 && Math.floor(r) % 2 === 0) { setp(g, fx, fy + 1, P.leafD); setp(g, fx, fy + 2, r > 12 ? P.leafD : P.leaf); } }
       rect(g, tx - 1, ty + 1, tx + 2, ty + 3, P.woodD); setp(g, tx + 2, ty + 2, P.wood1); };
     palm(cx + 26, 52, 10); palm(cx + 46, 40, -6); palm(cx - 64, 36, 5);
     for (const px of [-16, -2, 14]) rect(g, hx + px, b - 8, hx + px + 1, b, P.woodD); // a hut on stilts
@@ -908,7 +901,7 @@ const THEMES = [ // islet and the bridge that leads to it
   { id: "crag", name: "Highland crag", bridge: "arches", blurb: "a stone arched bridge to a craggy rock in heather: a ruined keep with ivy, a curtain wall and gate, a broken turret" },
   { id: "baobab", name: "Baobab isle", bridge: "reeds", blurb: "a reed walk on poles to a baobab, a round house painted in Ndebele blocks and lines under a thatched cone, a plainer hut, clay pots and an acacia" },
   { id: "persian", name: "Persian garden", bridge: "brick", blurb: "a bridge of pointed brick arches to a brick pavilion with a tiled iwan, a turquoise dome, cypresses and pomegranates" },
-  { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, a bamboo grove, a mossy stone and a weeping willow" },
+  { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, a clump of bamboo and a cloud-pruned pine" },
   { id: "lighthouse", name: "Lighthouse rock", bridge: "rope", blurb: "a rope walk to a striped lighthouse with a gallery, and a keeper's house behind a fence" },
   { id: "greek", name: "Whitewashed isle", bridge: "causeway", blurb: "a causeway to white houses with blue shutters, a bell arch, bougainvillea, a domed chapel and an olive" },
   { id: "gazebo", name: "Garden gazebo", bridge: "lattice", blurb: "a lattice bridge to a domed gazebo, a rose arch over the path, box hedges, roses and a bench" },
