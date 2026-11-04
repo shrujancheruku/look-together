@@ -206,12 +206,14 @@
 "use strict";
 // ================= engine: pure, no DOM =================
 // ---------- palette: the chosen kit (issue #70), 12-step full colour, sky 16 ----------
-const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone", "coat", "skin", "paint"];
+const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone", "coat", "skin", "paint", "fur"];
 // the walker's rows (issue #84): set colour by colour, not as a ramp. coat: five jackets, each lit, base and edge. skin: five tones, each lit and shade, then hair.
 const EXPLICIT = {
   coat: [[.80, .09, 5], [.68, .11, 10], [.48, .10, 15], [.76, .09, 135], [.62, .10, 140], [.43, .08, 145], [.78, .07, 240], [.64, .09, 245], [.45, .08, 250],
     [.85, .11, 82], [.74, .13, 72], [.53, .10, 62], [.72, .02, 260], [.57, .025, 260], [.39, .02, 260]],
   paint: [[.30, .09, 262], [.38, .10, 260], [.50, .18, 28], [.58, .18, 30]], // the boat's paint: navy, then a true red
+  fur: [[.74, .13, 55], [.64, .15, 45], [.48, .12, 38], [.66, .07, 62], [.54, .07, 55], [.40, .05, 50], [.96, .01, 90], [.86, .03, 80], // home's details (#86): fox, deer, white, cream,
+    [.26, .02, 60], [.74, .015, 240], [.56, .02, 245], [.48, .10, 160], [.56, .06, 60], [.80, .14, 85], [.84, .05, 95], [.68, .05, 90]], // near-black, heron greys, drake green, duck brown, beak, tent canvas
   skin: [[.89, .045, 65], [.80, .06, 55], [.80, .07, 60], [.70, .08, 50], [.68, .08, 55], [.58, .08, 45], [.55, .08, 50], [.46, .07, 42], [.43, .06, 45], [.34, .05, 40], [.27, .03, 40], [.40, .05, 50]],
 };
 const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
@@ -251,7 +253,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 function stepsFor(name) {
   switch (name) {
     case "sky": return PAL.sky; case "glint": return 4; case "light": return 3; case "mist": return 2; case "stone": return 8;
-    case "far": return PAL.steps - 2; case "trunk": return 4; case "coat": return 15; case "skin": return 12; case "paint": return 4; default: return PAL.steps;
+    case "far": return PAL.steps - 2; case "trunk": return 4; case "coat": return 15; case "skin": return 12; case "paint": return 4; case "fur": return 16; default: return PAL.steps;
   }
 }
 const N = RAMPS.map(stepsFor);
@@ -1106,13 +1108,18 @@ const HOME = {
     rules: ["<b>As on #84:</b> hills, far trees and mist over a thin bank, two pines to the right, open water with the moored boat and the lilies."],
     build() {} },
   B: { name: "The kit's forest", pines: false,
-    blurb: "The style kit's bank brought back to home: two rows of big round crowns along the far shore, blossom among them, light shafts from the upper left and cattails at the waterline. The distant hills drop away behind it, so the forest meets the sky as it did in the kit. Past the pier the mountains and the open lake return.",
-    rules: ["<b>The forest:</b> a back row and a front row of round crowns (40–80 art px across), the kit's leaf ramps with blossom (leafB) among them, a mist band at the tree line.",
+    blurb: "The style kit's bank brought back to home, now three rows deep (the back row hazy, in the far ramp), with one or two small forest scenes picked at random each time home comes round: deer, a fox, rabbits, a heron, ducks, a rope swing, a tent, a firepit, a picnic, a canoe, an owl, fireflies or butterflies. Before: two rows of big round crowns along the far shore, blossom among them, light shafts from the upper left and cattails at the waterline. The distant hills drop away behind it, so the forest meets the sky as it did in the kit. Past the pier the mountains and the open lake return.",
+    rules: ["<b>The forest:</b> three rows. A deep row of smaller crowns in the far ramp, then a mist band, then the kit's back and front rows of round crowns (40–80 art px across) in the leaf ramps with blossom (leafB) among them. The far ramp keeps the deep row apart in both seasons: pale blue-green behind green and pink in spring, dusk-purple behind orange in autumn.",
+      "<b>Details:</b> each time home comes round (opening the app, rowing home, coming back from the landing), one or two are picked at random from twelve, at places that don't crowd each other or the boat and lilies. Picked by chance, never earned: no detail is rarer, none is tied to an Inquiry, nothing is kept or collected.",
+      "<b>Their motion:</b> small and slow, on the world clock (a deer lifting its head, ducks drifting, a fire flickering, smoke rising, a swing stirring, fireflies blinking). Reduce Motion and Still water stop it.",
+      "<b>People:</b> never seen. A tent, a fire or a picnic means someone has been here, not that anyone is.",
       "<b>The sky:</b> no hills behind home; they rise again past the pier, over the islets.",
       "<b>Light:</b> shafts from the upper left, as the kit's Luminous light. Drawn once; nothing in them moves.",
       "<b>Cattails:</b> clumps at the far waterline on both sides of the boat."],
     build(g) {
-      clearSky(g, 380, 1040, 70); farTrees(g, 380, 1040, WY); mist(g, 380, 1040, WY);
+      clearSky(g, 380, 1040, 70); farTrees(g, 380, 1040, WY);
+      { const r = rng(451); for (let c = 370; c < 1050; c += 18 + r() * 12) { const Rr = 12 + r() * 6; tree(g, c, WY - 54 - Rr * .8 - r() * 12, Rr, R.far, WY); } } // a deeper row, in the far ramp: paler and bluer in spring, dusk-purple in autumn
+      haze(g, 380, 1040, WY - 44, 9, .4); mist(g, 380, 1040, WY);
       treeRow(g, 380, 1040, WY, { front: false, dense: .8 });
       treeRow(g, 380, 1040, WY, { back: false, scale: 1.2, dense: .75, gapFront: [690, 790] });
       bank(g, 380, 1040, WY);
@@ -1208,7 +1215,7 @@ const RULES = (g, need) => [
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2, bd: "A", all: false, reach: 0, done: 0 };
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2, bd: "A", all: false, reach: 0, done: 0, picks: [], only: "", count: "1-2" };
 try { Object.assign(st, JSON.parse(localStorage.getItem("home-backdrop") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
@@ -1428,8 +1435,112 @@ function dragonfly(x, y, t, from, to, out) { // waiting on the app: hovers, dart
   const fade = m === "reduce" ? clamp(Math.min(t - from, to + .6 - t) / .3, 1 / 8, 1) : 1;
   out.push({ x: x + dart, y: Math.round(y + hover - (m === "full" ? lift * 30 : 0)), px, bob: false, fade: fade * (m === "reduce" ? 1 - lift : 1) });
 }
+// ================= home's details (issue #86, round 3): small forest scenes, one or two picked at random each time home comes round =================
+// Drawn as sprites over the kit's forest, in world coordinates around the pond, at the boat's scale (the boat is ~68 art px, so a deer is ~26).
+// Picked by chance, never earned: nothing is tied to an Inquiry, nothing is kept, counted or collected, and no detail is rarer than another.
+// Their small motions run on the world clock, so Reduce Motion and Still water stop them like everything else.
+const F = (i) => code(R.fur, i);
+const FUR = { deer: [F(3), F(4), F(5), F(8)], fox: [F(0), F(1), F(2), F(8)], white: [F(6), F(6), F(7), F(7)], dark: [F(5), F(8), F(8), F(8)], heron: [F(9), F(9), F(10), F(10)],
+  drake: [F(11), F(11), F(8), F(8)], duck: [F(12), F(12), F(5), F(5)], beak: [F(13), F(13), F(2), F(2)], canvas: [F(14), F(14), F(15), F(5)] };
+const WOODP = () => { const nt = N[R.trunk]; return [code(R.trunk, nt - 1), code(R.trunk, 2), code(R.trunk, 1), code(R.trunk, 0)]; };
+const STONEP = () => { const ns = N[R.stone]; return [code(R.stone, ns - 1), code(R.stone, ns - 3), code(R.stone, 2), code(R.stone, 1)]; };
+const PAINTP = () => [code(R.paint, 3), code(R.paint, 2), code(R.paint, 2), code(R.paint, 0)];
+function Spr() { // a tiny painter: shapes lit from the upper left, then the kit's selective line (a darker edge below and to the right)
+  const m = new Map(), S = {
+    set(x, y, pal, v, line = true) { m.set(x + "," + y, { x, y, pal, v, line }); return S; },
+    ell(cx, cy, rx, ry, pal, o = {}) { for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
+      const dx = (x - cx) / rx, dy = (y - cy) / ry; if (dx * dx + dy * dy <= 1.05) S.set(x, y, pal, (o.v ?? .5) - .35 * dx - .45 * dy, o.line !== false); } return S; },
+    line(x0, y0, x1, y1, pal, w = 1, v = .5) { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+      for (let i = 0; i <= n; i++) { const x = Math.round(lerp(x0, x1, i / n)), y = Math.round(lerp(y0, y1, i / n)); for (let k = 0; k < w; k++) S.set(x + k, y, pal, v - k * .25); } return S; },
+    poly(pts, pal, vf) { let y0 = 1e9, y1 = -1e9; for (const [, y] of pts) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+      for (let y = Math.floor(y0); y <= y1; y++) { const xs = []; for (let i = 0; i < pts.length; i++) { const [ax, ay] = pts[i], [bx, by] = pts[(i + 1) % pts.length]; if ((ay <= y + .5) !== (by <= y + .5)) xs.push(ax + (y + .5 - ay) / (by - ay) * (bx - ax)); }
+        xs.sort((a, b) => a - b); for (let i = 0; i + 1 < xs.length; i += 2) for (let x = Math.round(xs[i]); x < Math.round(xs[i + 1]); x++) S.set(x, y, pal, vf ? vf(x, y) : .5); } return S; },
+    rect(x0, y0, x1, y1, pal, v = .5) { for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) S.set(x, y, pal, v - (x - x0) / Math.max(1, x1 - x0) * .3); return S; },
+    px() { const out = []; for (const p of m.values()) { let c = p.v > .7 ? p.pal[0] : p.v > .38 ? p.pal[1] : p.pal[2];
+      if (p.line && (!m.has(p.x + "," + (p.y + 1)) || !m.has((p.x + 1) + "," + p.y))) c = p.pal[3]; out.push([p.x, p.y, c]); } return out; },
+  };
+  return S;
+}
+const BANK = WY - 3, tick = (fps) => Math.floor(T * fps), mirror = (px) => px.map(([x, y, c]) => [-x, y, c]);
+function deerPx(up) { const s = Spr(), D = FUR.deer, W = FUR.white, K = FUR.dark;
+  for (const [x, back] of [[-8, 0], [-5, 1], [6, 0], [9, 1]]) s.line(x, -9, x + (back ? 1 : 0), 0, back ? K : D, 2, back ? .2 : .5); // legs, the far pair darker
+  s.ell(0, -12, 11, 4.5, D); s.ell(1, -9, 8, 1.6, W, { line: false }); s.ell(11, -14, 2, 2, W, { line: false }); // body, belly, tail
+  if (up) { s.line(-9, -15, -12, -23, D, 3); s.ell(-14, -24, 3.2, 2.2, D); s.line(-17, -24, -18, -23, K); s.line(-12, -27, -11, -29, D, 2); s.line(-14, -27, -15, -29, D, 2); }
+  else { s.line(-9, -13, -15, -4, D, 3); s.ell(-17, -2, 3.2, 2.2, D); s.line(-20, -1, -20, 0, K); s.line(-14, -4, -12, -6, D, 2); }
+  return s.px(); }
+function foxPx(flick) { const s = Spr(), O = FUR.fox, W = FUR.white;
+  s.ell(5, -3, 7, 3, O); s.ell(10, -6 - (flick ? 1 : 0), 2.4, 2.4, W, { line: false }); // the tail curled round the front, its white tip
+  s.ell(0, -7, 4.5, 6.5, O); s.ell(1, -6, 2, 4, W, { line: false }); // body, chest
+  s.ell(0, -15, 3.6, 3, O); s.poly([[-3, -16], [-1, -21], [0, -17]], O); s.poly([[1, -17], [3, -21], [4, -16]], O); s.line(3, -14, 5, -14, O, 1); s.set(6, -14, FUR.dark, 0); // head, ears, snout
+  s.set(-1, -15, FUR.dark, 0, false); s.line(-2, 0, -2, -1, FUR.dark); s.line(2, 0, 2, -1, FUR.dark);
+  return s.px(); }
+function rabbitPx(up) { const s = Spr(), D = FUR.deer; s.ell(0, -3, 4, 3, D); s.ell(-3, -6, 2.4, 2.2, D); s.line(-4, -8, -4 - (up ? 0 : 1), up ? -13 : -12, D, 1); s.line(-2, -8, -1, up ? -13 : -11, D, 1); s.ell(4, -4, 1.3, 1.3, FUR.white, { line: false }); s.set(-4, -6, FUR.dark, 0, false); return s.px(); }
+function heronPx() { const s = Spr(), G = FUR.heron, K = FUR.dark;
+  s.line(-1, -15, -1, 3, K, 1); s.line(2, -15, 3, 3, K, 1, .2); // legs, down into the water
+  s.poly([[-6, -24], [4, -26], [7, -17], [0, -14], [-4, -17]], G, (x, y) => .7 - (x + 6) * .03 - (y + 26) * .03); s.line(-5, -18, 5, -16, FUR.heron, 1, .2); // body, a darker wing edge
+  s.line(-5, -25, -3, -30, G, 2); s.line(-3, -30, -5, -35, G, 2); s.ell(-4, -37, 2.4, 1.8, G); s.line(-2, -37, 4, -36, FUR.beak, 1); s.line(-6, -38, -9, -38, K); s.set(-4, -38, K, 0, false);
+  return s.px(); }
+function duckPx(drake) { const s = Spr(), B = drake ? FUR.duck : FUR.duck; s.ell(1, -2, 5, 2.4, B); s.poly([[3, -4], [7, -5], [6, -2]], B); s.ell(-4, -5, 2, 2, drake ? FUR.drake : B); s.line(-7, -5, -6, -5, FUR.beak); if (drake) s.line(-3, -3, -2, -3, FUR.white, 1); return s.px(); }
+function tentPx() { const s = Spr(), C = FUR.canvas, K = FUR.dark;
+  s.poly([[-20, 0], [0, -22], [0, 0]], C, (x, y) => .85 + (y + 22) * .004); s.poly([[0, 0], [0, -22], [20, 0]], C, () => .3); // lit and shaded faces
+  s.poly([[-7, 0], [0, -13], [5, 0]], K); s.line(0, -23, 0, -25, K); s.line(-20, 0, -26, 1, K); s.line(20, 0, 26, 1, K); return s.px(); }
+function flamePx(x0, y0, big) { const f = tick(6) % 3, red = code(R.flower, 0), org = F(0), yel = code(R.light, 1), wht = code(R.light, 2), px = [], h = big ? 9 : 5;
+  for (let y = 0; y < h; y++) { const w = Math.round((1 - y / h) * (big ? 3.5 : 2) + ((y + f) % 3 === 0 ? .6 : 0)), sway = Math.round(Math.sin(y * .9 + f * 2) * (y / h) * 1.5);
+    for (let x = -w; x <= w; x++) px.push([x0 + x + sway, y0 - y, Math.abs(x) === w ? red : y > h * .55 ? yel : Math.abs(x) < w - 1 && y < h * .5 ? wht : org]); }
+  return px; }
+const smokePx = (x0, y0, n, rise = 5) => { const px = []; for (let i = 0; i < n; i++) { const t = (T * .8 + i * 1.3) % 7, y = Math.round(-t * rise), x = Math.round(Math.sin(t * 1.1 + i) * 2 + t * .9), c = code(R.mist, t > 3.5 ? 0 : 1);
+  if (t < 6.4) { px.push([x0 + x, y0 + y, c]); if (t > 1.5) px.push([x0 + x + 1, y0 + y, c], [x0 + x, y0 + y - 1, c]); } } return px; };
+function logPx(x0, len) { const s = Spr(), Wd = WOODP(); s.rect(x0, -5, x0 + len, 0, Wd, .5); s.ell(x0 + len, -2.5, 1.5, 2.5, [F(7), F(7), F(7), Wd[3]]); for (let x = x0 + 2; x < x0 + len; x += 4) s.set(x, -3, Wd, .1); return s.px(); }
+function stonesPx(r) { const s = Spr(), St = STONEP(); for (let i = 0; i < 9; i++) { const a = Math.PI * (i / 8), x = Math.round(Math.cos(a) * r); s.ell(x, -1 - (i % 2), 2.2, 1.6, St); } return s.px(); }
+const DETAILS = {
+  deer: { name: "Deer drinking", where: [630, 846], sprites: (x) => { const up = tick(1) % 10 < 3, px = deerPx(up);
+    return [{ x, y: BANK + 1, px, refl: true }].concat(up ? [] : [{ x: x - 17, y: WY + 1, px: [[-1, 0, code(R.glint, tick(3) & 3)], [0, 0, code(R.glint, (tick(3) + 1) & 3)], [1, 0, code(R.glint, (tick(3) + 2) & 3)]] }]); } },
+  fox: { name: "A fox sitting", where: [742, 838], sprites: (x) => [{ x, y: BANK, px: foxPx(tick(2) % 9 === 0), refl: true }] },
+  rabbits: { name: "Two rabbits", where: [738, 836], sprites: (x) => [{ x, y: BANK, px: rabbitPx(tick(1) % 6 === 0), refl: true }, { x: x + 16, y: BANK, px: mirror(rabbitPx(tick(1) % 7 === 3)), refl: true }] },
+  heron: { name: "A heron in the shallows", where: [626, 852], sprites: (x) => [{ x, y: WY + 3, px: heronPx() }, { x, y: WY + 3, px: [[-4, 0, code(R.glint, tick(2) & 3)], [-3, 0, code(R.glint, 1)], [5, 0, code(R.glint, (tick(2) + 2) & 3)], [6, 0, code(R.glint, 1)]] }] },
+  ducks: { name: "A pair of ducks", where: [600, 850], sprites: (x) => { const a = T * .05, dx = Math.round(Math.sin(a) * 18), dir = Math.cos(a) >= 0 ? 1 : -1, f = (px) => dir > 0 ? mirror(px) : px; // facing the way they drift
+    return [{ x: x + dx, y: WY + 12, px: f(duckPx(true)), bob: true, i: 1 }, { x: x + dx - dir * 14, y: WY + 15, px: f(duckPx(false)), bob: true, i: 2 }, { x: x + dx - dir * 8, y: WY + 12, px: [[0, 0, code(R.glint, 1)], [-dir * 2, 1, code(R.glint, 2)], [-dir * 4, 2, code(R.glint, 3)]] }]; } },
+  swing: { name: "A rope swing", where: [742], sprites: (x) => { const sw = Math.sin(T * .8) * 2, s = Spr(), Wd = WOODP(), nl = N[R.leafA];
+    s.line(-30, -66, 8, -62, Wd, 2); s.line(-12, -64, -18, -70, Wd, 1); // a bough reaching out of the crowns
+    for (const [cx, cy, rx, ry] of [[-34, -70, 10, 7], [-22, -73, 8, 5], [-8, -68, 6, 4], [4, -66, 5, 3]]) s.ell(cx, cy, rx, ry, [code(R.leafA, nl - 2), code(R.leafA, nl - 5), code(R.leafA, 3), code(R.leafA, 0)]);
+    const rope = [code(R.light, 0), code(R.light, 0), F(7), F(7)];
+    for (const rx of [-4, 4]) s.line(rx, -62, rx + Math.round(sw), -14, rope, 1, .9);
+    s.rect(-6 + Math.round(sw), -14, 7 + Math.round(sw), -12, Wd, .9);
+    return [{ x, y: WY - 1, px: s.px(), refl: true }]; } },
+  tent: { name: "A tent and a small fire", where: [618, 830], sprites: (x) => [{ x, y: BANK + 1, px: tentPx(), refl: true },
+    { x: x + 30, y: BANK, px: stonesPx(4).concat(flamePx(0, -2, false), smokePx(1, -8, 5, 4)), refl: true }] },
+  firepit: { name: "A firepit with log seats", where: [742], sprites: (x) => [{ x, y: BANK, px: logPx(-26, 11).concat(mirror(logPx(-26, 11)), stonesPx(6), flamePx(0, -2, true), smokePx(1, -12, 7)), refl: true }] },
+  picnic: { name: "A picnic table and a grill", where: [742, 616], sprites: (x) => { const s = Spr(), Wd = WOODP(), K = FUR.dark;
+    s.rect(-14, -10, 15, -8, Wd, .8); s.line(-10, -8, -12, 0, Wd, 1); s.line(10, -8, 12, 0, Wd, 1); s.line(-9, -8, -7, 0, Wd, 1, .2); s.line(9, -8, 7, 0, Wd, 1, .2); s.rect(-16, -5, 17, -4, Wd, .6);
+    const g = Spr(); g.ell(0, -12, 4.5, 3, K); g.rect(-5, -13, 6, -12, [F(10), F(10), F(10), F(8)], .5); g.line(0, -9, 0, -5, K); g.line(-1, -5, -3, 0, K); g.line(1, -5, 3, 0, K); g.line(0, -5, 0, 0, K);
+    return [{ x, y: BANK, px: s.px(), refl: true }, { x: x + 24, y: BANK, px: g.px().concat(smokePx(0, -16, 5, 4)), refl: true }]; } },
+  canoe: { name: "A canoe pulled up", where: [630, 838], sprites: (x) => { const s = Spr(), P = PAINTP(), Wd = WOODP();
+    s.poly([[-24, -6], [24, -6], [19, -1], [-19, -1]], P, (xx, y) => y < -5 ? .9 : .5); s.line(-25, -8, -23, -6, P, 1, .9); s.line(24, -8, 25, -6, P, 1, .9); s.line(-18, -6, 18, -6, [F(7), F(7), F(7), F(7)], 1, .9);
+    s.line(-6, -10, 12, -3, Wd, 1, .6); s.ell(14, -2, 2.5, 1.3, Wd);
+    return [{ x, y: BANK + 1, px: s.px(), refl: true }]; } },
+  owl: { name: "An owl on a bough", where: [826, 650], sprites: (x) => { const s = Spr(), D = FUR.deer, W = FUR.white, Wd = WOODP(), blink = tick(1) % 7 === 0;
+    s.line(-12, 1, 12, 0, Wd, 2); s.ell(0, -6, 4.6, 6.5, D); s.ell(0, -4, 2.6, 4, W, { line: false }); s.ell(0, -13, 4.4, 3.6, D); s.line(-4, -17, -3, -16, D); s.line(4, -17, 3, -16, D);
+    for (const ex of [-2, 2]) { s.set(ex, -13, blink ? D : FUR.beak, .9, false); if (!blink) s.set(ex, -14, FUR.beak, .9, false); }
+    s.set(0, -12, FUR.dark, 0, false);
+    return [{ x, y: WY - 40, px: s.px() }]; } },
+  lights: { name: "Fireflies or butterflies", where: [742], sprites: (x) => { const px = [], spring = st.season === "spring";
+    for (let i = 0; i < (spring ? 5 : 14); i++) { const a = T * (spring ? .5 : .2) + i * 2.1, fx = Math.round(Math.sin(a + i) * 70 + Math.sin(a * 1.7) * 8), fy = Math.round(-10 - (i * 9) % 36 + Math.cos(a * 1.3) * 5);
+      if (spring) { const up = tick(4 + (i % 3)) % 2, wing = code(R.flower, N[R.flower] - 2 - (i % 2) * 3), body = F(8); px.push([fx, fy, body], [fx, fy + 1, body], [fx - 1, fy - up, wing], [fx - 2, fy - up, wing], [fx + 1, fy - up, wing], [fx + 2, fy - up, wing], [fx - 1, fy + 1, wing], [fx + 1, fy + 1, wing]); }
+      else if ((tick(2) + i * 3) % 5 !== 0) px.push([fx, fy, code(R.light, 2)], [fx + 1, fy, code(R.light, 1)]); }
+    return [{ x, y: BANK, px }]; } },
+};
+const DETAIL_KEYS = Object.keys(DETAILS);
+function rollDetails() { // one or two, at places that don't crowd each other
+  const r = Math.random, pool = DETAIL_KEYS.filter((k) => !st.only || st.only === k), n = st.only ? 1 : st.count === "1" ? 1 : st.count === "2" ? 2 : 1 + (r() < .5 ? 1 : 0), picks = [];
+  for (const k of shuffle(pool, r)) { if (picks.length >= n) break;
+    const xs = DETAILS[k].where.filter((x) => picks.every((p) => Math.abs(p.x - x) > 70)); if (xs.length) picks.push({ k, x: st.only ? xs[0] : xs[Math.floor(r() * xs.length)] }); }
+  st.picks = picks; save();
+}
+function homeDetails(out) { if (BD() !== "B") return; for (const p of st.picks || []) out.push(...DETAILS[p.k].sprites(p.x)); }
+
 function scene(v) {
   const beat = v.beat, out = [];
+  homeDetails(out);
   homeLily(out, v);
   if (beat !== "home" && beat !== "recap") out.push(...lily(TODAY.x, TODAY.y, true, null));
   drawWalker(out, v);
@@ -1650,7 +1761,7 @@ const ease = (t) => .5 - .5 * Math.cos(Math.PI * t);
 let lastT = performance.now();
 function frame(nowMs) {
   requestAnimationFrame(frame);
-  const dt = Math.min(.1, (nowMs - lastT) / 1000); lastT = nowMs;
+  const dt = clamp((nowMs - lastT) / 1000, 0, .1); // never backwards: a negative clock cycles glints off the end of their ramp lastT = nowMs;
   T += st.reduce || st.still ? 0 : dt * (READING(st.beat) ? .5 : 1);
   for (const v of views) {
     let cam = v.cam, mix = null;
@@ -1686,6 +1797,7 @@ function go(to) {
   navTo(to);
 }
 function navTo(beat, jump = false) {
+  if (beat === "home" && st.beat !== "home") rollDetails(); // home has come round: pick again
   if (beat !== "home") rowing = false;
   if (jump) replyAt[beat] = 0;
   const B = beats(), fwd = B.indexOf(beat) >= B.indexOf(st.beat) || rowing;
@@ -1723,6 +1835,9 @@ function renderPanel() {
   $("label").innerHTML = `<b>${BD()}</b>${H_.name}`;
   $("bdUi").replaceChildren(
     rowEl("Variant", Object.entries(HOME).map(([k, h]) => pchip(k + " " + h.name, BD() === k, () => set("bd", k, true)))),
+    ...(BD() === "B" ? [rowEl("Details", [pchip("Roll again", false, () => { rollDetails(); rerender(); }, (st.picks || []).map((p) => DETAILS[p.k].name).join(", ") || "none")]),
+      rowEl("How many", [["1", "1"], ["2", "2"], ["1-2", "1 or 2"]].map(([k, l]) => pchip(l, st.count === k, () => { st.count = k; rollDetails(); rerender(); }))),
+      rowEl("Show only", DETAIL_KEYS.map((k) => pchip(DETAILS[k].name, st.only === k, () => { st.only = st.only === k ? "" : k; rollDetails(); rerender(); })))] : []),
     rowEl("Devices", [pchip("All at once", st.all, () => set("all", !st.all, true), "every device class")]));
   $("pieceUi").replaceChildren(
     rowEl("Figure", Object.entries(FIG).map(([id, f]) => pchip(f.name, st.figure === id, () => set("figure", id)))),
@@ -1792,6 +1907,7 @@ addEventListener("keydown", (e) => {
 let rT = 0; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(layout, 150); });
 if (matchMedia("(max-width: 820px)").matches) { $("panel").hidden = true; $("panelBtn").setAttribute("aria-expanded", "false"); }
 document.fonts.ready.then(() => { for (const v of views) v.lastKey = ""; });
+rollDetails(); // opening the app is home coming round too
 layout();
 requestAnimationFrame(frame);
 </script>
