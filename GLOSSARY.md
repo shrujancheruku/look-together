@@ -63,3 +63,49 @@ _Avoid_: Server, location, data centre
 **Pattern**:
 An Assumption or friction that recurs across a person's Inquiries, shown to them only in a long-term view, outside any Inquiry.
 _Avoid_: Insight, profile, progress
+
+### The pixel world
+
+**Shoreline**:
+The one wide pixel-art world every screen is a view of, travelled left to right in the order of an Inquiry: the landing, home's pond, today's lily, the islets, and back ashore at the landing.
+_Avoid_: Map, level, scene, background
+
+**Landing**:
+The bank at the left end of the Shoreline: the signpost (About), the boathouse (Settings), the welcome, and the spot where a Recap opens after the journey.
+_Avoid_: Menu, lobby
+
+**Islet**:
+One of the small themed islands a Path crosses, one per step, each joined to the last by a bridge. Which islets a Path crosses comes from the Inquiry's seed, never from anything the person did.
+_Avoid_: Level, stage, checkpoint
+
+**Walker**:
+The small figure that stands for the person on the Shoreline, set up by them in Settings. It walks one islet per Reflection and rows the boat; it never speaks, gestures or leads.
+_Avoid_: Avatar, character, guide, companion
+
+**Lily**:
+How an Inquiry appears in the world: a cluster of pads that grows as the Inquiry does, ages while it is unfinished, and flowers when it reaches its Recap.
+_Avoid_: Plant, tree, progress
+
+**Pad**:
+One leaf of a lily: the first stands for the Problem, and one more unfurls for each Probe. Pads never change when a Path ends, so a lily never shows progress.
+_Avoid_: Leaf, node, tile
+
+**Frost panel**:
+The pane of frosted pixel art that holds a group of words over the world, tinted sky above the waterline and water below it.
+_Avoid_: Card, glass, halo, overlay
+
+**Reading mode**:
+How the world behaves while a person reads or writes: it runs at half speed and the frost panels thicken, so the words come first.
+_Avoid_: Focus mode, pause
+
+**Cue**:
+A short one-off animation the world plays when an Inquiry's state changes, from a closed list. A cue never replays, never blocks a reply, and never rewards or counts anything.
+_Avoid_: Reward, effect, celebration, feedback
+
+**Still water**:
+The setting, and the matching colours, in which the world stops moving altogether. Help uses the same still colours.
+_Avoid_: Pause, low-power mode
+
+**Leaf note**:
+A note from the guide on the person's first Inquiry, set beside the thing it explains while everything else dims.
+_Avoid_: Tooltip, tutorial, coach mark
