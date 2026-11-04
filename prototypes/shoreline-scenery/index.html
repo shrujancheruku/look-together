@@ -629,7 +629,7 @@ function pal() {
     woodL: code(R.trunk, nt - 1), wood: code(R.trunk, 2), wood1: code(R.trunk, 1), woodD: code(R.trunk, 0),
     red: code(R.flower, 0), redL: code(R.flower, 3), pink: code(R.flower, nf - 2), heather: code(R.flower, 2),
     blue: code(R.water, 2), leaf: code(R.leafA, nl - 4), leafD: code(R.leafA, 1), leafL: code(R.leafA, nl - 1),
-    grass: code(R.grass, ng - 2), grassL: code(R.grass, ng - 1), gold: code(R.light, 1), straw: code(R.leafC, N[R.leafC] - 2), teal: code(R.far, 1) };
+    grass: code(R.grass, ng - 2), grassL: code(R.grass, ng - 1), sand: code(R.light, 1), turq: code(R.water, N[R.water] - 3), gold: code(R.light, 1), straw: code(R.leafC, N[R.leafC] - 2), teal: code(R.far, 1) };
 }
 const masonry = (x0, y0, P, shadeX) => (x, y) => { // coursed stone: mortar lines, offset joints, darker past shadeX
   const r = Math.floor((y - y0) / 4), mortar = (y - y0) % 4 === 3 || (x - x0 + (r % 2) * 3) % 7 === 0, dark = x >= shadeX;
@@ -676,14 +676,14 @@ const BRIDGES = {
     for (let x = xa; x <= xb; x++) { const u = ((x - xa) % span) / span, open = Math.round(WY - Math.sqrt(Math.max(0, 1 - (2 * u - 1) ** 2)) * 5);
       for (let y = WY - 8; y < WY; y++) if (y < open || y < WY - 6) setp(g, x, y, y === WY - 8 ? P.stoneL : hash2(x >> 1, y >> 1, 97) > .7 ? P.stoneDD : P.stoneD); }
   },
-  planks(g, xa, xb, P) { // a plank walk on piles, a post now and then
-    rect(g, xa, WY - 4, xb, WY - 3, (x) => x % 5 === 0 ? P.woodD : P.wood1); piles(g, xa, xb, WY - 3, 12, P.woodD);
-    for (let x = xa; x <= xb; x += 12) rect(g, x, WY - 8, x + 1, WY - 4, P.woodD);
+  reeds(g, xa, xb, P) { // a walk of bundled reeds on poles, lashed at intervals
+    for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 4 + Math.sin(Math.PI * u) * 2), lash = (x - xa) % 6 === 0;
+      setp(g, x, y, lash ? P.wood1 : P.straw); setp(g, x, y + 1, lash ? P.woodD : P.wood1); if ((x - xa) % 16 === 0) rect(g, x, y - 6, x + 1, WY + 1, P.woodD); }
   },
-  draw(g, xa, xb, P) { // a drawbridge: flat deck, a small portal and its beam in the middle
-    rect(g, xa, WY - 5, xb, WY - 3, (x, y) => y === WY - 5 ? P.white2 : P.woodD); piles(g, xa, xb, WY - 3, 14, P.woodD);
-    const m = Math.round((xa + xb) / 2); for (const px of [m - 6, m + 6]) rect(g, px, WY - 18, px + 1, WY - 5, P.white2);
-    rect(g, m - 12, WY - 19, m + 13, WY - 18, P.white2); for (let x = xa; x <= xb; x += 5) rect(g, x, WY - 8, x + 1, WY - 5, P.white2);
+  brick(g, xa, xb, P) { // low pointed brick arches, a tile band under the parapet
+    const n = Math.max(2, Math.round((xb - xa) / 22)), span = (xb - xa) / n;
+    for (let x = xa; x <= xb; x++) { const u = ((x - xa) % span) / span, open = Math.round(WY - 6 * Math.sqrt(Math.max(0, 1 - Math.abs(2 * u - 1))));
+      for (let y = WY - 9; y < WY; y++) if (y < open || y < WY - 7) setp(g, x, y, y === WY - 9 ? P.sand : y === WY - 8 ? ((x - xa) % 3 ? P.turq : P.white2) : (y + (x >> 2)) % 3 ? P.woodL : P.wood1); }
   },
   zigzag(g, xa, xb, P) { // a low stone walk in three offset runs
     const n = 3, w = (xb - xa) / n;
@@ -743,38 +743,40 @@ const ISLETS = {
     const tw = masonry(kx + 42, b - 40, P, kx + 49); for (let x = kx + 42; x < kx + 54; x++) rect(g, x, b - 34 + Math.round(hash2(x, 5, 92) * 6) + (x > kx + 49 ? 5 : 0), x + 1, b + 1, tw);
     const lw = masonry(kx - 36, b - 20, P, kx); for (let x = kx - 36; x < kx - 12; x++) rect(g, x, b - 14 + Math.round(Math.max(0, kx - 24 - x) * .6 + hash2(x, 6, 90) * 2), x + 1, b + 1, lw);
     pine(g, cx + 70, top(cx + 70) + 1, 32); },
-  cottage(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h), hx = cx + 6;
-    dress(g, cx, HW, top, P, { path: [cx - HW * .8, hx - 3], flowers: [P.white, P.gold, P.pink], fd: .08 });
-    birch(g, cx - 64, top(cx - 64) + 1, 44); birch(g, cx - 52, top(cx - 52) + 1, 32);
-    rect(g, hx - 22, b - 24, hx + 23, b, (x) => x < hx - 20 || x > hx + 20 ? P.white : (x - hx) % 4 === 0 ? P.woodD : P.red);
-    win(g, hx - 15, b - 18, 6, 7, P.white, P.glass); win(g, hx + 11, b - 18, 6, 7, P.white, P.glass);
-    rect(g, hx - 3, b - 15, hx + 4, b, P.white); rect(g, hx - 2, b - 14, hx + 3, b, P.woodD);
-    for (let j = 0; j < 14; j++) { const w = Math.round(27 * (1 - j / 14)); rect(g, hx - w, b - 25 - j, hx + w + 1, b - 24 - j, j === 0 ? P.woodD : j === 1 ? P.leafD : (x) => hash2(x, j, 85) > .5 ? P.grass : P.grassL); } // the turf roof
-    for (let x = hx - 22; x < hx + 22; x++) if (hash2(x, 4, 84) > .8) setp(g, x, b - 27 - Math.round((1 - Math.abs(x - hx) / 27) * 11 * hash2(x, 5, 84)), x % 2 ? P.gold : P.white);
-    rect(g, hx + 10, b - 40, hx + 14, b - 32, P.white); rect(g, hx + 9, b - 41, hx + 15, b - 40, P.stoneD);
-    const fx = cx - 34; rect(g, fx, b - 52, fx + 1, b, P.white); for (let j = 0; j < 6; j++) rect(g, fx + 1, b - 51 + j, fx + 1 + Math.round(12 * (1 - j / 6)), b - 50 + j, j === 2 || j === 3 ? P.white : P.red); // a pennant
-    const sx = cx + 46; rect(g, sx - 8, b - 10, sx + 8, b, (x) => (x - sx) % 3 === 0 ? P.wood1 : P.wood); gable(g, sx, b - 10, 10, 5, P.grass, P.woodD); // a woodshed
-    for (let x = sx + 10; x < sx + 16; x += 2) for (let y = b - 6; y < b; y += 2) { setp(g, x, y, P.woodL); setp(g, x + 1, y, P.wood1); }
-    birch(g, cx + 70, top(cx + 70) + 1, 36); },
-  windmill(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h);
-    dress(g, cx, HW, top, P, {});
-    const tul = [P.red, P.pink, P.gold]; // tulips in bands
-    for (let x = cx - HW + 12; x < cx + HW - 10; x++) { if (Math.abs(x - cx) < 18 || (x > cx + 32 && x < cx + 56) || x % 2) continue; const t = top(x), c = tul[Math.floor((x - cx + 200) / 10) % 3];
-      setp(g, x, t - 1, P.leaf); setp(g, x, t - 2, c); if (hash2(x, 1, 83) > .4) setp(g, x, t - 3, c); }
-    for (let j = 0; j < 58; j++) { const w = Math.round(13 - j * .1), y = b - 1 - j; // the tower: a brick base, a thatched body
-      rect(g, cx - w, y, cx + w + 1, y + 1, (x) => j < 10 ? ((x + (Math.floor(j / 3) % 2) * 2) % 4 === 0 || j % 3 === 2 || x > cx + w * .4 ? P.stoneD : P.stone) : (x - cx) % 3 === 0 ? P.woodD : x > cx + w * .4 ? P.wood1 : P.wood); }
-    rect(g, cx - 3, b - 12, cx + 4, b, P.woodD); win(g, cx - 1, b - 38, 3, 4, P.woodD, P.glass, false);
-    rect(g, cx - 19, b - 22, cx + 20, b - 20, P.woodD); for (let x = cx - 19; x <= cx + 19; x += 3) rect(g, x, b - 26, x + 1, b - 22, P.woodD); rect(g, cx - 19, b - 27, cx + 20, b - 26, P.woodD); // the stage
-    for (let j = 0; j < 8; j++) { const w = Math.round(9 * Math.sqrt(1 - (j / 8) ** 2)); rect(g, cx - w, b - 59 - j, cx + w + 1, b - 58 - j, j === 0 ? P.woodD : P.wood1); } // the cap
-    const hy = b - 55;
-    for (let k = 0; k < 4; k++) { const a = .45 + k * Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a); // four sails, latticed
-      for (let r = 0; r < 38; r += .5) { setp(g, cx + ca * r, hy + sa * r, P.woodD);
-        if (r > 7) for (let q = 1; q <= 5; q += .5) setp(g, cx + ca * r - sa * q, hy + sa * r + ca * q, Math.round(r) % 4 === 0 || q === 5 ? P.woodD : (Math.round(q) + Math.round(r)) % 2 ? P.white : P.white2); } }
-    rect(g, cx - 1, hy - 1, cx + 2, hy + 2, P.woodD);
-    const ox = cx + 44, brick = (x, y) => (y + (x % 4 < 2 ? 0 : 1)) % 3 === 0 ? P.red : P.redL; // a brick house, a stepped gable
-    rect(g, ox - 9, b - 14, ox + 10, b, brick);
-    for (let s = 0; s < 4; s++) { const w = 9 - s * 2, y0 = b - 14 - (s + 1) * 3; rect(g, ox - w, y0, ox + w + 1, y0 + 3, brick); setp(g, ox - w, y0 - 1, P.white); setp(g, ox + w, y0 - 1, P.white); }
-    win(g, ox - 6, b - 11, 4, 5, P.white, P.glass); win(g, ox + 3, b - 11, 4, 5, P.white, P.glass); win(g, ox - 1, b - 22, 3, 3, P.white, P.glass, false); },
+  baobab(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), bx = cx - 50, hx = cx + 4;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, hx - 3], flowers: [P.gold, P.straw], fd: .08 });
+    for (let y = b - 34; y < b; y++) { const v = (y - b + 34) / 34, w = Math.round(5 + Math.sin(Math.PI * Math.min(1, v * .8 + .15)) * 5); // the baobab: a bottle of a trunk
+      rect(g, bx - w, y, bx + w + 1, y + 1, (x) => x > bx + w * .4 || hash2(x, y >> 1, 73) > .85 ? P.stoneD : P.stone); }
+    for (const [dx, len, rise] of [[-3, -15, .5], [-1, -7, 1.2], [1, 8, 1.1], [3, 16, .45]]) { const s = Math.sign(len); let ex = 0, ey = 0; // short arms, little crowns
+      for (let i = 0; i <= Math.abs(len); i++) { ex = bx + dx + s * i; ey = b - 34 - Math.round(i * rise); setp(g, ex, ey, P.stoneD); setp(g, ex, ey + 1, P.stoneD); }
+      tree(g, ex, ey - 3, 6, R.leafA, ey + 1); }
+    const ww = 17; // a painted house: white walls, black lines, blocks of colour
+    rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = x - hx + ww, v = b - y, k = u % 8;
+      if (v === 1 || v === 8 || v === 17 || (v > 8 && k === 0)) return P.woodD;
+      if (v > 8) return Math.abs(k - 4) + Math.abs(v - 12.5) < 3 ? P.white : [P.red, P.gold, P.blue][Math.floor(u / 8) % 3];
+      return (u + v) % 6 === 0 ? P.woodD : P.white; });
+    rect(g, hx - 3, b - 12, hx + 4, b, P.woodD); rect(g, hx - 4, b - 13, hx + 5, b - 12, P.red);
+    for (let j = 0; j < 18; j++) { const w = Math.round((ww + 4) * (1 - j / 18)); rect(g, hx - w, b - 19 - j, hx + w + 1, b - 18 - j, (x) => j === 0 ? P.woodL : (x + j) % 3 ? P.straw : P.woodL); } // a thatched cone
+    rect(g, hx, b - 40, hx + 1, b - 36, P.woodD);
+    const rx = cx + 44, rw = 11; rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => y > b - 4 ? P.wood1 : x > rx + 6 ? P.wood : P.woodL); rect(g, rx - 2, b - 9, rx + 3, b, P.woodD); // a plain round house
+    for (let j = 0; j < 13; j++) { const w = Math.round((rw + 3) * (1 - j / 13)); rect(g, rx - w, b - 14 - j, rx + w + 1, b - 13 - j, (x) => (x + j) % 3 ? P.straw : P.woodL); }
+    for (const [ox, oy] of [[cx + 26, 0], [cx + 29, 0], [cx + 27, -4]]) { rect(g, ox - 1, b - 4 + oy, ox + 2, b + oy, P.wood); setp(g, ox, b - 5 + oy, P.wood1); } // clay pots
+    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) setp(g, ax + Math.round(j * .15), at - j, P.woodD); // an acacia, its crown flat
+    for (const [w, dy] of [[9, 0], [13, 1], [12, 2], [7, 3]]) rect(g, ax + 3 - w, at - 25 + dy, ax + 4 + w, at - 24 + dy, (x) => dy === 0 ? P.leafL : hash2(x, dy, 71) > .6 ? P.leafD : P.leaf); },
+  persian(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), px = cx + 4, W2 = 28, H2 = 30;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, px - 11], flowers: [P.pink, P.red], fd: .08 });
+    const cypress = (x, hh) => { const t = top(x); rect(g, x, t - 3, x + 1, t, P.woodD);
+      for (let y = t - hh; y < t - 2; y++) { const v = (y - t + hh) / hh, w = Math.round(Math.sin(Math.PI * Math.min(1, v * 1.1)) * 2.6); rect(g, x - w, y, x + w + 1, y + 1, (xx) => xx > x || hash2(xx, y, 72) > .6 ? P.leafD : P.leaf); } };
+    cypress(cx - 62, 30); cypress(cx - 50, 40); cypress(cx + 58, 40); cypress(cx + 70, 30);
+    for (const tx of [cx - 37, cx + 44]) { tree(g, tx, top(tx) - 12, 7, R.leafA, top(tx)); for (let i = 0; i < 5; i++) setp(g, tx - 5 + Math.floor(hash2(tx, i, 70) * 11), top(tx) - 16 + Math.floor(hash2(i, tx, 70) * 8), P.red); } // pomegranates
+    const niche = (x, yb, ys, ya, hw, c) => { for (let dx = -hw; dx <= hw; dx++) { const u = Math.abs(dx) / hw; rect(g, x + dx, Math.round(ys - (ys - ya) * Math.sqrt(1 - u)), x + dx + 1, yb, c); } };
+    rect(g, px - W2, b - H2, px + W2 + 1, b, (x, y) => (b - y) % 4 === 0 || (x + (Math.floor((b - y) / 4) % 2) * 3) % 6 === 0 || x > px + W2 - 8 ? P.woodL : P.sand); // the pavilion, in brick
+    rect(g, px - W2, b - H2 - 3, px + W2 + 1, b - H2, (x) => x % 3 === 1 ? P.white : P.turq); for (let x = px - W2; x <= px + W2; x += 4) rect(g, x, b - H2 - 5, x + 2, b - H2 - 3, P.sand);
+    rect(g, px - 11, b - 28, px + 12, b, (x, y) => (x + y) % 4 ? P.turq : P.white); niche(px, b, b - 14, b - 26, 9, P.blue); rect(g, px - 3, b - 10, px + 4, b, P.woodD); // the iwan
+    for (const sx of [px - 20, px + 20]) { niche(sx, b, b - 7, b - 12, 4, P.woodD); niche(sx, b - 16, b - 21, b - 26, 4, P.blue); }
+    rect(g, px - 8, b - H2 - 9, px + 9, b - H2 - 5, P.sand); // the dome on its drum
+    for (let j = 0; j < 10; j++) { const w = Math.round(9 * Math.sqrt(1 - (j / 10) ** 2)); rect(g, px - w, b - H2 - 10 - j, px + w + 1, b - H2 - 9 - j, (x) => j % 3 === 1 && x % 4 === 0 ? P.white : P.turq); }
+    rect(g, px, b - H2 - 23, px + 1, b - H2 - 19, P.gold); },
   pavilion(g, cx, P) { const h = 12, b = WY - h, top = mound(g, cx, HW, h, "rock");
     dress(g, cx, HW, top, P, { flowers: [P.pink], fd: .03 });
     rect(g, cx - 32, b - 4, cx + 33, b, (x, y) => y === b - 4 ? P.stoneL : x % 6 === 0 ? P.stoneD : P.stone); rect(g, cx - 38, b - 2, cx - 32, b, P.stoneL);
@@ -862,8 +864,8 @@ const ISLETS = {
 const THEMES = [ // islet and the bridge that leads to it
   { id: "shrine", name: "Shrine island", bridge: "taiko", blurb: "a low vermilion-railed arch to a torii, a raised hall, two stone lanterns, a cherry and a black pine" },
   { id: "crag", name: "Highland crag", bridge: "arches", blurb: "a stone arched bridge to a craggy rock in heather: a ruined keep with ivy, a curtain wall and gate, a broken turret" },
-  { id: "cottage", name: "Nordic cottage", bridge: "planks", blurb: "a plank walk to a red cottage with a flowering turf roof, a pennant, a woodshed and birches" },
-  { id: "windmill", name: "Windmill", bridge: "draw", blurb: "a drawbridge to a thatched windmill with a stage, bands of tulips and a stepped-gable house" },
+  { id: "baobab", name: "Baobab isle", bridge: "reeds", blurb: "a reed walk on poles to a baobab, a round house painted in Ndebele blocks and lines under a thatched cone, a plainer hut, clay pots and an acacia" },
+  { id: "persian", name: "Persian garden", bridge: "brick", blurb: "a bridge of pointed brick arches to a brick pavilion with a tiled iwan, a turquoise dome, cypresses and pomegranates" },
   { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, bamboo, a tall stone and a willow" },
   { id: "lighthouse", name: "Lighthouse rock", bridge: "rope", blurb: "a rope walk to a striped lighthouse with a gallery, and a keeper's house behind a fence" },
   { id: "greek", name: "Whitewashed isle", bridge: "causeway", blurb: "a causeway to white houses with blue shutters, a bell arch, bougainvillea, a domed chapel and an olive" },
@@ -952,7 +954,7 @@ const COPY = {
 };
 const ABOUT = {
   name: "Islands and bridges",
-  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a drawbridge to a windmill, and so on. Each Path draws eight of ten themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
+  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a reed walk to a baobab isle, and so on. Each Path draws eight of ten themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
 };
 const RULES = (g, need) => [
   "<b>Home:</b> the near shore of a wide lake under mountains, mirrored. Rowboat, signpost and boathouse on the landing to its left. The far shore to the right is a thin distant line, so the islets read against open water.",
