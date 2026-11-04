@@ -1,8 +1,13 @@
 <meta charset="utf-8">
-<title>Path Motion</title>
+<title>Home Backdrop</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
-  PROTOTYPE (throwaway, never merge): answers "How does the pond world show a Path's motion and progress?" (issue #84),
+  PROTOTYPE (throwaway, never merge): answers "What should home's backdrop be, so it is no longer the plainest frame?" (issue #86).
+  Five backdrops for home, switched by the bottom bar (‹ ›, arrow keys) or ?bd=A–E: A today's shore (the baseline), B a waterfall
+  cove, C a willow bay closed in by a near bank, D a hillside cottage, E clear shallows. Each redraws only the near shore around
+  the pond; the landing, the pier and the islets are as on #84. Built on prototypes/path-motion, whose own notes follow.
+
+  From #84: answers "How does the pond world show a Path's motion and progress?" (issue #84),
   version 2. Version 1 (four variants: walker, rowboat, light, skimming stone) is in this branch's history; the founder
   chose the walker, and "the walk is the wait". Version 2: the person customises the walker (figure, jacket, skin tone);
   it sits at a seat on every islet; it starts and ends in the rowboat (tapping the boat at home begins the Inquiry; at the
@@ -159,10 +164,13 @@
 <div id="app">
   <main id="stage" aria-label="Device preview of the Shoreline">
     <div id="single"></div>
+    <div id="compare" hidden></div>
   </main>
   <aside id="panel">
     <h1 id="vname"></h1>
     <p id="vblurb"></p>
+    <h2>Backdrop</h2>
+    <div id="bdUi"></div>
     <h2>Your walker</h2>
     <p>In the app these would sit in Settings, in the boathouse. Every colour is a row of the indexed palette, so it shifts with the season and the palette rows like everything else.</p>
     <div id="pieceUi"></div>
@@ -518,7 +526,7 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
       let c = code(R.water, 1);
       if (sy >= 0) { const j = sy * W + clamp(wx + dx, 0, W - 1); if (!body[j]) c = land[j] | 16; }
       const fade = clamp((d / B.fd - .45) / .55, 0, 1);
-      if (fade > 0 && bay(wx, wy) < fade * .9) c = code(R.water, Math.max(0, Math.round((1 - fade) * (nW - 1) * .7)));
+      if (fade > 0 && bay(wx, wy) < fade * .9) c = g.bed && g.bed[i] ? g.bed[i] : code(R.water, Math.max(0, Math.round((1 - fade) * (nW - 1) * .7)));
       out[o + x] = c;
     }
   }
@@ -987,19 +995,20 @@ function boathouse(g, x, base) {
   g.sprites.push({ x, y: base, px, bob: false });
 }
 const item = (g, id, x, y, rx, ry, label) => { g.items[id] = { id, x, y, rx, ry, label }; };
-function buildShore(season, seed, path) {
+function buildShore(season, seed, path) { // the world key below includes st.bd
   const W = WORLD_W, H = WORLD_H, g = newWorld(W, H, 11 + (season === "autumn" ? 5 : 0)), nf = N[R.far], P = pal();
   Object.assign(g, { items: {}, spring: season === "spring", moon: SEASONS[season].moon, themes: [] });
   P.glass = g.spring ? P.blue : P.gold; // windows catch the sky by day and are lit in the evening
   hills(g, 0, W, WY, { seed: 5, snow: true, layers: [[250, nf - 1], [165, nf - 2], [84, nf - 4]] });
   // the near shore: the landing and home, wrapping round from the far end of the world
   farTrees(g, -260, 960, WY); mist(g, 0, W, WY);
-  treeRow(g, 0, 330, WY); treeRow(g, W - 150, W, WY, { front: false }); pine(g, 880, WY - 3, 44); pine(g, 902, WY - 3, 34);
+  treeRow(g, 0, 330, WY); treeRow(g, W - 150, W, WY, { front: false }); if (HOME[BD()].pines !== false) { pine(g, 880, WY - 3, 44); pine(g, 902, WY - 3, 34); }
   bank(g, 0, 960, WY); bank(g, W - 150, W, WY);
   for (let x = 960; x < W - 150; x++) { const h = 2 + Math.round(2 * Math.sin(x * .05) + hash2(x >> 2, 1, 91) * 3); for (let y = WY - h; y < WY; y++) g.land[y * W + x] = code(R.far, y === WY - h ? 2 : 0); }
   water(g, 0, W, WY, H);
   // today's lily's pier, then the islets
   jetty(g, PIER[0], PIER[1], WY - 6);
+  g.bed = null; HOME[BD()].build(g, P); // this prototype: home's backdrop
   const picks = routeFor(seed, path), edge = Math.round(HW * .82); // bridges first, so each islet's banks cover its ends
   picks.forEach((t, k) => BRIDGES[t.bridge](g, k ? slotX(k - 1) + edge : PIER[1], slotX(k) - edge, P));
   jetty(g, slotX(SLOTS - 1) + edge, W - 140, WY - 6); // ashore: the last walk is a plain jetty to the landing
@@ -1029,6 +1038,134 @@ function buildShore(season, seed, path) {
   g.LUT = makeLUT(season, "normal");
   return g;
 }
+
+// ================= home's backdrop: this prototype's question (issue #86) =================
+// Each variant redraws the near shore around the pond (home, x ~480–1000) and nothing else: the landing, the pier and the islets are as on #84.
+// Nothing here changes with use: no variant grows, counts or rewards. Motion is palette cycling only (glint steps), so Reduce Motion
+// slows it and Still water freezes it like every other glint.
+const glintDown = (x, y) => code(R.glint, ((-y - (x % 3)) % 4 + 4) % 4); // a glint step that, cycled, runs downwards
+function foam(g, x0, x1) { // white water where the falls meet the pond: a sprite on the surface, never reflected
+  const px = [];
+  for (let x = x0; x <= x1; x++) for (let y = 0; y < 3; y++) if (hash2(x, y, 211) < 1 - Math.abs(x - (x0 + x1) / 2) / ((x1 - x0) / 2) - y * .25) px.push([x - x0, y, code(R.glint, (x + y) & 3)]);
+  g.sprites.push({ x: x0, y: WY, px, bob: false });
+}
+function tufts(g, x0, x1, baseFn, n, flowers) { // grass and the odd flower standing on a bank that lies over water (so: sprites)
+  const ng = N[R.grass], r = rng(331);
+  for (let i = 0; i < n; i++) {
+    const x = Math.round(x0 + r() * (x1 - x0)), b = Math.round(baseFn(x)), h = 2 + Math.floor(r() * 4), px = [];
+    for (let j = -2; j <= 2; j++) for (let y = 0; y < h - Math.abs(j); y++) px.push([j, -y, code(R.grass, y === h - Math.abs(j) - 1 ? ng - 1 : ng - 3)]);
+    if (flowers && r() < .35) px.push([0, -h, flowers[Math.floor(r() * flowers.length)]]);
+    g.sprites.push({ x, y: b, px, bob: false });
+  }
+}
+function cattails(g, x0, x1, n) { // reeds with brown heads at the far waterline
+  const ng = N[R.grass], nt = N[R.trunk], r = rng(Math.round(x0));
+  for (let i = 0; i < n; i++) {
+    const x = Math.round(x0 + r() * (x1 - x0)), h = Math.round(12 + r() * 22), lean = r() < .5 ? 0 : r() < .5 ? -1 : 1, px = [];
+    for (let j = 0; j < h; j++) px.push([j > h * .6 ? lean : 0, -j, code(R.grass, j > h * .5 ? ng - 3 : ng - 5)]);
+    if (r() < .55) for (let j = 0; j < 5; j++) { px.push([lean, -h - j, code(R.trunk, j === 0 ? nt - 1 : 1)]); px.push([lean + 1, -h - j, code(R.trunk, 0)]); }
+    else for (let j = 0; j < 6; j++) px.push([lean + (j > 3 ? lean : 0), -h - j, code(R.grass, ng - 2)]);
+    g.sprites.push({ x, y: WY + 1, px, bob: false, refl: true });
+  }
+}
+const HOME = {
+  A: { name: "Today's shore", pines: true,
+    blurb: "The baseline from #84: distant hills over a thin far bank, two pines, and open water. Three quarters of the frame is sky and water with nothing in it, which is why it reads as the plainest frame.",
+    rules: ["<b>As on #84:</b> hills, far trees and mist over a thin bank, two pines to the right, open water with the moored boat and the lilies.",
+      "<b>The gap:</b> the islets each have a place to look at; home has only distance."],
+    build() {} },
+  B: { name: "Waterfall cove", pines: false,
+    blurb: "A mossy cliff rises behind the pond's right side, and a thin ribbon of falls drops from it into the pond, mirrored in the water. Pines and a birch on the cliff top, ferns at its foot, a willow on the left to balance it. The only movement is the falling water's palette cycle and its foam.",
+    rules: ["<b>The cliff:</b> a rock face behind the pond, x ~690–970, its lip ~150 art px above the water; moss ledges, pines and a birch on top.",
+      "<b>The falls:</b> a 10 px ribbon drawn in glint steps, palette-cycled so it runs downwards; foam where it meets the water. Mirrored in the pond like everything above the waterline.",
+      "<b>Calm:</b> one thin fall, never a torrent; no spray, no sound. Reduce Motion slows the cycle, Still water stops it.",
+      "<b>Balance:</b> a willow on the left bank; the moored boat and the lilies sit in the open water between the two."],
+    build(g, P) {
+      const h = (x) => x < 720 || x > 960 ? 0 : 96 * Math.sqrt(smooth((x - 720) / 60)) * Math.sqrt(1 - smooth((x - 880) / 80)) + 6 * Math.sin(x * .07) * smooth((x - 720) / 60);
+      const notch = (x) => x >= 804 && x <= 813 ? 6 : 0, top = (x) => WY - h(x) + notch(x);
+      ground(g, 720, 961, top, WY, "rock");
+      for (let x = 720; x < 961; x++) { const t = groundTop(top, x); for (let y = t; y < WY; y++) { const m = hash2(x >> 2, y >> 2, 215) + (y - t < 8 ? .35 : 0) - (y - t) / 160; if (m > .62) setp(g, x, y, code(R.grass, m > .85 ? N[R.grass] - 3 : N[R.grass] - 6)); } } // moss over the rock, thickest near the top
+      for (const [y0, x0, x1] of [[WY - 92, 712, 760], [WY - 58, 840, 900], [WY - 30, 700, 790], [WY - 110, 860, 905]]) // moss on the ledges
+        for (let x = x0; x < x1; x++) if (WY - h(x) < y0 - 2 && hash2(x, y0, 212) > .2) { setp(g, x, y0, code(R.grass, N[R.grass] - 2)); if (hash2(x, y0, 213) > .55) setp(g, x, y0 + 1, code(R.grass, N[R.grass] - 4)); }
+      pine(g, 850, groundTop(top, 850) + 2, 40); pine(g, 868, groundTop(top, 868) + 2, 28); birch(g, 760, groundTop(top, 760) + 1, 20); tree(g, 905, groundTop(top, 905) - 14, 13, R.leafC, groundTop(top, 905) + 1);
+      const lip = groundTop(top, 809);
+      for (let x = 805; x <= 812; x++) for (let y = lip - 1; y < WY; y++) setp(g, x, y, x === 805 || x === 812 ? code(R.mist, 1) : hash2(x, y >> 2, 214) > .9 ? code(R.cloud, N[R.cloud] - 2) : glintDown(x, y));
+      for (let y = WY - 10; y < WY; y++) for (let x = 788; x < 832; x++) { const p = (1 - Math.abs(x - 809.5) / 22) * ((y - WY + 10) / 10); if ((x < 805 || x > 812) && bay(x, y) < p) setp(g, x, y, code(R.mist, 1)); } // a little mist at its foot
+      foam(g, 796, 824);
+      for (const fx of [776, 832, 846]) fern(g, fx, WY - 1);
+      willow(g, 575, WY - 58, 26, WY); rock(g, 950, WY + 1, 9, 7, true); rock(g, 784, WY + 1, 5, 4, true);
+    } },
+  C: { name: "Willow bay", pines: false,
+    blurb: "Home becomes a small bay rather than the edge of a lake: a great willow hangs over the far bank, cattails stand at the waterline, and a near bank of grass closes the bottom of the frame, so the empty deep water is gone. The lilies float in the sheltered water between the banks.",
+    rules: ["<b>The far bank:</b> a great willow on the left whose strands reach the water, a smaller one on the right, cattails and reeds at the waterline.",
+      "<b>The near bank:</b> a grassy bank across the bottom of the frame, lowest in the middle, curving out of sight on each side; tufts and a few flowers on its edge.",
+      "<b>Shelter:</b> the boat and the lilies sit in a pond held between two banks; the open lake only shows past the willows.",
+      "<b>Device classes:</b> phones see the near bank at the bottom; tablets and web see it end off to the sides, under the water."],
+    build(g, P) {
+      willow(g, 600, WY - 66, 36, WY); willow(g, 868, WY - 46, 24, WY); tree(g, 935, WY - 34, 18, R.leafA, WY);
+      cattails(g, 520, 640, 18); cattails(g, 820, 930, 14);
+      const nb = (x) => { const u = (x - 710) / 330; return WY + 316 + (Math.abs(u) > .5 ? 560 * (Math.abs(u) - .5) ** 2 : 0) - 8 * Math.cos(u * 4); };
+      ground(g, 380, 1040, nb, g.H, "moss");
+      tufts(g, 390, 1030, (x) => groundTop(nb, x), 70, [P.pink, P.white, P.gold]);
+      g.rand = rng(341); for (const x of [470, 560, 900, 980]) { const b = groundTop(nb, x); for (let j = 0; j < 20; j++) { setp(g, x, b - j - 1, code(R.grass, N[R.grass] - 5)); } } // a few reed stems standing in the bank
+    } },
+  D: { name: "Hillside cottage", pines: false,
+    blurb: "The far shore rises into a soft hill with a small cottage on its shoulder. A footpath zigzags down to a little landing stage where the boat is tied. Blossom trees in spring, maples in autumn. Lived in, but by no one we see: the window catches the morning sky and is lit in the evening.",
+    rules: ["<b>The hill:</b> a grassy rise behind the pond, highest just right of centre (~95 art px), a lower shoulder on the left.",
+      "<b>The cottage:</b> stone walls, a dark roof and a chimney, one window that shows the sky by day and is lit in the evening. Nobody is ever seen there.",
+      "<b>The way down:</b> a footpath zigzags to a short landing stage by the moored boat, so the boat is tied to something.",
+      "<b>Trees:</b> blossom (leafB) in spring, red in autumn, from the same ramp; a fence along the top.",
+      "<b>No reward:</b> the cottage never changes: no smoke that comes and goes, no lamp that turns on for a finished Inquiry."],
+    build(g, P) {
+      const h = (x) => 92 * Math.exp(-(((x - 800) / 115) ** 2)) + 42 * Math.exp(-(((x - 590) / 72) ** 2)) + 4, top = (x) => WY - h(x);
+      ground(g, 440, 1010, top, WY, "moss");
+      const T = (x) => groundTop(top, x);
+      for (const [x, r] of [[560, 11], [612, 9], [905, 12], [948, 9], [700, 8]]) tree(g, x, T(x) - r - 5, r, R.leafB, T(x) + 1);
+      tree(g, 860, T(860) - 20, 14, R.leafA, T(860) + 1);
+      // the footpath: a zigzag from the cottage down to the landing stage
+      let px = 790, py = T(790) + 1;
+      for (let t = 0; t <= 1; t += .002) { const x = Math.round(lerp(788, 694, t) + 22 * Math.sin(t * Math.PI * 3)), y = Math.round(lerp(T(788) + 2, WY - 4, t));
+        if (y >= T(x) + 1) { setp(g, x, y, P.sand); setp(g, x + 1, y, x % 3 ? P.sand : P.stoneL); } px = x; py = y; }
+      // the cottage
+      const cx = 806, b = Math.round(Math.min(T(792), T(820))) + 2;
+      rect(g, cx - 14, b - 14, cx + 15, b, (x, y) => (y - b) % 4 === 0 || (x + ((y >> 2) & 1) * 3) % 7 === 0 ? P.stone : x > cx + 8 ? P.stoneD : P.stoneL);
+      gable(g, cx, b - 13, 18, 11, P.woodD, P.wood1);
+      rect(g, cx + 7, b - 30, cx + 11, b - 18, P.stoneD); rect(g, cx + 6, b - 31, cx + 12, b - 29, P.stone);
+      win(g, cx - 9, b - 10, 5, 4, P.woodD, P.glass); win(g, cx + 5, b - 10, 4, 4, P.woodD, P.glass, false);
+      rect(g, cx - 1, b - 9, cx + 3, b, P.wood1);
+      fence(g, 830, 880, Math.round(T(855)) + 1, P.wood1);
+      // the landing stage the boat is tied to
+      jetty(g, 640, 696, WY - 5); rect(g, 694, WY - 12, 696, WY - 5, P.woodD);
+    } },
+  E: { name: "Clear shallows", pines: true,
+    blurb: "Keep the far shore and make the water the place. Near the viewer the pond turns clear: past the reflections you look down onto pebbles, swaying waterweed and a sunken branch, with light rippling over the bed. The deep, empty water becomes something to look into. A few mossy rocks stand along the far bank.",
+    rules: ["<b>Reflection, then depth:</b> the far water mirrors the shore as now; nearer the bottom of the frame the reflection gives way to the bed, as real water does when you look down into it.",
+      "<b>The bed:</b> pebbles, waterweed and a sunken branch, all tinted by the water; light caustics in glint steps, palette-cycled so they shimmer. Reduce Motion slows them, Still water freezes them.",
+      "<b>Only under home:</b> the bed fades out towards the landing and the pier, so the islets keep their deep lake.",
+      "<b>No fish:</b> the koi only comes while waiting on a reply, so nothing else swims here."],
+    build(g, P) {
+      for (const [x, w, hh] of [[600, 8, 6], [612, 4, 3], [905, 10, 7], [925, 5, 4]]) rock(g, x, WY + 1, w, hh, true);
+      cattails(g, 540, 580, 6);
+      const { W, H } = g, bed = g.bed = new Uint16Array(W * H), ns = N[R.stone], ng = N[R.grass], nt = N[R.trunk], r = rng(371);
+      const x0 = 400, x1 = 1060, edge = (x) => clamp(Math.min(x - x0, x1 - x) / 90, 0, 1);
+      for (let y = WY + 40; y < H; y++) for (let x = x0; x < x1; x++) {
+        if (bay(x + 1, y + 2) >= edge(x)) continue;
+        const n = hash2(x >> 1, y >> 1, 372), pebble = hash2(x >> 2, (y + ((x >> 2) & 1) * 2) >> 2, 373);
+        let c = bay(x, y) < .45 ? code(R.water, quant(.35 - (y - WY) / 1600, N[R.water], x, y)) : code(R.stone, quant(.22 + (n - .5) * .2 - (y - WY) / 2400, ns, x, y)) | 16;
+        if (pebble > .86) c = code(R.stone, 2 + ((pebble * 97) | 0) % 3) | 16;
+        const k = Math.abs(Math.sin(x * .19 + Math.sin(y * .23) * 1.6) * Math.sin(y * .29 + Math.sin(x * .13) * 1.6)); // a caustic net
+        if (k < .035 && hash2(x, y, 374) > .55) c = code(R.glint, ((x + y) >> 2) & 3);
+        bed[y * W + x] = c;
+      }
+      for (let i = 0; i < 26; i++) { // waterweed: wavy strands rising from the bed
+        let x = Math.round(x0 + 60 + r() * (x1 - x0 - 120)); const b = WY + 170 + Math.round(r() * 220), len = 18 + Math.round(r() * 40), ph = r() * 6;
+        for (let j = 0; j < len; j++) { const xx = x + Math.round(Math.sin(j * .22 + ph) * 2), y = b - j; if (y > WY + 110) { bed[y * W + xx] = code(R.grass, j > len * .7 ? ng - 4 : ng - 7) | 16; if (j < len * .5) bed[y * W + xx + 1] = code(R.grass, ng - 9) | 16; } }
+      }
+      for (let x = 610; x < 700; x++) { const y = Math.round(WY + 300 + (x - 610) * .18); for (let j = 0; j < 4; j++) bed[(y + j) * W + x] = code(R.trunk, j === 0 ? nt - 1 : j === 3 ? 0 : 1) | 16; } // a sunken branch
+      for (const [bx, by] of [[640, 0], [668, 0]]) for (let j = 1; j < 8; j++) bed[(WY + 300 + Math.round((bx - 610) * .18) - j) * W + bx + (j >> 1)] = code(R.trunk, 1) | 16;
+    } },
+};
+const BD = () => HOME[st.bd] ? st.bd : "A";
 
 // ================= mock content =================
 const COPY = {
@@ -1067,11 +1204,11 @@ const RULES = (g, need) => [
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2 };
-try { Object.assign(st, JSON.parse(localStorage.getItem("path-motion") || "{}")); } catch {}
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2, bd: "A", all: false };
+try { Object.assign(st, JSON.parse(localStorage.getItem("home-backdrop") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
-const save = () => { try { localStorage.setItem("path-motion", JSON.stringify(st)); } catch {} };
+const save = () => { try { localStorage.setItem("home-backdrop", JSON.stringify(st)); } catch {} };
 const replyAt = {}; // step beat → when its mock reply lands (seconds), set by Submit
 const motion = () => st.still ? "still" : st.reduce ? "reduce" : "full";
 const now = () => performance.now() / 1000;
@@ -1082,7 +1219,7 @@ const beats = () => ["home", "probes", ...Array.from({ length: Math.min(SLOTS, s
 const LABEL = (b) => ({ home: "Home", probes: "Probes", recap: "Recap" })[b] || "Step " + b.slice(1) + " · " + world().themes[+b.slice(1) - 1].name;
 
 let G = null, gKey = "";
-function world() { const k = [st.season, st.seed, st.path].join(); if (gKey !== k) { G = buildShore(st.season, st.seed, st.path); gKey = k; drawMapBase(); } return G; }
+function world() { const k = [st.season, st.seed, st.path, BD()].join(); if (gKey !== k) { G = buildShore(st.season, st.seed, st.path); gKey = k; drawMapBase(); } return G; }
 
 // ================= the scene: sprites drawn from the beat =================
 const PLAN = [[0, 0, 15, 5.1], [-34, -12, 12, .6], [31, -15, 12, 2.4], [-24, 21, 11, 4.0], [29, 19, 10, 1.3]];
@@ -1467,12 +1604,13 @@ function lutNow(T) {
 
 // ================= stage =================
 let views = [];
-const single = document.getElementById("single"), stageEl = document.getElementById("stage");
+const single = document.getElementById("single"), compareEl = document.getElementById("compare"), stageEl = document.getElementById("stage");
 function layout() {
-  single.innerHTML = ""; views = [];
+  single.innerHTML = ""; compareEl.innerHTML = ""; views = [];
   if (!beats().includes(st.beat)) st.beat = "home";
-  const d = DEVICES.find((x) => x.id === st.device) || DEVICES[1];
-  views.push(makeView(d, single, stageEl.clientWidth - 32, stageEl.clientHeight - 110));
+  single.hidden = st.all; compareEl.hidden = !st.all;
+  if (st.all) for (const d of DEVICES) views.push(makeView(d, compareEl, d.web ? 560 : d.cls === "tablet" ? 300 : 230, 520));
+  else { const d = DEVICES.find((x) => x.id === st.device) || DEVICES[1]; views.push(makeView(d, single, stageEl.clientWidth - 32, stageEl.clientHeight - 110)); }
   for (const v of views) setScreen(v, st.beat, false);
   renderPanel();
 }
@@ -1568,8 +1706,12 @@ function renderPanel() {
   const g = world(), need = needed(g);
   const dv = DEVICES.find((x) => x.id === st.device) || DEVICES[1], k = scaleFor(dv, g).k, pt = (n) => Math.round(n * k / dv.dpr);
   const css = (c) => { const u = g.LUT[c]; return `rgb(${u & 255},${u >>> 8 & 255},${u >>> 16 & 255})`; }, sw = (c) => `<span class="sw" style="background:${css(c)}"></span>`;
-  $("vname").textContent = "The walker"; $("vblurb").textContent = ABOUT.blurb;
-  $("label").innerHTML = `<b>${beats().indexOf(st.beat) + 1}/${beats().length}</b>${LABEL(st.beat)}`;
+  const H_ = HOME[BD()];
+  $("vname").textContent = BD() + " · " + H_.name; $("vblurb").textContent = H_.blurb;
+  $("label").innerHTML = `<b>${BD()}</b>${H_.name}`;
+  $("bdUi").replaceChildren(
+    rowEl("Variant", Object.entries(HOME).map(([k, h]) => pchip(k + " " + h.name, BD() === k, () => set("bd", k, true)))),
+    rowEl("Devices", [pchip("All at once", st.all, () => set("all", !st.all, true), "every device class")]));
   $("pieceUi").replaceChildren(
     rowEl("Figure", Object.entries(FIG).map(([id, f]) => pchip(f.name, st.figure === id, () => set("figure", id)))),
     rowEl("Jacket", COATS.map(([id, name], i) => pchip(sw(code(R.coat, i * 3 + 1)) + name, st.coat === id, () => set("coat", id)))),
@@ -1595,7 +1737,7 @@ function renderPanel() {
   $("stats").textContent = `walker       ${walkerH()} art px tall = ${pt(walkerH())} pt on ${dv.name} (art px = ${k} device px); seated ${Math.round(walkerH() * .7)} px\nkoi          ${st.cues === "big" ? 36 : 13} art px = ${pt(st.cues === "big" ? 36 : 13)} pt; dragonfly ${st.cues === "big" ? 24 : 7} art px = ${pt(st.cues === "big" ? 24 : 7)} pt\nwalk pace    90 art px/s, rowing 70; a step is ~${(STEP / 90).toFixed(1)} s, finishing fades out and in\n\nworld        ${g.W} × ${g.H} art px, a loop\nislets       ${SLOTS}, ${2 * HW + 1} wide, centres ${STEP} apart, x ${slotX(0)}–${slotX(SLOTS - 1)}\nRecap        the landing, x ${LAND_X} (${WORLD_W - slotX(SLOTS - 1) + LAND_X} px on from the last islet)\nall frames   y ${need.y0}–${need.y1}\n`
     + (need.ok ? "no frame clamps on any device" : "clamped:\n  " + need.clamps.join("\n  "))
     + `\n\ntheme catalogue\n` + THEMES.map((t) => `  ${g.themes.includes(t) ? "●" : "○"} ${t.name}: ${t.blurb}`).join("\n");
-  $("rules").innerHTML = RULES(g, need).map((x) => `<li>${x}</li>`).join("");
+  $("rules").innerHTML = H_.rules.map((x) => `<li>${x}</li>`).join("");
   mapKey = ""; drawMapCams();
 }
 const mapEl = $("map"); let mapBase = null, mapKey = "";
@@ -1628,9 +1770,8 @@ function flowStep(dir) {
   if (dir > 0) go(b === "home" ? "probes" : b === "probes" ? "p1" : b === "recap" ? "row" : n >= last ? "recap" : "p" + (n + 1));
   else if (b !== "home" && b !== "recap") go("back");
 }
-const cycle = flowStep;
-$("prev").onclick = () => flowStep(-1); $("next").onclick = () => flowStep(1);
-$("prev").setAttribute("aria-label", "Back"); $("next").setAttribute("aria-label", "Next, as the person would: begin, choose a Probe, Submit, row home");
+const cycle = (dir) => { const ks = Object.keys(HOME); set("bd", ks[(ks.indexOf(BD()) + dir + ks.length) % ks.length], true); };
+$("prev").onclick = () => cycle(-1); $("next").onclick = () => cycle(1);
 $("panelBtn").onclick = () => { const p = $("panel"); p.hidden = !p.hidden; $("panelBtn").setAttribute("aria-expanded", String(!p.hidden)); };
 addEventListener("keydown", (e) => {
   if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
