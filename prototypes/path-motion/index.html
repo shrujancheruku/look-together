@@ -3,8 +3,10 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
   PROTOTYPE (throwaway, never merge): answers "What should home's backdrop be, so it is no longer the plainest frame?" (issue #86).
-  Five backdrops for home, switched by the bottom bar (‹ ›, arrow keys) or ?bd=A–E: A today's shore (the baseline), B a waterfall
-  cove, C a willow bay closed in by a near bank, D a hillside cottage, E clear shallows. Each redraws only the near shore around
+  Round 2, a forest: five backdrops for home, switched by the bottom bar (‹ ›, arrow keys) or ?bd=A–E: A today's shore (the
+  baseline), B the style kit's forest, C wooded hills, D a clearing in the deep wood, E the way out of the wood. Round 1 (waterfall
+  cove, willow bay, hillside cottage, clear shallows) is in this branch's history. Also: Back leaves the top bar for small ‹ ›
+  arrows at mid-height; › shows only when the next step is already done, and a revisited step shows its Reflection as sent. Each redraws only the near shore around
   the pond; the landing, the pier and the islets are as on #84. Built on prototypes/path-motion, whose own notes follow.
 
   From #84: answers "How does the pond world show a Path's motion and progress?" (issue #84),
@@ -87,6 +89,7 @@
   .pager { position: absolute; left: 50%; transform: translateX(-50%); flex-direction: row !important; align-items: center; gap: 8px !important; padding: 6px 10px !important; }
   .pillb { border-radius: 999px; padding: 5px 13px; outline: 1.5px solid currentColor; }
   .hit { position: absolute; border-radius: 50%; padding: 0; }
+  .side { position: absolute; transform: translateY(-50%); padding: 12px 7px !important; font: 700 16px/1 var(--body); text-align: center; } /* the ‹ › arrows at mid-height */
   .hit:hover { background: rgba(255,255,255,.08); }
   .sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 520px; margin-inline: auto; border-radius: 18px 18px 0 0; padding: 16px 20px 30px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 -6px 30px rgba(0,0,0,.25); }
   .dev.spring .sheet { background: #f4f6f1; color: #1f2f37; } .dev.autumn .sheet { background: #1d1a2e; color: #fbeedd; }
@@ -1033,31 +1036,17 @@ function buildShore(season, seed, path) { // the world key below includes st.bd
   item(g, "house", 470, WY - 12, 22, 14, "Settings");
   item(g, "lily", 772, WY + 82, 30, 20, "Today's Recap");
   item(g, "old0", 716, WY + 150, 20, 13, "An older Recap"); item(g, "old1", 664, WY + 202, 15, 10, "An older Recap");
-  sky(g, 0, WY, { x: 750, y: WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
+  sky(g, 0, WY, { x: g.sunX ?? 750, y: g.sunY ?? WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
   finish(g, season);
   g.LUT = makeLUT(season, "normal");
   return g;
 }
 
-// ================= home's backdrop: this prototype's question (issue #86) =================
-// Each variant redraws the near shore around the pond (home, x ~480–1000) and nothing else: the landing, the pier and the islets are as on #84.
-// Nothing here changes with use: no variant grows, counts or rewards. Motion is palette cycling only (glint steps), so Reduce Motion
-// slows it and Still water freezes it like every other glint.
-const glintDown = (x, y) => code(R.glint, ((-y - (x % 3)) % 4 + 4) % 4); // a glint step that, cycled, runs downwards
-function foam(g, x0, x1) { // white water where the falls meet the pond: a sprite on the surface, never reflected
-  const px = [];
-  for (let x = x0; x <= x1; x++) for (let y = 0; y < 3; y++) if (hash2(x, y, 211) < 1 - Math.abs(x - (x0 + x1) / 2) / ((x1 - x0) / 2) - y * .25) px.push([x - x0, y, code(R.glint, (x + y) & 3)]);
-  g.sprites.push({ x: x0, y: WY, px, bob: false });
-}
-function tufts(g, x0, x1, baseFn, n, flowers) { // grass and the odd flower standing on a bank that lies over water (so: sprites)
-  const ng = N[R.grass], r = rng(331);
-  for (let i = 0; i < n; i++) {
-    const x = Math.round(x0 + r() * (x1 - x0)), b = Math.round(baseFn(x)), h = 2 + Math.floor(r() * 4), px = [];
-    for (let j = -2; j <= 2; j++) for (let y = 0; y < h - Math.abs(j); y++) px.push([j, -y, code(R.grass, y === h - Math.abs(j) - 1 ? ng - 1 : ng - 3)]);
-    if (flowers && r() < .35) px.push([0, -h, flowers[Math.floor(r() * flowers.length)]]);
-    g.sprites.push({ x, y: b, px, bob: false });
-  }
-}
+// ================= home's backdrop: this prototype's question (issue #86), round 2: a forest =================
+// Each variant redraws the near shore around the pond (home, x ~380–1060) and nothing else: the landing, the pier and the islets are as on #84.
+// Round 1 (a waterfall cove, a willow bay, a hillside cottage, clear shallows) is in this branch's history. Round 2 goes back to the
+// style kit's forest (#70): thick and round-crowned, ringing the water. The person begins lost in a wood, looking for a way.
+// Nothing here changes with use: no variant grows, counts or rewards. The light is drawn once; only the water and glints move.
 function cattails(g, x0, x1, n) { // reeds with brown heads at the far waterline
   const ng = N[R.grass], nt = N[R.trunk], r = rng(Math.round(x0));
   for (let i = 0; i < n; i++) {
@@ -1068,101 +1057,116 @@ function cattails(g, x0, x1, n) { // reeds with brown heads at the far waterline
     g.sprites.push({ x, y: WY + 1, px, bob: false, refl: true });
   }
 }
+function clearSky(g, x0, x1, fadeW = 50) { // lift the distant hills off a stretch of the near shore, dithered out at its ends
+  const { W, land } = g;
+  for (let x = x0; x < x1; x++) { const e = clamp(Math.min(x - x0, x1 - x) / fadeW, 0, 1); for (let y = 0; y < WY; y++) { const i = y * W + ((x % W) + W) % W; if (land[i] >> 5 === R.far && bay(x, y) < e) land[i] = TR; } }
+}
+function wood(g, x0, x1, topFn, o = {}) { // a forest whose crowns reach topFn: rows of round crowns, the back rows first, over a dark understorey
+  const r = rng(o.seed ?? 1), R0 = o.R ?? 16, base = o.base ?? WY, ramps = o.ramps ?? LEAF, under = code(o.under ?? R.leafA, 0);
+  let ymin = 1e9; for (let x = x0; x < x1; x++) ymin = Math.min(ymin, topFn(x));
+  for (let x = x0; x < x1; x++) for (let y = Math.round(topFn(x) + R0 * .7); y < base; y++) setp(g, x, y, under);
+  for (let y = ymin + R0 * .7; y < base + R0 * .4; y += R0 * .75) for (let x = x0 - R0 * .5 + r() * R0 * .6; x < x1 + R0 * .3; x += R0 * (1 + r() * .5)) {
+    const rr = R0 * (.8 + r() * .45), cy = y + (r() - .5) * R0 * .4, t = topFn(clamp(x, x0, x1 - 1));
+    if (cy < t + rr * .75) continue;
+    if (o.pine && r() < o.pine) pine(g, x, Math.round(Math.min(base, cy + rr * 1.2)), Math.round(rr * 2.6));
+    else tree(g, x, cy, rr, ramps[Math.floor(r() * ramps.length)], base);
+  }
+}
+function farWood(g, x0, x1, topFn, shade, seed) { // a hazy ridge of forest: crown bumps in the far ramp, lit along its top
+  const r = rng(seed), nf = N[R.far], top = new Float32Array(x1 - x0).fill(1e9);
+  for (let c = x0 - 10; c < x1 + 10; c += 3 + r() * 5) { const rad = 4 + r() * 6, cy = topFn(clamp(c, x0, x1 - 1)) + rad * .7;
+    for (let x = Math.max(x0, Math.floor(c - rad)); x < Math.min(x1, c + rad); x++) top[x - x0] = Math.min(top[x - x0], cy - Math.sqrt(Math.max(0, rad * rad - (x + .5 - c) ** 2))); }
+  for (let x = x0; x < x1; x++) { const t = Math.round(top[x - x0]), e = clamp(Math.min(x - x0, x1 - x) / 30, 0, 1);
+    for (let y = Math.max(0, t); y < WY; y++) { if (bay(x, y + 1) >= e) continue; const d = y - t; setp(g, x, y, code(R.far, d < 1 ? Math.min(nf - 1, shade + 2) : hash2(x >> 1, y >> 1, seed) > .8 ? Math.max(0, shade - 1) : shade)); } }
+}
+function haze(g, x0, x1, yc, h, strength = .6) { // a band of mist lying along a ridge's foot
+  const { W, land } = g;
+  for (let y = Math.max(0, Math.floor(yc - h)); y < yc + h; y++) for (let x = x0; x < x1; x++) {
+    const p = (1 - Math.abs(y - yc) / h) * strength * clamp(Math.min(x - x0, x1 - x) / 40, 0, 1), i = y * W + ((x % W) + W) % W;
+    if (p > 0 && bay(x, y) < p && land[i] !== TR && y < WY) land[i] = code(R.mist, p > .4 ? 1 : 0);
+  }
+}
+function shafts(g, x0, x1, y0, y1, o = {}) { // light shafts: land under each diagonal band is lifted a step, dithered, fading downwards
+  const { W, land } = g, per = o.period ?? 80, wid = o.width ?? 24, slope = o.slope ?? .6, k = o.strength ?? .55;
+  for (let y = Math.max(0, y0); y < y1; y++) for (let x = x0; x < x1; x++) {
+    const i = y * W + ((x % W) + W) % W, c = land[i]; if (c === TR || (c & 31) >= 16) continue;
+    const b = ((x - (o.dir ?? 1) * y * slope) % per + per) % per, p = b < wid ? k * (1 - (y - y0) / (y1 - y0)) * Math.sin(Math.PI * b / wid) : 0;
+    const r = c >> 5, s = c & 15; if (bay(x, y) < p && s < N[r] - 1 && r !== R.sky && r !== R.cloud) land[i] = c + 1;
+  }
+}
+function trunkFG(g, x, w, y0, y1) { // a near trunk standing in front of everything, water included: bark lit on its left
+  const nt = N[R.trunk];
+  for (let y = y0; y < y1; y++) { const flare = y > y1 - 14 ? Math.round((y - y1 + 14) * .5) : 0;
+    for (let xx = x - (w >> 1) - flare; xx <= x + (w >> 1) + flare; xx++) { const u = (xx - x) / (w / 2 + flare), i = y * g.W + ((xx % g.W) + g.W) % g.W;
+      g.body[i] = 0; g.land[i] = code(R.trunk, u < -.55 ? nt - 1 : u > .5 ? 0 : hash2(xx, y >> 2, 401) > .8 ? 0 : (y + xx * 3) % 9 === 0 ? 1 : 2); } }
+}
 const HOME = {
   A: { name: "Today's shore", pines: true,
-    blurb: "The baseline from #84: distant hills over a thin far bank, two pines, and open water. Three quarters of the frame is sky and water with nothing in it, which is why it reads as the plainest frame.",
-    rules: ["<b>As on #84:</b> hills, far trees and mist over a thin bank, two pines to the right, open water with the moored boat and the lilies.",
-      "<b>The gap:</b> the islets each have a place to look at; home has only distance."],
+    blurb: "The baseline from #84: distant hills over a thin far bank, two pines, and open water. For comparison only.",
+    rules: ["<b>As on #84:</b> hills, far trees and mist over a thin bank, two pines to the right, open water with the moored boat and the lilies."],
     build() {} },
-  B: { name: "Waterfall cove", pines: false,
-    blurb: "A mossy cliff rises behind the pond's right side, and a thin ribbon of falls drops from it into the pond, mirrored in the water. Pines and a birch on the cliff top, ferns at its foot, a willow on the left to balance it. The only movement is the falling water's palette cycle and its foam.",
-    rules: ["<b>The cliff:</b> a rock face behind the pond, x ~690–970, its lip ~150 art px above the water; moss ledges, pines and a birch on top.",
-      "<b>The falls:</b> a 10 px ribbon drawn in glint steps, palette-cycled so it runs downwards; foam where it meets the water. Mirrored in the pond like everything above the waterline.",
-      "<b>Calm:</b> one thin fall, never a torrent; no spray, no sound. Reduce Motion slows the cycle, Still water stops it.",
-      "<b>Balance:</b> a willow on the left bank; the moored boat and the lilies sit in the open water between the two."],
-    build(g, P) {
-      const h = (x) => x < 720 || x > 960 ? 0 : 96 * Math.sqrt(smooth((x - 720) / 60)) * Math.sqrt(1 - smooth((x - 880) / 80)) + 6 * Math.sin(x * .07) * smooth((x - 720) / 60);
-      const notch = (x) => x >= 804 && x <= 813 ? 6 : 0, top = (x) => WY - h(x) + notch(x);
-      ground(g, 720, 961, top, WY, "rock");
-      for (let x = 720; x < 961; x++) { const t = groundTop(top, x); for (let y = t; y < WY; y++) { const m = hash2(x >> 2, y >> 2, 215) + (y - t < 8 ? .35 : 0) - (y - t) / 160; if (m > .62) setp(g, x, y, code(R.grass, m > .85 ? N[R.grass] - 3 : N[R.grass] - 6)); } } // moss over the rock, thickest near the top
-      for (const [y0, x0, x1] of [[WY - 92, 712, 760], [WY - 58, 840, 900], [WY - 30, 700, 790], [WY - 110, 860, 905]]) // moss on the ledges
-        for (let x = x0; x < x1; x++) if (WY - h(x) < y0 - 2 && hash2(x, y0, 212) > .2) { setp(g, x, y0, code(R.grass, N[R.grass] - 2)); if (hash2(x, y0, 213) > .55) setp(g, x, y0 + 1, code(R.grass, N[R.grass] - 4)); }
-      pine(g, 850, groundTop(top, 850) + 2, 40); pine(g, 868, groundTop(top, 868) + 2, 28); birch(g, 760, groundTop(top, 760) + 1, 20); tree(g, 905, groundTop(top, 905) - 14, 13, R.leafC, groundTop(top, 905) + 1);
-      const lip = groundTop(top, 809);
-      for (let x = 805; x <= 812; x++) for (let y = lip - 1; y < WY; y++) setp(g, x, y, x === 805 || x === 812 ? code(R.mist, 1) : hash2(x, y >> 2, 214) > .9 ? code(R.cloud, N[R.cloud] - 2) : glintDown(x, y));
-      for (let y = WY - 10; y < WY; y++) for (let x = 788; x < 832; x++) { const p = (1 - Math.abs(x - 809.5) / 22) * ((y - WY + 10) / 10); if ((x < 805 || x > 812) && bay(x, y) < p) setp(g, x, y, code(R.mist, 1)); } // a little mist at its foot
-      foam(g, 796, 824);
-      for (const fx of [776, 832, 846]) fern(g, fx, WY - 1);
-      willow(g, 575, WY - 58, 26, WY); rock(g, 950, WY + 1, 9, 7, true); rock(g, 784, WY + 1, 5, 4, true);
+  B: { name: "The kit's forest", pines: false,
+    blurb: "The style kit's bank brought back to home: two rows of big round crowns along the far shore, blossom among them, light shafts from the upper left and cattails at the waterline. The distant hills drop away behind it, so the forest meets the sky as it did in the kit. Past the pier the mountains and the open lake return.",
+    rules: ["<b>The forest:</b> a back row and a front row of round crowns (40–80 art px across), the kit's leaf ramps with blossom (leafB) among them, a mist band at the tree line.",
+      "<b>The sky:</b> no hills behind home; they rise again past the pier, over the islets.",
+      "<b>Light:</b> shafts from the upper left, as the kit's Luminous light. Drawn once; nothing in them moves.",
+      "<b>Cattails:</b> clumps at the far waterline on both sides of the boat."],
+    build(g) {
+      clearSky(g, 380, 1040, 70); farTrees(g, 380, 1040, WY); mist(g, 380, 1040, WY);
+      treeRow(g, 380, 1040, WY, { front: false, dense: .8 });
+      treeRow(g, 380, 1040, WY, { back: false, scale: 1.2, dense: .75, gapFront: [690, 790] });
+      bank(g, 380, 1040, WY);
+      shafts(g, 380, 1040, WY - 110, WY, { period: 88, width: 26 });
+      cattails(g, 540, 600, 9); cattails(g, 860, 930, 10);
     } },
-  C: { name: "Willow bay", pines: false,
-    blurb: "Home becomes a small bay rather than the edge of a lake: a great willow hangs over the far bank, cattails stand at the waterline, and a near bank of grass closes the bottom of the frame, so the empty deep water is gone. The lilies float in the sheltered water between the banks.",
-    rules: ["<b>The far bank:</b> a great willow on the left whose strands reach the water, a smaller one on the right, cattails and reeds at the waterline.",
-      "<b>The near bank:</b> a grassy bank across the bottom of the frame, lowest in the middle, curving out of sight on each side; tufts and a few flowers on its edge.",
-      "<b>Shelter:</b> the boat and the lilies sit in a pond held between two banks; the open lake only shows past the willows.",
-      "<b>Device classes:</b> phones see the near bank at the bottom; tablets and web see it end off to the sides, under the water."],
-    build(g, P) {
-      willow(g, 600, WY - 66, 36, WY); willow(g, 868, WY - 46, 24, WY); tree(g, 935, WY - 34, 18, R.leafA, WY);
-      cattails(g, 520, 640, 18); cattails(g, 820, 930, 14);
-      const nb = (x) => { const u = (x - 710) / 330; return WY + 316 + (Math.abs(u) > .5 ? 560 * (Math.abs(u) - .5) ** 2 : 0) - 8 * Math.cos(u * 4); };
-      ground(g, 380, 1040, nb, g.H, "moss");
-      tufts(g, 390, 1030, (x) => groundTop(nb, x), 70, [P.pink, P.white, P.gold]);
-      g.rand = rng(341); for (const x of [470, 560, 900, 980]) { const b = groundTop(nb, x); for (let j = 0; j < 20; j++) { setp(g, x, b - j - 1, code(R.grass, N[R.grass] - 5)); } } // a few reed stems standing in the bank
+  C: { name: "Wooded hills", pines: false,
+    blurb: "Three ridges of forest rise behind the pond, each hazier than the one in front, so the woods look deep and hilly rather than a single bank. The near ridge dips behind the pond and climbs on both sides, ringing the water; the snowy peaks only just show over the far ridge.",
+    rules: ["<b>Three ridges:</b> a near forest of big crowns (dipping to ~60 art px above the water behind the pond, ~120 at the sides), a middle ridge of small crowns (~150), a far hazy ridge in the far ramp (~210).",
+      "<b>Haze:</b> a mist band at the foot of each ridge; the further back, the bluer and paler.",
+      "<b>Ringing the water:</b> the near ridge is lowest behind the pond and climbs on each side.",
+      "<b>Mixed wood:</b> round crowns with a few pines on the higher ground, blossom here and there."],
+    build(g) {
+      const near = (x) => WY - 58 - 70 * clamp(((x - 720) / 300) ** 2, 0, 1) - 6 * Math.sin(x * .05);
+      farWood(g, 360, 1080, (x) => WY - 205 - 22 * Math.sin((x - 360) / 70) - 10 * Math.sin(x / 23), N[R.far] - 3, 411);
+      haze(g, 360, 1080, WY - 152, 8, .25);
+      wood(g, 370, 1070, (x) => WY - 150 - 18 * Math.sin((x - 300) / 85), { R: 8, seed: 412, ramps: [R.leafA, R.leafC, R.leafA], pine: .25, under: R.far });
+      haze(g, 370, 1070, WY - 96, 7, .2);
+      wood(g, 380, 1060, near, { R: 18, seed: 413, ramps: [R.leafA, R.leafA, R.leafC, R.leafB] });
+      bank(g, 380, 1060, WY);
+      cattails(g, 560, 610, 6);
     } },
-  D: { name: "Hillside cottage", pines: false,
-    blurb: "The far shore rises into a soft hill with a small cottage on its shoulder. A footpath zigzags down to a little landing stage where the boat is tied. Blossom trees in spring, maples in autumn. Lived in, but by no one we see: the window catches the morning sky and is lit in the evening.",
-    rules: ["<b>The hill:</b> a grassy rise behind the pond, highest just right of centre (~95 art px), a lower shoulder on the left.",
-      "<b>The cottage:</b> stone walls, a dark roof and a chimney, one window that shows the sky by day and is lit in the evening. Nobody is ever seen there.",
-      "<b>The way down:</b> a footpath zigzags to a short landing stage by the moored boat, so the boat is tied to something.",
-      "<b>Trees:</b> blossom (leafB) in spring, red in autumn, from the same ramp; a fence along the top.",
-      "<b>No reward:</b> the cottage never changes: no smoke that comes and goes, no lamp that turns on for a finished Inquiry."],
-    build(g, P) {
-      const h = (x) => 92 * Math.exp(-(((x - 800) / 115) ** 2)) + 42 * Math.exp(-(((x - 590) / 72) ** 2)) + 4, top = (x) => WY - h(x);
-      ground(g, 440, 1010, top, WY, "moss");
-      const T = (x) => groundTop(top, x);
-      for (const [x, r] of [[560, 11], [612, 9], [905, 12], [948, 9], [700, 8]]) tree(g, x, T(x) - r - 5, r, R.leafB, T(x) + 1);
-      tree(g, 860, T(860) - 20, 14, R.leafA, T(860) + 1);
-      // the footpath: a zigzag from the cottage down to the landing stage
-      let px = 790, py = T(790) + 1;
-      for (let t = 0; t <= 1; t += .002) { const x = Math.round(lerp(788, 694, t) + 22 * Math.sin(t * Math.PI * 3)), y = Math.round(lerp(T(788) + 2, WY - 4, t));
-        if (y >= T(x) + 1) { setp(g, x, y, P.sand); setp(g, x + 1, y, x % 3 ? P.sand : P.stoneL); } px = x; py = y; }
-      // the cottage
-      const cx = 806, b = Math.round(Math.min(T(792), T(820))) + 2;
-      rect(g, cx - 14, b - 14, cx + 15, b, (x, y) => (y - b) % 4 === 0 || (x + ((y >> 2) & 1) * 3) % 7 === 0 ? P.stone : x > cx + 8 ? P.stoneD : P.stoneL);
-      gable(g, cx, b - 13, 18, 11, P.woodD, P.wood1);
-      rect(g, cx + 7, b - 30, cx + 11, b - 18, P.stoneD); rect(g, cx + 6, b - 31, cx + 12, b - 29, P.stone);
-      win(g, cx - 9, b - 10, 5, 4, P.woodD, P.glass); win(g, cx + 5, b - 10, 4, 4, P.woodD, P.glass, false);
-      rect(g, cx - 1, b - 9, cx + 3, b, P.wood1);
-      fence(g, 830, 880, Math.round(T(855)) + 1, P.wood1);
-      // the landing stage the boat is tied to
-      jetty(g, 640, 696, WY - 5); rect(g, 694, WY - 12, 696, WY - 5, P.woodD);
+  D: { name: "Clearing in the deep wood", pines: false,
+    blurb: "The pond is a clearing deep in the forest. Near trunks stand at both edges of the frame, their canopy hangs across the top, and a dark wall of trees closes in behind. Light falls through the one gap overhead onto the far trees. Lost in a wood, with the water the one open place.",
+    rules: ["<b>Near trunks:</b> two or three wide trunks at each side, standing in front of the water, rooted in a bank in the lower corners. Wider screens see more of them.",
+      "<b>Canopy:</b> leafy masses hang across the top of the frame from the trunks, leaving a gap of sky over the pond.",
+      "<b>Behind:</b> a high, dark forest wall (leafA and leafC, no blossom), no hills.",
+      "<b>Light:</b> shafts through the gap, falling right across the back wall. The wordmark and Help sit on the canopy in their frost panels."],
+    build(g) {
+      clearSky(g, 360, 1080, 60);
+      wood(g, 360, 1080, (x) => WY - 165 - 25 * Math.sin((x - 360) / 60) - 12 * Math.sin(x / 19), { R: 15, seed: 421, ramps: [R.leafA, R.leafA, R.leafC], pine: .12 });
+      bank(g, 360, 1080, WY);
+      shafts(g, 600, 900, WY - 230, WY, { period: 70, width: 20, strength: .65 });
+      const lb = (x) => WY + 250 + Math.max(0, x - 500) * 1.5, rb = (x) => WY + 250 + Math.max(0, 940 - x) * 1.5;
+      ground(g, 360, 640, lb, g.H, "moss"); ground(g, 800, 1080, rb, g.H, "moss");
+      for (const [x, w] of [[470, 16], [532, 9], [576, 13], [866, 14], [906, 9], [968, 16]]) trunkFG(g, x, w, 160, groundTop(x < 720 ? lb : rb, x) + 4);
+      for (const [cx, cy, rx, ry, s] of [[520, 215, 110, 52, 1], [598, 262, 52, 26, 2], [930, 210, 120, 55, 3], [846, 256, 50, 24, 4], [720, 190, 60, 26, 5]]) blob(g, cx, cy, rx, ry, R.leafA, s);
+      cattails(g, 610, 640, 4); cattails(g, 800, 830, 4);
     } },
-  E: { name: "Clear shallows", pines: true,
-    blurb: "Keep the far shore and make the water the place. Near the viewer the pond turns clear: past the reflections you look down onto pebbles, swaying waterweed and a sunken branch, with light rippling over the bed. The deep, empty water becomes something to look into. A few mossy rocks stand along the far bank.",
-    rules: ["<b>Reflection, then depth:</b> the far water mirrors the shore as now; nearer the bottom of the frame the reflection gives way to the bed, as real water does when you look down into it.",
-      "<b>The bed:</b> pebbles, waterweed and a sunken branch, all tinted by the water; light caustics in glint steps, palette-cycled so they shimmer. Reduce Motion slows them, Still water freezes them.",
-      "<b>Only under home:</b> the bed fades out towards the landing and the pier, so the islets keep their deep lake.",
-      "<b>No fish:</b> the koi only comes while waiting on a reply, so nothing else swims here."],
-    build(g, P) {
-      for (const [x, w, hh] of [[600, 8, 6], [612, 4, 3], [905, 10, 7], [925, 5, 4]]) rock(g, x, WY + 1, w, hh, true);
-      cattails(g, 540, 580, 6);
-      const { W, H } = g, bed = g.bed = new Uint16Array(W * H), ns = N[R.stone], ng = N[R.grass], nt = N[R.trunk], r = rng(371);
-      const x0 = 400, x1 = 1060, edge = (x) => clamp(Math.min(x - x0, x1 - x) / 90, 0, 1);
-      for (let y = WY + 40; y < H; y++) for (let x = x0; x < x1; x++) {
-        if (bay(x + 1, y + 2) >= edge(x)) continue;
-        const n = hash2(x >> 1, y >> 1, 372), pebble = hash2(x >> 2, (y + ((x >> 2) & 1) * 2) >> 2, 373);
-        let c = bay(x, y) < .45 ? code(R.water, quant(.35 - (y - WY) / 1600, N[R.water], x, y)) : code(R.stone, quant(.22 + (n - .5) * .2 - (y - WY) / 2400, ns, x, y)) | 16;
-        if (pebble > .86) c = code(R.stone, 2 + ((pebble * 97) | 0) % 3) | 16;
-        const k = Math.abs(Math.sin(x * .19 + Math.sin(y * .23) * 1.6) * Math.sin(y * .29 + Math.sin(x * .13) * 1.6)); // a caustic net
-        if (k < .035 && hash2(x, y, 374) > .55) c = code(R.glint, ((x + y) >> 2) & 3);
-        bed[y * W + x] = c;
-      }
-      for (let i = 0; i < 26; i++) { // waterweed: wavy strands rising from the bed
-        let x = Math.round(x0 + 60 + r() * (x1 - x0 - 120)); const b = WY + 170 + Math.round(r() * 220), len = 18 + Math.round(r() * 40), ph = r() * 6;
-        for (let j = 0; j < len; j++) { const xx = x + Math.round(Math.sin(j * .22 + ph) * 2), y = b - j; if (y > WY + 110) { bed[y * W + xx] = code(R.grass, j > len * .7 ? ng - 4 : ng - 7) | 16; if (j < len * .5) bed[y * W + xx + 1] = code(R.grass, ng - 9) | 16; } }
-      }
-      for (let x = 610; x < 700; x++) { const y = Math.round(WY + 300 + (x - 610) * .18); for (let j = 0; j < 4; j++) bed[(y + j) * W + x] = code(R.trunk, j === 0 ? nt - 1 : j === 3 ? 0 : 1) | 16; } // a sunken branch
-      for (const [bx, by] of [[640, 0], [668, 0]]) for (let j = 1; j < 8; j++) bed[(WY + 300 + Math.round((bx - 610) * .18) - j) * W + bx + (j >> 1)] = code(R.trunk, 1) | 16;
+  E: { name: "The way out of the wood", pines: false,
+    blurb: "Thick, high forest on the left, the side the person comes from, thinning and stepping down to the right until it opens onto the bright lake and the mountains, the way the boat rows to begin. The sun sits in the opening and its light lies across the water to the boat. The wood is where the Inquiry begins; the opening is where the Path leads.",
+    rules: ["<b>The wood:</b> ~200 art px of forest on the left, dark and dense, falling in steps to the bank by the right edge of home.",
+      "<b>The opening:</b> past it the lake, the far shore and the mountains are open, as on the islets; the sun's glow sits there.",
+      "<b>Light:</b> shafts fall from the opening back across the forest (from the upper right).",
+      "<b>Never a reward:</b> the opening is always there, whatever the person has done; it is where the boat goes, not a prize."],
+    build(g) {
+      g.sunX = 900; g.sunY = WY - 70;
+      clearSky(g, 300, 760, 80);
+      const top = (x) => x < 600 ? WY - 215 - 12 * Math.sin(x / 31) : x < 810 ? lerp(WY - 215, WY - 36, smooth((x - 600) / 210)) - 8 * Math.sin(x / 17) : WY - 36;
+      wood(g, 300, 830, top, { R: 17, seed: 431, ramps: [R.leafA, R.leafA, R.leafC, R.leafA], pine: .1 });
+      bank(g, 300, 1000, WY);
+      for (const [x, h] of [[818, 46], [836, 30], [852, 20]]) pine(g, x, WY - 3, h);
+      shafts(g, 300, 860, WY - 240, WY, { period: 84, width: 26, strength: .6, dir: -1 });
+      cattails(g, 540, 600, 8);
     } },
 };
 const BD = () => HOME[st.bd] ? st.bd : "A";
@@ -1204,7 +1208,7 @@ const RULES = (g, need) => [
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2, bd: "A", all: false };
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2, bd: "A", all: false, reach: 0, done: 0 };
 try { Object.assign(st, JSON.parse(localStorage.getItem("home-backdrop") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
@@ -1481,7 +1485,10 @@ const Gp = (cls, inner, attr = "") => `<div class="g ${cls}" data-g ${attr}>${in
 const Bt = (cls, inner, go, attr = "") => `<button type="button" class="g ${cls}" data-g data-go="${go}" ${attr}>${inner}</button>`;
 const capg = (t) => Gp("capg", P_("cap", t));
 const topbar = (c, left, right = "") => `<div class="top" style="top:${c.top + 8}px">${left}<span style="flex:1"></span>${right}</div>`;
-const backBtn = () => Bt("ctl", "‹ Back", "back"), helpBtn = () => Bt("ctl", "Help", "noop");
+const sideNav = (c, beat) => { const B = beats(), i = B.indexOf(beat), y = Math.round(c.H / 2);
+  return `<button type="button" class="g side" data-g data-go="back" aria-label="Back" style="left:4px;top:${y}px">‹</button>`
+    + (i < st.reach ? `<button type="button" class="g side" data-g data-go="fwd" aria-label="Forward" style="right:4px;top:${y}px">›</button>` : ""); }; // forward only back over steps already done
+const helpBtn = () => Bt("ctl", "Help", "noop");
 const above = (c, inner, cls = "", gap = 10) => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + gap}px">${inner}</div>`;
 const below = (c, inner, bottom, gap = 10) => `<div class="col" style="top:${c.wl + gap}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
 function hits(c, ids) {
@@ -1501,7 +1508,7 @@ function frameHTML(c, beat) {
     OLDER.slice(0, st.older).forEach((o, i) => { h += `<div class="tag" style="left:${c.x(o.x)}px;top:${c.y(o.y + Math.round(20 * o.scale))}px">${Bt("lbl old" + i, P_("lt", o.title), "noop")}</div>`; }); // older: smaller still, one line
     return h;
   }
-  if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""), "", 40)
+  if (beat === "probes") return topbar(c, "", helpBtn()) + sideNav(c, beat) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""), "", 40)
     + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)), undefined, 28);
   if (beat === "recap") { const R_ = COPY.recap, k = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
     return topbar(c, "", helpBtn()) + hits(c, [["landboat", "row"]]) + `<div class="tag" style="left:${c.x(LANDBOAT.x)}px;top:${c.y(LANDBOAT.y + 6)}px">${Bt("", P_("ctl", "Row home"), "row")}</div>` + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title))
@@ -1509,8 +1516,9 @@ function frameHTML(c, beat) {
       + Bt("card", P_("ctl it", k.probe) + P_("rd", k.a) + `<div class="cwl"></div>` + P_("per", k.quote) + P_("ctl more", "›"), "noop")
       + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join("")), "scroll", 36); }
   const n = +beat.slice(1), s = COPY.steps[(n - 1) % COPY.steps.length], last = n >= Math.min(SLOTS, st.steps);
-  if (c.pend) return topbar(c, backBtn(), helpBtn()) + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("per dim", COPY.steps[(n - 2) % COPY.steps.length].r)}</div>`; // waiting on the reply: only what was just said, where it was said, so the water by the islet stays clear
-  return topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P_("q", s.q)), "skytop") + composer(c, s.r, last ? "Submit and finish ›" : "Submit", last ? "recap" : "p" + (n + 1));
+  if (c.pend) return topbar(c, "", helpBtn()) + sideNav(c, beat) + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("per dim", COPY.steps[(n - 2) % COPY.steps.length].r)}</div>`; // waiting on the reply: only what was just said, where it was said, so the water by the islet stays clear
+  if (n <= st.done) return topbar(c, "", helpBtn()) + sideNav(c, beat) + above(c, Gp("", P_("q", s.q)), "skytop") + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("cap", "You reflected")}${P_("per", s.r)}</div>`; // already answered: the Reflection as sent, no Submit
+  return topbar(c, "", helpBtn()) + sideNav(c, beat) + above(c, Gp("", P_("q", s.q)), "skytop") + composer(c, s.r, last ? "Submit and finish ›" : "Submit", last ? "recap" : "p" + (n + 1));
 }
 function overlay(v, beat, cam) {
   const { d, sc } = v, s = sc.k / d.dpr, H = cssH(d), W = cssW(d), wl = Math.round((WY - cam.y) * s);
@@ -1670,7 +1678,9 @@ const BACK = (b) => b === "probes" || b === "recap" || b === "home" ? "home" : b
 function go(to) {
   if (!to || to === "noop") return;
   if (to === "back") to = BACK(st.beat);
-  if (to === "row") { st.rowed = true; rowing = true; bloomPending = true; return navTo("home"); }
+  if (to === "fwd") { const B = beats(); to = B[B.indexOf(st.beat) + 1]; replyAt[to] = 0; return navTo(to); } // walking back over done steps: no wait
+  if (stepK(st.beat) && (stepK(to) === stepK(st.beat) + 1 || to === "recap")) st.done = Math.max(st.done, stepK(st.beat)); // Submit answers this step
+  if (to === "row") { st.reach = 0; st.done = 0; st.rowed = true; rowing = true; bloomPending = true; return navTo("home"); }
   const submit = stepK(st.beat) && stepK(to) === stepK(st.beat) + 1; // a Dialogue turn: the next question waits on the model; a Probe tapped is already there
   replyAt[to] = submit ? now() + st.latency : 0;
   navTo(to);
@@ -1680,7 +1690,9 @@ function navTo(beat, jump = false) {
   if (jump) replyAt[beat] = 0;
   const B = beats(), fwd = B.indexOf(beat) >= B.indexOf(st.beat) || rowing;
   if (fwd) enterCues(beat); else cueAt[beat] = -1e9;
-  st.beat = beat; save();
+  st.beat = beat;
+  if (jump) { st.reach = B.indexOf(beat); st.done = beat === "recap" ? st.steps : Math.max(0, stepK(beat) - 1); } else st.reach = Math.max(st.reach, B.indexOf(beat));
+  save();
   for (const v of views) setScreen(v, beat, !jump);
   renderPanel();
 }
