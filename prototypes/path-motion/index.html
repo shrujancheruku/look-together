@@ -810,7 +810,7 @@ const ISLETS = {
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, px - 11], flowers: [P.pink, P.red], fd: .08 });
     const cypress = (x, hh) => { const t = top(x); rect(g, x, t - 3, x + 1, t, P.woodD);
       for (let y = t - hh; y < t - 2; y++) { const v = (y - t + hh) / hh, w = Math.round(Math.sin(Math.PI * Math.min(1, v * 1.1)) * 2.6); rect(g, x - w, y, x + w + 1, y + 1, (xx) => xx > x || hash2(xx, y, 72) > .6 ? P.leafD : P.leaf); } };
-    cypress(cx - 62, 30); cypress(cx - 50, 40); cypress(cx + 58, 40); cypress(cx + 70, 30);
+    cypress(cx - 73, 30); cypress(cx - 50, 40); // a gap of sky between them, where the walker sits (#84) cypress(cx + 58, 40); cypress(cx + 70, 30);
     for (const tx of [cx - 37, cx + 44]) { tree(g, tx, top(tx) - 12, 7, R.leafA, top(tx)); for (let i = 0; i < 5; i++) setp(g, tx - 5 + Math.floor(hash2(tx, i, 70) * 11), top(tx) - 16 + Math.floor(hash2(i, tx, 70) * 8), P.red); } // pomegranates
     const niche = (x, yb, ys, ya, hw, c) => { for (let dx = -hw; dx <= hw; dx++) { const u = Math.abs(dx) / hw; rect(g, x + dx, Math.round(ys - (ys - ya) * Math.sqrt(1 - u)), x + dx + 1, yb, c); } };
     rect(g, px - W2, b - H2, px + W2 + 1, b, (x, y) => (b - y) % 4 === 0 || (x + (Math.floor((b - y) / 4) % 2) * 3) % 6 === 0 || x > px + W2 - 8 ? P.woodL : P.sand); // the pavilion, in brick
@@ -1156,22 +1156,51 @@ function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang o
   for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x, y, k.hair]); // hair to the shoulders
   return px;
 }
-function boatPx(frame, rower) { // the rowboat, sized to the walker so it never shrinks to get in; the walker sits facing us, oars to either side; frame -1 is oars shipped
-  const h = walkerH(), L = Math.round(h * 1.9), hh = Math.max(5, Math.round(h * .36)), px = rower ? sitterPx(h, true).map(([x, y, c]) => [x, y - hh + 1, c]) : []; // sits up on the thwart: the whole seated walker, at the size it is on the islets, shows above the gunwale
-  for (let r = 0; r <= hh; r++) { const w = L - Math.round((r / hh) ** 2 * L * .22), y = r - hh;
-    for (let x = -w; x <= w; x++) px.push([x, y, code(R.trunk, r === 0 ? 3 : r === hh ? 0 : Math.abs(x) >= w - 1 ? 1 : r % 2 ? 2 : 1)]); }
-  for (const sx of [-1, 1]) { px.push([sx * (L + 1), -hh - 1, code(R.trunk, 3)], [sx * (L + 2), -hh - 2, code(R.trunk, 3)]); } // bow and stern rise
-  const oar = (x0, y0, x1, y1) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) px.push([Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), code(R.trunk, 2)]); };
-  if (frame < 0) oar(-L + 4, -hh - 1, L - 4, -hh - 1); // oars along the gunwale
-  else if (rower) { const hx = Math.round(h * .2) + 1, hy = -hh - 2; for (const sx of [-1, 1]) frame ? oar(sx * hx, hy, sx * (L + 5), 2) : oar(sx * hx, hy, sx * (L + 7), hy - 4); }
-  return px;
+function rowerPx(h, face, u) { // side on, sitting on the thwart (y 0), facing the stern as rowers do; u: 1 at the catch (reaching), -1 at the finish (pulled in)
+  const k = paints(), f = FIG[st.figure] || FIG.woman, px = [], hr = Math.max(2, Math.round(h * .12)), t = Math.max(4, Math.round(h * .32)), w = Math.max(1, Math.round(h * .1));
+  const lean = (r) => Math.round(u * 1.5 * r); // r: 0 at the hips, 1 at the shoulders
+  const thigh = Math.round(h * .26), lap = f.hem < .03 ? k.coat : k.leg;
+  for (let x = 1; x <= thigh; x++) px.push([face * x, -1, lap], [face * x, -2, x === thigh ? lap : f.hem < .03 ? k.coat : k.leg]); // thighs, toward the stern
+  for (let y = -t; y <= -1; y++) { const r = (-y) / t, dx = lean(r); for (let x = -w; x <= w; x++) px.push([x + dx, y - 1, x * face === w ? k.edge : x * face === -w ? k.lit : k.coat]); }
+  const sx = lean(1), sy = -t - 1, hx = face * Math.round(h * (u > 0 ? .34 : .16)) + sx, hy = sy + 3 + Math.round((1 - u) * .8); // hands on the handle
+  const arm = (x0, y0, x1, y1, c) => { const n = Math.max(1, Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) px.push([Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), c]); };
+  arm(sx, sy + 1, hx, hy, k.coat); px.push([hx, hy, k.skin]);
+  const cy = sy - hr - 1;
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x + sx, cy + y, y <= -hr + 1 || x * face < 0 ? k.hair : x * face === hr ? k.shade : k.skin]);
+  const long = f.hair === 2 ? Math.round(h * .2) : f.hair === 1 ? 1 : 0;
+  for (let y = cy; y <= cy + hr + long; y++) for (let x = 1; x <= hr; x++) if (y > cy) px.push([-face * x + sx, y, k.hair]);
+  return { px, hand: [hx, hy] };
+}
+function boatPx(frame, rower, dir = 1) { // the rowboat, sized to the walker so it never shrinks to get in. frame -1: moored, the walker facing us, oars shipped; 0–7: a stroke at 8 fps
+  const h = walkerH(), L = Math.round(h * 1.9), hh = Math.max(6, Math.round(h * .5));
+  const gun = (x) => -hh - Math.round(3 * (Math.abs(x) / L) ** 2), keel = (x) => -Math.round(hh * (x * dir > 0 ? .85 : .5) * (Math.abs(x) / L) ** 2.2); // a sheer rising to the ends; the bow (ahead) cut up sharper than the stern
+  let px = [], oar = [];
+  const line = (x0, y0, x1, y1, c, out) => { const n = Math.max(1, Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) out.push([Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), c]); };
+  const seatY = -hh; // the thwart sits high enough that the rower's lap shows above the gunwale
+  if (rower && frame < 0) px = sitterPx(h, true).map(([x, y, c]) => [x, y - hh + 1, c]);
+  if (rower && frame >= 0) { // the stroke: the drive (blade in the water, sweeping aft) then the recovery (blade lifted, swinging back)
+    const ph = frame / 8 * 2 * Math.PI, u = Math.cos(ph), drive = Math.sin(ph) > .15, face = -dir;
+    const r = rowerPx(h, face, u); px = r.px.map(([x, y, c]) => [x, y + seatY, c]);
+    const shaft = code(R.light, 0), blade = code(R.flower, 1), pv = [face * 2, gun(face * 2) - 1], hand = [r.hand[0], r.hand[1] + seatY];
+    const tipX = pv[0] - face * Math.round(u * 8), tipY = drive ? 3 : -1; // the blade sweeps from ahead of the rower (the catch) to behind (the finish), in the water only on the drive
+    line(hand[0], hand[1], pv[0], pv[1], shaft, oar); line(pv[0], pv[1], tipX, tipY - 3, shaft, oar);
+    for (let j = 0; j < 4; j++) oar.push([tipX, tipY - j, blade], [tipX + 1, tipY - j, blade]); // the blade, painted to match the bow
+    if (drive) oar.push([tipX - 2, 1, code(R.glint, 1)], [tipX + 3, 1, code(R.glint, 0)], [tipX + face * 3, 2, code(R.glint, 1)]); // water off the blade
+  }
+  const hull = [];
+  for (let x = -L; x <= L; x++) { const g0 = gun(x), k0 = keel(x); if (k0 <= g0 + 1) continue;
+    for (let y = g0; y <= k0; y++) { const r = y - g0, depth = (y - g0) / Math.max(1, k0 - g0), end = Math.abs(x) >= L - 1;
+      const bow = x * dir >= L - 3 && r <= 2; // wood, as before, with a thin blue strake and a red mark at the bow
+      hull.push([x, y, bow ? code(R.flower, 1) : r === 0 ? code(R.trunk, 3) : r === 2 ? code(R.water, 2) : depth > .8 || end ? code(R.trunk, 0) : r % 3 === 0 ? code(R.trunk, 1) : code(R.trunk, 2)]); } }
+  if (frame < 0) line(-L + 6, gun(0) - 1, L - 6, gun(0) - 1, code(R.trunk, 2), oar); // oars along the gunwale
+  return px.concat(hull, oar);
 }
 // where the walker sits on each islet, from its builder in ISLETS: x from the islet's centre, the seat's row, and whether the legs hang
 const SEATS = {
   shrine: { dx: -4, y: WY - 22, sit: "the edge of the hall's stone platform" },
   crag: { dx: -44, y: WY - 34, sit: "on the crag's edge, legs over the drop" },
   baobab: { dx: -34, y: WY - 14, ground: true, sit: "at the baobab's foot" },
-  persian: { dx: -2, y: WY - 14, ground: true, sit: "in the iwan" },
+  persian: { dx: -61, y: WY - 13, ground: true, sit: "among the cypresses, against the sky" },
   pavilion: { dx: -20, y: WY - 16, sit: "the edge of the pavilion's plinth" },
   lighthouse: { dx: 4, y: WY - 26, sit: "on the rock's edge below the lighthouse" },
   greek: { dx: 46, y: WY - 25, sit: "a blue bench under the olive" },
@@ -1188,7 +1217,7 @@ function spot(b) { // where the walker is at rest on each screen
 const onPath = (b) => b === "probes" || stepK(b) > 0;
 function drawWalker(out, v) {
   const mv = v.move, full = motion() === "full", h = walkerH();
-  const boat = (x, y, moving, fade = 1) => out.push({ x: Math.round(x), y: Math.round(y), px: boatPx(moving && full ? Math.floor(now() * 2.2) % 2 : -1, true), bob: !moving, i: 3, fade });
+  const boat = (x, y, moving, fade = 1, dir = 1) => out.push({ x: Math.round(x), y: Math.round(y), px: boatPx(moving ? (full ? Math.floor(now() * 8) % 8 : 2) : -1, true, dir), bob: !moving, i: 3, fade });
   const at = (s, fade = 1) => { if (!s) return;
     if (s.kind === "boat") boat(s.x, s.y, false, fade);
     else if (s.kind === "sit") out.push({ x: s.x, y: s.y, px: sitterPx(h, s.ground), bob: false, refl: true, fade });
@@ -1200,7 +1229,7 @@ function drawWalker(out, v) {
   if (mv.style !== "pan") return at(tk.b, q8(p));
   if (mode === "far") return p < .25 ? at(tk.a, 1 - Math.ceil(p / .25 * 8) / 8) : p > .75 ? at(tk.b, q8((p - .75) / .25)) : null;
   const e = rowing && v.beat === "home" ? smooth(p) : ease(p);
-  if (mode === "row") return boat(lerp(tk.src.x, tk.dst.x, e), lerp(tk.src.y, tk.dst.y, e), true);
+  if (mode === "row") return boat(lerp(tk.src.x, tk.dst.x, e), lerp(tk.src.y, tk.dst.y, e), true, 1, Math.sign(tk.dst.x - tk.src.x) || 1);
   const x = lerp(tk.a.x, tk.b.x, e), dir = Math.sign(tk.b.x - tk.a.x) || 1, frame = full ? Math.floor(Math.abs(x - tk.a.x) / Math.max(3, h * .32)) % 4 : 0;
   out.push({ x: Math.round(x), y: Math.round(walkAt(x)), px: walkerPx(h, frame, dir), bob: false, refl: true });
 }
