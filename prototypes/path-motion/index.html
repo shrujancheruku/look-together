@@ -75,6 +75,8 @@
   .pin, .tag, .tip { position: absolute; transform: translateX(-50%); }
   .tag .g { padding: 5px 10px; white-space: nowrap; }
   .tag .g.lbl { white-space: normal; width: max-content; max-width: 128px; padding: 4px 8px; }
+  .tag .g.lbl.old0 { max-width: 150px; opacity: .85; } .tag .g.lbl.old1 { max-width: 136px; opacity: .7; }
+  .lbl.old0 .lt, .lbl.old1 .lt { font-size: 12px; -webkit-line-clamp: 1; }
   .lt { font: 500 14px/1.25 var(--display); font-variation-settings: "SOFT" 100; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
   .composer { position: absolute; left: 12px; right: 12px; max-width: 34em; margin-inline: auto; flex-direction: row !important; justify-content: space-between; align-items: center; }
   .pager { position: absolute; left: 50%; transform: translateX(-50%); flex-direction: row !important; align-items: center; gap: 8px !important; padding: 6px 10px !important; }
@@ -1020,7 +1022,8 @@ function buildShore(season, seed, path) {
   item(g, "boat", MOOR.x, MOOR.y - 9, 38, 16, "Begin today's Inquiry");
   item(g, "landboat", LAND_X + 40, WY + 49, 38, 16, "Row home");
   item(g, "house", 470, WY - 12, 22, 14, "Settings");
-  item(g, "lily", 772, WY + 82, 30, 20, "Last Recap");
+  item(g, "lily", 772, WY + 82, 30, 20, "Today's Recap");
+  item(g, "old0", 716, WY + 150, 20, 13, "An older Recap"); item(g, "old1", 664, WY + 202, 15, 10, "An older Recap");
   sky(g, 0, WY, { x: 750, y: WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
   finish(g, season);
   g.LUT = makeLUT(season, "normal");
@@ -1064,7 +1067,7 @@ const RULES = (g, need) => [
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false };
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false, older: 2 };
 try { Object.assign(st, JSON.parse(localStorage.getItem("path-motion") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
@@ -1157,7 +1160,7 @@ function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang o
   for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x, y, k.hair]); // hair to the shoulders
   return px;
 }
-function rowerPx(h, face, u) { // side on, sitting on the thwart (y 0), facing the stern as rowers do; u: 1 at the catch (reaching), -1 at the finish (pulled in)
+function rowerPx(h, face, u) { // side on, sitting on the thwart (y 0), facing the way the boat moves; u: 1 at the catch (reaching), -1 at the finish (pulled in)
   const k = paints(), f = FIG[st.figure] || FIG.woman, px = [], hr = Math.max(2, Math.round(h * .12)), t = Math.max(4, Math.round(h * .32)), w = Math.max(1, Math.round(h * .1));
   const lean = (r) => Math.round(u * 1.5 * r); // r: 0 at the hips, 1 at the shoulders
   const thigh = Math.round(h * .26), lap = f.hem < .03 ? k.coat : k.leg;
@@ -1180,10 +1183,10 @@ function boatPx(frame, rower, dir = 1) { // the rowboat, sized to the walker so 
   const seatY = -hh; // the thwart sits high enough that the rower's lap shows above the gunwale
   if (rower && frame < 0) px = sitterPx(h, true).map(([x, y, c]) => [x, y - hh + 1, c]);
   if (rower && frame >= 0) { // the stroke: the drive (blade in the water, sweeping aft) then the recovery (blade lifted, swinging back)
-    const ph = frame / 8 * 2 * Math.PI, u = Math.cos(ph), drive = Math.sin(ph) > .15, face = -dir;
+    const ph = frame / 8 * 2 * Math.PI, u = Math.cos(ph), drive = Math.sin(ph) > .15, face = dir; // faces the way the boat moves: not how rowing works, but it reads better
     const r = rowerPx(h, face, u); px = r.px.map(([x, y, c]) => [x, y + seatY, c]);
     const shaft = code(R.light, 0), blade = code(R.paint, 2), pv = [face * 2, gun(face * 2) - 1], hand = [r.hand[0], r.hand[1] + seatY];
-    const tipX = pv[0] - face * Math.round(u * 8), tipY = drive ? 3 : -1; // the blade sweeps from ahead of the rower (the catch) to behind (the finish), in the water only on the drive
+    const tipX = pv[0] + dir * Math.round(u * 8), tipY = drive ? 3 : -1; // the blade sweeps from ahead of the rower (the catch) to behind (the finish), in the water only on the drive
     line(hand[0], hand[1], pv[0], pv[1], shaft, oar); line(pv[0], pv[1], tipX, tipY - 3, shaft, oar);
     for (let j = 0; j < 4; j++) oar.push([tipX, tipY - j, blade], [tipX + 1, tipY - j, blade]); // the blade, painted to match the bow
     if (drive) oar.push([tipX - 2, 1, code(R.glint, 1)], [tipX + 3, 1, code(R.glint, 0)], [tipX + face * 3, 2, code(R.glint, 1)]); // water off the blade
@@ -1191,7 +1194,7 @@ function boatPx(frame, rower, dir = 1) { // the rowboat, sized to the walker so 
   const hull = [];
   for (let x = -L; x <= L; x++) { const g0 = gun(x), k0 = keel(x); if (k0 <= g0 + 1) continue;
     for (let y = g0; y <= k0; y++) { const r = y - g0, depth = (y - g0) / Math.max(1, k0 - g0), end = Math.abs(x) >= L - 1;
-      const bow = x * dir >= L - 3 && r <= 2; // wood, as before, with a thin navy strake and a red mark at the bow
+      const bow = x * dir >= L - 2 && r <= 1; // wood, as before, with a thin navy strake and a red mark at the bow
       hull.push([x, y, bow ? code(R.paint, 2) : r === 0 ? code(R.trunk, 3) : r === 2 ? code(R.paint, 0) : depth > .8 || end ? code(R.trunk, 0) : r % 3 === 0 ? code(R.trunk, 1) : code(R.trunk, 2)]); } }
   if (frame < 0) line(-L + 6, gun(0) - 1, L - 6, gun(0) - 1, code(R.trunk, 2), oar); // oars along the gunwale
   return px.concat(hull, oar);
@@ -1243,7 +1246,13 @@ function bigRings(x, y, t, at, out, s) {
     out.push({ x, y, px, bob: false, fade: .9 - q * .5 }); }
 }
 let bloomPending = false; // the row home is under way: the home lily flowers as the boat comes in
-function homeLily(out, v) { // green and blank, or flowered with the last Recap's title when an Inquiry was finished recently
+// home holds at most three lilies: today's (flowered with its Recap's title if one was finished in the last 24 hours, else green and blank),
+// then up to two older Recaps trailing off to the bottom left, each smaller and paler the older it is; tapping one opens that Recap
+const OLDER = [{ x: 716, y: WY + 150, scale: .62, ramp: "leafC", fade: .9, title: "What am I protecting when I won't say sorry?" },
+  { x: 664, y: WY + 202, scale: .46, ramp: "leafC", fade: .62, title: "Why does a quiet evening make me restless?" }];
+const aged = (sp, ramp, fade) => sp.map((s) => ({ ...s, fade: s.fade * fade, px: s.px.map(([x, y, c, pf]) => [x, y, (c >> 5) === R.pad ? code(R[ramp], c & 31) : c, pf]) }));
+function homeLily(out, v) {
+  OLDER.slice(0, st.older).forEach((o) => out.push(...aged(lily(o.x, o.y, true, "open", o.scale), o.ramp, o.fade)));
   out.push(...lily(HOME_LILY.x, HOME_LILY.y, false, null, .85));
   if (!st.rowed) return;
   if (bloomPending && v.beat === "home") return;
@@ -1349,15 +1358,16 @@ function hits(c, ids) {
 const composer = (c, text, btn, go) => `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_(text ? "per" : "per it dim", text || "Reflect, or tap the mic")}<div class="row2"><span class="ctl">Mic</span><button type="button" class="cbtn walk" data-go="${go}">${btn}</button></div></div>`;
 function frameHTML(c, beat) {
   if (beat === "home") { // the boat is the way in; the lily shows the last Recap's title, if one was finished recently
-    let h = hits(c, [["boat", "probes"], ["house", "noop"], ["sign", "noop"]].concat(st.rowed && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
+    let h = hits(c, [["boat", "probes"], ["house", "noop"], ["sign", "noop"]].concat(st.rowed && !bloomPending ? [["lily", "noop"]] : [], OLDER.slice(0, st.older).map((o, i) => ["old" + i, "noop"]))) + topbar(c, Gp("", P_("wm", "Look Together")))
       + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 6)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
     if (st.rowed && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 20)}px">${Bt("lbl", P_("lt", st.longTitle ? LONG_TITLE : COPY.recap.title), "noop")}</div>`; // small, two lines at most, then …
+    OLDER.slice(0, st.older).forEach((o, i) => { h += `<div class="tag" style="left:${c.x(o.x)}px;top:${c.y(o.y + Math.round(20 * o.scale))}px">${Bt("lbl old" + i, P_("lt", o.title), "noop")}</div>`; }); // older: smaller still, one line
     return h;
   }
   if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""), "", 40)
     + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)), undefined, 28);
   if (beat === "recap") { const R_ = COPY.recap, k = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
-    return topbar(c, "", helpBtn()) + hits(c, [["landboat", "row"]]) + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title))
+    return topbar(c, "", helpBtn()) + hits(c, [["landboat", "row"]]) + `<div class="tag" style="left:${c.x(LANDBOAT.x)}px;top:${c.y(LANDBOAT.y + 6)}px">${Bt("", P_("ctl", "Row home"), "row")}</div>` + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title))
       + Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)) + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
       + Bt("card", P_("ctl it", k.probe) + P_("rd", k.a) + `<div class="cwl"></div>` + P_("per", k.quote) + P_("ctl more", "›"), "noop")
       + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join("")), "scroll", 36); }
@@ -1570,7 +1580,8 @@ function renderPanel() {
   $("flow").replaceChildren(
     rowEl("Jump", beats().map((b) => pchip(b[0] === "p" && b !== "probes" ? "Step " + b.slice(1) : LABEL(b), st.beat === b, () => { rowing = false; navTo(b, true); }))),
     rowEl("Row home", [pchip("Play from the Recap", false, () => { rowing = false; st.beat = "recap"; for (const v of views) setScreen(v, "recap", false); setTimeout(() => go("row"), 250); })]),
-    rowEl("Home lily", [pchip("Blank", !st.rowed, () => { rowing = false; set("rowed", false); }, "none finished recently"), pchip("Flowered", st.rowed, () => { rowing = false; bloomPending = false; set("rowed", true); }, "the last Recap's title"), pchip("Long title", st.longTitle, () => set("longTitle", !st.longTitle), "to see the …")]));
+    rowEl("Older lilies", [0, 1, 2].map((n) => pchip(String(n), st.older === n, () => set("older", n), n ? "trailing off" : "a new person"))),
+    rowEl("Home lily", [pchip("Blank", !st.rowed, () => { rowing = false; set("rowed", false); }, "none in the last 24 h"), pchip("Flowered", st.rowed, () => { rowing = false; bloomPending = false; set("rowed", true); }, "finished in the last 24 h"), pchip("Long title", st.longTitle, () => set("longTitle", !st.longTitle), "to see the …")]));
   $("inqUi").replaceChildren(
     rowEl("Seed", [1, 2, 3, 4, 5].map((s) => pchip(String(s), st.seed === s, () => set("seed", s, true))).concat(pchip("New seed", st.seed > 5, () => set("seed", 6 + Math.floor(Math.random() * 1e6), true), st.seed > 5 ? String(st.seed) : ""))),
     rowEl("Path", ["First", "Second", "Third"].map((l, i) => pchip(l, st.path === i + 1, () => set("path", i + 1, true), i ? "new order" : ""))),
