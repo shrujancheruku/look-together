@@ -5,7 +5,7 @@
   PROTOTYPE (throwaway, never merge): answers "What does the Shoreline's scenery hold: home, the Path's route and
   the Recap spot?" (issue #83), version 3. Version 3 makes the islets bigger and more detailed, keeps the bridges short
   and low so they recede, and gives every new Path a fresh islet order. From version 2, after the founder's direction: the route is a chain of themed islets joined
-  by bridges in the same theme (ten pairs, eight per Path, drawn from the Inquiry's seed and the Path's number); each Path step walks the next bridge
+  by bridges in the same theme (eleven pairs, eight per Path, drawn from the Inquiry's seed and the Path's number); each Path step walks the next bridge
   and stops on that islet; the last step comes ashore at the landing, which holds the Recap; "Row home" rows the
   rowboat back to the pond and drops the new Recap's flower on the way. The world is a loop, so the landing lies both
   left of home and past the last islet. The bottom bar (‹ ›, arrow keys) steps through the flow; the panel changes the
@@ -162,7 +162,7 @@
     <p>Tap through on the device, or jump. The last step walks on to the landing, where the Recap opens; "Row home" plays the boat back to the pond.</p>
     <div id="flow"></div>
     <h2>This Inquiry</h2>
-    <p>The seed is a random number made when the Inquiry begins. With the Path's number it picks eight of the ten islet themes and their order, and nothing else. A second Path starts again at the front over a fresh order.</p>
+    <p>The seed is a random number made when the Inquiry begins. With the Path's number it picks eight of the eleven islet themes and their order, and nothing else. A second Path starts again at the front over a fresh order.</p>
     <div id="inqUi"></div>
     <h2>World</h2>
     <div id="worldUi"></div>
@@ -662,6 +662,32 @@ function lantern(g, x, b, P) { // a stone lantern
   rect(g, x - 4, b - 14, x + 5, b - 12, P.stoneD); setp(g, x, b - 15, P.stoneD);
 }
 function fence(g, x0, x1, b, c) { for (let x = Math.round(x0); x < x1; x++) { if ((x - x0) % 4 === 0) rect(g, x, b - 6, x + 1, b, c); setp(g, x, b - 4, c); } }
+function blob(g, cx, cy, rx, ry, ramp, seed = 0) { // a whole leafy mass: a lumpy edge, lit from the upper left, a dark underside
+  const n = N[ramp];
+  for (let y = Math.floor(cy - ry * 1.2); y <= cy + ry * 1.2; y++) for (let x = Math.floor(cx - rx * 1.2); x <= cx + rx * 1.2; x++) {
+    const dx = (x - cx) / rx, dy = (y - cy) / ry, a = Math.atan2(dy, dx), d = Math.hypot(dx, dy), rr = 1 + .1 * Math.sin(a * 5 + seed) + .05 * Math.sin(a * 11 + seed * 2);
+    if (d > rr) continue;
+    const rim = d > rr - .14, v = .6 - dx * .25 - dy * .45 + (hash2(x >> 1, y >> 1, 60 + seed) - .5) * .4;
+    setp(g, x, y, code(ramp, rim && dy > -.2 ? 0 : 1 + Math.round(clamp(rim ? v + .2 : v, 0, 1) * (n - 2))));
+  }
+}
+function grove(g, cx, base, P) { // a stand of bamboo as one mass: overlapping clumps of leaves, a few culms at the foot
+  for (const dx of [-6, -2, 3, 7]) rect(g, cx + dx, base - 12, cx + dx + 1, base, (x, y) => (base - y) % 5 === 0 ? P.leafD : P.leafL);
+  for (const [dx, dy, rx, ry, k] of [[-5, -34, 6, 9, 1], [5, -38, 6, 10, 2], [0, -26, 9, 9, 3], [-8, -17, 7, 7, 4], [8, -18, 7, 7, 5]]) blob(g, cx + dx, base + dy, rx, ry, R.leafA, k);
+}
+function weeping(g, cx, cy, r, base, P) { // a willow as one mass: a dome, a curtain falling past it, the trunk in the gap
+  const n = N[R.leafC], rw = r * 1.25;
+  rect(g, cx - 1, cy, cx + 2, base, P.woodD);
+  for (let x = Math.round(cx - rw); x <= cx + rw; x++) { const u = (x - cx) / rw, t = Math.round(cy - r * .8 * Math.sqrt(Math.max(0, 1 - u * u))),
+      bot = Math.min(base - 1, Math.round(cy + r * (.35 + 1.1 * Math.abs(u) ** .7) + hash2(x, 2, 57) * 3));
+    for (let y = t; y < bot; y++) { const v = .7 - u * .3 - (y - t) / (bot - t + 1) * .45 - (x % 3 === 0 ? .12 : 0) + (hash2(x, y >> 2, 56) - .5) * .2;
+      setp(g, x, y, code(R.leafC, y === bot - 1 ? 1 : 1 + Math.round(clamp(v, 0, 1) * (n - 2)))); } }
+}
+function frond(g, x0, y0, a, len, P) { // a palm leaf as one tapered shape, drooping at the tip
+  const ca = Math.cos(a), sa = Math.sin(a);
+  for (let r = 0; r <= len; r += .5) { const px = x0 + ca * r, py = y0 + sa * r * .6 + r * r * .028, w = 2.6 * Math.sin(Math.PI * Math.min(1, (r + 2) / (len + 2)));
+    for (let q = -w; q <= w; q += .5) setp(g, px, py + q, q < -w / 3 ? P.leafL : q > w / 3 ? P.leafD : P.leaf); }
+}
 function piles(g, x0, x1, deck, every, c) { for (let x = x0 + 2; x < x1 - 1; x += every) rect(g, x, deck, x + 1, WY + 1, c); }
 
 // ---------- bridges: side view, the deck from xa to xb. Kept low and quiet: the islets are the places, the bridges only join them ----------
@@ -706,6 +732,11 @@ const BRIDGES = {
     for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 4 + Math.sin(Math.PI * u) * 1.5);
       setp(g, x, y, (x - xa) % 9 === 0 ? P.wood1 : P.straw); setp(g, x, y - 4, P.straw); if ((x - xa) % 14 === 0) rect(g, x, y - 5, x + 1, WY + 1, P.wood1); }
   },
+  jali(g, xa, xb, P) { // a sandstone walk, its parapet a pierced screen
+    for (let x = xa; x <= xb; x++) { rect(g, x, WY - 4, x + 1, WY - 2, (xx, y) => y === WY - 4 ? P.woodL : P.wood1);
+      for (let y = WY - 8; y < WY - 4; y++) if (y === WY - 8 || !((x - xa) % 3 === 1 && (WY - y) % 2 === 1)) setp(g, x, y, y === WY - 8 ? P.sand : P.woodL); }
+    piles(g, xa, xb, WY - 2, 16, P.wood1);
+  },
   covered(g, xa, xb, P) { // a covered wooden bridge, a low roof
     rect(g, xa, WY - 5, xb, WY - 3, P.wood1); piles(g, xa, xb, WY - 3, 18, P.woodD);
     for (let x = xa + 6; x < xb - 6; x += 10) rect(g, x, WY - 13, x + 1, WY - 5, P.woodD);
@@ -747,9 +778,7 @@ const ISLETS = {
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, hx - 3], flowers: [P.gold, P.straw], fd: .08 });
     for (let y = b - 34; y < b; y++) { const v = (y - b + 34) / 34, w = Math.round(5 + Math.sin(Math.PI * Math.min(1, v * .8 + .15)) * 5); // the baobab: a bottle of a trunk
       rect(g, bx - w, y, bx + w + 1, y + 1, (x) => x > bx + w * .4 || hash2(x, y >> 1, 73) > .85 ? P.stoneD : P.stone); }
-    for (const [dx, len, rise] of [[-3, -15, .5], [-1, -7, 1.2], [1, 8, 1.1], [3, 16, .45]]) { const s = Math.sign(len); let ex = 0, ey = 0; // short arms, little crowns
-      for (let i = 0; i <= Math.abs(len); i++) { ex = bx + dx + s * i; ey = b - 34 - Math.round(i * rise); setp(g, ex, ey, P.stoneD); setp(g, ex, ey + 1, P.stoneD); }
-      tree(g, ex, ey - 3, 6, R.leafA, ey + 1); }
+    rect(g, bx - 8, b - 38, bx + 9, b - 34, (x) => x > bx + 3 ? P.stoneD : P.stone); blob(g, bx, b - 42, 22, 6, R.leafA, 3); // its crown, flat and wide
     const ww = 17; // a painted house: white walls, black lines, blocks of colour
     rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = x - hx + ww, v = b - y, k = u % 8;
       if (v === 1 || v === 8 || v === 17 || (v > 8 && k === 0)) return P.woodD;
@@ -761,8 +790,8 @@ const ISLETS = {
     const rx = cx + 44, rw = 11; rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => y > b - 4 ? P.wood1 : x > rx + 6 ? P.wood : P.woodL); rect(g, rx - 2, b - 9, rx + 3, b, P.woodD); // a plain round house
     for (let j = 0; j < 13; j++) { const w = Math.round((rw + 3) * (1 - j / 13)); rect(g, rx - w, b - 14 - j, rx + w + 1, b - 13 - j, (x) => (x + j) % 3 ? P.straw : P.woodL); }
     for (const [ox, oy] of [[cx + 26, 0], [cx + 29, 0], [cx + 27, -4]]) { rect(g, ox - 1, b - 4 + oy, ox + 2, b + oy, P.wood); setp(g, ox, b - 5 + oy, P.wood1); } // clay pots
-    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) setp(g, ax + Math.round(j * .15), at - j, P.woodD); // an acacia, its crown flat
-    for (const [w, dy] of [[9, 0], [13, 1], [12, 2], [7, 3]]) rect(g, ax + 3 - w, at - 25 + dy, ax + 4 + w, at - 24 + dy, (x) => dy === 0 ? P.leafL : hash2(x, dy, 71) > .6 ? P.leafD : P.leaf); },
+    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) rect(g, ax + Math.round(j * .15) - 1, at - j, ax + Math.round(j * .15) + 1, at - j + 1, j % 5 ? P.woodD : P.wood1); // an acacia, its crown flat
+    blob(g, ax + 3, at - 25, 14, 4, R.leafA, 5); },
   persian(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), px = cx + 4, W2 = 28, H2 = 30;
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, px - 11], flowers: [P.pink, P.red], fd: .08 });
     const cypress = (x, hh) => { const t = top(x); rect(g, x, t - 3, x + 1, t, P.woodD);
@@ -786,10 +815,8 @@ const ISLETS = {
     roof(g, cx, b - 29, 36, 7, P.teal, P.stoneDD, 4);
     rect(g, cx - 14, b - 42, cx + 15, b - 35, (x) => x % 4 === 0 ? P.red : P.woodD);
     roof(g, cx, b - 41, 25, 7, P.teal, P.stoneDD, 3); rect(g, cx, b - 52, cx + 1, b - 47, P.gold); setp(g, cx, b - 53, P.gold);
-    rock(g, cx - 56, top(cx - 56) + 1, 5, 18); // a tall stone
-    for (const [bx, bh] of [[-78, 34], [-74, 42], [-71, 30], [-68, 38]]) { const x = cx + bx, b = top(x); for (let y = b - bh; y < b; y++) setp(g, x, y, (b - y) % 6 === 0 ? P.leafD : P.leaf); // bamboo
-      for (let y = b - bh; y < b - 10; y += 5) { setp(g, x - 1, y, P.leaf); setp(g, x - 2, y + 1, P.leafD); setp(g, x + 1, y - 1, P.leaf); setp(g, x + 2, y, P.leafD); } }
-    willow(g, cx + 62, b - 36, 18, WY - 4); },
+    grove(g, cx - 62, top(cx - 62) + 1, P); rock(g, cx - 44, b + 1, 5, 6, true); // a bamboo grove, a mossy stone
+    weeping(g, cx + 60, b - 30, 15, top(cx + 60) + 1, P); },
   lighthouse(g, cx, P) { const h = 26, b = WY - h, top = mound(g, cx, HW, h, "rock"), tx = cx - 16, kx = cx + 30;
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, kx - 1], flowers: [P.white, P.pink], fd: .05 });
     for (let j = 0; j < 64; j++) { const w = Math.round(10 - j * .06), y = b - 1 - j, red = Math.floor(j / 11) % 2;
@@ -837,8 +864,7 @@ const ISLETS = {
     const palm = (x0, hgt, lean) => { const y0 = top(x0); let x = x0;
       for (let j = 0; j < hgt; j++) { x = x0 + lean * (j / hgt) ** 2; setp(g, x, y0 - j, j % 4 === 0 ? P.woodD : P.wood); setp(g, x + 1, y0 - j, j % 4 === 0 ? P.woodD : P.wood1); }
       const tx = x, ty = y0 - hgt;
-      for (const a of [-3, -2.6, -2.1, -1.6, -1.1, -.6, -.15]) for (let r = 1; r < 22; r += .5) { const fx = tx + Math.cos(a) * r, fy = ty + Math.sin(a) * r * .55 + r * r * .03;
-        setp(g, fx, fy, P.leaf); if (r > 4 && Math.floor(r) % 2 === 0) { setp(g, fx, fy + 1, P.leafD); setp(g, fx, fy + 2, r > 12 ? P.leafD : P.leaf); } }
+      for (const a of [-2.95, -2.35, -1.75, -1.25, -.75, -.15]) frond(g, tx, ty, a, a < -1.1 && a > -1.9 ? 13 : 20, P);
       rect(g, tx - 1, ty + 1, tx + 2, ty + 3, P.woodD); setp(g, tx + 2, ty + 2, P.wood1); };
     palm(cx + 26, 52, 10); palm(cx + 46, 40, -6); palm(cx - 64, 36, 5);
     for (const px of [-16, -2, 14]) rect(g, hx + px, b - 8, hx + px + 1, b, P.woodD); // a hut on stilts
@@ -848,6 +874,22 @@ const ISLETS = {
     for (let x = hx - 24; x <= hx + 24; x += 2) setp(g, x, b - 22, P.straw);
     for (const y of [b - 3, b - 6]) rect(g, hx - 23, y, hx - 19, y + 1, P.woodD);
     rect(g, cx + 60, WY - 3, cx + 76, WY - 1, P.woodD); setp(g, cx + 59, WY - 4, P.woodD); setp(g, cx + 76, WY - 4, P.woodD); rect(g, cx + 62, WY - 3, cx + 74, WY - 2, P.wood); }, // a canoe
+  ghat(g, cx, P) { const h = 18, b = WY - h, top = mound(g, cx, HW, h);
+    dress(g, cx, HW, top, P, { flowers: [P.gold, P.red], fd: .06 });
+    for (let x = cx - 64; x < cx + 14; x++) for (let y = Math.max(b, top(x)); y < WY; y++) { const k = (y - b) % 3; setp(g, x, y, k === 0 ? P.sand : k === 1 ? P.woodL : P.wood1); } // the ghat: steps down into the water
+    for (const [lx, k] of [[-58, 1], [-49, 3], [-40, 2], [-22, 4], [-11, 1], [4, 3]]) { setp(g, cx + lx, b + 3 * k - 1, P.gold); setp(g, cx + lx, b + 3 * k, P.red); } // little lamps on the steps
+    const chhatri = (x, s) => { // a domed kiosk on four pillars, a deep eave, a marigold garland
+      rect(g, x - 9 * s, b - 3, x + 9 * s + 1, b, P.woodL);
+      for (const dx of [-7, -2, 2, 7]) rect(g, x + Math.round(dx * s), b - 3 - Math.round(13 * s), x + Math.round(dx * s) + 2, b - 3, P.sand);
+      const ey = b - 3 - Math.round(13 * s); rect(g, x - 11 * s, ey - 2, x + 11 * s + 1, ey, P.woodL); rect(g, x - 12 * s, ey, x + 12 * s + 1, ey + 1, P.wood1);
+      for (let xx = Math.round(x - 10 * s); xx <= x + 10 * s; xx++) setp(g, xx, ey + 2 + Math.round(1.5 * Math.sin(Math.PI * ((xx - x + 80) % 6) / 6)), xx % 2 ? P.gold : P.red);
+      const r = Math.round(8 * s); for (let j = 0; j <= r; j++) { const w = Math.round(r * Math.sqrt(1 - (j / (r + 1)) ** 2)); rect(g, x - w, ey - 3 - j, x + w + 1, ey - 2 - j, (xx) => (xx - x) % 4 === 0 || xx > x + w * .4 ? P.woodL : P.sand); }
+      rect(g, x - 1, ey - 3, x + 2, ey - 2, P.sand); rect(g, x, ey - 7 - r, x + 1, ey - 3 - r, P.gold); };
+    chhatri(cx - 30, 1); chhatri(cx + 22, 1.4);
+    const tx = cx + 62; // a banyan: a thick trunk, two root pillars, one great crown
+    rect(g, tx - 4, b - 18, tx + 4, top(tx) + 1, (x) => x > tx + 1 ? P.woodD : P.wood1);
+    for (const rx of [tx - 12, tx + 10]) rect(g, rx, b - 14, rx + 3, top(rx) + 1, (x) => x === rx ? P.wood1 : P.woodD);
+    blob(g, tx, b - 26, 19, 11, R.leafA, 7); },
   chalet(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h);
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 2], flowers: [P.white, P.gold, P.heather], fd: .1 });
     pine(g, cx - 70, top(cx - 70) + 1, 40); pine(g, cx - 54, top(cx - 54) + 1, 54);
@@ -866,11 +908,12 @@ const THEMES = [ // islet and the bridge that leads to it
   { id: "crag", name: "Highland crag", bridge: "arches", blurb: "a stone arched bridge to a craggy rock in heather: a ruined keep with ivy, a curtain wall and gate, a broken turret" },
   { id: "baobab", name: "Baobab isle", bridge: "reeds", blurb: "a reed walk on poles to a baobab, a round house painted in Ndebele blocks and lines under a thatched cone, a plainer hut, clay pots and an acacia" },
   { id: "persian", name: "Persian garden", bridge: "brick", blurb: "a bridge of pointed brick arches to a brick pavilion with a tiled iwan, a turquoise dome, cypresses and pomegranates" },
-  { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, bamboo, a tall stone and a willow" },
+  { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, a bamboo grove, a mossy stone and a weeping willow" },
   { id: "lighthouse", name: "Lighthouse rock", bridge: "rope", blurb: "a rope walk to a striped lighthouse with a gallery, and a keeper's house behind a fence" },
   { id: "greek", name: "Whitewashed isle", bridge: "causeway", blurb: "a causeway to white houses with blue shutters, a bell arch, bougainvillea, a domed chapel and an olive" },
   { id: "gazebo", name: "Garden gazebo", bridge: "lattice", blurb: "a lattice bridge to a domed gazebo, a rose arch over the path, box hedges, roses and a bench" },
   { id: "palms", name: "Palm cay", bridge: "bamboo", blurb: "a bamboo walk to a sandy cay with three palms, a thatched hut on stilts and a canoe" },
+  { id: "ghat", name: "Ghats and chhatris", bridge: "jali", blurb: "a sandstone walk with a pierced screen rail to stone steps running down into the water, little lamps, two domed chhatris hung with marigolds and a banyan" },
   { id: "chalet", name: "Alpine chalet", bridge: "covered", blurb: "a covered bridge to a chalet with a stone floor, a flowered balcony, a wide roof, a woodpile and pines" },
 ];
 function routeFor(seed, path) { // the islets in walking order: a fresh order for every Path, never opening on the islet the last one opened on
@@ -954,12 +997,12 @@ const COPY = {
 };
 const ABOUT = {
   name: "Islands and bridges",
-  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a reed walk to a baobab isle, and so on. Each Path draws eight of ten themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
+  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a reed walk to a baobab isle, and so on. Each Path draws eight of eleven themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
 };
 const RULES = (g, need) => [
   "<b>Home:</b> the near shore of a wide lake under mountains, mirrored. Rowboat, signpost and boathouse on the landing to its left. The far shore to the right is a thin distant line, so the islets read against open water.",
   `<b>Route:</b> a pier by today's lily, then eight islets ${2 * HW + 1} art px wide, ${STEP} apart, each joined to the last by a short, low bridge in its own style. The islets are the places; the bridges stay quiet. This Path: ${g.themes.map((t) => t.name).join(" → ")}.`,
-  "<b>Themes:</b> ten islet and bridge pairs. Each Path draws eight and their order from the Inquiry's seed and the Path's number; every theme appears in some Paths and never more than once in one. Themes are places to stand, never prizes: nothing marks which islets a person has reached.",
+  "<b>Themes:</b> eleven islet and bridge pairs. Each Path draws eight and their order from the Inquiry's seed and the Path's number; every theme appears in some Paths and never more than once in one. Themes are places to stand, never prizes: nothing marks which islets a person has reached.",
   "<b>Another Path:</b> every Path starts again from today's lily, over a fresh order of islets, and never opens on the islet the last Path opened on. Nothing carries over from the last walk.",
   "<b>A step:</b> the camera walks the next bridge and stops on its islet. The question hangs from the top of the sky so the islet stays in view; the Reflection sits below the waterline.",
   "<b>Coming ashore:</b> Submitting the last step walks on along the rest of the chain and a plain jetty to the landing, where the Recap opens. The world is a loop: past the last islet is the landing, so the journey keeps going right.",
