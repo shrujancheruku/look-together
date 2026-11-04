@@ -128,6 +128,8 @@
   .strip span.on { opacity: .9; }
   .note { position: absolute; left: -9999px; top: 0; gap: 8px !important; padding: 12px 14px !important; }
   .note.pending { visibility: hidden; }
+  .wait { position: absolute; left: 16px; right: 16px; max-width: 34em; margin-inline: auto; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .above.skytop { justify-content: flex-start; } /* the welcome's words hang from the top of the sky, so the bank and the lily stay in view */
   /* the canvas sits under every DOM pane, so a note over other words carries its own backing in the frost's colour, notched like the frost */
   .note { z-index: 5; clip-path: polygon(2px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 2px); }
@@ -620,7 +622,8 @@ const STONE = { "g-path1": "s1", "g-path2": "s3", "g-end": "s5" };
 const READING = new Set(["g-probes", "g-probes2", "g-path1", "g-path2", "g-end", "g-recap"]);
 const TODAY = { x: 1040, y: 474 };
 // how long each beat's cues run, so a leaf note waits for the world to settle
-const CUE_LEN = { w2: .9, w3: 1.3, w4: 1.6, w5: 1, ai: 1.2, "g-probes": 4.1, "g-recap": 1.1, "g-path2": .6, "g-end": .6 };
+const CUE_LEN = { w2: .9, w3: 1.3, w4: 1.6, w5: 1, ai: 1.2, "g-probes": 5.3, "g-recap": 1.1, "g-path2": .6, "g-end": .6 };
+const BREAKDOWN_LANDS = 4.3; // seconds into the Breakdown beat: until then only the Problem shows, over the waiting lily
 const CAM_DELAY = { "g-probes": 500, "g-recap": 1000 }; // the drop lands, or the flower opens, before the camera moves
 
 const VARIANTS = {
@@ -726,11 +729,21 @@ function skim(x0, y, t, at, out) { // a stone skimming off to the right: three t
   }
 }
 function koi(x, y, t, from, to, out) { // waiting: a dim shape just under the surface
-  const m = motion(); if (m === "still" || t < from || t > to) return;
-  const px = []; for (let dx = -5; dx <= 5; dx++) for (let dy = 0; dy <= 1; dy++) if ((dx / 5) ** 2 + dy * .5 <= 1) px.push([dx, dy + 3, code(R.water, 0)]);
+  const m = motion(); if (m === "still" || t < from || t > to + .5) return;
+  const px = []; for (let dx = -6; dx <= 6; dx++) for (let dy = 0; dy <= 1; dy++) if ((dx / 5) ** 2 + dy * .5 <= 1) px.push([dx, dy + 3, code(R.water, 0)]);
   px.push([-6, 3, code(R.water, 0)], [-7, 2, code(R.water, 0)], [-7, 4, code(R.water, 0)]);
-  const fade = m === "reduce" ? clamp(Math.min(t - from, to - t) / .3, 1 / 8, 1) : 1;
+  const fade = clamp(Math.min((t - from) / .3, (to + .5 - t) / .5), 1 / 8, 1);
   out.push({ x: x + (m === "full" ? Math.round(Math.sin(t * 1.7)) : 0), y, px, bob: false, fade });
+}
+function dragonfly(x, y, t, from, to, out) { // waiting on the app: hovers, darts at most once every ~3 s, lifts away when the reply lands
+  const m = motion(); if (m === "still" || t < from) return;
+  const lift = t > to ? (t - to) / .6 : 0; if (lift >= 1) return;
+  const f8 = Math.floor(t * 8), wing = m === "full" && f8 % 2 ? code(R.glint, 1) : code(R.glint, 3), body = code(R.trunk, 0), eye = code(R.flower, N[R.flower] - 1);
+  const px = [[-3, 0, body], [-2, 0, body], [-1, 0, body], [0, 0, body], [1, 0, body], [2, 0, eye],
+    [-1, -1, wing], [0, -1, wing], [1, -1, wing], [-1, 1, wing], [0, 1, wing], [1, 1, wing], [0, -2, wing], [0, 2, wing]];
+  const dart = m === "full" && Math.floor((t - from) / 3) % 2 ? 9 : 0, hover = m === "full" ? (f8 % 4 < 2 ? 0 : -1) : 0;
+  const fade = m === "reduce" ? clamp(Math.min(t - from, to + .6 - t) / .3, 1 / 8, 1) : 1;
+  out.push({ x: x + dart, y: Math.round(y + hover - (m === "full" ? lift * 30 : 0)), px, bob: false, fade: fade * (m === "reduce" ? 1 - lift : 1) });
 }
 function newPad(t, fadeAt, out) {
   const p = fadeAt == null ? 1 : clamp((t - fadeAt) / .8, 0, 1); if (p <= 0) return;
@@ -754,8 +767,9 @@ function scene(beat) {
     newPad(1e9, null, out);
     const all = [past, past, past, past, past];
     if (beat === "g-probes") {
-      drop(720, 470, t, 0, out); koi(TODAY.x, TODAY.y + 2, t, 1.8, 2.8, out);
-      out.push(...lily(TODAY.x, TODAY.y, true, t, { padsAt: [past, 2.8, 3.05, 3.3, 3.55] }));
+      // the Breakdown wait (a mock 2.5 s): the koi in clear water under the lily, the dragonfly above it after 0.6 s
+      drop(720, 470, t, 0, out); koi(TODAY.x - 2, TODAY.y + 32, t, 1.8, 4.3, out); dragonfly(TODAY.x + 4, TODAY.y - 24, t, 2.4, 4.3, out);
+      out.push(...lily(TODAY.x, TODAY.y, true, t, { padsAt: [past, 4.3, 4.55, 4.8, 5.05] }));
     } else if (["g-path1", "g-path2", "g-end", "g-probes2"].includes(beat)) out.push(...lily(TODAY.x, TODAY.y, true, 1e9, { padsAt: all }));
     else if (beat === "g-recap") out.push(...lily(TODAY.x, TODAY.y, true, t, { padsAt: all, flowerAt: 0 }));
     if (beat === "g-path2" || beat === "g-end") { const s = world().items[STONE[beat]]; rings(s.x, s.y + 3, t, 0, out); }
@@ -833,7 +847,8 @@ const GUIDED_FRAME = {
   "g-home": (c) => hits(c, [["new", "g-problem"], ["boat", "noop"]]) + topbar(c, Gp("", P("wm", "Look Together")))
     + `<div class="tag" style="left:${c.x(720)}px;top:${c.y(463)}px">${Bt(tgt("g-home"), P("ctl", "Begin today's Inquiry"), "g-problem")}</div>`,
   "g-problem": (c) => topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P("q", "What are you facing?"))) + composer(c, COPY.problem, "Begin", "g-probes", "g-problem"),
-  "g-probes": (c) => topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q, i) => Bt("row " + (i === 0 ? tgt("g-probes") : ""), P("rd", q), "g-path1")).join(""))
+  "g-probes": (c) => ct("g-probes") < BREAKDOWN_LANDS ? topbar(c, backBtn(), helpBtn()) + `<div class="g wait" data-g data-waiting style="top:${c.y(TODAY.y + 44)}px" role="status">${P("cap", "Your Problem") + P("per", COPY.problem)}<span class="sr">Waiting for a reply</span>${st.still ? P("rd", "…") : ""}</div>`
+    : topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q, i) => Bt("row " + (i === 0 ? tgt("g-probes") : ""), P("rd", q), "g-path1")).join(""))
     + below(c, Gp("", P("cap", "Your Problem") + P("per", COPY.problem))),
   "g-path1": (c) => topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P("q", COPY.steps[0].q))) + composer(c, "", "Submit", "g-path2", "g-path1"),
   "g-path2": (c) => topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P("q", COPY.steps[1].q))) + composer(c, COPY.steps[1].r, "Submit", "g-end", "g-path2"),
@@ -1039,6 +1054,7 @@ function frame(nowMs) {
       } else { cam = mv.from; mix = { cam2: mv.to, p }; v.ovOld.style.opacity = clamp(1 - p * 2, 0, 1); v.ov.style.opacity = clamp(p * 2 - 1, 0, 1); }
       if (p >= 1) { v.move = null; v.cam = mv.to; cam = mv.to; mix = null; v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); placeNote(v); }
     }
+    if (!v.move && v.ov.querySelector("[data-waiting]") && ct(v.beat) >= BREAKDOWN_LANDS) setScreen(v, v.beat, false); // the Breakdown lands: the Probes appear
     // a note shows only once the camera has stopped and the beat's cues have ended
     const n = v.ov.querySelector("[data-note].pending");
     if (n && !v.move && ct(v.beat) >= (CUE_LEN[v.beat] || 0)) { n.classList.remove("pending"); v.ov.classList.add("guiding"); v.noteShown = true; placeNote(v); v.lastKey = ""; }
@@ -1058,9 +1074,9 @@ function go(to) {
   st.skipNote = null;
   navTo(to);
 }
-function navTo(beat) {
+function navTo(beat, replay) {
   const dir = BEATS.indexOf(beat) >= BEATS.indexOf(st.beat) ? "f" : "b";
-  if (dir === "f") enterCues(beat); else cueAt[beat] = -1e9;
+  if (dir === "f" || replay) enterCues(beat); else cueAt[beat] = -1e9;
   st.beat = beat; save();
   for (const v of views) setScreen(v, beat, true, dir);
   renderPanel();
@@ -1083,7 +1099,7 @@ function rowEl(label, chips) {
   r.append(s, c); return r;
 }
 function set(k, val, relayout) { st[k] = val; save(); if (relayout) layout(); else rerender(); }
-const jump = (b) => () => { delete cueAt[b]; st.skipNote = null; navTo(b); };
+const jump = (b) => () => { delete cueAt[b]; st.skipNote = null; navTo(b, true); }; // the panel always plays a beat's cues
 function renderPanel() {
   const def = VARIANTS[st.v];
   $("vname").textContent = `${st.v.toUpperCase()} · ${def.name}`; $("vblurb").textContent = def.blurb;
