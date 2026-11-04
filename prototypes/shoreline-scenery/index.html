@@ -878,11 +878,18 @@ const ISLETS = {
       for (let xx = Math.round(x - 10 * s); xx <= x + 10 * s; xx++) setp(g, xx, ey + 2 + Math.round(1.5 * Math.sin(Math.PI * ((xx - x + 80) % 6) / 6)), xx % 2 ? P.gold : P.red);
       const r = Math.round(8 * s); for (let j = 0; j <= r; j++) { const w = Math.round(r * Math.sqrt(1 - (j / (r + 1)) ** 2)); rect(g, x - w, ey - 3 - j, x + w + 1, ey - 2 - j, (xx) => (xx - x) % 4 === 0 || xx > x + w * .4 ? P.woodL : P.sand); }
       rect(g, x - 1, ey - 3, x + 2, ey - 2, P.sand); rect(g, x, ey - 7 - r, x + 1, ey - 3 - r, P.gold); };
-    const tx = cx + 60; // a banyan: a broad low canopy on a fluted trunk, prop roots down to the ground, a fringe of hanging roots
-    for (let x = tx - 27; x <= tx + 25; x += 3) if (Math.abs(x - tx) > 7) rect(g, x, b - 24, x + 1, b - 17 + Math.round(hash2(x, 4, 55) * 6), P.wood1);
-    for (const dx of [-20, -13, 12, 18]) { const x = tx + dx; rect(g, x, b - 20, x + 2, top(x) + 1, (xx, y) => xx === x ? P.wood1 : P.woodD); }
-    for (let y = b - 22; y <= top(tx); y++) { const w = 5 + (y > top(tx) - 3 ? 2 : 0); rect(g, tx - w, y, tx + w + 1, y + 1, (x) => (x - tx + 9) % 3 === 0 ? P.woodD : x > tx + 1 ? P.wood1 : P.wood); }
-    for (const [dx, dy, r] of [[-22, -26, 10], [20, -27, 10], [-10, -31, 13], [8, -32, 13], [-1, -38, 11]]) tree(g, tx + dx, b + dy, r, R.leafA, b + dy + Math.round(r * .3) + 2);
+    const tx = cx + 60, tb = top(tx); // a banyan: a fluted trunk parting into limbs, roots hanging in clusters and propping it up, a broad canopy in two depths
+    const stamp = (x0, y0, x1, y1, w, c) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) rect(g, x0 + (x1 - x0) * i / n - w / 2, y0 + (y1 - y0) * i / n, x0 + (x1 - x0) * i / n + w / 2, y0 + (y1 - y0) * i / n + 1, c); };
+    for (const [dx, dy] of [[-18, -12], [-7, -16], [8, -15], [19, -11]]) stamp(tx, b - 24, tx + dx, b - 24 + dy, 3, P.wood1);
+    for (let y = b - 26; y <= tb; y++) { const w = 4 + (y > tb - 3 ? 2 : 0); rect(g, tx - w, y, tx + w + 1, y + 1, (x) => (x - tx + 9) % 3 === 0 ? P.woodD : x > tx + 1 ? P.wood1 : P.wood); }
+    const root = (x, len, ph, bow, prop) => { for (let j = 0; j < len; j++) { const xx = x + Math.round(Math.sin(j * .22 + ph) * .9 + bow * Math.sin(Math.PI * j / len)), w = prop ? (j > len - 3 ? 3 : 2) : j < len * .55 ? 2 : 1;
+      rect(g, xx, b - 30 + j, xx + w, b - 29 + j, (x2) => !prop && j === len - 1 ? P.wood : x2 === xx ? P.wood : P.woodD); } };
+    for (const [dx, k] of [[-27, 0], [-25, 1], [-17, 2], [-15, 3], [-11, 4], [11, 5], [14, 6], [23, 7], [25, 8], [27, 9]]) root(tx + dx, 14 + Math.round(hash2(dx, k, 55) * 8), k, 0, false);
+    for (const [dx, bow] of [[-21, -1.5], [-13, -1], [13, 1], [19, 1.5]]) root(tx + dx, top(tx + dx) - b + 31, dx, bow, true);
+    const lobes = (list) => { for (const [dx, dy, r] of list) tree(g, tx + dx, b + dy, r, R.leafA, b + dy + Math.round(r * .3) + 2); };
+    lobes([[-14, -38, 11], [13, -39, 11], [0, -43, 10]]); // the back of the canopy, in shade
+    for (let y = b - 58; y < b - 24; y++) for (let x = tx - 32; x <= tx + 32; x++) { const i = y * g.W + x, c = g.land[i]; if (c >> 5 === R.leafA && (c & 31) < 16) g.land[i] = code(R.leafA, Math.max(0, (c & 31) - 3)); }
+    lobes([[-22, -29, 10], [21, -29, 10], [-8, -32, 12], [8, -33, 12]]); // the front of it
     chhatri(cx - 30, 1); chhatri(cx + 22, 1.4); },
   chalet(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h);
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 2], flowers: [P.white, P.gold, P.heather], fd: .1 });
