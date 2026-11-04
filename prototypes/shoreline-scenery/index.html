@@ -878,11 +878,12 @@ const ISLETS = {
       for (let xx = Math.round(x - 10 * s); xx <= x + 10 * s; xx++) setp(g, xx, ey + 2 + Math.round(1.5 * Math.sin(Math.PI * ((xx - x + 80) % 6) / 6)), xx % 2 ? P.gold : P.red);
       const r = Math.round(8 * s); for (let j = 0; j <= r; j++) { const w = Math.round(r * Math.sqrt(1 - (j / (r + 1)) ** 2)); rect(g, x - w, ey - 3 - j, x + w + 1, ey - 2 - j, (xx) => (xx - x) % 4 === 0 || xx > x + w * .4 ? P.woodL : P.sand); }
       rect(g, x - 1, ey - 3, x + 2, ey - 2, P.sand); rect(g, x, ey - 7 - r, x + 1, ey - 3 - r, P.gold); };
-    chhatri(cx - 30, 1); chhatri(cx + 22, 1.4);
-    const tx = cx + 62; // a banyan: a thick trunk, two root pillars, one great crown
-    rect(g, tx - 4, b - 18, tx + 4, top(tx) + 1, (x) => x > tx + 1 ? P.woodD : P.wood1);
-    for (const rx of [tx - 12, tx + 10]) rect(g, rx, b - 14, rx + 3, top(rx) + 1, (x) => x === rx ? P.wood1 : P.woodD);
-    blob(g, tx, b - 26, 19, 11, R.leafA, 7); },
+    const tx = cx + 60; // a banyan: a broad low canopy on a fluted trunk, prop roots down to the ground, a fringe of hanging roots
+    for (let x = tx - 27; x <= tx + 25; x += 3) if (Math.abs(x - tx) > 7) rect(g, x, b - 24, x + 1, b - 17 + Math.round(hash2(x, 4, 55) * 6), P.wood1);
+    for (const dx of [-20, -13, 12, 18]) { const x = tx + dx; rect(g, x, b - 20, x + 2, top(x) + 1, (xx, y) => xx === x ? P.wood1 : P.woodD); }
+    for (let y = b - 22; y <= top(tx); y++) { const w = 5 + (y > top(tx) - 3 ? 2 : 0); rect(g, tx - w, y, tx + w + 1, y + 1, (x) => (x - tx + 9) % 3 === 0 ? P.woodD : x > tx + 1 ? P.wood1 : P.wood); }
+    for (const [dx, dy, r] of [[-22, -26, 10], [20, -27, 10], [-10, -31, 13], [8, -32, 13], [-1, -38, 11]]) tree(g, tx + dx, b + dy, r, R.leafA, b + dy + Math.round(r * .3) + 2);
+    chhatri(cx - 30, 1); chhatri(cx + 22, 1.4); },
   chalet(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h);
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 2], flowers: [P.white, P.gold, P.heather], fd: .1 });
     pine(g, cx - 70, top(cx - 70) + 1, 40); pine(g, cx - 54, top(cx - 54) + 1, 54);
@@ -906,7 +907,7 @@ const THEMES = [ // islet and the bridge that leads to it
   { id: "greek", name: "Whitewashed isle", bridge: "causeway", blurb: "a causeway to white houses with blue shutters, a bell arch, bougainvillea, a domed chapel and an olive" },
   { id: "gazebo", name: "Garden gazebo", bridge: "lattice", blurb: "a lattice bridge to a domed gazebo, a rose arch over the path, box hedges, roses and a bench" },
   { id: "palms", name: "Palm cay", bridge: "bamboo", blurb: "a bamboo walk to a sandy cay with three palms, a thatched hut on stilts and a canoe" },
-  { id: "ghat", name: "Ghats and chhatris", bridge: "jali", blurb: "a sandstone walk with a pierced screen rail to stone steps running down into the water, little lamps, two domed chhatris hung with marigolds and a banyan" },
+  { id: "ghat", name: "Ghats and chhatris", bridge: "jali", blurb: "a sandstone walk with a pierced screen rail to stone steps running down into the water, little lamps, two domed chhatris hung with marigolds and a broad banyan on prop roots" },
   { id: "chalet", name: "Alpine chalet", bridge: "covered", blurb: "a covered bridge to a chalet with a stone floor, a flowered balcony, a wide roof, a woodpile and pines" },
 ];
 function routeFor(seed, path) { // the islets in walking order: a fresh order for every Path, never opening on the islet the last one opened on
