@@ -56,6 +56,10 @@ _Avoid_: Flag, complaint, feedback
 Who a person is to Look Together: what they sign in with, so their daily allowance follows them across devices. It knows nothing of their Inquiries, which stay with the person, on their devices, never with us.
 _Avoid_: Profile, user, member
 
+**Region**:
+Where a person's Account lives and their replies are made: the United States or the European Union, chosen once when they join and kept for as long as the Account exists.
+_Avoid_: Server, location, data centre
+
 **Pattern**:
 An Assumption or friction that recurs across a person's Inquiries, shown to them only in a long-term view, outside any Inquiry.
 _Avoid_: Insight, profile, progress
