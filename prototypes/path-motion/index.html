@@ -2,13 +2,13 @@
 <title>Path Motion</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
-  PROTOTYPE (throwaway, never merge): answers "How does the pond world show a Path's motion and progress?" (issue #84).
-  Four variants of what stands for the person on a Path, on the Shoreline from issue #83 (copied from
-  prototypes/shoreline-scenery): A a walker on the bridges, B the rowboat rowed islet to islet, C a travelling light,
-  D today's skimming stone made bigger. The bottom bar (‹ ›, arrow keys, ?variant=) switches the variant; tap through
-  the flow on the device itself (Probes, Submit, Back). The panel sets piece size, how long a reply takes, the
-  waiting cues' size, season, motion and device. In every variant the walk is the wait: Submit sets off at once, and
-  the koi and dragonfly come only if the reply is still out on arrival. Copy is mock content.
+  PROTOTYPE (throwaway, never merge): answers "How does the pond world show a Path's motion and progress?" (issue #84),
+  version 2. Version 1 (four variants: walker, rowboat, light, skimming stone) is in this branch's history; the founder
+  chose the walker, and "the walk is the wait". Version 2: the person customises the walker (figure, jacket, skin tone);
+  it sits at a seat on every islet; it starts and ends in the rowboat (tapping the boat at home begins the Inquiry; at the
+  Recap it waits in the bobbing boat, and tapping it rows home); the home lily is blank, or flowered with the last
+  Recap's title. The bottom bar (‹ ›, arrow keys) steps through the flow as a person would. Built on the Shoreline from
+  issue #83 (prototypes/shoreline-scenery). Copy is mock content.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +108,7 @@
   .pchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
   .pchip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .pchip i { font-style: normal; opacity: .65; margin-left: 4px; font-weight: 400; }
+  .sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); }
   #mapWrap { overflow-x: auto; }
   #map { display: block; border-radius: 6px; }
   #stats { font: 12px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: pre-wrap; margin: 0; }
@@ -128,7 +129,8 @@
   .note.pending { visibility: hidden; }
   .wait { position: absolute; left: 16px; right: 16px; max-width: 34em; margin-inline: auto; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .above.skytop { justify-content: flex-start; } /* the welcome's words hang from the top of the sky, so the bank and the lily stay in view */
+  .above.skytop { justify-content: flex-start; }
+  .above.scroll { justify-content: flex-start; overflow-y: auto; scrollbar-width: none; } .above.scroll::-webkit-scrollbar { display: none; } /* the welcome's words hang from the top of the sky, so the bank and the lily stay in view */
   /* the canvas sits under every DOM pane, so a note over other words carries its own backing in the frost's colour, notched like the frost */
   .note { z-index: 5; clip-path: polygon(2px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 2px); }
   .dev.spring .note { background: rgba(236,244,238,.93); box-shadow: inset 0 2px 0 #9cc77e; } .dev.autumn .note { background: rgba(48,34,60,.94); box-shadow: inset 0 2px 0 #7c9a52; }
@@ -157,7 +159,8 @@
   <aside id="panel">
     <h1 id="vname"></h1>
     <p id="vblurb"></p>
-    <h2>The moving piece</h2>
+    <h2>Your walker</h2>
+    <p>In the app these would sit in Settings, in the boathouse. Every colour is a row of the indexed palette, so it shifts with the season and the palette rows like everything else.</p>
     <div id="pieceUi"></div>
     <h2>Flow</h2>
     <p>Tap through on the device: a Probe, then Submit on each step, and Back to go back up. Jumping skips the walk. The last step walks on to the landing, where the Recap opens; "Row home" plays the boat back to the pond.</p>
@@ -188,7 +191,13 @@
 "use strict";
 // ================= engine: pure, no DOM =================
 // ---------- palette: the chosen kit (issue #70), 12-step full colour, sky 16 ----------
-const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone"];
+const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone", "coat", "skin"];
+// the walker's rows (issue #84): set colour by colour, not as a ramp. coat: five jackets, each lit, base and edge. skin: five tones, each lit and shade, then hair.
+const EXPLICIT = {
+  coat: [[.80, .09, 5], [.68, .11, 10], [.48, .10, 15], [.76, .09, 135], [.62, .10, 140], [.43, .08, 145], [.78, .07, 240], [.64, .09, 245], [.45, .08, 250],
+    [.85, .11, 82], [.74, .13, 72], [.53, .10, 62], [.72, .02, 260], [.57, .025, 260], [.39, .02, 260]],
+  skin: [[.89, .045, 65], [.80, .06, 55], [.80, .07, 60], [.70, .08, 50], [.68, .08, 55], [.58, .08, 45], [.55, .08, 50], [.46, .07, 42], [.43, .06, 45], [.34, .05, 40], [.27, .03, 40], [.40, .05, 50]],
+};
 const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
 const PAL = { steps: 12, sky: 16, chroma: 1, hue: 1 };
 const SEASONS = {
@@ -226,7 +235,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 function stepsFor(name) {
   switch (name) {
     case "sky": return PAL.sky; case "glint": return 4; case "light": return 3; case "mist": return 2; case "stone": return 8;
-    case "far": return PAL.steps - 2; case "trunk": return 4; default: return PAL.steps;
+    case "far": return PAL.steps - 2; case "trunk": return 4; case "coat": return 15; case "skin": return 12; default: return PAL.steps;
   }
 }
 const N = RAMPS.map(stepsFor);
@@ -249,7 +258,7 @@ function rowT([L, C, h], row) {
 const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
 function makeLUT(season, row) {
   const sea = SEASONS[season], LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
-  RAMPS.forEach((name, r) => rampLch(sea.ramps[name], N[r]).forEach((c, s) => {
+  RAMPS.forEach((name, r) => (EXPLICIT[name] ? EXPLICIT[name].map(([L, C, h]) => season === "autumn" ? [L * .82, C * .9, h] : [L, C, h]) : rampLch(sea.ramps[name], N[r])).forEach((c, s) => { // the evening dims the walker with everything else
     LUT[code(r, s)] = pack(oklch(...rowT(c, row)));
     LUT[code(r, s) + 16] = pack(oklch(...rowT([c[0] * (1 - sea.refl.mix) + sea.refl.L * sea.refl.mix - sea.refl.dark, c[1] * .75, c[2]], row)));
   }));
@@ -1003,8 +1012,10 @@ function buildShore(season, seed, path) {
   g.rand = rng(3);
   signpost(g, 360, WY - 3); item(g, "sign", 360, WY - 14, 12, 12, "About");
   boathouse(g, 470, WY - 2);
-  item(g, "boat", MOOR.x, MOOR.y - 3, 14, 7, "Settings");
-  item(g, "new", 720, WY + 64, 20, 12, "Begin today's Inquiry");
+  item(g, "boat", MOOR.x, MOOR.y - 5, 16, 9, "Begin today's Inquiry");
+  item(g, "landboat", LAND_X + 34, WY + 8, 16, 10, "Row home");
+  item(g, "house", 470, WY - 12, 22, 14, "Settings");
+  item(g, "lily", 772, WY + 82, 30, 20, "Last Recap");
   sky(g, 0, WY, { x: 750, y: WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
   finish(g, season);
   g.LUT = makeLUT(season, "normal");
@@ -1030,33 +1041,24 @@ const COPY = {
     card: { probe: "Who decided where you should be by now?", a: "Someone has decided where I should be by now.", quote: "“I picked it up from watching my brother.”" } },
 };
 const ABOUT = {
-  name: "Islands and bridges",
-  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a reed walk to a baobab isle, and so on. Each Path draws eight of eleven themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
+  blurb: "A small figure stands for the person, and they choose its figure, jacket and skin tone. It starts and ends in the rowboat. Home: it sits in the moored boat, and tapping the boat begins the Inquiry, rowing to today's lily's pier. Each Path step walks to the next islet and sits down there, somewhere the islet offers a seat: a truth that is a pathless land, walked and then looked at together, like friends on a park bench. Finishing comes ashore at the landing, where it sits in the boat, bobbing, waiting to row home. Tapping the boat rows home, and the home lily flowers with the Recap's title.",
 };
-const RULES = (g, need) => [ // the rule sheet if the current variant wins
-  ...({
-    A: ["<b>The piece:</b> a small figure in a long coat, side on, its edge in the coat's darker step, never black. It is the person, not a guide: it never speaks, gestures or leads.",
-      "<b>At rest:</b> it stands on the near side of the islet, so the islet's buildings stay clear, and does not idle-animate.",
-      "<b>Submit:</b> it walks at once, across the rest of the islet and the next bridge, feet on the deck, reflection under it. The camera keeps pace, so it holds its place on screen while the world moves past."],
-    B: ["<b>The piece:</b> the rowboat, with its rower. Begin rows it from its mooring to the pier; each step moors it in front of the next islet.",
-      "<b>Submit:</b> it rows at once; a short wake trails and fades. The bridges are scenery it passes, not a way it takes.",
-      "<b>The Recap:</b> the boat is already at the landing, so \"Row home\" finishes the same trip."],
-    C: ["<b>The piece:</b> a warm light on the islet's path, a bright core and a dithered glow, shown in the water. It breathes slowly at rest (3 fps steps).",
-      "<b>Submit:</b> it travels at once along the bridge, lighting the deck under it, with an afterglow behind that fades within a second. Nothing stays lit.",
-      "<b>Finishing:</b> it runs the whole chain and the last jetty to the landing, quickly."],
-    D: ["<b>The piece:</b> none at rest. Submit skims a stone from this islet to the next in four shrinking hops, a ring at every touch and a bigger one where it sinks.",
-      "<b>Finishing:</b> no skim; the camera just goes."],
-  })[st.variant],
-  "<b>The walk is the wait:</b> Submit sets off at once; the next question fades in on arrival, or when the reply lands if it is later. The koi and dragonfly come only if it is still out on arrival, and the dragonfly lifts as it lands, with a ring by the piece.",
-  "<b>Back:</b> the piece goes back the way it came, at the same pace. Jumps skip the walk.",
-  "<b>No reward:</b> the same piece, size and pace on every step of every Inquiry; nothing left behind, nothing lit, counted or collected by how far a person got.",
-  "<b>Reduce Motion:</b> the piece dissolves in at its new place with the 8-step dither; no walk cycle, wake or rings. <b>Still water:</b> it is simply there.",
+const RULES = (g, need) => [
+  "<b>The walker:</b> a small figure, the person, never a guide: it never speaks, gestures or leads. The person picks a figure (woman, man or neither), a jacket (five) and a skin tone (five); each is a row in the indexed palette, so it shifts with the season and the Still water and Step-out rows like the rest of the world.",
+  "<b>Home:</b> the walker sits in the moored rowboat. The boat is the way in (\"Begin today's Inquiry\"). The home lily is green and blank, or, when an Inquiry was finished recently, flowered with that Recap's title.",
+  "<b>Begin:</b> the boat rows to today's lily's pier; the walker steps out onto it while the Probes are read. The empty boat waits at the pier.",
+  "<b>A step:</b> Submit sets off at once: the walker stands, walks the rest of the islet and the next bridge, and sits down at the next islet's seat (ghat steps, the gazebo, the iwan, a woodpile). The camera keeps pace. Back walks it back to the last seat.",
+  "<b>The walk is the wait:</b> the next question fades in when the walker sits, or when the reply lands if later. The koi and dragonfly come only if it is still out then, and the dragonfly lifts as it lands, with a ring.",
+  "<b>Coming ashore:</b> the last Submit fades the walker out, the camera travels the rest of the chain, and it fades in sitting in the boat at the landing, bobbing, below the Recap.",
+  "<b>Row home:</b> no button. The boat is touchable (\"Row home\"); it rows to the mooring with the camera riding along, and the home lily flowers as it comes in.",
+  "<b>No reward:</b> the same walker, pace and seat for every Inquiry; seats come with the islet, never with how far a person got; nothing is left behind or counted.",
+  "<b>Reduce Motion:</b> the walker and boat dissolve in at their new place (8-step dither); no walk cycle, bob or rings. <b>Still water:</b> they are simply there.",
   `<b>World:</b> ${g.W} × ${g.H} art px, a loop, as on #83. Every frame fits within y ${need.y0}–${need.y1}${need.ok ? "" : ", but some frames clamp (see the readout)"}.`,
 ];
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, homeFull: false, safe: true, rowed: false, variant: "A", size: "M", latency: 3, cues: "big" };
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2 };
 try { Object.assign(st, JSON.parse(localStorage.getItem("path-motion") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
@@ -1103,116 +1105,121 @@ function newPad(out) {
   const art = padArt(17, 1.2, 1), px = art.px.concat(rowsPx(BIGFLOWER, flowerMap()).map(([x, y, c]) => [x - 3, y - 3, c]));
   out.push({ x: 720, y: WY + 68, px, bob: true, i: 0 });
 }
-const BOAT_PX = () => { const nt = N[R.trunk]; return rowsPx(BOAT, { T: code(R.trunk, nt - 1), t: code(R.trunk, 2), d: code(R.trunk, 0), o: code(R.trunk, 1) }); };
-const ROW = { from: LAND_X + 30, dur: 1.4 };
-function boatX(beat) { // the rowboat: waiting at the landing on the Recap, rowing home after it, else moored by home
-  if (beat === "recap") return ROW.from;
-  if (beat === "home" && rowing) { const t = ct("home"); return t >= ROW.dur ? MOOR.x : Math.round(lerp(ROW.from, MOOR.x + WORLD_W * 0, smooth(t / ROW.dur))); }
-  return MOOR.x;
-}
-const HOME_FULL = { unfinished: [560, WY + 150], flowers: [[810, WY + 128], [700, WY + 226], [838, WY + 262]], closed: [[598, WY + 318], [632, WY + 336], [592, WY + 352]] };
-// ================= the moving piece: what stands for the person on a Path (this prototype's question) =================
+// ================= the walker: the person on the Shoreline (this prototype's question, version 2) =================
+// The walker starts and ends in the rowboat. Home: it sits in the moored boat; tapping the boat begins the Inquiry and rows it
+// to today's lily's pier, where it steps out. Each Path step walks to the next islet and sits down there. Finishing comes
+// ashore at the landing, where it sits in the boat, bobbing, waiting to row home; tapping the boat rows home and the home lily flowers.
+const STAND_X = PIER[0] + 14, PIERBOAT = { x: STAND_X + 14, y: WY + 12 }, LANDBOAT = { x: LAND_X + 34, y: WY + 13 }, HOME_LILY = { x: 772, y: WY + 82 };
 const mod = (a) => ((a % WORLD_W) + WORLD_W) % WORLD_W;
 const walkAt = (x) => world().walkY[mod(Math.round(x))];
 const stepK = (beat) => beat && beat[0] === "p" && beat !== "probes" ? +beat.slice(1) : 0;
 const q8 = (p) => Math.max(1 / 8, Math.ceil(clamp(p, 0, 1) * 8) / 8); // an 8-step dither fade
-function walkerPx(h, frame, dir) { // a small figure in a long coat, side on; never black, its edge in the coat's own darker step
-  const px = [], coat = code(R.flower, 4), lit = code(R.flower, 6), edge = code(R.flower, 1), skin = code(R.light, 2), hair = code(R.trunk, 0), leg = code(R.trunk, 1);
-  const hr = Math.max(2, Math.round(h * .12)), legL = Math.max(3, Math.round(h * .3)), lift = frame % 2 ? -1 : 0, top = -h + lift, neck = top + 2 * hr;
+const SZ = () => ({ S: 0, M: 1, L: 2 })[st.size] ?? 1;
+const walkerH = () => [14, 18, 24][SZ()];
+// the person's own choices: a figure, a jacket and a skin tone, each drawn from the palette's own rows
+const FIG = { woman: { name: "Woman", hem: 0, flare: .25, hair: 2 }, man: { name: "Man", hem: .12, flare: .18, hair: 0 }, neutral: { name: "Neither", hem: .05, flare: .21, hair: 1 } };
+const COATS = [["rose", "Rose"], ["moss", "Moss"], ["sky", "Sky"], ["ochre", "Ochre"], ["slate", "Slate"]];
+const SKINS = ["Lightest", "Light", "Medium", "Brown", "Deep"];
+function paints() {
+  const c = Math.max(0, COATS.findIndex(([id]) => id === st.coat)) * 3, s = clamp(st.skin, 0, 4) * 2;
+  return { lit: code(R.coat, c), coat: code(R.coat, c + 1), edge: code(R.coat, c + 2), skin: code(R.skin, s), shade: code(R.skin, s + 1), hair: code(R.skin, 10), leg: code(R.trunk, 1), shoe: code(R.trunk, 0) };
+}
+function walkerPx(h, frame, dir) { // side on, walking; its edge in the jacket's own darker step, never black
+  const k = paints(), f = FIG[st.figure] || FIG.woman, px = [];
+  const hr = Math.max(2, Math.round(h * .12)), legL = Math.max(3, Math.round(h * (.3 + f.hem))), lift = frame % 2 ? -1 : 0, top = -h + lift, neck = top + 2 * hr;
   const stride = [-1, 0, 1, 0][frame] * Math.max(1, Math.round(h * .13)), lw = h >= 20 ? 2 : 1;
-  for (const sgn of [1, -1]) for (let y = -legL; y <= -1; y++) { const x = Math.round(sgn * stride * (y + legL) / (legL - 1)); for (let w = 0; w < lw; w++) px.push([x + w * dir, y, leg]); }
-  const hem = -legL + 1 + lift, w0 = Math.max(1, Math.round(h * .13)), w1 = Math.max(2, Math.round(h * .22));
+  for (const sgn of [1, -1]) for (let y = -legL; y <= -1; y++) { const x = Math.round(sgn * stride * (y + legL) / (legL - 1)); for (let w = 0; w < lw; w++) px.push([x + w * dir, y, y === -1 ? k.shoe : k.leg]); }
+  const hem = -legL + 1 + lift, w0 = Math.max(1, Math.round(h * .13)), w1 = Math.max(2, Math.round(h * f.flare));
   for (let y = neck; y <= hem; y++) { const w = Math.round(lerp(w0, w1, (y - neck) / Math.max(1, hem - neck)));
-    for (let x = -w; x <= w; x++) px.push([x, y, y === hem || x === w ? edge : x === -w ? lit : coat]); }
-  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x, top + hr + y, y === -hr || x * dir < 0 ? hair : skin]);
+    for (let x = -w; x <= w; x++) px.push([x, y, y === hem || x === w ? k.edge : x === -w ? k.lit : k.coat]); }
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x, top + hr + y, y <= -hr + 1 || x * dir < 0 ? k.hair : x * dir === hr ? k.shade : k.skin]);
+  const long = f.hair === 2 ? Math.round(h * .2) : f.hair === 1 ? 1 : 0; // hair falling behind
+  for (let y = top + hr; y <= neck + long; y++) for (let x = 1; x <= hr; x++) if (y > top + hr || x < hr) px.push([-dir * x, y, k.hair]);
   return px;
 }
-function boatPx(L, fh, frame, dir) { // the rowboat with its rower; L half-length, fh the rower's height
-  const nt = N[R.trunk], px = [], coat = code(R.flower, 4), edge = code(R.flower, 1), skin = code(R.light, 2), hair = code(R.trunk, 0);
+function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang over its edge, on the ground they cross
+  const k = paints(), f = FIG[st.figure] || FIG.woman, px = [];
+  const hr = Math.max(2, Math.round(h * .12)), torso = Math.max(4, Math.round(h * .34)), w0 = Math.max(2, Math.round(h * .14)), w1 = Math.max(3, Math.round(h * (f.flare - .02)));
+  const lapW = ground ? w1 + 3 : w1 + 1, lap = f.hem < .03 && !ground ? k.coat : k.leg;
+  if (!ground) { const hang = Math.max(3, Math.round(h * .22)), lx = Math.max(1, Math.round(w1 * .5)); for (let y = 0; y < hang; y++) for (const sx of [-lx, lx]) px.push([sx, y, y === hang - 1 ? k.shoe : k.leg]); }
+  for (let y = -2; y <= -1; y++) for (let x = -lapW; x <= lapW; x++) px.push([x, y, ground && Math.abs(x) > w1 ? (y === -1 ? k.shoe : k.leg) : x === lapW ? k.edge : lap]);
+  for (let y = -torso - 2; y <= -3; y++) { const w = Math.round(lerp(w0, w1, (y + torso + 2) / Math.max(1, torso - 1)));
+    for (let x = -w; x <= w; x++) px.push([x, y, x === w ? k.edge : x === -w ? k.lit : k.coat]); }
+  px.push([-1, -3, k.skin], [1, -3, k.skin]); // hands in the lap
+  const cy = -torso - 3 - hr, long = f.hair === 2 ? Math.round(h * .2) : f.hair === 1 ? 1 : 0;
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x, cy + y, y <= -hr + 1 || (f.hair && Math.abs(x) === hr) ? k.hair : x === hr ? k.shade : k.skin]);
+  for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x, y, k.hair]); // hair to the shoulders
+  return px;
+}
+function boatPx(frame, rower) { // the rowboat (28 px long, as on #85), with the walker sitting in it; frame -1 is oars shipped
+  const L = 14, nt = N[R.trunk], k = paints(), px = [];
   for (let x = -L; x <= L; x++) { px.push([x, -3, code(R.trunk, nt - 1)]); px.push([x, -2, code(R.trunk, Math.abs(x) === L ? 1 : 3)]); if (Math.abs(x) < L) px.push([x, -1, code(R.trunk, 1)]); if (Math.abs(x) < L - 2) px.push([x, 0, code(R.trunk, 0)]); }
   px.push([-L - 1, -4, code(R.trunk, nt - 1)], [L + 1, -4, code(R.trunk, nt - 1)]);
-  const hr = Math.max(1, Math.round(fh * .18)), bodyTop = -3 - fh + 2 * hr + 1;
-  for (let y = bodyTop; y <= -4; y++) for (let x = -1; x <= 1 + (fh > 9 ? 1 : 0); x++) px.push([x, y, x === -1 ? edge : coat]);
-  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + .6) px.push([x, bodyTop - hr - 1 + y, y === -hr ? hair : skin]);
-  const blade = frame ? [Math.round(L * .55) * -dir, 1] : [Math.round(L * .5) * dir, bodyTop - 2], hx = 0, hy = bodyTop + 2; // stroke: blade in the water behind, then lifted forward
-  const n = Math.max(Math.abs(blade[0] - hx), Math.abs(blade[1] - hy));
-  for (let i = 0; i <= n; i++) px.push([Math.round(hx + (blade[0] - hx) * i / n), Math.round(hy + (blade[1] - hy) * i / n), code(R.trunk, 2)]);
+  if (frame < 0) for (let x = -L + 4; x <= L - 4; x++) px.push([x, -4, code(R.trunk, 2)]); // oars along the gunwale
+  if (!rower) return px;
+  const h = walkerH(), f = FIG[st.figure] || FIG.woman, fh = Math.round(h * .62), hr = Math.max(2, Math.round(h * .12)), bodyTop = -3 - fh + 2 * hr + 1;
+  for (let y = bodyTop; y <= -4; y++) for (let x = -1; x <= 2; x++) px.push([x, y, x === 2 ? k.edge : x === -1 ? k.lit : k.coat]);
+  const cy = bodyTop - hr - 1;
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + .6) px.push([x, cy + y, y === -hr || x < 0 ? k.hair : x === hr ? k.shade : k.skin]);
+  if (f.hair === 2) for (let y = cy; y <= cy + hr + 2; y++) px.push([-hr, y, k.hair]);
+  if (frame >= 0) { const blade = frame ? [-9, 1] : [8, bodyTop - 2], hx = 1, hy = bodyTop + 2, n = Math.max(Math.abs(blade[0] - hx), Math.abs(blade[1] - hy));
+    for (let i = 0; i <= n; i++) px.push([Math.round(hx + (blade[0] - hx) * i / n), Math.round(hy + (blade[1] - hy) * i / n), code(R.trunk, 2)]); }
   return px;
 }
-function lightPx(r, breathe) { // a warm light: a bright core and a dithered glow
-  const px = [], nl = N[R.light];
-  for (let y = -3 * r; y <= 3 * r; y++) for (let x = -3 * r; x <= 3 * r; x++) { const d = Math.hypot(x, y * 1.1);
-    if (d <= r) px.push([x, y, code(R.light, d < r * .5 ? nl - 1 : nl - 2)]); // the light ramp has only three steps
-    else if (d <= 3 * r) px.push([x, y, d < 2 * r ? code(R.light, 0) : code(R.glint, 1), (1 - (d - r) / (2 * r)) * .6 * breathe]); }
-  return px;
+// where the walker sits on each islet, from its builder in ISLETS: x from the islet's centre, the seat's row, and whether the legs hang
+const SEATS = {
+  shrine: { dx: -4, y: WY - 22, sit: "the edge of the hall's stone platform" },
+  crag: { dx: -44, y: WY - 34, ground: true, sit: "in the heather by the fallen wall" },
+  baobab: { dx: -34, y: WY - 14, ground: true, sit: "at the baobab's foot" },
+  persian: { dx: -2, y: WY - 14, ground: true, sit: "in the iwan" },
+  pavilion: { dx: -20, y: WY - 16, sit: "the edge of the pavilion's plinth" },
+  lighthouse: { dx: 4, y: WY - 26, ground: true, sit: "on the rock below the lighthouse" },
+  greek: { dx: -9, y: WY - 28, sit: "the outside stair" },
+  gazebo: { dx: 3, y: WY - 19, sit: "in the gazebo" },
+  palms: { dx: -36, y: WY - 19, sit: "the edge of the hut on stilts" },
+  ghat: { dx: -30, y: WY - 12, sit: "the ghat's steps, above the water" },
+  chalet: { dx: 40, y: WY - 26, sit: "on the woodpile" },
+};
+function seatFor(k) { const t = world().themes[k - 1], s = SEATS[t.id]; return { kind: "sit", x: slotX(k - 1) + s.dx, y: s.y, ground: !!s.ground }; }
+function spot(b) { // where the walker is at rest on each screen
+  const k = stepK(b);
+  return b === "home" ? { kind: "boat", x: MOOR.x, y: MOOR.y } : b === "probes" ? { kind: "stand", x: STAND_X } : k ? seatFor(k) : b === "recap" ? { kind: "boat", x: WORLD_W + LANDBOAT.x, y: LANDBOAT.y } : null;
 }
-function bigRings(x, y, t, at, out, s) { // rings, scaled with the piece
+const onPath = (b) => b === "probes" || stepK(b) > 0;
+function drawWalker(out, v) {
+  const mv = v.move, full = motion() === "full", h = walkerH();
+  const boat = (x, y, moving, fade = 1) => out.push({ x: Math.round(x), y: Math.round(y), px: boatPx(moving && full ? Math.floor(now() * 2.2) % 2 : -1, true), bob: !moving, i: 3, fade });
+  const at = (s, fade = 1) => { if (!s) return;
+    if (s.kind === "boat") boat(s.x, s.y, false, fade);
+    else if (s.kind === "sit") out.push({ x: s.x, y: s.y, px: sitterPx(h, s.ground), bob: false, refl: true, fade });
+    else out.push({ x: s.x, y: Math.round(walkAt(s.x)), px: walkerPx(h, 0, 1), bob: false, refl: true, fade }); };
+  const tk = mv && mv.token, mode = tk ? tk.mode : "";
+  if (onPath(v.beat) && mode !== "row") out.push({ x: PIERBOAT.x, y: PIERBOAT.y, px: boatPx(-1, false), bob: true, i: 2 }); // the boat waits at the pier while the Path is walked
+  if (!tk) return at(spot(v.beat));
+  const p = clamp((performance.now() - mv.t0) / mv.dur, 0, 1);
+  if (mv.style !== "pan") return at(tk.b, q8(p));
+  if (mode === "far") return p < .25 ? at(tk.a, 1 - Math.ceil(p / .25 * 8) / 8) : p > .75 ? at(tk.b, q8((p - .75) / .25)) : null;
+  const e = rowing && v.beat === "home" ? smooth(p) : ease(p);
+  if (mode === "row") return boat(lerp(tk.src.x, tk.dst.x, e), lerp(tk.src.y, tk.dst.y, e), true);
+  const x = lerp(tk.a.x, tk.b.x, e), dir = Math.sign(tk.b.x - tk.a.x) || 1, frame = full ? Math.floor(Math.abs(x - tk.a.x) / Math.max(3, h * .32)) % 4 : 0;
+  out.push({ x: Math.round(x), y: Math.round(walkAt(x)), px: walkerPx(h, frame, dir), bob: false, refl: true });
+}
+function headY(s) { const h = walkerH(); return s.kind === "sit" ? s.y - Math.round(h * .7) : s.kind === "boat" ? s.y - Math.round(h * .75) : walkAt(s.x) - h; }
+function bigRings(x, y, t, at, out, s) {
   if (motion() !== "full") return;
   for (const lag of [0, .3]) { const e = t - at - lag; if (e < 0 || e > 1.1) continue;
     const q = Math.floor(e / 1.1 * 8) / 8, rx = 3 + 14 * s * q, ry = Math.max(1, rx * .32), px = [];
     for (let a = 0; a < 360; a += 2) px.push([Math.round(Math.cos(a * Math.PI / 180) * rx), Math.round(Math.sin(a * Math.PI / 180) * ry), code(R.glint, q < .5 ? 1 : 0)]);
     out.push({ x, y, px, bob: false, fade: .9 - q * .5 }); }
 }
-const SZ = () => ({ S: 0, M: 1, L: 2 })[st.size] ?? 1;
-const VARIANTS = {
-  A: { name: "Walker", speed: 90, long: "fade",
-    blurb: "A small figure stands for the person. It waits on the islet's near side while they think, and on Submit it walks the rest of the islet and the bridge to the next one, its feet on the deck, its reflection under it on the water. Back walks it back. The camera keeps pace, so the figure stays put on the screen while the world moves past: the motion is the world's, the figure's is the walk. Finishing fades it out and in on the landing.",
-    h: () => [12, 18, 24][SZ()],
-    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[0] + 16 } : k ? { x: slotX(k - 1) - 52 } : b === "recap" ? { x: WORLD_W + LAND_X + 80 } : null; },
-    top(tk) { return walkAt(tk.x) - this.h() - 2; },
-    draw(out, tk) { const h = this.h(), frame = tk.moving && motion() === "full" ? Math.floor(Math.abs(tk.x - tk.from.x) / Math.max(3, h * .32)) % 4 : 0;
-      out.push({ x: Math.round(tk.x), y: Math.round(walkAt(tk.x)), px: walkerPx(h, frame, tk.dir || 1), bob: false, refl: true, fade: tk.fade ?? 1 }); },
-    sizes: ["12 px tall", "18 px tall", "24 px tall"] },
-  B: { name: "Rowboat", speed: 75, long: "fade", boat: true,
-    blurb: "The rowboat is the piece. Begin rows it from its mooring by home to today's lily's pier; each Submit rows it along the islets' front to moor at the next one, a short wake behind it that fades. Back rows it back. At the Recap it is already at the landing, so \"Row home\" is the same boat finishing the same trip. The bridges stay scenery: the person passes under the walks rather than over them.",
-    dims: () => [[11, 8], [14, 11], [18, 14]][SZ()],
-    spot(b) { const k = stepK(b); return b === "home" ? { x: MOOR.x, y: MOOR.y } : b === "probes" ? { x: PIER[1] - 4, y: WY + 15 } : k ? { x: slotX(k - 1) - 30, y: WY + 17 } : b === "recap" ? { x: WORLD_W + ROW.from, y: MOOR.y } : null; },
-    top(tk) { return tk.y - this.dims()[1] - 5; },
-    draw(out, tk, v) { const [L, fh] = this.dims(), full = motion() === "full", frame = tk.moving && full ? Math.floor(now() * 2.2) % 2 : 0, dir = tk.dir || 1;
-      out.push({ x: Math.round(tk.x), y: Math.round(tk.y), px: boatPx(L, fh, frame, dir), bob: !tk.moving, i: 3, fade: tk.fade ?? 1 });
-      if (tk.moving && full) { const px = []; for (let k = 1; k <= 6; k++) for (const s of [-1, 1]) px.push([-dir * (L + k * 4), 1 + s * Math.round(k * .6), code(R.glint, k < 3 ? 1 : 0), 1 - k / 7]); out.push({ x: Math.round(tk.x), y: Math.round(tk.y), px, bob: false }); } },
-    sizes: ["22 px long", "28 px long (#85)", "36 px long"] },
-  C: { name: "Light", speed: 120, long: "travel",
-    blurb: "No figure: a warm light rests on the islet's path while the person thinks, breathing slowly. On Submit it travels the bridge to the next islet, lighting the deck under it and leaving a short afterglow that fades within a second; its glow shows in the water. Finishing, it runs the whole chain and the last jetty to the landing. It reads best in the evening; in the spring morning it is pale on a pale sky.",
-    r: () => [2, 3, 4][SZ()],
-    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[0] + 20 } : k ? { x: slotX(k - 1) - 44 } : b === "recap" ? { x: WORLD_W + LAND_X + 70 } : null; },
-    top(tk) { return walkAt(tk.x) - 4 * this.r() - 8; },
-    draw(out, tk) { const r = this.r(), x = Math.round(tk.x), y = Math.round(walkAt(tk.x) - r - 5), full = motion() === "full", nl = N[R.light];
-      const breathe = full && !tk.moving ? .75 + .25 * Math.sin(Math.floor(now() * 3) / 3 * 1.4) : 1;
-      if (tk.moving) { const px = [], dir = tk.dir || 1, back = 46, ahead = 4 * r; // the deck lit under it, and a short afterglow behind
-        for (let d = -back; d <= ahead; d++) { const wx = x + d * dir, f = d < 0 ? 1 + d / back : 1 - d / ahead; px.push([wx - x, Math.round(walkAt(wx)) - y, code(R.light, nl - 1), f * .9], [wx - x, Math.round(walkAt(wx)) - 1 - y, code(R.light, 0), f * .5]); }
-        out.push({ x, y, px, bob: false, refl: true, fade: tk.fade ?? 1 }); }
-      out.push({ x, y, px: lightPx(r, breathe), bob: false, refl: true, fade: tk.fade ?? 1 }); },
-    sizes: ["core 5 px", "core 7 px", "core 9 px"] },
-  D: { name: "Skimming stone", speed: 220, long: "fade", maxDur: 2,
-    blurb: "Today's cue, made bigger, to compare: nothing stands for the person while they think. On Submit a stone skims from this islet to the next in four shrinking hops, each touch a ring, and sinks with a last ring by the next islet. Back skims it back. Finishing skims nowhere: the camera just goes.",
-    r: () => [1, 3, 5][SZ()],
-    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[1] - 8, y: WY + 10 } : k ? { x: slotX(k - 1) - 40, y: WY + 12 } : b === "recap" ? { x: WORLD_W + LAND_X + 40, y: WY + 12 } : null; },
-    top(tk) { return tk.y - 26; },
-    draw(out, tk, v) { if (!tk.moving || motion() !== "full") return; const r = this.r(), a = tk.from, b = tk.to, F = [.38, .27, .2, .15], t = tk.p;
-      let c0 = 0; for (let i = 0; i < F.length; i++) { const c1 = c0 + F[i], x0 = lerp(a.x, b.x, c0), x1 = lerp(a.x, b.x, c1);
-        if (t >= c0 && t < c1) { const q = Math.floor((t - c0) / F[i] * 8) / 8, px = [];
-          for (let y = -r; y <= r; y++) for (let x = -r - 1; x <= r + 1; x++) if ((x / (r + 1.5)) ** 2 + (y / (r * .6 + .6)) ** 2 <= 1) px.push([x, y, code(R.stone, y < 0 ? N[R.stone] - 2 : 3)]);
-          out.push({ x: Math.round(lerp(x0, x1, q)), y: Math.round(lerp(a.y, b.y, c0) - Math.sin(q * Math.PI) * 22 * F[i] / .38 * (.6 + .2 * r)), px, bob: false }); }
-        c0 = c1; }
-    },
-    sizes: ["3 × 2 px (today)", "8 × 4 px", "12 × 6 px"] },
-};
-const VKEYS = Object.keys(VARIANTS), VAR = () => VARIANTS[st.variant] || VARIANTS.A;
-function pieceAt(v) { // where the piece is now: at rest at its beat's spot, or on its way between two
-  const V = VAR(), mv = v.move, rest = V.spot(v.beat);
-  if (!mv || !mv.token) return rest && { ...rest, moving: false, fade: 1 };
-  const { a, b } = mv.token, p = clamp((performance.now() - mv.t0) / mv.dur, 0, 1);
-  if (mv.style !== "pan" || !a) return b && { ...b, moving: false, fade: q8(p) };
-  if (!b) return { ...a, moving: false, fade: 1 - Math.ceil(p * 8) / 8 };
-  if (mv.token.far) return p < .25 ? { ...a, moving: false, fade: 1 - Math.ceil(p / .25 * 8) / 8 } : p > .75 ? { ...b, moving: false, fade: q8((p - .75) / .25) } : null;
-  const e = ease(p);
-  return { x: lerp(a.x, b.x, e), y: lerp(a.y ?? 0, b.y ?? 0, e), moving: true, dir: Math.sign(b.x - a.x) || 1, from: a, to: b, p };
-}
-function skimRings(out, v) { // D: every touch of the skim leaves a ring, which outlives the move
-  const mv = v.move || v.lastMove; if (!mv || !mv.token || !mv.token.a || !mv.token.b || mv.token.far || VAR() !== VARIANTS.D || mv.style !== "pan") return;
-  const { a, b } = mv.token, F = [.38, .27, .2, .15], s = .6 + .25 * VARIANTS.D.r(); let c = 0;
-  F.forEach((f, i) => { c += f; bigRings(Math.round(lerp(a.x, b.x, c)), Math.round(lerp(a.y, b.y, c)) + 1, now(), mv.t0 / 1000 + mv.dur / 1000 * c, out, i === F.length - 1 ? s * 1.4 : s); });
+let bloomPending = false; // the row home is under way: the home lily flowers as the boat comes in
+function homeLily(out, v) { // green and blank, or flowered with the last Recap's title when an Inquiry was finished recently
+  out.push(...lily(HOME_LILY.x, HOME_LILY.y, false, null, .85));
+  if (!st.rowed) return;
+  if (bloomPending && v.beat === "home") return;
+  const blooming = rowing && v.beat === "home" && v.arrived != null && now() - v.arrived < 1.4;
+  out.push(...lily(HOME_LILY.x, HOME_LILY.y, false, "open", .85, blooming && motion() !== "still" ? q8((now() - v.arrived) / .6) : 1));
+  if (blooming) rings(HOME_LILY.x, HOME_LILY.y + 3, now(), v.arrived, out);
 }
 function koi(x, y, t, from, to, out) { // waiting: a dim shape just under the surface, with a faint blush of colour when big
   const m = motion(); if (m === "still" || t < from || t > to + .5) return;
@@ -1242,31 +1249,14 @@ function dragonfly(x, y, t, from, to, out) { // waiting on the app: hovers, dart
   out.push({ x: x + dart, y: Math.round(y + hover - (m === "full" ? lift * 30 : 0)), px, bob: false, fade: fade * (m === "reduce" ? 1 - lift : 1) });
 }
 function scene(v) {
-  const beat = v.beat, out = [], V = VAR(), tk = pieceAt(v); newPad(out);
-  const boatIsPiece = V.boat && (beat !== "home" || (v.move && v.move.token && !rowing));
-  if (!boatIsPiece) { const bx = boatX(beat); // A, C and D: the boat stays moored, as on #83; B's boat, when home
-    out.push({ x: bx, y: MOOR.y, px: V.boat ? boatPx(...V.dims(), 0, 1) : BOAT_PX(), bob: true, i: 3, fade: motion() === "reduce" && rowing && beat === "home" ? q8(ct("home") / ROW.dur) : 1 }); }
-  if (st.homeFull) {
-    out.push(...lily(...HOME_FULL.unfinished, false, null, .8));
-    for (const p of HOME_FULL.flowers) out.push(...lily(...p, true, "open", .75));
-    for (const p of HOME_FULL.closed) out.push(...lily(...p, false, "closed", .45));
-  }
-  // the new Recap's flower, dropped by the boat as it passes
-  if (st.rowed) {
-    const tDrop = rowing && beat === "home" ? ROW.dur * .62 : -1e9, t = ct("home");
-    if (t >= tDrop) { out.push(...lily(DROP.x, DROP.y, true, "open", .75, motion() === "still" ? 1 : Math.max(1 / 8, Math.ceil(clamp((t - tDrop) / .5, 0, 1) * 8) / 8))); rings(DROP.x, DROP.y + 3, t, tDrop, out); }
-  }
+  const beat = v.beat, out = [];
+  homeLily(out, v);
   if (beat !== "home" && beat !== "recap") out.push(...lily(TODAY.x, TODAY.y, true, null));
-  if (tk) V.draw(out, tk, v);
-  skimRings(out, v);
-  // the walk is the wait: the koi and dragonfly come only if the reply is still out when the piece arrives, and the dragonfly lifts as it lands
-  const r = replyAt[beat] || 0, arr = v.arrived ?? 0, rest = V.spot(beat);
-  if (r && rest && !v.move && r > arr + .15) {
-    const x = rest.x, wy = rest.y ?? walkAt(x), t = now();
-    koi(x + (V.boat ? -4 : 10), V.boat ? wy + 14 : WY + 24, t, arr, r, out);
-    dragonfly(x + 8, Math.round(V.top({ x, y: wy })) - (st.cues === "big" ? 8 : 2), t, arr + .6, r, out);
-  }
-  if (r && rest && !v.move && v.shownAt) bigRings(rest.x + (V.boat ? 0 : 6), V.boat ? (rest.y + 2) : WY + 6, now(), v.shownAt, out, .8);
+  drawWalker(out, v);
+  // the walk is the wait: the koi and dragonfly come only if the reply is still out when the walker sits down, and the dragonfly lifts as it lands
+  const r = replyAt[beat] || 0, arr = v.arrived ?? 0, rest = spot(beat);
+  if (r && rest && !v.move && r > arr + .15) { const t = now(); koi(rest.x + 10, WY + 24, t, arr, r, out); dragonfly(rest.x + 8, Math.round(headY(rest)) - (st.cues === "big" ? 10 : 4), t, arr + .6, r, out); }
+  if (r && rest && !v.move && v.shownAt) bigRings(rest.x + 6, WY + 6, now(), v.shownAt, out, .8);
   return out;
 }
 
@@ -1289,7 +1279,7 @@ const cssW = (d) => d.w / d.dpr, cssH = (d) => d.h / d.dpr;
 function frameFor(beat) {
   if (beat === "home") return { x: 720, share: .4 };
   if (beat === "probes") return { x: TODAY.x + 6, share: .6 };
-  if (beat === "recap") return { x: LAND_X, share: .26 };
+  if (beat === "recap") return { x: LAND_X + 40, share: .74 };
   return { x: slotX(Math.min(SLOTS, +beat.slice(1)) - 1), share: .44 };
 }
 function cameraRaw(g, beat, d, sc) {
@@ -1316,8 +1306,8 @@ const Bt = (cls, inner, go, attr = "") => `<button type="button" class="g ${cls}
 const capg = (t) => Gp("capg", P_("cap", t));
 const topbar = (c, left, right = "") => `<div class="top" style="top:${c.top + 8}px">${left}<span style="flex:1"></span>${right}</div>`;
 const backBtn = () => Bt("ctl", "‹ Back", "back"), helpBtn = () => Bt("ctl", "Help", "noop");
-const above = (c, inner, cls = "") => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + 10}px">${inner}</div>`;
-const below = (c, inner, bottom) => `<div class="col" style="top:${c.wl + 10}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
+const above = (c, inner, cls = "", gap = 10) => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + gap}px">${inner}</div>`;
+const below = (c, inner, bottom, gap = 10) => `<div class="col" style="top:${c.wl + gap}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
 function hits(c, ids) {
   const g = world(); let h = "";
   for (const [id, go] of ids) {
@@ -1328,20 +1318,19 @@ function hits(c, ids) {
 }
 const composer = (c, text, btn, go) => `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_(text ? "per" : "per it dim", text || "Reflect, or tap the mic")}<div class="row2"><span class="ctl">Mic</span><button type="button" class="cbtn walk" data-go="${go}">${btn}</button></div></div>`;
 function frameHTML(c, beat) {
-  if (beat === "home") {
-    let h = hits(c, [["new", "probes"], ["boat", "noop"], ["sign", "noop"]]) + topbar(c, Gp("", P_("wm", "Look Together")))
-      + `<div class="tag" style="left:${c.x(720)}px;top:${c.y(WY + 83)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
-    if (st.homeFull) { const [ux, uy] = HOME_FULL.unfinished; h += `<div class="tag" style="left:${c.x(ux)}px;top:${c.y(uy + 22)}px">${Gp("", P_("ctl", "4 days left · Why do I…"))}</div>`; }
+  if (beat === "home") { // the boat is the way in; the lily shows the last Recap's title, if one was finished recently
+    let h = hits(c, [["boat", "probes"], ["house", "noop"], ["sign", "noop"]].concat(st.rowed && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
+      + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 8)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
+    if (st.rowed && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 22)}px">${Bt("", P_("rd", COPY.recap.title), "noop")}</div>`;
     return h;
   }
-  if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""))
-    + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)));
-  if (beat === "recap") { const R_ = COPY.recap, k = R_.card;
-    return topbar(c, "", helpBtn()) + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title)))
-      + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)) + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
+  if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""), "", 40)
+    + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)), undefined, 28);
+  if (beat === "recap") { const R_ = COPY.recap, k = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
+    return topbar(c, "", helpBtn()) + hits(c, [["landboat", "row"]]) + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title))
+      + Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)) + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
       + Bt("card", P_("ctl it", k.probe) + P_("rd", k.a) + `<div class="cwl"></div>` + P_("per", k.quote) + P_("ctl more", "›"), "noop")
-      + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join(""))
-      + Bt("row", P_("rd", "Row home ›"), "row")); }
+      + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join("")), "scroll", 6); }
   const n = +beat.slice(1), s = COPY.steps[(n - 1) % COPY.steps.length], last = n >= Math.min(SLOTS, st.steps);
   if (c.pend) return topbar(c, backBtn(), helpBtn()) + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("per dim", COPY.steps[(n - 2) % COPY.steps.length].r)}</div>`; // waiting on the reply: only what was just said, where it was said, so the water by the islet stays clear
   return topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P_("q", s.q)), "skytop") + composer(c, s.r, last ? "Submit and finish ›" : "Submit", last ? "recap" : "p" + (n + 1));
@@ -1457,16 +1446,18 @@ function setScreen(v, beat, animate) {
   v.lastKey = ""; v.beat = beat;
   if (!animate || !from || (from.x === to.x && from.y === to.y)) { v.cam = { x: wrapNear(to.x, 0), y: to.y }; v.move = null; v.arrived = now(); v.deco.innerHTML = decoHTML(v); return; }
   v.ovOld.innerHTML = prevHTML;
-  const style = st.reduce || st.still ? "dissolve" : "pan", dist = Math.hypot(to.x - from.x, to.y - from.y), V = VAR();
-  let a = V.spot(prevBeat), b = V.spot(beat), token = null, dur = clamp(dist / 260, .7, 2.4);
-  if (rowing) a = b = null; // the row home is #83's, unchanged
-  if (a || b) {
-    if (a && b) { const dc = Math.sign(to.x - from.x) || 1; b = { ...b, x: dc > 0 ? a.x + mod(b.x - a.x) : a.x - mod(a.x - b.x) }; } // the piece goes the way the camera goes
-    token = { a, b, far: !!(a && b && Math.abs(b.x - a.x) > 700 && V.long === "fade") };
-    if (a && b && !token.far) dur = clamp(Math.abs(b.x - a.x) / V.speed, .9, V.maxDur || 3.6); // the camera keeps the piece's pace
+  const style = st.reduce || st.still ? "dissolve" : "pan", dist = Math.hypot(to.x - from.x, to.y - from.y);
+  let a = spot(prevBeat), b = spot(beat), token = null, dur = clamp(dist / 260, .7, 2.4);
+  if (a && b) {
+    const dc = Math.sign(to.x - from.x) || 1; b = { ...b, x: dc > 0 ? a.x + mod(b.x - a.x) : a.x - mod(a.x - b.x) }; // the walker goes the way the camera goes
+    const far = Math.abs(b.x - a.x) > 700, row = a.kind === "boat" || b.kind === "boat";
+    token = { a, b, mode: far ? "far" : row ? "row" : "walk" };
+    if (row && !far) { // rowing: between the mooring and the pier, or the landing and the mooring
+      token.src = a.kind === "boat" ? a : { x: a.x + PIERBOAT.x - STAND_X, y: PIERBOAT.y }; token.dst = b.kind === "boat" ? b : { x: b.x + PIERBOAT.x - STAND_X, y: PIERBOAT.y };
+      dur = clamp(Math.hypot(token.dst.x - token.src.x, token.dst.y - token.src.y) / 70, 1.2, 3.6);
+    } else if (!far) dur = clamp(Math.abs(b.x - a.x) / 90, .9, 3.6); // the camera keeps the walker's pace
   }
   v.move = { from, to, t0: performance.now(), dur: style === "pan" ? dur * 1000 : st.still ? 1 : 700, style, token };
-  if (rowing && beat === "home") v.move.dur = Math.max(v.move.dur, ROW.dur * 1000 * (style === "pan" ? 1 : .5)); // the camera rides with the boat
   v.deco.innerHTML = ""; v.ov.style.visibility = "hidden";
 }
 const ease = (t) => .5 - .5 * Math.cos(Math.PI * t);
@@ -1485,12 +1476,12 @@ function frame(nowMs) {
         v.ov.style.transform = `translate(${(mv.to.x - cam.x) * s}px, ${(mv.to.y - cam.y) * s}px)`;
         v.ovOld.style.transform = `translate(${(mv.from.x - cam.x) * s}px, ${(mv.from.y - cam.y) * s}px)`;
       } else { cam = mv.from; mix = { cam2: mv.to, p }; v.ovOld.style.opacity = clamp(1 - p * 2, 0, 1); v.ov.style.opacity = clamp(p * 2 - 1, 0, 1); }
-      if (p >= 1) { v.move = null; v.lastMove = mv; v.arrived = now(); v.cam = { x: wrapNear(mv.to.x, 0), y: mv.to.y }; cam = mv.to; mix = null; v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); v.html = overlay(v, v.beat, v.cam); v.ov.innerHTML = v.html; }
+      if (p >= 1) { if (rowing && v.beat === "home") { bloomPending = false; v.ov.classList.add("fresh"); } v.move = null; v.lastMove = mv; v.arrived = now(); v.cam = { x: wrapNear(mv.to.x, 0), y: mv.to.y }; cam = mv.to; mix = null; v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); v.html = overlay(v, v.beat, v.cam); v.ov.innerHTML = v.html; }
     }
     if (v.pending && !v.move && now() >= replyAt[v.beat]) { // the reply lands: the question fades in over the islet
       v.pending = false; v.shownAt = now(); v.html = overlay(v, v.beat, v.cam); v.ov.innerHTML = v.html; v.ov.classList.add("fresh"); v.lastKey = "";
     }
-    const t = now(), busy = v.move || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 1.8 || t - (v.arrived ?? -9) < 1.8 || (st.variant === "C" && !st.reduce && !st.still);
+    const t = now(), busy = v.move || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 1.8 || t - (v.arrived ?? -9) < 1.8;
     const key = `${cam.x},${cam.y}|${mix ? Math.floor(mix.p * 8) : ""}|${st.still ? 0 : Math.floor(T * 8)}|${Math.floor(T * 5)}|${busy ? Math.floor(nowMs / 60) : ""}`;
     if (key === v.lastKey) continue;
     v.lastKey = key; paint(v, cam, mix);
@@ -1501,7 +1492,7 @@ const BACK = (b) => b === "probes" || b === "recap" || b === "home" ? "home" : b
 function go(to) {
   if (!to || to === "noop") return;
   if (to === "back") to = BACK(st.beat);
-  if (to === "row") { st.rowed = true; rowing = true; return navTo("home"); }
+  if (to === "row") { st.rowed = true; rowing = true; bloomPending = true; return navTo("home"); }
   const submit = stepK(st.beat) && stepK(to) === stepK(st.beat) + 1; // a Dialogue turn: the next question waits on the model; a Probe tapped is already there
   replyAt[to] = submit ? now() + st.latency : 0;
   navTo(to);
@@ -1535,31 +1526,32 @@ function rowEl(label, chips) {
 function set(k, val, relayout) { st[k] = val; save(); if (relayout) layout(); else rerender(); }
 function renderPanel() {
   const g = world(), need = needed(g);
-  const V = VAR(), dv = DEVICES.find((x) => x.id === st.device) || DEVICES[1], k = scaleFor(dv, g).k, pt = (n) => Math.round(n * k / dv.dpr);
-  $("vname").textContent = `${st.variant} · ${V.name}`; $("vblurb").textContent = V.blurb;
-  $("label").innerHTML = `<b>${st.variant}</b>${V.name}`;
+  const dv = DEVICES.find((x) => x.id === st.device) || DEVICES[1], k = scaleFor(dv, g).k, pt = (n) => Math.round(n * k / dv.dpr);
+  const css = (c) => { const u = g.LUT[c]; return `rgb(${u & 255},${u >>> 8 & 255},${u >>> 16 & 255})`; }, sw = (c) => `<span class="sw" style="background:${css(c)}"></span>`;
+  $("vname").textContent = "The walker"; $("vblurb").textContent = ABOUT.blurb;
+  $("label").innerHTML = `<b>${beats().indexOf(st.beat) + 1}/${beats().length}</b>${LABEL(st.beat)}`;
   $("pieceUi").replaceChildren(
-    rowEl("Variant", VKEYS.map((key) => pchip(`${key} ${VARIANTS[key].name}`, st.variant === key, () => setVariant(key)))),
-    rowEl("Size", ["S", "M", "L"].map((s, i) => pchip(s, st.size === s, () => set("size", s), V.sizes[i]))),
+    rowEl("Figure", Object.entries(FIG).map(([id, f]) => pchip(f.name, st.figure === id, () => set("figure", id)))),
+    rowEl("Jacket", COATS.map(([id, name], i) => pchip(sw(code(R.coat, i * 3 + 1)) + name, st.coat === id, () => set("coat", id)))),
+    rowEl("Skin", SKINS.map((name, i) => pchip(sw(code(R.skin, i * 2)) + name, st.skin === i, () => set("skin", i)))),
+    rowEl("Size", ["S", "M", "L"].map((s, i) => pchip(s, st.size === s, () => set("size", s), [14, 18, 24][i] + " px tall"))),
     rowEl("Reply takes", [[.8, "0.8 s"], [3, "3 s"], [7, "7 s"]].map(([s, l]) => pchip(l, st.latency === s, () => set("latency", s)))),
     rowEl("Koi, dragonfly", [pchip("Today's", st.cues === "small", () => set("cues", "small"), "13 and 7 px"), pchip("#85 sizes", st.cues === "big", () => set("cues", "big"), "36×20, 24×18 canvas")]));
   $("flow").replaceChildren(
     rowEl("Jump", beats().map((b) => pchip(b[0] === "p" && b !== "probes" ? "Step " + b.slice(1) : LABEL(b), st.beat === b, () => { rowing = false; navTo(b, true); }))),
-    rowEl("Row home", [pchip("Play from the Recap", false, () => { rowing = false; st.beat = "recap"; for (const v of views) setScreen(v, "recap", false); setTimeout(() => go("row"), 250); }),
-      pchip("Clear the dropped flower", false, () => { st.rowed = false; rowing = false; save(); rerender(); })]));
+    rowEl("Row home", [pchip("Play from the Recap", false, () => { rowing = false; st.beat = "recap"; for (const v of views) setScreen(v, "recap", false); setTimeout(() => go("row"), 250); })]),
+    rowEl("Home lily", [pchip("Blank", !st.rowed, () => { rowing = false; set("rowed", false); }, "none finished recently"), pchip("Flowered", st.rowed, () => { rowing = false; bloomPending = false; set("rowed", true); }, "the last Recap's title")]));
   $("inqUi").replaceChildren(
     rowEl("Seed", [1, 2, 3, 4, 5].map((s) => pchip(String(s), st.seed === s, () => set("seed", s, true))).concat(pchip("New seed", st.seed > 5, () => set("seed", 6 + Math.floor(Math.random() * 1e6), true), st.seed > 5 ? String(st.seed) : ""))),
     rowEl("Path", ["First", "Second", "Third"].map((l, i) => pchip(l, st.path === i + 1, () => set("path", i + 1, true), i ? "new order" : ""))),
     rowEl("Path steps", Array.from({ length: SLOTS }, (_, i) => pchip(String(i + 1), st.steps === i + 1, () => set("steps", i + 1, true)))),
-    rowEl("Islets", g.themes.map((t, k) => pchip(`${k + 1} ${t.name}`, st.beat === "p" + (k + 1), () => { if (st.steps < k + 1) { st.steps = k + 1; save(); layout(); } rowing = false; navTo("p" + (k + 1), true); }))),
-    rowEl("Home", [pchip("New person", !st.homeFull, () => set("homeFull", false)), pchip("A few weeks in", st.homeFull, () => set("homeFull", true), "lilies, flowers")]));
+    rowEl("Islets", g.themes.map((t, k) => pchip(`${k + 1} ${t.name}`, st.beat === "p" + (k + 1), () => { if (st.steps < k + 1) { st.steps = k + 1; save(); layout(); } rowing = false; navTo("p" + (k + 1), true); }, SEATS[t.id].sit))));
   $("devices").replaceChildren(rowEl("Device", DEVICES.map((d) => pchip(d.name, st.device === d.id, () => set("device", d.id, true)))));
   $("worldUi").replaceChildren(
     rowEl("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => pchip(l, st.season === k, () => set("season", k, true)))),
     rowEl("Motion", [pchip("Reduce Motion", st.reduce, () => set("reduce", !st.reduce)), pchip("Still water", st.still, () => set("still", !st.still))]),
     rowEl("Layers", [pchip("Safe areas", st.safe, () => set("safe", !st.safe))]));
-  const pieceArt = V === VARIANTS.A ? V.h() : V === VARIANTS.B ? V.dims()[0] * 2 + 3 : V === VARIANTS.C ? V.r() * 6 + 1 : V.r() * 2 + 3;
-  $("stats").textContent = `piece        ${V.sizes[SZ()]}: ${pieceArt} art px = ${pt(pieceArt)} pt on ${dv.name} (art px = ${k} device px)\nkoi          ${st.cues === "big" ? 36 : 13} art px = ${pt(st.cues === "big" ? 36 : 13)} pt; dragonfly ${st.cues === "big" ? 24 : 7} art px = ${pt(st.cues === "big" ? 24 : 7)} pt\nwalk pace    ${V.speed} art px/s; a step is ~${(STEP / V.speed).toFixed(1)} s, finishing ${V.long === "fade" ? "fades out and in" : "travels the whole way"}\n\nworld        ${g.W} × ${g.H} art px, a loop\nislets       ${SLOTS}, ${2 * HW + 1} wide, centres ${STEP} apart, x ${slotX(0)}–${slotX(SLOTS - 1)}\nRecap        the landing, x ${LAND_X} (${WORLD_W - slotX(SLOTS - 1) + LAND_X} px on from the last islet)\nall frames   y ${need.y0}–${need.y1}\n`
+  $("stats").textContent = `walker       ${walkerH()} art px tall = ${pt(walkerH())} pt on ${dv.name} (art px = ${k} device px); seated ${Math.round(walkerH() * .7)} px\nkoi          ${st.cues === "big" ? 36 : 13} art px = ${pt(st.cues === "big" ? 36 : 13)} pt; dragonfly ${st.cues === "big" ? 24 : 7} art px = ${pt(st.cues === "big" ? 24 : 7)} pt\nwalk pace    90 art px/s, rowing 70; a step is ~${(STEP / 90).toFixed(1)} s, finishing fades out and in\n\nworld        ${g.W} × ${g.H} art px, a loop\nislets       ${SLOTS}, ${2 * HW + 1} wide, centres ${STEP} apart, x ${slotX(0)}–${slotX(SLOTS - 1)}\nRecap        the landing, x ${LAND_X} (${WORLD_W - slotX(SLOTS - 1) + LAND_X} px on from the last islet)\nall frames   y ${need.y0}–${need.y1}\n`
     + (need.ok ? "no frame clamps on any device" : "clamped:\n  " + need.clamps.join("\n  "))
     + `\n\ntheme catalogue\n` + THEMES.map((t) => `  ${g.themes.includes(t) ? "●" : "○"} ${t.name}: ${t.blurb}`).join("\n");
   $("rules").innerHTML = RULES(g, need).map((x) => `<li>${x}</li>`).join("");
@@ -1589,14 +1581,15 @@ function drawMapCams() {
   if (cam) { c.lineWidth = 2; c.strokeStyle = "#e9c47e"; const x = wrapNear(cam.x, g.W / 2) * sc; for (const dx of [0, -W, W]) c.strokeRect(x + dx, (cam.y - y0) * sc, v.sc.vw * sc, v.sc.vh * sc); }
 }
 
-// ================= switcher: the variants =================
-function setVariant(key) {
-  st.variant = key; save();
-  const u = new URL(location.href); u.searchParams.set("variant", key); history.replaceState(null, "", u);
-  rerender();
+// ================= switcher: here it steps through the flow, as a person would =================
+function flowStep(dir) {
+  const b = st.beat, n = stepK(b), last = Math.min(SLOTS, st.steps);
+  if (dir > 0) go(b === "home" ? "probes" : b === "probes" ? "p1" : b === "recap" ? "row" : n >= last ? "recap" : "p" + (n + 1));
+  else if (b !== "home" && b !== "recap") go("back");
 }
-function cycle(dir) { setVariant(VKEYS[(VKEYS.indexOf(st.variant) + dir + VKEYS.length) % VKEYS.length]); }
-$("prev").onclick = () => cycle(-1); $("next").onclick = () => cycle(1);
+const cycle = flowStep;
+$("prev").onclick = () => flowStep(-1); $("next").onclick = () => flowStep(1);
+$("prev").setAttribute("aria-label", "Back"); $("next").setAttribute("aria-label", "Next, as the person would: begin, choose a Probe, Submit, row home");
 $("panelBtn").onclick = () => { const p = $("panel"); p.hidden = !p.hidden; $("panelBtn").setAttribute("aria-expanded", String(!p.hidden)); };
 addEventListener("keydown", (e) => {
   if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
