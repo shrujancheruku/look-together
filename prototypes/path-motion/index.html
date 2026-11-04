@@ -74,6 +74,8 @@
   .col::-webkit-scrollbar { display: none; }
   .pin, .tag, .tip { position: absolute; transform: translateX(-50%); }
   .tag .g { padding: 5px 10px; white-space: nowrap; }
+  .tag .g.lbl { white-space: normal; width: max-content; max-width: 128px; padding: 4px 8px; }
+  .lt { font: 500 14px/1.25 var(--display); font-variation-settings: "SOFT" 100; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
   .composer { position: absolute; left: 12px; right: 12px; max-width: 34em; margin-inline: auto; flex-direction: row !important; justify-content: space-between; align-items: center; }
   .pager { position: absolute; left: 50%; transform: translateX(-50%); flex-direction: row !important; align-items: center; gap: 8px !important; padding: 6px 10px !important; }
   .pillb { border-radius: 999px; padding: 5px 13px; outline: 1.5px solid currentColor; }
@@ -860,6 +862,8 @@ const ISLETS = {
     rect(g, cx + 12, b - 24, cx + 36, b, (x) => x > cx + 30 ? P.white2 : P.white); rect(g, cx + 22, b - 12, cx + 27, b, P.blue); // the little chapel
     rect(g, cx + 17, b - 28, cx + 32, b - 24, P.white);
     for (let j = 0; j < 9; j++) { const w = Math.round(8 * Math.sqrt(1 - (j / 9) ** 2)); rect(g, cx + 24 - w, b - 29 - j, cx + 25 + w, b - 28 - j, j === 0 ? P.white2 : P.blue); }
+    rect(g, cx + 40, b - 5, cx + 53, b - 4, P.blue); rect(g, cx + 40, b - 4, cx + 53, b - 3, P.stoneD); for (const lx of [cx + 41, cx + 51]) rect(g, lx, b - 3, lx + 1, b, P.stoneD); // a blue bench under the olive (#84: the walker sits here)
+    rect(g, cx + 40, b - 11, cx + 53, b - 10, P.blue); for (const lx of [cx + 40, cx + 52]) rect(g, lx, b - 11, lx + 1, b - 5, P.blue);
     tree(g, cx + 58, top(cx + 58) - 16, 12, R.leafC, top(cx + 58)); }, // an olive
   gazebo(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h), gx = cx + 8;
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, gx - 22], flowers: [P.pink, P.white], fd: .06 });
@@ -1012,8 +1016,8 @@ function buildShore(season, seed, path) {
   g.rand = rng(3);
   signpost(g, 360, WY - 3); item(g, "sign", 360, WY - 14, 12, 12, "About");
   boathouse(g, 470, WY - 2);
-  item(g, "boat", MOOR.x, MOOR.y - 5, 16, 9, "Begin today's Inquiry");
-  item(g, "landboat", LAND_X + 34, WY + 8, 16, 10, "Row home");
+  item(g, "boat", MOOR.x, MOOR.y - 9, 38, 16, "Begin today's Inquiry");
+  item(g, "landboat", LAND_X + 40, WY + 49, 38, 16, "Row home");
   item(g, "house", 470, WY - 12, 22, 14, "Settings");
   item(g, "lily", 772, WY + 82, 30, 20, "Last Recap");
   sky(g, 0, WY, { x: 750, y: WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
@@ -1040,6 +1044,7 @@ const COPY = {
   recap: { title: "Who set the clock I keep checking?",
     card: { probe: "Who decided where you should be by now?", a: "Someone has decided where I should be by now.", quote: "“I picked it up from watching my brother.”" } },
 };
+const LONG_TITLE = "Why does the thought of being left out of my friends' plans stay with me for days afterwards?";
 const ABOUT = {
   blurb: "A small figure stands for the person, and they choose its figure, jacket and skin tone. It starts and ends in the rowboat. Home: it sits in the moored boat, and tapping the boat begins the Inquiry, rowing to today's lily's pier. Each Path step walks to the next islet and sits down there, somewhere the islet offers a seat: a truth that is a pathless land, walked and then looked at together, like friends on a park bench. Finishing comes ashore at the landing, where it sits in the boat, bobbing, waiting to row home. Tapping the boat rows home, and the home lily flowers with the Recap's title.",
 };
@@ -1058,7 +1063,7 @@ const RULES = (g, need) => [
 
 // ================= state =================
 const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
-  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2 };
+  seed: 1, path: 1, steps: 4, safe: true, rowed: false, size: "M", latency: 3, cues: "big", figure: "woman", coat: "rose", skin: 2, longTitle: false };
 try { Object.assign(st, JSON.parse(localStorage.getItem("path-motion") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
 let rowing = false; // the row home is playing
@@ -1109,7 +1114,7 @@ function newPad(out) {
 // The walker starts and ends in the rowboat. Home: it sits in the moored boat; tapping the boat begins the Inquiry and rows it
 // to today's lily's pier, where it steps out. Each Path step walks to the next islet and sits down there. Finishing comes
 // ashore at the landing, where it sits in the boat, bobbing, waiting to row home; tapping the boat rows home and the home lily flowers.
-const STAND_X = PIER[0] + 14, PIERBOAT = { x: STAND_X + 14, y: WY + 12 }, LANDBOAT = { x: LAND_X + 34, y: WY + 13 }, HOME_LILY = { x: 772, y: WY + 82 };
+const STAND_X = PIER[0] + 14, PIERBOAT = { x: STAND_X + 44, y: WY + 20 }, LANDBOAT = { x: LAND_X + 40, y: WY + 58 }, HOME_LILY = { x: 772, y: WY + 82 };
 const mod = (a) => ((a % WORLD_W) + WORLD_W) % WORLD_W;
 const walkAt = (x) => world().walkY[mod(Math.round(x))];
 const stepK = (beat) => beat && beat[0] === "p" && beat !== "probes" ? +beat.slice(1) : 0;
@@ -1151,33 +1156,28 @@ function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang o
   for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x, y, k.hair]); // hair to the shoulders
   return px;
 }
-function boatPx(frame, rower) { // the rowboat (28 px long, as on #85), with the walker sitting in it; frame -1 is oars shipped
-  const L = 14, nt = N[R.trunk], k = paints(), px = [];
-  for (let x = -L; x <= L; x++) { px.push([x, -3, code(R.trunk, nt - 1)]); px.push([x, -2, code(R.trunk, Math.abs(x) === L ? 1 : 3)]); if (Math.abs(x) < L) px.push([x, -1, code(R.trunk, 1)]); if (Math.abs(x) < L - 2) px.push([x, 0, code(R.trunk, 0)]); }
-  px.push([-L - 1, -4, code(R.trunk, nt - 1)], [L + 1, -4, code(R.trunk, nt - 1)]);
-  if (frame < 0) for (let x = -L + 4; x <= L - 4; x++) px.push([x, -4, code(R.trunk, 2)]); // oars along the gunwale
-  if (!rower) return px;
-  const h = walkerH(), f = FIG[st.figure] || FIG.woman, fh = Math.round(h * .62), hr = Math.max(2, Math.round(h * .12)), bodyTop = -3 - fh + 2 * hr + 1;
-  for (let y = bodyTop; y <= -4; y++) for (let x = -1; x <= 2; x++) px.push([x, y, x === 2 ? k.edge : x === -1 ? k.lit : k.coat]);
-  const cy = bodyTop - hr - 1;
-  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + .6) px.push([x, cy + y, y === -hr || x < 0 ? k.hair : x === hr ? k.shade : k.skin]);
-  if (f.hair === 2) for (let y = cy; y <= cy + hr + 2; y++) px.push([-hr, y, k.hair]);
-  if (frame >= 0) { const blade = frame ? [-9, 1] : [8, bodyTop - 2], hx = 1, hy = bodyTop + 2, n = Math.max(Math.abs(blade[0] - hx), Math.abs(blade[1] - hy));
-    for (let i = 0; i <= n; i++) px.push([Math.round(hx + (blade[0] - hx) * i / n), Math.round(hy + (blade[1] - hy) * i / n), code(R.trunk, 2)]); }
+function boatPx(frame, rower) { // the rowboat, sized to the walker so it never shrinks to get in; the walker sits facing us, oars to either side; frame -1 is oars shipped
+  const h = walkerH(), L = Math.round(h * 1.9), hh = Math.max(5, Math.round(h * .36)), px = rower ? sitterPx(h, true).map(([x, y, c]) => [x, y - hh + 1, c]) : []; // sits up on the thwart: the whole seated walker, at the size it is on the islets, shows above the gunwale
+  for (let r = 0; r <= hh; r++) { const w = L - Math.round((r / hh) ** 2 * L * .22), y = r - hh;
+    for (let x = -w; x <= w; x++) px.push([x, y, code(R.trunk, r === 0 ? 3 : r === hh ? 0 : Math.abs(x) >= w - 1 ? 1 : r % 2 ? 2 : 1)]); }
+  for (const sx of [-1, 1]) { px.push([sx * (L + 1), -hh - 1, code(R.trunk, 3)], [sx * (L + 2), -hh - 2, code(R.trunk, 3)]); } // bow and stern rise
+  const oar = (x0, y0, x1, y1) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) px.push([Math.round(x0 + (x1 - x0) * i / n), Math.round(y0 + (y1 - y0) * i / n), code(R.trunk, 2)]); };
+  if (frame < 0) oar(-L + 4, -hh - 1, L - 4, -hh - 1); // oars along the gunwale
+  else if (rower) { const hx = Math.round(h * .2) + 1, hy = -hh - 2; for (const sx of [-1, 1]) frame ? oar(sx * hx, hy, sx * (L + 5), 2) : oar(sx * hx, hy, sx * (L + 7), hy - 4); }
   return px;
 }
 // where the walker sits on each islet, from its builder in ISLETS: x from the islet's centre, the seat's row, and whether the legs hang
 const SEATS = {
   shrine: { dx: -4, y: WY - 22, sit: "the edge of the hall's stone platform" },
-  crag: { dx: -44, y: WY - 34, ground: true, sit: "in the heather by the fallen wall" },
+  crag: { dx: -44, y: WY - 34, sit: "on the crag's edge, legs over the drop" },
   baobab: { dx: -34, y: WY - 14, ground: true, sit: "at the baobab's foot" },
   persian: { dx: -2, y: WY - 14, ground: true, sit: "in the iwan" },
   pavilion: { dx: -20, y: WY - 16, sit: "the edge of the pavilion's plinth" },
-  lighthouse: { dx: 4, y: WY - 26, ground: true, sit: "on the rock below the lighthouse" },
-  greek: { dx: -9, y: WY - 28, sit: "the outside stair" },
+  lighthouse: { dx: 4, y: WY - 26, sit: "on the rock's edge below the lighthouse" },
+  greek: { dx: 46, y: WY - 25, sit: "a blue bench under the olive" },
   gazebo: { dx: 3, y: WY - 19, sit: "in the gazebo" },
   palms: { dx: -36, y: WY - 19, sit: "the edge of the hut on stilts" },
-  ghat: { dx: -30, y: WY - 12, sit: "the ghat's steps, above the water" },
+  ghat: { dx: -7, y: WY - 12, sit: "the ghat's steps, between the chhatris" },
   chalet: { dx: 40, y: WY - 26, sit: "on the woodpile" },
 };
 function seatFor(k) { const t = world().themes[k - 1], s = SEATS[t.id]; return { kind: "sit", x: slotX(k - 1) + s.dx, y: s.y, ground: !!s.ground }; }
@@ -1204,7 +1204,7 @@ function drawWalker(out, v) {
   const x = lerp(tk.a.x, tk.b.x, e), dir = Math.sign(tk.b.x - tk.a.x) || 1, frame = full ? Math.floor(Math.abs(x - tk.a.x) / Math.max(3, h * .32)) % 4 : 0;
   out.push({ x: Math.round(x), y: Math.round(walkAt(x)), px: walkerPx(h, frame, dir), bob: false, refl: true });
 }
-function headY(s) { const h = walkerH(); return s.kind === "sit" ? s.y - Math.round(h * .7) : s.kind === "boat" ? s.y - Math.round(h * .75) : walkAt(s.x) - h; }
+function headY(s) { const h = walkerH(); return s.kind === "sit" ? s.y - Math.round(h * .7) : s.kind === "boat" ? s.y - Math.round(h * .95) : walkAt(s.x) - h; }
 function bigRings(x, y, t, at, out, s) {
   if (motion() !== "full") return;
   for (const lag of [0, .3]) { const e = t - at - lag; if (e < 0 || e > 1.1) continue;
@@ -1279,7 +1279,7 @@ const cssW = (d) => d.w / d.dpr, cssH = (d) => d.h / d.dpr;
 function frameFor(beat) {
   if (beat === "home") return { x: 720, share: .4 };
   if (beat === "probes") return { x: TODAY.x + 6, share: .6 };
-  if (beat === "recap") return { x: LAND_X + 40, share: .74 };
+  if (beat === "recap") return { x: LAND_X + 40, share: .76 };
   return { x: slotX(Math.min(SLOTS, +beat.slice(1)) - 1), share: .44 };
 }
 function cameraRaw(g, beat, d, sc) {
@@ -1320,8 +1320,8 @@ const composer = (c, text, btn, go) => `<div class="g composer" data-g style="bo
 function frameHTML(c, beat) {
   if (beat === "home") { // the boat is the way in; the lily shows the last Recap's title, if one was finished recently
     let h = hits(c, [["boat", "probes"], ["house", "noop"], ["sign", "noop"]].concat(st.rowed && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
-      + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 8)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
-    if (st.rowed && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 22)}px">${Bt("", P_("rd", COPY.recap.title), "noop")}</div>`;
+      + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 6)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
+    if (st.rowed && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 20)}px">${Bt("lbl", P_("lt", st.longTitle ? LONG_TITLE : COPY.recap.title), "noop")}</div>`; // small, two lines at most, then …
     return h;
   }
   if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""), "", 40)
@@ -1330,7 +1330,7 @@ function frameHTML(c, beat) {
     return topbar(c, "", helpBtn()) + hits(c, [["landboat", "row"]]) + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title))
       + Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)) + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
       + Bt("card", P_("ctl it", k.probe) + P_("rd", k.a) + `<div class="cwl"></div>` + P_("per", k.quote) + P_("ctl more", "›"), "noop")
-      + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join("")), "scroll", 6); }
+      + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join("")), "scroll", 36); }
   const n = +beat.slice(1), s = COPY.steps[(n - 1) % COPY.steps.length], last = n >= Math.min(SLOTS, st.steps);
   if (c.pend) return topbar(c, backBtn(), helpBtn()) + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("per dim", COPY.steps[(n - 2) % COPY.steps.length].r)}</div>`; // waiting on the reply: only what was just said, where it was said, so the water by the islet stays clear
   return topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P_("q", s.q)), "skytop") + composer(c, s.r, last ? "Submit and finish ›" : "Submit", last ? "recap" : "p" + (n + 1));
@@ -1540,7 +1540,7 @@ function renderPanel() {
   $("flow").replaceChildren(
     rowEl("Jump", beats().map((b) => pchip(b[0] === "p" && b !== "probes" ? "Step " + b.slice(1) : LABEL(b), st.beat === b, () => { rowing = false; navTo(b, true); }))),
     rowEl("Row home", [pchip("Play from the Recap", false, () => { rowing = false; st.beat = "recap"; for (const v of views) setScreen(v, "recap", false); setTimeout(() => go("row"), 250); })]),
-    rowEl("Home lily", [pchip("Blank", !st.rowed, () => { rowing = false; set("rowed", false); }, "none finished recently"), pchip("Flowered", st.rowed, () => { rowing = false; bloomPending = false; set("rowed", true); }, "the last Recap's title")]));
+    rowEl("Home lily", [pchip("Blank", !st.rowed, () => { rowing = false; set("rowed", false); }, "none finished recently"), pchip("Flowered", st.rowed, () => { rowing = false; bloomPending = false; set("rowed", true); }, "the last Recap's title"), pchip("Long title", st.longTitle, () => set("longTitle", !st.longTitle), "to see the …")]));
   $("inqUi").replaceChildren(
     rowEl("Seed", [1, 2, 3, 4, 5].map((s) => pchip(String(s), st.seed === s, () => set("seed", s, true))).concat(pchip("New seed", st.seed > 5, () => set("seed", 6 + Math.floor(Math.random() * 1e6), true), st.seed > 5 ? String(st.seed) : ""))),
     rowEl("Path", ["First", "Second", "Third"].map((l, i) => pchip(l, st.path === i + 1, () => set("path", i + 1, true), i ? "new order" : ""))),
