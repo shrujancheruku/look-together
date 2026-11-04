@@ -1,0 +1,1610 @@
+<meta charset="utf-8">
+<title>Path Motion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--
+  PROTOTYPE (throwaway, never merge): answers "How does the pond world show a Path's motion and progress?" (issue #84).
+  Four variants of what stands for the person on a Path, on the Shoreline from issue #83 (copied from
+  prototypes/shoreline-scenery): A a walker on the bridges, B the rowboat rowed islet to islet, C a travelling light,
+  D today's skimming stone made bigger. The bottom bar (‹ ›, arrow keys, ?variant=) switches the variant; tap through
+  the flow on the device itself (Probes, Submit, Back). The panel sets piece size, how long a reply takes, the
+  waiting cues' size, season, motion and device. In every variant the walk is the wait: Submit sets off at once, and
+  the koi and dragonfly come only if the reply is still out on arrival. Copy is mock content.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700&display=swap">
+<style>
+  /* Layout: a dark workbench (one committed look, not themed); the live device on the stage, the controls, world map and rule sheet in a side panel. The chrome uses an ink the scene never uses. */
+  :root {
+    --chrome: #15171d; --chrome-2: #20232c; --line: #343846; --bench: #0d0e12;
+    --ink: #eef0f4; --muted: #a2a8b6; --accent: #e9c47e; --accent-ink: #1b1610;
+    --display: "Fraunces", Georgia, "Times New Roman", serif;
+    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bench); color: var(--ink); font-family: var(--body); overflow: hidden; }
+  #app { height: 100%; display: flex; }
+  #stage { position: relative; flex: 1 1 auto; min-width: 0; height: 100%; overflow: auto; }
+  #single { height: 100%; display: flex; align-items: center; justify-content: center; }
+  #compare { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 22px 18px; padding: 18px 18px 96px; }
+  .devWrap { display: flex; flex-direction: column; gap: 6px; }
+  .devCap { font: 12px/1.35 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; max-width: 100%; }
+  .devCap b { color: var(--ink); font-family: var(--body); font-weight: 700; }
+  .devBox { position: relative; overflow: hidden; border-radius: 14px; outline: 1px solid var(--line); background: #000; }
+  .dev { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; }
+  .dev canvas { position: absolute; left: 0; top: 0; image-rendering: pixelated; image-rendering: crisp-edges; }
+  .layer { position: absolute; inset: 0; }
+  .deco, .ov.old { pointer-events: none; }
+  .pane { position: absolute; top: 0; bottom: 0; overflow: hidden; }
+  .pane + .pane { box-shadow: -1px 0 0 rgba(255,255,255,.22); }
+
+  /* ---- the scene's words: the type scale from issue #58 ---- */
+  .dev.spring .ov { color: #1f2f37; } .dev.autumn .ov { color: #fbeedd; }
+  .ov p { margin: 0; }
+  .app, .q, .rd { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 500; }
+  .wm { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 500; font-size: 20px; }
+  .q { font-size: 22px; line-height: 1.3; text-wrap: pretty; }
+  .rd { font-size: 18px; line-height: 1.4; text-wrap: pretty; }
+  .per { font-family: var(--body); font-size: 16px; line-height: 1.5; }
+  .ctl { font: 600 14px/1.3 var(--body); }
+  .cap { font: 700 12px/1.3 var(--body); letter-spacing: .07em; text-transform: uppercase; }
+  .it { font-style: italic; } .dim { opacity: .78; }
+  .blk { display: block; max-width: 100%; }
+  button.g, .cbtn, .hit { font: inherit; color: inherit; background: none; border: 0; margin: 0; cursor: pointer; text-align: left; }
+  .g { display: flex; flex-direction: column; gap: 6px; padding: 10px 13px; box-sizing: border-box; }
+  .g.row { flex-direction: row; align-items: center; gap: 10px; width: 100%; }
+  .g.capg { padding: 5px 13px; width: fit-content; }
+  .rt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .g:focus-visible, .cbtn:focus-visible, .hit:focus-visible { outline: 2px dashed currentColor; outline-offset: 2px; }
+  .chip { flex: none; width: 20px; height: 13px; }
+  .card .cwl { height: 1px; background: currentColor; opacity: .3; margin-block: 2px; }
+  .more { align-self: flex-end; }
+  .top { position: absolute; left: 14px; right: 14px; display: flex; align-items: center; gap: 8px; }
+  .top .g { padding: 6px 11px; }
+  .stepper { flex-direction: row !important; align-items: center; gap: 4px !important; }
+  .cbtn { padding: 2px 9px; font: 700 16px/1.2 var(--body); border-radius: 999px; }
+  .cbtn[disabled] { opacity: .3; cursor: default; }
+  .cbtn.walk { font: 700 14px/1.3 var(--body); outline: 1.5px solid currentColor; padding: 6px 13px; }
+  .row2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .above, .col { position: absolute; left: 16px; right: 16px; max-width: 34em; margin-inline: auto; display: flex; flex-direction: column; gap: 8px; }
+  .above { justify-content: flex-end; overflow: hidden; }
+  .col { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; padding-bottom: 8px; }
+  .col::-webkit-scrollbar { display: none; }
+  .pin, .tag, .tip { position: absolute; transform: translateX(-50%); }
+  .tag .g { padding: 5px 10px; white-space: nowrap; }
+  .composer { position: absolute; left: 12px; right: 12px; max-width: 34em; margin-inline: auto; flex-direction: row !important; justify-content: space-between; align-items: center; }
+  .pager { position: absolute; left: 50%; transform: translateX(-50%); flex-direction: row !important; align-items: center; gap: 8px !important; padding: 6px 10px !important; }
+  .pillb { border-radius: 999px; padding: 5px 13px; outline: 1.5px solid currentColor; }
+  .hit { position: absolute; border-radius: 50%; padding: 0; }
+  .hit:hover { background: rgba(255,255,255,.08); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 520px; margin-inline: auto; border-radius: 18px 18px 0 0; padding: 16px 20px 30px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 -6px 30px rgba(0,0,0,.25); }
+  .dev.spring .sheet { background: #f4f6f1; color: #1f2f37; } .dev.autumn .sheet { background: #1d1a2e; color: #fbeedd; }
+  .sheet .sh { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .sheet .g { padding: 9px 2px; border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+  .inset { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(255,90,90,.35) 0 6px, rgba(255,90,90,.1) 6px 12px); }
+  .island { position: absolute; left: 50%; transform: translateX(-50%); background: #000; border-radius: 20px; }
+  .keyart { position: absolute; border: 2px dashed var(--accent); border-radius: 4px; }
+
+  #bar { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+    display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: var(--chrome); border: 1px solid var(--line);
+    box-shadow: 0 6px 24px rgba(0,0,0,.45); max-width: calc(100% - 24px); }
+  #bar button { font: 600 14px/1 var(--body); color: var(--ink); background: transparent; border: 0; border-radius: 999px; padding: 10px 12px; cursor: pointer; }
+  #bar button:hover, #bar button:focus-visible { background: var(--chrome-2); outline: none; }
+  #bar #label { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-inline: 6px; font: 600 14px var(--body); }
+  #bar #label b { color: var(--accent); margin-right: 6px; }
+  #bar #panelBtn { background: var(--accent); color: var(--accent-ink); }
+
+  #panel { flex: 0 0 400px; height: 100%; overflow-y: auto; background: var(--chrome); border-left: 1px solid var(--line); box-sizing: border-box;
+    padding-block: 20px 96px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  #panel h1 { font: 500 22px/1.2 var(--display); margin: 0 0 6px; text-wrap: balance; }
+  #panel h2 { font: 700 12px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
+  #panel p { margin: 0 0 8px; color: var(--muted); font-size: 14px; line-height: 1.5; max-width: 62ch; }
+  .prow { display: grid; grid-template-columns: 84px 1fr; gap: 8px; align-items: start; margin-bottom: 8px; }
+  .prow > span { font-size: 13px; color: var(--muted); padding-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+  .pchip { font: 600 13px var(--body); color: var(--ink); background: var(--chrome-2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; cursor: pointer; }
+  .pchip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .pchip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .pchip i { font-style: normal; opacity: .65; margin-left: 4px; font-weight: 400; }
+  #mapWrap { overflow-x: auto; }
+  #map { display: block; border-radius: 6px; }
+  #stats { font: 12px/1.6 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; white-space: pre-wrap; margin: 0; }
+  #rules { margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  #rules li { margin-bottom: 8px; }
+  #rules b { color: var(--ink); }
+
+  /* ---- this prototype: welcome, leaf notes, dimming ---- */
+  .composer { flex-direction: column !important; align-items: stretch !important; gap: 8px !important; }
+  .bbar { position: absolute; left: 14px; right: 14px; max-width: 34em; margin-inline: auto; display: flex; align-items: center; gap: 8px; }
+  .pillg { flex-direction: row; padding: 8px 15px; border-radius: 999px; }
+  .pillg.off { opacity: .35; cursor: default; }
+  .pillg.solid { outline: 1.5px solid currentColor; }
+  .strip { flex-direction: row !important; gap: 5px !important; padding: 9px 11px !important; }
+  .strip span { width: 22px; height: 4px; border-radius: 2px; background: currentColor; opacity: .25; }
+  .strip span.on { opacity: .9; }
+  .note { position: absolute; left: -9999px; top: 0; gap: 8px !important; padding: 12px 14px !important; }
+  .note.pending { visibility: hidden; }
+  .wait { position: absolute; left: 16px; right: 16px; max-width: 34em; margin-inline: auto; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .above.skytop { justify-content: flex-start; } /* the welcome's words hang from the top of the sky, so the bank and the lily stay in view */
+  /* the canvas sits under every DOM pane, so a note over other words carries its own backing in the frost's colour, notched like the frost */
+  .note { z-index: 5; clip-path: polygon(2px 0, calc(100% - 2px) 0, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 0 calc(100% - 2px), 0 2px); }
+  .dev.spring .note { background: rgba(236,244,238,.93); box-shadow: inset 0 2px 0 #9cc77e; } .dev.autumn .note { background: rgba(48,34,60,.94); box-shadow: inset 0 2px 0 #7c9a52; }
+  .dev .note.plain { box-shadow: none; }
+  .ov.guiding [data-g]:not([data-note]):not(.tgt), .ov.guiding .hit { opacity: .4; }
+  .slide-f .wpane { animation: slideF .42s steps(6) both; }
+  .slide-b .wpane { animation: slideB .42s steps(6) both; }
+  .slide-fade .wpane { animation: fadeIn .5s steps(8) both; }
+  @keyframes slideF { from { transform: translateX(28px); opacity: 0; } }
+  @keyframes slideB { from { transform: translateX(-28px); opacity: 0; } }
+  @keyframes fadeIn { from { opacity: 0; } }
+  .ov.fresh [data-g] { animation: fadeIn .5s steps(8) both; } /* the reply arriving */
+
+  @media (max-width: 820px) {
+    #app { display: block; }
+    #panel { position: fixed; left: 0; right: 0; bottom: 0; height: auto; max-height: 64%; z-index: 15; border-left: 0; border-top: 1px solid var(--line);
+      border-radius: 16px 16px 0 0; padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  }
+  @media (min-width: 821px) { #panelBtn { display: none; } }
+</style>
+
+<div id="app">
+  <main id="stage" aria-label="Device preview of the Shoreline">
+    <div id="single"></div>
+  </main>
+  <aside id="panel">
+    <h1 id="vname"></h1>
+    <p id="vblurb"></p>
+    <h2>The moving piece</h2>
+    <div id="pieceUi"></div>
+    <h2>Flow</h2>
+    <p>Tap through on the device: a Probe, then Submit on each step, and Back to go back up. Jumping skips the walk. The last step walks on to the landing, where the Recap opens; "Row home" plays the boat back to the pond.</p>
+    <div id="flow"></div>
+    <h2>This Inquiry</h2>
+    <p>The seed is a random number made when the Inquiry begins. With the Path's number it picks eight of the eleven islet themes and their order, and nothing else. A second Path starts again at the front over a fresh order.</p>
+    <div id="inqUi"></div>
+    <h2>World</h2>
+    <div id="worldUi"></div>
+    <h2>Device</h2>
+    <div id="devices"></div>
+    <h2>The whole world</h2>
+    <p>The world as a strip, from the landing round to the landing again. Dots: where the camera stops. Accent box: this view.</p>
+    <div id="mapWrap"><canvas id="map"></canvas></div>
+    <pre id="stats"></pre>
+    <h2>Rule sheet if this variant wins</h2>
+    <ol id="rules"></ol>
+  </aside>
+</div>
+<div id="bar" role="toolbar" aria-label="Prototype switcher">
+  <button id="prev" type="button" aria-label="Previous variant">‹</button>
+  <span id="label"></span>
+  <button id="next" type="button" aria-label="Next variant">›</button>
+  <button id="panelBtn" type="button" aria-expanded="true">Panel</button>
+</div>
+
+<script>
+"use strict";
+// ================= engine: pure, no DOM =================
+// ---------- palette: the chosen kit (issue #70), 12-step full colour, sky 16 ----------
+const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone"];
+const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
+const PAL = { steps: 12, sky: 16, chroma: 1, hue: 1 };
+const SEASONS = {
+  spring: { name: "Spring morning", ramps: {
+      sky: { L: [.72, .95], C: [.09, .03], H: [238, 205], fixed: 1 }, cloud: { L: [.80, .99], C: [.035, .008], H: [245, 250], fixed: 1 },
+      far: { L: [.62, .76], C: [.05, .04], H: [205, 175] }, leafA: { L: [.36, .80], C: [.08, .14], H: [170, 118] },
+      leafB: { L: [.56, .93], C: [.09, .06], H: [352, 380] }, leafC: { L: [.48, .86], C: [.10, .15], H: [150, 108] },
+      trunk: { L: [.30, .52], C: [.05, .06], H: [25, 55] }, grass: { L: [.42, .82], C: [.09, .15], H: [160, 112] },
+      water: { L: [.52, .80], C: [.06, .05], H: [232, 205], fixed: 1 }, glint: { L: [.86, 1], C: [.03, .005], H: [220, 95], fixed: 1 },
+      light: { L: [.86, .99], C: [.05, .03], H: [85, 95], fixed: 1 }, pad: { L: [.38, .80], C: [.09, .15], H: [165, 118] },
+      flower: { L: [.62, .95], C: [.11, .05], H: [350, 375] }, mist: { L: [.90, .97], C: [.015, .01], H: [230, 220], fixed: 1 },
+      stone: { L: [.40, .84], C: [.02, .03], H: [250, 215] } },
+    refl: { L: .70, mix: .22, dark: .02 }, moon: false,
+    ink: "#1f2f37", halo: "rgba(246,251,255,.9)", inkBelow: "#1c2a33" },
+  autumn: { name: "Autumn evening", ramps: {
+      sky: { L: [.24, .80], C: [.07, .13], H: [285, 415], fixed: 1 }, cloud: { L: [.42, .80], C: [.09, .12], H: [320, 410] },
+      far: { L: [.30, .40], C: [.05, .05], H: [300, 330] }, leafA: { L: [.38, .80], C: [.12, .16], H: [28, 72] },
+      leafB: { L: [.32, .66], C: [.12, .15], H: [12, 38] }, leafC: { L: [.48, .88], C: [.10, .15], H: [58, 98] },
+      trunk: { L: [.20, .38], C: [.04, .05], H: [10, 40] }, grass: { L: [.30, .66], C: [.07, .11], H: [45, 85] },
+      water: { L: [.16, .34], C: [.04, .05], H: [282, 298], fixed: 1 }, glint: { L: [.72, .97], C: [.09, .03], H: [60, 92], fixed: 1 },
+      light: { L: [.84, .99], C: [.06, .03], H: [85, 95], fixed: 1 }, pad: { L: [.26, .58], C: [.05, .09], H: [150, 108] },
+      flower: { L: [.55, .90], C: [.10, .05], H: [345, 375] }, mist: { L: [.42, .52], C: [.03, .03], H: [300, 310], fixed: 1 },
+      stone: { L: [.22, .54], C: [.02, .03], H: [300, 330] } },
+    refl: { L: .25, mix: .35, dark: .06 }, moon: true,
+    ink: "#fbeedd", halo: "rgba(29,23,48,.92)", inkBelow: "#f3e6d6" },
+};
+function oklch(L, C, h) {
+  const a = C * Math.cos(h * Math.PI / 180), b = C * Math.sin(h * Math.PI / 180);
+  const l_ = L + .3963377774 * a + .2158037573 * b, m_ = L - .1055613458 * a - .0638541728 * b, s_ = L - .0894841775 * a - 1.291485548 * b;
+  const l = l_ ** 3, m = m_ ** 3, s = s_ ** 3;
+  const f = (x) => { x = Math.max(0, Math.min(1, x)); return Math.round(255 * (x <= .0031308 ? 12.92 * x : 1.055 * x ** (1 / 2.4) - .055)); };
+  return [f(4.0767416621 * l - 3.3077115913 * m + .2309699292 * s), f(-1.2684380046 * l + 2.6097574011 * m - .3413193965 * s), f(-.0041960863 * l - .7034186147 * m + 1.707614701 * s)];
+}
+const lerp = (a, b, t) => a + (b - a) * t;
+function stepsFor(name) {
+  switch (name) {
+    case "sky": return PAL.sky; case "glint": return 4; case "light": return 3; case "mist": return 2; case "stone": return 8;
+    case "far": return PAL.steps - 2; case "trunk": return 4; default: return PAL.steps;
+  }
+}
+const N = RAMPS.map(stepsFor);
+function rampLch(spec, n) {
+  const out = [], mid = (spec.H[0] + spec.H[1]) / 2;
+  for (let s = 0; s < n; s++) {
+    const t = n === 1 ? 1 : s / (n - 1);
+    let h = lerp(spec.H[0], spec.H[1], t);
+    if (!spec.fixed) h = mid + (h - mid) * PAL.hue;
+    out.push([lerp(spec.L[0], spec.L[1], t), lerp(spec.C[0], spec.C[1], t) * PAL.chroma, h]);
+  }
+  return out;
+}
+function rowT([L, C, h], row) {
+  if (row === "still") return [L * .88 + .07, C * .7, h];
+  if (row === "stepout") return [.5 + (L - .5) * .45, C * .2, h];
+  if (row === "guide") return [L * .62 + .02, C * .6, h];
+  return [L, C, h];
+}
+const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
+function makeLUT(season, row) {
+  const sea = SEASONS[season], LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
+  RAMPS.forEach((name, r) => rampLch(sea.ramps[name], N[r]).forEach((c, s) => {
+    LUT[code(r, s)] = pack(oklch(...rowT(c, row)));
+    LUT[code(r, s) + 16] = pack(oklch(...rowT([c[0] * (1 - sea.refl.mix) + sea.refl.L * sea.refl.mix - sea.refl.dark, c[1] * .75, c[2]], row)));
+  }));
+  return LUT;
+}
+
+// ---------- helpers ----------
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+const bay = (x, y) => (BAYER[(y & 3) * 4 + (x & 3)] + .5) / 16;
+function rng(seed) { return () => { seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hash2 = (x, y, s = 0) => { let h = (x * 374761393 + y * 668265263 + s * 982451653) | 0; h = Math.imul(h ^ h >>> 13, 1274126177); return ((h ^ h >>> 16) >>> 0) / 4294967296; };
+const code = (r, s) => r * 32 + s; // +16 is the same step seen in the water
+const TR = 65535;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+function quant(v, n, x, y) { // rich ordered dithering, as in the chosen kit
+  v = clamp(v, 0, 1) * (n - 1);
+  const fl = Math.floor(v);
+  return clamp(bay(x, y) < v - fl ? fl + 1 : fl, 0, n - 1);
+}
+const U = 1.25; // feature scale: the kit's trees at 320 art pixels across
+
+// ---------- world building primitives ----------
+function newWorld(W, H, seed) {
+  return { W, H, land: new Uint16Array(W * H).fill(TR), body: new Uint8Array(W * H), bodies: [null],
+    sprites: [], falls: [], glints: [], marks: [], rand: rng(seed) };
+}
+function farTrees(g, x0, x1, base) {
+  const { W, land, rand } = g, nf = N[R.far], top = new Float32Array(W).fill(1e9);
+  for (let c = x0 - 12 * U; c < x1 + 12 * U; c += (5 + rand() * 6) * U) {
+    const r = (8 + rand() * 9) * U, cy = base - U * (24 + rand() * 16);
+    for (let x = Math.max(x0, Math.floor(c - r)); x < Math.min(x1, c + r); x++) top[x] = Math.min(top[x], cy - Math.sqrt(Math.max(0, r * r - (x + .5 - c) ** 2)));
+  }
+  for (let x = x0; x < x1; x++) for (let y = Math.max(0, Math.round(top[x])); y < base; y++) {
+    const d = y - top[x];
+    land[y * W + x] = code(R.far, d < 1.5 ? nf - 1 : d < 6 * U ? nf - 2 : 0);
+  }
+}
+function mist(g, x0, x1, base) {
+  const { W, land } = g, c = base - 8 * U, hh = 7 * U * 1.4;
+  for (let y = Math.max(0, Math.floor(c - hh)); y < base; y++) for (let x = x0; x < x1; x++) {
+    const p = (1 - Math.abs(y - c) / hh);
+    if (p > 0 && bay(x, y) < p && land[y * W + x] !== TR) land[y * W + x] = code(R.mist, p > .45 ? 1 : 0);
+  }
+}
+const LEAF = [R.leafA, R.leafA, R.leafC, R.leafB];
+function tree(g, cx, cy, Rr, ramp, base) {
+  const { W, land, rand } = g, tw = Math.max(1, Math.round(2 * U * Math.max(1, Rr / 30))), nt = N[R.trunk];
+  for (let y = Math.round(cy + Rr * .3); y < base - 2; y++) for (let x = Math.round(cx - tw / 2); x < Math.round(cx - tw / 2) + tw; x++)
+    if (x >= 0 && x < W && y >= 0) land[y * W + x] = code(R.trunk, x === Math.round(cx - tw / 2) && tw > 1 ? nt - 2 : 0);
+  const lobes = [{ x: cx, y: cy, r: Rr * .72, z: Rr * .15 }];
+  const m = 6 + Math.floor(rand() * 3);
+  for (let j = 0; j < m; j++) { const a = rand() * Math.PI * 2, d = Rr * (.35 + rand() * .25); lobes.push({ x: cx + Math.cos(a) * d * 1.15, y: cy + Math.sin(a) * d * .85, r: Rr * (.4 + rand() * .22), z: 0 }); }
+  const bx = Math.floor(cx - Rr * 1.5), by = Math.floor(cy - Rr * 1.3), bw = Math.ceil(Rr * 3), bh = Math.ceil(Rr * 2.6);
+  const mask = new Int16Array(bw * bh).fill(-1);
+  for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+    let best = -1, bi = -1;
+    for (let li = 0; li < lobes.length; li++) { const l = lobes[li], dx = bx + x + .5 - l.x, dy = by + y + .5 - l.y, d2 = dx * dx + dy * dy; if (d2 < l.r * l.r) { const z = l.z + Math.sqrt(l.r * l.r - d2); if (z > best) { best = z; bi = li; } } }
+    mask[y * bw + x] = bi;
+  }
+  const nl = N[ramp], inside = (x, y) => x >= 0 && y >= 0 && x < bw && y < bh && mask[y * bw + x] >= 0;
+  for (let y = 0; y < bh; y++) for (let x = 0; x < bw; x++) {
+    const li = mask[y * bw + x];
+    if (li < 0) continue;
+    const X = bx + x, Y = by + y;
+    if (X < 0 || X >= W || Y < 0 || Y >= base) continue;
+    const l = lobes[li], dx = (X + .5 - l.x) / l.r, dy = (Y + .5 - l.y) / l.r, nz = Math.sqrt(Math.max(0, 1 - dx * dx - dy * dy));
+    let v = .5 + .5 * (-dx * .55 - dy * .65 + nz * .55);
+    v += (hash2(X >> 1, Y >> 1, 5) - .5) * .45;
+    v -= Math.max(0, (Y - cy) / Rr) * .35;
+    let s = 1 + Math.round(clamp(v, 0, 1) * (nl - 2));
+    if (!inside(x, y + 1) || !inside(x + 1, y)) s = 0; else if (!inside(x, y - 1) || !inside(x - 1, y)) s = nl - 1;
+    land[Y * g.W + X] = code(ramp, s);
+  }
+}
+function treeRow(g, x0, x1, base, o = {}) {
+  const sc = o.scale ?? 1, rand = g.rand, inGap = (x, gap) => gap && x > gap[0] && x < gap[1];
+  if (o.back !== false) for (let c = x0 - 10 * U; c < x1 + 10 * U; c += 36 * U * sc * (o.dense ?? 1)) {
+    const cx = c + rand() * 20 * U * sc, Rr = (18 + rand() * 8) * U * sc;
+    if (cx < x0 - 4 || cx > x1 + 4 || inGap(cx, o.gapBack)) continue;
+    tree(g, cx, base - 8 * U - Rr * .8 - rand() * 8 * U, Rr, LEAF[Math.floor(rand() * 4)], base);
+  }
+  if (o.front !== false) for (let c = x0; c < x1; c += 54 * U * sc * (o.dense ?? 1)) {
+    const cx = c + rand() * 27 * U * sc, Rr = (22 + rand() * 10) * U * sc;
+    if (cx > x1 + 4 || inGap(cx, o.gapFront)) continue;
+    tree(g, cx, base - 5 * U - Rr * .6 + (o.drop ?? 0), Rr, LEAF[Math.floor(rand() * 4)], base);
+  }
+}
+function bank(g, x0, x1, wy) {
+  const { W, land } = g, ng = N[R.grass];
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
+    const top = wy - Math.round(U * (4 + 1.5 * Math.sin(x * .12) + hash2(x, 3) * 1.2));
+    for (let y = top; y < wy; y++) land[y * W + x] = y === wy - 1 ? code(R.trunk, 0) : code(R.grass, y === top ? ng - 1 : hash2(x >> 1, y, 9) > .5 ? ng - 2 : ng - 3);
+    if (hash2(x, 1) > .82) for (let j = 1; j <= 1 + Math.floor(hash2(x, 2) * 2); j++) land[(top - j) * W + x] = code(R.grass, ng - 1 - (j > 1 ? 1 : 0));
+  }
+}
+function water(g, x0, x1, y0, bottom) { // bottom: number or (x) => y
+  const { W, land, body } = g, id = g.bodies.length, bot = typeof bottom === "function" ? bottom : () => bottom;
+  let y1 = y0;
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) { const b = Math.min(g.H, Math.round(bot(x))); y1 = Math.max(y1, b); for (let y = y0; y < b; y++) { land[y * W + x] = TR; body[y * W + x] = id; } }
+  g.bodies.push({ x0, x1, y0, y1, fd: Math.min(260, y1 - y0) });
+  return id;
+}
+function ground(g, x0, x1, topFn, y1, kind = "grass") { // land in front: the near bank, ledges; clears water under it
+  const { W, land, body } = g, ng = N[R.grass], nt = N[R.trunk], ns = N[R.stone];
+  for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
+    const top = Math.round(topFn(x) + Math.sin(x * .21) * 1.5 + hash2(x, 11) * 1.4);
+    for (let y = Math.max(0, top); y < Math.min(g.H, y1); y++) {
+      const d = y - top, i = y * W + x;
+      body[i] = 0;
+      if (kind === "rock") {
+        let v = .62 + (hash2(x >> 2, y >> 2, 21) - .5) * .5 - Math.min(1, d / 120) * .3;
+        if (hash2(x >> 3, y >> 1, 23) > .93) v -= .35; // cracks
+        land[i] = d < 2 ? code(R.grass, ng - 1 - d) : code(R.stone, Math.round(clamp(v, 0, 1) * (ns - 1)));
+      } else if (kind === "moss") land[i] = d === 0 ? code(R.grass, ng - 1) : code(R.grass, quant(.62 - Math.min(1, d / 90) * .55 + (hash2(x >> 1, y >> 1, 9) - .5) * .12, ng - 2, x, y));
+      else land[i] = d === 0 ? code(R.grass, ng - 1) : d < 6 ? code(R.grass, hash2(x >> 1, y, 9) > .5 ? ng - 3 : ng - 4) : code(R.trunk, d < 9 ? 2 : hash2(x >> 1, y >> 1, 4) > .7 ? 1 : 0);
+    }
+  }
+}
+function sky(g, y0, y1, sun, moon) {
+  const { W, land, body, rand } = g, n = N[R.sky];
+  for (let y = y0; y < y1; y++) for (let x = 0; x < W; x++) {
+    const i = y * W + x;
+    if (land[i] !== TR || body[i]) continue;
+    let v = (y - y0) / (y1 - y0 - 1);
+    const ds = Math.hypot(x - sun.x, (y - sun.y) * 1.4) / sun.r;
+    if (ds < 1) v += (1 - ds) ** 2 * sun.s;
+    if (moon) { const dm = Math.hypot(x - moon.x, y - moon.y) / (moon.r * 3.4); if (dm < 1) v += (1 - dm) ** 2 * .6; }
+    land[i] = code(R.sky, quant(v, n, x, y));
+  }
+  if (moon) for (let y = -moon.r; y <= moon.r; y++) for (let x = -moon.r; x <= moon.r; x++) {
+    if (Math.hypot(x, y) > moon.r) continue;
+    const i = (moon.y + y) * W + moon.x + x;
+    if (land[i] >= code(R.sky, 0) && land[i] < code(R.sky, 16)) land[i] = code(R.light, (x + y) / moon.r > .7 || hash2((x + 99) >> 1, (y + 99) >> 1, 7) > .78 ? 1 : 2);
+  }
+  // clouds, baked into the sky (no drift in this prototype)
+  const nc = N[R.cloud];
+  for (let i = 0; i < Math.round(W / 140); i++) {
+    const cx = rand() * W, base = y0 + (y1 - y0) * (.12 + rand() * .45), w = 50 + rand() * 50;
+    if (!g.spring) {
+      const h = 2 + rand() * 2.5;
+      for (let y = Math.floor(base - h); y <= base + h; y++) for (let x = Math.floor(cx - w); x <= cx + w; x++) {
+        if (x < 0 || x >= W || ((x - cx) / w) ** 2 + ((y - base) / h) ** 2 > 1) continue;
+        const j = y * W + x; if (land[j] < code(R.sky, 0) || land[j] >= code(R.sky, 16)) continue;
+        land[j] = code(R.cloud, quant(((y - base) / h + 1) / 2 * .7 + (base - y0) / (y1 - y0) * .35, nc, x, y));
+      }
+      continue;
+    }
+    const m = 4 + Math.floor(rand() * 3), lobes = [];
+    for (let j = 0; j < m; j++) { const t = j / (m - 1), r = w * (.13 + .12 * Math.sin(t * Math.PI) + rand() * .04); lobes.push({ x: cx - w / 2 + t * w, y: base - r * .35, r }); }
+    for (let y = Math.floor(base - w * .4); y <= base; y++) for (let x = Math.floor(cx - w); x <= cx + w; x++) {
+      if (x < 0 || x >= W || y < 0) continue;
+      let best = -1, nx = 0, ny = 0;
+      for (const l of lobes) { const dx = (x + .5 - l.x) / l.r, dy = (y + .5 - l.y) / l.r, d2 = dx * dx + dy * dy; if (d2 < 1) { const z = Math.sqrt(1 - d2) * l.r; if (z > best) { best = z; nx = dx; ny = dy; } } }
+      const j = y * W + x;
+      if (best < 0 || land[j] < code(R.sky, 0) || land[j] >= code(R.sky, 16)) continue;
+      land[j] = code(R.cloud, quant(y >= base - 1 ? .05 : .55 - ny * .35 - nx * .12, nc, x, y));
+    }
+  }
+}
+// sprites: lists of [dx, dy, code], drawn every frame
+function padPx(rx, notch, age = 0) {
+  const ry = Math.max(2, Math.round(rx * .42)), np = N[R.pad], px = [];
+  const inside = (x, y) => { const e2 = (x / rx) ** 2 + (y / ry) ** 2; if (e2 > 1) return false; let a = Math.atan2(y / ry, x / rx) - notch; a = Math.atan2(Math.sin(a), Math.cos(a)); return !(Math.abs(a) < .28 && e2 > .02); };
+  for (let x = -rx + 1; x < rx; x++) { let yb = -1; for (let y = ry; y >= -ry; y--) if (inside(x, y)) { yb = y; break; } if (yb >= 0) px.push([x, yb + 1, code(R.water, 0)]); }
+  for (let y = -ry; y <= ry; y++) for (let x = -rx; x <= rx; x++) {
+    if (!inside(x, y)) continue;
+    let v = .6 - (y / ry) * .25 - (x / rx) * .1 + (hash2(x >> 1, y >> 1, 13) - .5) * .25 - age * .12;
+    let s = 1 + Math.round(clamp(v, 0, 1) * (np - 2));
+    const a = Math.atan2(y / ry, x / rx);
+    if (Math.abs(Math.sin((a - notch) * 3.5)) < .12 && (x / rx) ** 2 + (y / ry) ** 2 > .05) s = Math.max(1, s - 1);
+    if (!inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1)) s = 0;
+    px.push([x, y, code(age > 2 ? R.grass : R.pad, age > 2 ? Math.max(0, s - 3) : s)]);
+  }
+  return { px, ry };
+}
+function rowsPx(rows, map) {
+  const px = [], h = rows.length, w = rows[0].length;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const c = map[rows[y][x]]; if (c !== undefined) px.push([x - (w >> 1), y - h + 1, c]); }
+  return px;
+}
+const FLOWER = ["...P.P...", "..PpPpP..", ".PpPcPpP.", "PpPpPpPpP", ".ppPpPpp.", "...ppp..."];
+const BIGFLOWER = ["....P.P....", "...PpPpP...", "..PpPPPpP..", ".PpPpcPpPp.", "PpPpPcPpPpP", ".PppPpPppP.", "..ppppppp..", "....ppp...."];
+const BUD = ["..P..", ".PpP.", ".pPp.", "..p.."];
+const BOAT = ["..o...................", "...o..................", ".TTTTTTTTTTTTTTTTTTTT.", "TttttttttttttttttttttT", ".tTTTTTTTTTTTTTTTTTTt.", "..dddddddddddddddddd..", "....dddddddddddddd...."];
+function flowerMap() { const nf = N[R.flower]; return { P: code(R.flower, nf - 1), p: code(R.flower, nf - 4), c: code(R.light, 2) }; }
+function pad(g, x, y, rx, o = {}) {
+  const { px, ry } = padPx(rx, o.notch ?? g.rand() * 6, o.age ?? 0);
+  const all = px.slice();
+  if (o.flower) {
+    const rows = o.flower === "big" ? BIGFLOWER : o.flower === "bud" ? BUD : FLOWER;
+    for (const [dx, dy, c] of rowsPx(rows, flowerMap())) all.push([dx - Math.round(rx * .15), dy - Math.round(ry * .2), c]);
+  }
+  g.sprites.push({ x, y, px: all, bob: true, i: g.sprites.length });
+}
+function stone(g, x, y, rx) {
+  const ry = Math.max(2, Math.round(rx * .45)), ns = N[R.stone], px = [];
+  for (let yy = -ry; yy <= 1; yy++) for (let xx = -rx; xx <= rx; xx++) {
+    if ((xx / rx) ** 2 + (yy / ry) ** 2 > 1) continue;
+    const top = (xx / rx) ** 2 + ((yy - 1) / ry) ** 2 > .55 && yy < 0;
+    px.push([xx, yy, code(R.stone, yy === 1 ? 1 : top ? ns - 1 : ns - 3 - (xx > rx * .3 ? 1 : 0))]);
+  }
+  for (let xx = -rx + 1; xx < rx; xx++) px.push([xx, 2, code(R.water, 0)]);
+  g.sprites.push({ x, y, px, bob: false });
+}
+function boat(g, x, y) {
+  const nt = N[R.trunk];
+  g.sprites.push({ x, y, px: rowsPx(BOAT, { T: code(R.trunk, nt - 1), t: code(R.trunk, 2), d: code(R.trunk, 0), o: code(R.trunk, 1) }), bob: true, i: 3 });
+}
+function reeds(g, x0, x1, baseFn, n) {
+  const ng = N[R.grass], nt = N[R.trunk];
+  for (let i = 0; i < n; i++) {
+    const x = Math.round(x0 + g.rand() * (x1 - x0)), base = Math.round(baseFn(x)), h = Math.round(18 + g.rand() * 26), px = [];
+    for (let j = 0; j < h; j++) px.push([0, -j, code(R.grass, j > h * .5 ? ng - 3 : ng - 5)]);
+    if (g.rand() > .5) for (let j = 0; j < 6; j++) { px.push([0, -h - j, code(R.trunk, j === 0 ? nt - 1 : 1)]); px.push([1, -h - j, code(R.trunk, 1)]); }
+    g.sprites.push({ x, y: base, px, bob: false });
+  }
+}
+function fall(g, x, w, y0, y1) { g.falls.push({ x, w, y0, y1 }); }
+function mark(g, label, x, y) { g.marks.push({ label, x, y }); }
+function finish(g, season) {
+  const { W, H, land, body } = g;
+  for (let i = 0; i < W * H; i++) if (land[i] === TR && !body[i]) land[i] = code(R.trunk, 0);
+  // glints: palette-cycled streaks, denser near each surface
+  const rand = rng(77);
+  for (let b = 1; b < g.bodies.length; b++) {
+    const B = g.bodies[b], depth = Math.min(B.y1 - B.y0, 320);
+    const count = Math.round((B.x1 - B.x0) * depth / 700);
+    for (let i = 0; i < count; i++) {
+      const x = Math.floor(B.x0 + rand() * (B.x1 - B.x0)), d = Math.floor(rand() ** 1.8 * depth), y = B.y0 + d;
+      if (y >= H || body[y * W + x] !== b) continue;
+      g.glints.push({ x, y, len: 1 + Math.floor(rand() * (2 + (1 - d / depth) * 5)), s: Math.floor(rand() * 4) });
+    }
+  }
+  g.season = season;
+  return g;
+}
+
+// ---------- compose one view of the world (from prototypes/pond-world) ----------
+function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
+  const { W, H, land, body, bodies } = g, nW = N[R.water];
+  const full = motion === "full";
+  const tw = full ? Math.floor(T * 8) : 0, ts = full ? Math.floor(T * 3) : 0;
+  for (let y = 0; y < vh; y++) {
+    const wy = cy + y, o = y * vw;
+    if (wy < 0 || wy >= H) { out.fill(code(R.trunk, 0), o, o + vw); continue; }
+    for (let x = 0; x < vw; x++) {
+      const wx = ((cx + x) % W + W) % W; // the world is a loop: past its right end is its left end
+      const i = wy * W + wx, b = body[i];
+      if (!b) { out[o + x] = land[i]; continue; }
+      const B = bodies[b], d = wy - B.y0, sy = B.y0 - 1 - d;
+      const dx = full ? Math.round(Math.sin(wy * .66 + tw * .9) * (.3 + Math.min(1.2, d / 17))) : 0;
+      let c = code(R.water, 1);
+      if (sy >= 0) { const j = sy * W + clamp(wx + dx, 0, W - 1); if (!body[j]) c = land[j] | 16; }
+      const fade = clamp((d / B.fd - .45) / .55, 0, 1);
+      if (fade > 0 && bay(wx, wy) < fade * .9) c = code(R.water, Math.max(0, Math.round((1 - fade) * (nW - 1) * .7)));
+      out[o + x] = c;
+    }
+  }
+  const rel = (x) => ((x - cx) % W + W) % W; // where world x falls in this view, across the loop's seam
+  const put = (x, y, c) => { x = rel(x); y -= cy; if (x < vw && y >= 0 && y < vh) out[y * vw + x] = c; };
+  const off = (x0, x1) => rel(x0) > vw && rel(x1) > vw && rel(x0) <= rel(x1); // a span entirely outside the view
+  for (const gl of g.glints) {
+    if (gl.y < cy || gl.y >= cy + vh || off(gl.x, gl.x + gl.len)) continue;
+    const dx = full ? Math.round(Math.sin(gl.y * .66 + tw * .9) * .8) : 0;
+    for (let k = 0; k < gl.len; k++) put(gl.x + k + dx, gl.y, code(R.glint, gl.s));
+  }
+  for (const s of g.sprites.concat(dyn)) {
+    const bob = full && s.bob ? ((ts + (s.i ?? 0)) % 2) : 0;
+    if (off(s.x - 40, s.x + 40) || s.y + 30 < cy || s.y - 90 > cy + vh) continue;
+    for (const [dx, dy, c, pf] of s.px) { // a fade below 1 dissolves the sprite in by ordered dither
+      const X = s.x + dx, Y = s.y + dy + bob, f = (pf ?? 1) * (s.fade ?? 1);
+      if (f < 1 && bay(X, Y) >= f) continue;
+      put(X, Y, c);
+      if (s.refl && Y < WY && (c & 31) < 16) { const ry = 2 * WY - 1 - Y; if (ry < H && body[ry * W + ((X % W) + W) % W]) put(X + (full ? Math.round(Math.sin(ry * .66 + tw * .9) * .8) : 0), ry, c | 16); } // seen in the water below
+    }
+  }
+}
+
+// ---------- more scenery primitives (this prototype) ----------
+function hills(g, x0, x1, base, o) { // distant ridges, lighter the further back; drawn first, mirrored like everything above the water
+  const { W, land } = g, nf = N[R.far], nc = N[R.cloud], rand = rng(o.seed);
+  for (const [amp, shade] of o.layers) { // back to front
+    const ph = [rand() * 9, rand() * 9, rand() * 9], tau = 2 * Math.PI / W, f = [tau * (3 + Math.floor(rand() * 3)), tau * (10 + Math.floor(rand() * 6)), tau * (30 + Math.floor(rand() * 12))]; // whole cycles, so the ridge meets itself across the loop
+    for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
+      const k = .55 + .3 * Math.sin(x * f[0] + ph[0]) + .12 * Math.sin(x * f[1] + ph[1]) + .05 * Math.sin(x * f[2] + ph[2]);
+      const top = Math.round(base - amp * k);
+      for (let y = Math.max(0, top); y < base; y++) {
+        const d = y - top;
+        let c = code(R.far, d === 0 ? Math.min(nf - 1, shade + 1) : (hash2(x >> 2, y >> 2, 61 + shade) > .8 ? Math.max(0, shade - 1) : shade));
+        if (o.snow && k > .86 && d < 2 + (k - .86) * 40 + hash2(x, 1, 63) * 2) c = code(R.cloud, nc - 1 - (x % 3 === 0 ? 1 : 0));
+        land[y * W + x] = c;
+      }
+    }
+  }
+}
+function willow(g, cx, cy, Rr, base) { // a crown with strands hanging to the water
+  tree(g, cx, cy, Rr, R.leafC, base);
+  const { W, land, rand } = g, nl = N[R.leafC];
+  for (let x = Math.round(cx - Rr * 1.3); x < cx + Rr * 1.3; x += 2) {
+    if (rand() < .3) continue;
+    const top = Math.round(cy - Rr * .1 + Math.abs(x - cx) * .25), len = Math.round(Rr * (.7 + rand() * .8));
+    for (let j = 0; j < len; j++) {
+      const y = top + j, X = x + (j > len * .6 ? 1 : 0);
+      if (y >= base - 1 || X < 0 || X >= W) break;
+      land[y * W + X] = code(R.leafC, j === len - 1 ? 2 : hash2(X, y >> 1, 31) > .5 ? nl - 3 : nl - 5);
+    }
+  }
+}
+function pine(g, cx, base, h) {
+  const { W, land } = g, nl = N[R.leafA];
+  cx = Math.round(cx);
+  for (let y = base - Math.round(h * .3); y < base; y++) land[y * W + cx] = code(R.trunk, 0);
+  const tiers = Math.max(2, Math.round(h / 13)), top = base - h, body = h * .82;
+  for (let y = top; y < top + body; y++) {
+    const rel = (y - top) / body, tier = (rel * tiers) % 1, hw = (1 + rel * h * .26) * (.7 + tier * .3);
+    for (let x = Math.round(cx - hw); x <= Math.round(cx + hw); x++) {
+      if (x < 0 || x >= W) continue;
+      const u = (x - cx) / Math.max(1, hw);
+      let s = u < -.3 ? nl - 4 : u < .3 ? nl - 7 : 2;
+      if (tier > .85 || Math.abs(u) > .92) s = 0;
+      if (hash2(x >> 1, y, 71) > .86) s = Math.max(0, s - 2);
+      land[y * W + x] = code(R.leafA, s);
+    }
+  }
+}
+function birch(g, cx, base, h) {
+  const { W, land } = g, ns = N[R.stone];
+  cx = Math.round(cx);
+  for (let y = base - h; y < base; y++) { land[y * W + cx] = code(R.stone, hash2(cx, y >> 1, 41) > .78 ? 1 : ns - 1); land[y * W + cx + 1] = code(R.stone, ns - 3); }
+  tree(g, cx + 1, base - h - 2, 8 + (h % 6), R.leafC, base - h + 10);
+}
+function rock(g, cx, base, w, h, moss) { // a rock standing out of the water or on a bank, its foot on base
+  const { W, land } = g, ns = N[R.stone], ng = N[R.grass];
+  for (let x = Math.round(cx - w); x <= Math.round(cx + w); x++) {
+    const u = (x - cx) / w; if (Math.abs(u) > 1 || x < 0 || x >= W) continue;
+    const top = Math.round(base - h * Math.sqrt(1 - u * u) * (1 + .1 * Math.sin(x * .7)));
+    for (let y = top; y < base; y++) {
+      const d = y - top;
+      if (moss && d < 2 && u < .5) { land[y * W + x] = code(R.grass, ng - 2 - d); continue; }
+      let s = u < -.25 ? ns - 2 : u < .35 ? ns - 4 : 2;
+      if (d === 0) s = Math.min(ns - 1, s + 1);
+      if (hash2(x >> 1, y >> 1, 51) > .86) s = Math.max(0, s - 2);
+      land[y * W + x] = code(R.stone, s);
+    }
+  }
+}
+function log(g, x0, x1, base) { // a fallen trunk lying along the water's edge
+  const { W, land } = g, nt = N[R.trunk];
+  for (let x = x0; x <= x1; x++) for (let j = 0; j < 4; j++) land[(base - 4 + j) * W + x] = code(R.trunk, x === x1 ? nt - 1 : j === 0 ? nt - 1 : j === 3 ? 0 : (x - x0) % 7 === 0 ? 1 : 2);
+  for (const bx of [x0 + 6, x0 + Math.round((x1 - x0) * .6)]) for (let j = 1; j < 6; j++) land[(base - 4 - j) * W + bx + (j >> 1)] = code(R.trunk, 1);
+}
+function jetty(g, x0, x1, deck) {
+  const { W, land } = g, nt = N[R.trunk];
+  for (let x = x0; x <= x1; x++) { land[deck * W + x] = code(R.trunk, nt - 1); land[(deck + 1) * W + x] = code(R.trunk, 1); }
+  for (let x = x0 + 2; x <= x1; x += 8) for (let y = deck + 2; y < WY + 1; y++) land[y * W + x] = code(R.trunk, 0);
+}
+function fern(g, x, base) { // a low clump on a bank
+  const { W, land } = g, ng = N[R.grass];
+  for (let j = -6; j <= 6; j++) { const h = Math.round(5 - Math.abs(j) * .6 + hash2(x + j, 2, 81) * 2); for (let y = 0; y < h; y++) land[(base - 1 - y) * W + x + j] = code(R.grass, y === h - 1 ? ng - 1 : ng - 4); }
+}
+const shuffle = (a, rand) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const smooth = (t) => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const groundTop = (topFn, x) => Math.round(topFn(x) + Math.sin(x * .21) * 1.5 + hash2(x, 11) * 1.4); // as ground() draws it
+
+
+// ---------- a small pixel painter for the islets and bridges ----------
+const setp = (g, x, y, c) => { x = Math.round(x); y = Math.round(y); x = (x % g.W + g.W) % g.W; if (y >= 0 && y < g.H) g.land[y * g.W + x] = c; };
+const rect = (g, x0, y0, x1, y1, c) => { for (let y = Math.round(y0); y < y1; y++) for (let x = Math.round(x0); x < x1; x++) setp(g, x, y, typeof c === "function" ? c(x, y) : c); };
+function gable(g, cx, base, hw, h, c, eave) { // a roof: rows narrowing upwards; eave colours its bottom row
+  for (let j = 0; j < h; j++) { const w = Math.round(hw * (1 - j / h)); for (let x = cx - w; x <= cx + w; x++) setp(g, x, base - 1 - j, j === 0 && eave != null ? eave : c); }
+}
+function roof(g, cx, base, hw, h, c, edge, flare = 0) { // a curved roof, narrowing fast, its eaves flared up at the ends
+  for (let j = 0; j < h; j++) { const w = Math.round(hw * (1 - j / h) ** 1.25); rect(g, cx - w, base - 1 - j, cx + w + 1, base - j, j === 0 ? edge : c); }
+  for (let k = 1; k <= flare; k++) { setp(g, cx - hw - k, base - 1 - k, edge); setp(g, cx + hw + k, base - 1 - k, edge); }
+}
+function pal() {
+  const ns = N[R.stone], nt = N[R.trunk], nf = N[R.flower], ng = N[R.grass], nc = N[R.cloud], nl = N[R.leafA];
+  return { white: code(R.cloud, nc - 1), white2: code(R.cloud, nc - 4), stoneL: code(R.stone, ns - 1), stone: code(R.stone, ns - 3), stoneD: code(R.stone, 2), stoneDD: code(R.stone, 0),
+    woodL: code(R.trunk, nt - 1), wood: code(R.trunk, 2), wood1: code(R.trunk, 1), woodD: code(R.trunk, 0),
+    red: code(R.flower, 0), redL: code(R.flower, 3), pink: code(R.flower, nf - 2), heather: code(R.flower, 2),
+    blue: code(R.water, 2), leaf: code(R.leafA, nl - 4), leafD: code(R.leafA, 1), leafL: code(R.leafA, nl - 1),
+    grass: code(R.grass, ng - 2), grassL: code(R.grass, ng - 1), sand: code(R.light, 1), turq: code(R.water, N[R.water] - 3), gold: code(R.light, 1), straw: code(R.leafC, N[R.leafC] - 2), teal: code(R.far, 1) };
+}
+const masonry = (x0, y0, P, shadeX) => (x, y) => { // coursed stone: mortar lines, offset joints, darker past shadeX
+  const r = Math.floor((y - y0) / 4), mortar = (y - y0) % 4 === 3 || (x - x0 + (r % 2) * 3) % 7 === 0, dark = x >= shadeX;
+  return mortar ? (dark ? P.stoneDD : P.stoneD) : dark || hash2(x, y, 97) > .9 ? P.stoneD : P.stone;
+};
+function mound(g, cx, hw, h, kind) { // the islet itself: a flat top and steep banks rising from the water; returns its top edge
+  const top = (x) => { const u = (x - cx) / hw, s = Math.min(1, 1.3 * Math.sqrt(Math.max(0, 1 - u * u))); return Math.round(WY - h * s - (s < 1 ? s * 1.5 * Math.sin(x * .3) : 0)); };
+  const ns = N[R.stone], ng = N[R.grass];
+  for (let x = cx - hw; x <= cx + hw; x++) { const t = top(x), lit = x < cx - hw * .2, shade = x > cx + hw * .45;
+    for (let y = t; y < WY; y++) { const d = y - t, n = hash2(x >> 1, y >> 1, 93), wet = y >= WY - 2;
+      setp(g, x, y, kind === "rock" ? code(R.stone, d === 0 ? ns - 1 : wet ? 1 : n > .84 || (y * 3 + (x >> 2) * 5) % 11 === 0 ? 2 : shade ? 3 : lit ? ns - 3 : ns - 4)
+        : kind === "sand" ? (d < 3 ? code(R.light, Math.max(0, 2 - d)) : wet ? code(R.trunk, 1) : code(R.trunk, n > .8 || shade ? 2 : 3))
+        : d < 2 ? code(R.grass, ng - 1 - d - (shade ? 2 : 0)) : d < 4 + Math.floor(hash2(x, 9, 92) * 6) && y < WY - 3 ? code(R.grass, (shade ? ng - 6 : ng - 4) - (d > 4 ? 1 : 0)) // grass over the edge, in drips
+        : wet ? code(R.trunk, 0) : n > .8 ? code(R.stone, shade ? 2 : 3) : code(R.trunk, shade || y > WY - 5 ? 1 : 2));
+    } }
+  g.lastTop = top;
+  return top;
+}
+function dress(g, cx, hw, top, P, o = {}) { // a footpath, tufts, flowers, and a boulder or two at the waterline
+  const fl = o.flowers || [], fd = o.fd ?? .06, onPath = (x) => o.path && x >= o.path[0] && x < o.path[1];
+  for (let x = cx - hw + 3; x <= cx + hw - 3; x++) { const t = top(x), a = hash2(x, 7, 88), b = hash2(x, 9, 89);
+    if (onPath(x)) { if (x % 5 < 3) setp(g, x, t, P.stoneL); continue; }
+    if (o.tufts !== false && a > .5) { setp(g, x, t - 1, a > .8 ? P.grassL : P.grass); if (a > .92) setp(g, x, t - 2, P.grassL); }
+    if (fl.length && b < fd) setp(g, x, t - 1 - (b < fd / 3 ? 1 : 0), fl[Math.floor(hash2(x, 3, 86) * fl.length)]);
+  }
+  rock(g, cx - hw + 3, WY + 1, 5, 4, true); rock(g, cx + hw - 7, WY + 1, 7, 5, true); rock(g, cx + hw - 18, WY + 1, 3, 2);
+}
+function win(g, x, y, w, h, frame, glass, bar = true) { rect(g, x - 1, y - 1, x + w + 1, y + h + 1, frame); rect(g, x, y, x + w, y + h, glass); if (bar) rect(g, x + (w >> 1), y, x + (w >> 1) + 1, y + h, frame); }
+function lantern(g, x, b, P) { // a stone lantern
+  rect(g, x - 3, b - 2, x + 4, b, P.stone); rect(g, x - 1, b - 8, x + 2, b - 2, P.stone); rect(g, x - 2, b - 12, x + 3, b - 8, P.stoneL); rect(g, x - 1, b - 11, x + 2, b - 9, P.gold);
+  rect(g, x - 4, b - 14, x + 5, b - 12, P.stoneD); setp(g, x, b - 15, P.stoneD);
+}
+function fence(g, x0, x1, b, c) { for (let x = Math.round(x0); x < x1; x++) { if ((x - x0) % 4 === 0) rect(g, x, b - 6, x + 1, b, c); setp(g, x, b - 4, c); } }
+function blob(g, cx, cy, rx, ry, ramp, seed = 0) { // a whole leafy mass: a lumpy edge, lit from the upper left, a dark underside
+  const n = N[ramp];
+  for (let y = Math.floor(cy - ry * 1.2); y <= cy + ry * 1.2; y++) for (let x = Math.floor(cx - rx * 1.2); x <= cx + rx * 1.2; x++) {
+    const dx = (x - cx) / rx, dy = (y - cy) / ry, a = Math.atan2(dy, dx), d = Math.hypot(dx, dy), rr = 1 + .1 * Math.sin(a * 5 + seed) + .05 * Math.sin(a * 11 + seed * 2);
+    if (d > rr) continue;
+    const rim = d > rr - .14, v = .6 - dx * .25 - dy * .45 + (hash2(x >> 1, y >> 1, 60 + seed) - .5) * .4;
+    setp(g, x, y, code(ramp, rim && dy > -.2 ? 0 : 1 + Math.round(clamp(rim ? v + .2 : v, 0, 1) * (n - 2))));
+  }
+}
+function piles(g, x0, x1, deck, every, c) { for (let x = x0 + 2; x < x1 - 1; x += every) rect(g, x, deck, x + 1, WY + 1, c); }
+
+// ---------- bridges: side view, the deck from xa to xb. Kept low and quiet: the islets are the places, the bridges only join them ----------
+const BRIDGES = {
+  taiko(g, xa, xb, P) { // a low arch, a vermilion rail
+    for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 5 - Math.sin(Math.PI * u) * 9);
+      setp(g, x, y, P.wood1); setp(g, x, y + 1, P.woodD); setp(g, x, y - 3, P.red); if ((x - xa) % 8 === 0) rect(g, x, y - 3, x + 1, y, P.red);
+      if (Math.abs(u - .25) < .012 || Math.abs(u - .75) < .012) rect(g, x, y + 2, x + 1, WY + 1, P.woodD); }
+  },
+  arches(g, xa, xb, P) { // grey stone over low round arches
+    const n = Math.max(2, Math.round((xb - xa) / 26)), span = (xb - xa) / n;
+    for (let x = xa; x <= xb; x++) { const u = ((x - xa) % span) / span, open = Math.round(WY - Math.sqrt(Math.max(0, 1 - (2 * u - 1) ** 2)) * 5);
+      for (let y = WY - 8; y < WY; y++) if (y < open || y < WY - 6) setp(g, x, y, y === WY - 8 ? P.stoneL : hash2(x >> 1, y >> 1, 97) > .7 ? P.stoneDD : P.stoneD); }
+  },
+  reeds(g, xa, xb, P) { // a walk of bundled reeds on poles, lashed at intervals
+    for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 4 + Math.sin(Math.PI * u) * 2), lash = (x - xa) % 6 === 0;
+      setp(g, x, y, lash ? P.wood1 : P.straw); setp(g, x, y + 1, lash ? P.woodD : P.wood1); if ((x - xa) % 16 === 0) rect(g, x, y - 6, x + 1, WY + 1, P.woodD); }
+  },
+  brick(g, xa, xb, P) { // low pointed brick arches, a tile band under the parapet
+    const n = Math.max(2, Math.round((xb - xa) / 22)), span = (xb - xa) / n;
+    for (let x = xa; x <= xb; x++) { const u = ((x - xa) % span) / span, open = Math.round(WY - 6 * Math.sqrt(Math.max(0, 1 - Math.abs(2 * u - 1))));
+      for (let y = WY - 9; y < WY; y++) if (y < open || y < WY - 7) setp(g, x, y, y === WY - 9 ? P.sand : y === WY - 8 ? ((x - xa) % 3 ? P.turq : P.white2) : (y + (x >> 2)) % 3 ? P.woodL : P.wood1); }
+  },
+  zigzag(g, xa, xb, P) { // a low stone walk in three offset runs
+    const n = 3, w = (xb - xa) / n;
+    for (let k = 0; k < n; k++) { const y = WY - 3 - (k % 2); rect(g, xa + k * w, y, xa + (k + 1) * w + 1, y + 1, P.stoneL); piles(g, Math.round(xa + k * w), Math.round(xa + (k + 1) * w), y + 1, 10, P.stoneD); }
+  },
+  rope(g, xa, xb, P) { // a rope walk between two posts
+    for (const px of [xa + 2, xb - 3]) rect(g, px, WY - 16, px + 1, WY, P.woodD);
+    for (let x = xa + 2; x <= xb - 2; x++) { const u = (x - xa) / (xb - xa), sag = Math.sin(Math.PI * u), deck = Math.round(WY - 6 + sag * 3), rope = Math.round(WY - 15 + sag * 7);
+      setp(g, x, deck, P.wood1); setp(g, x, rope, P.wood1); if ((x - xa) % 7 === 0) rect(g, x, rope, x + 1, deck, P.wood1); }
+  },
+  causeway(g, xa, xb, P) { // a stone causeway, its top whitewashed
+    for (let x = xa; x <= xb; x++) rect(g, x, WY - 3, x + 1, WY, (xx, y) => y === WY - 3 ? P.white2 : hash2(xx >> 1, y, 99) > .7 ? P.stoneD : P.stone);
+  },
+  lattice(g, xa, xb, P) { // a garden bridge, a slight arch, a criss-cross rail
+    for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 5 - Math.sin(Math.PI * u) * 5), k = (x - xa) % 6;
+      setp(g, x, y, P.white2); setp(g, x, y + 1, P.stoneD); setp(g, x, y - 5, P.white2); if (k < 5) { setp(g, x, y - 1 - k, P.white2); setp(g, x, y - 5 + k, P.white2); }
+      if (Math.abs(u - .2) < .01 || Math.abs(u - .8) < .01) rect(g, x, y + 2, x + 1, WY + 1, P.stoneD); }
+  },
+  bamboo(g, xa, xb, P) { // a bamboo walk, lashed posts
+    for (let x = xa; x <= xb; x++) { const u = (x - xa) / (xb - xa), y = Math.round(WY - 4 + Math.sin(Math.PI * u) * 1.5);
+      setp(g, x, y, (x - xa) % 9 === 0 ? P.wood1 : P.straw); setp(g, x, y - 4, P.straw); if ((x - xa) % 14 === 0) rect(g, x, y - 5, x + 1, WY + 1, P.wood1); }
+  },
+  jali(g, xa, xb, P) { // a sandstone walk, its parapet a pierced screen
+    for (let x = xa; x <= xb; x++) { rect(g, x, WY - 4, x + 1, WY - 2, (xx, y) => y === WY - 4 ? P.woodL : P.wood1);
+      for (let y = WY - 8; y < WY - 4; y++) if (y === WY - 8 || !((x - xa) % 3 === 1 && (WY - y) % 2 === 1)) setp(g, x, y, y === WY - 8 ? P.sand : P.woodL); }
+    piles(g, xa, xb, WY - 2, 16, P.wood1);
+  },
+  covered(g, xa, xb, P) { // a covered wooden bridge, a low roof
+    rect(g, xa, WY - 5, xb, WY - 3, P.wood1); piles(g, xa, xb, WY - 3, 18, P.woodD);
+    for (let x = xa + 6; x < xb - 6; x += 10) rect(g, x, WY - 13, x + 1, WY - 5, P.woodD);
+    for (let j = 0; j < 3; j++) rect(g, xa + 4 + j * 2, WY - 14 - j, xb - 4 - j * 2, WY - 13 - j, j === 0 ? P.woodD : P.wood1);
+  },
+};
+
+// the deck row each bridge's walker stands on, matching BRIDGES above
+const DECK = {
+  taiko: (xa, xb, x) => Math.round(WY - 5 - Math.sin(Math.PI * (x - xa) / (xb - xa)) * 9),
+  arches: () => WY - 8,
+  reeds: (xa, xb, x) => Math.round(WY - 4 + Math.sin(Math.PI * (x - xa) / (xb - xa)) * 2),
+  brick: () => WY - 9,
+  zigzag: (xa, xb, x) => WY - 3 - (Math.min(2, Math.floor((x - xa) / ((xb - xa) / 3))) % 2),
+  rope: (xa, xb, x) => Math.round(WY - 6 + Math.sin(Math.PI * (x - xa) / (xb - xa)) * 3),
+  causeway: () => WY - 3,
+  lattice: (xa, xb, x) => Math.round(WY - 5 - Math.sin(Math.PI * (x - xa) / (xb - xa)) * 5),
+  bamboo: (xa, xb, x) => Math.round(WY - 4 + Math.sin(Math.PI * (x - xa) / (xb - xa)) * 1.5),
+  jali: () => WY - 4,
+  covered: () => WY - 5,
+};
+
+// ---------- islets: each stands on its own mound, centred on cx; b is the flat top ----------
+const ISLETS = {
+  shrine(g, cx, P) { const h = 18, b = WY - h, top = mound(g, cx, HW, h);
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 6], flowers: [P.pink], fd: .04 });
+    tree(g, cx - 64, top(cx - 64) - 24, 15, R.leafB, top(cx - 64)); // a cherry
+    const tx = cx - 38; // the torii
+    for (const px of [tx - 11, tx + 9]) rect(g, px, b - 44, px + 3, b, P.red);
+    rect(g, tx - 17, b - 48, tx + 19, b - 46, P.woodD); for (const [dx, dy] of [[-18, 49], [19, 49], [-19, 50], [20, 50]]) setp(g, tx + dx, b - dy, P.woodD);
+    rect(g, tx - 15, b - 46, tx + 17, b - 44, P.red); rect(g, tx - 14, b - 37, tx + 16, b - 35, P.red); rect(g, tx, b - 44, tx + 2, b - 37, P.woodD);
+    lantern(g, cx - 14, b, P); lantern(g, cx + 46, b, P);
+    const hx = cx + 14; // the hall, raised on stone
+    rect(g, hx - 22, b - 4, hx + 23, b, (x, y) => y === b - 4 ? P.stoneL : P.stone); rect(g, hx - 26, b - 2, hx - 22, b, P.stoneL);
+    rect(g, hx - 18, b - 22, hx + 19, b - 4, (x, y) => (x - hx + 18) % 12 < 2 ? P.red : x > hx - 5 && x < hx + 5 ? ((x + y) % 3 ? P.woodD : P.wood1) : P.wood);
+    roof(g, hx, b - 21, 28, 12, P.woodD, P.wood1, 3); rect(g, hx - 6, b - 34, hx + 7, b - 32, P.woodD);
+    for (const ex of [hx - 6, hx + 6]) for (const [dx, dy] of [[-1, 35], [1, 35], [-2, 36], [2, 36]]) setp(g, ex + dx, b - dy, P.woodD); // crossed beams on the ridge
+    pine(g, cx + 66, top(cx + 66) + 2, 46); },
+  crag(g, cx, P) { const h = 34, b = WY - h, top = mound(g, cx, HW, h, "rock");
+    dress(g, cx, HW, top, P, { flowers: [P.heather, P.heather, P.pink], fd: .3 });
+    const kx = cx - 8, keep = masonry(kx - 12, b - 70, P, kx + 5); // the keep, its right side fallen
+    for (let x = kx - 12; x < kx + 13; x++) { const ruin = x > kx + 3 ? Math.round((x - kx - 3) * 1.8 + hash2(x, 2, 91) * 3) : 0;
+      rect(g, x, b - 64 + ruin, x + 1, b + 1, keep); if (!ruin && (x - kx + 12) % 5 < 3) rect(g, x, b - 68, x + 1, b - 64, keep); }
+    for (let y = b - 30; y < b; y++) for (let x = kx - 12; x < kx - 3; x++) if (hash2(x, y, 94) > .55 + (b - y) / 60) setp(g, x, y, P.leafD); // ivy
+    rect(g, kx - 6, b - 54, kx - 5, b - 47, P.stoneDD); rect(g, kx + 1, b - 42, kx + 2, b - 35, P.stoneDD); rect(g, kx - 7, b - 28, kx - 3, b - 22, P.stoneDD); rect(g, kx - 6, b - 29, kx - 4, b - 28, P.stoneDD);
+    rect(g, kx - 3, b - 12, kx + 4, b + 1, P.stoneDD); rect(g, kx - 2, b - 13, kx + 3, b - 12, P.stoneDD);
+    const cw = masonry(kx + 13, b - 30, P, kx + 32); // the curtain wall and its gate
+    rect(g, kx + 13, b - 24, kx + 42, b + 1, cw); for (let x = kx + 13; x < kx + 42; x += 4) rect(g, x, b - 27, x + 2, b - 24, cw);
+    rect(g, kx + 22, b - 12, kx + 29, b + 1, P.stoneDD); rect(g, kx + 23, b - 14, kx + 28, b - 12, P.stoneDD);
+    const tw = masonry(kx + 42, b - 40, P, kx + 49); for (let x = kx + 42; x < kx + 54; x++) rect(g, x, b - 34 + Math.round(hash2(x, 5, 92) * 6) + (x > kx + 49 ? 5 : 0), x + 1, b + 1, tw);
+    const lw = masonry(kx - 36, b - 20, P, kx); for (let x = kx - 36; x < kx - 12; x++) rect(g, x, b - 14 + Math.round(Math.max(0, kx - 24 - x) * .6 + hash2(x, 6, 90) * 2), x + 1, b + 1, lw);
+    pine(g, cx + 70, top(cx + 70) + 1, 32); },
+  baobab(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), bx = cx - 50, hx = cx + 4;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, hx - 3], flowers: [P.gold, P.straw], fd: .08 });
+    for (let y = b - 34; y < b; y++) { const v = (y - b + 34) / 34, w = Math.round(5 + Math.sin(Math.PI * Math.min(1, v * .8 + .15)) * 5); // the baobab: a bottle of a trunk
+      rect(g, bx - w, y, bx + w + 1, y + 1, (x) => x > bx + w * .4 || hash2(x, y >> 1, 73) > .85 ? P.stoneD : P.stone); }
+    for (const [dx, len, rise] of [[-3, -15, .5], [-1, -7, 1.2], [1, 8, 1.1], [3, 16, .45]]) { const s = Math.sign(len); let ex = 0, ey = 0; // short arms, little crowns
+      for (let i = 0; i <= Math.abs(len); i++) { ex = bx + dx + s * i; ey = b - 34 - Math.round(i * rise); setp(g, ex, ey, P.stoneD); setp(g, ex, ey + 1, P.stoneD); }
+      tree(g, ex, ey - 3, 6, R.leafA, ey + 1); }
+    const ww = 17; // a painted house: white walls, black lines, blocks of colour
+    rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = x - hx + ww, v = b - y, k = u % 8;
+      if (v === 1 || v === 8 || v === 17 || (v > 8 && k === 0)) return P.woodD;
+      if (v > 8) return Math.abs(k - 4) + Math.abs(v - 12.5) < 3 ? P.white : [P.red, P.gold, P.blue][Math.floor(u / 8) % 3];
+      return (u + v) % 6 === 0 ? P.woodD : P.white; });
+    rect(g, hx - 3, b - 12, hx + 4, b, P.woodD); rect(g, hx - 4, b - 13, hx + 5, b - 12, P.red);
+    for (let j = 0; j < 18; j++) { const w = Math.round((ww + 4) * (1 - j / 18)); rect(g, hx - w, b - 19 - j, hx + w + 1, b - 18 - j, (x) => j === 0 ? P.woodL : (x + j) % 3 ? P.straw : P.woodL); } // a thatched cone
+    rect(g, hx, b - 40, hx + 1, b - 36, P.woodD);
+    const rx = cx + 44, rw = 11; rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => y > b - 4 ? P.wood1 : x > rx + 6 ? P.wood : P.woodL); rect(g, rx - 2, b - 9, rx + 3, b, P.woodD); // a plain round house
+    for (let j = 0; j < 13; j++) { const w = Math.round((rw + 3) * (1 - j / 13)); rect(g, rx - w, b - 14 - j, rx + w + 1, b - 13 - j, (x) => (x + j) % 3 ? P.straw : P.woodL); }
+    for (const [ox, oy] of [[cx + 26, 0], [cx + 29, 0], [cx + 27, -4]]) { rect(g, ox - 1, b - 4 + oy, ox + 2, b + oy, P.wood); setp(g, ox, b - 5 + oy, P.wood1); } // clay pots
+    const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) setp(g, ax + Math.round(j * .15), at - j, P.woodD); // an acacia, its crown flat
+    for (const [w, dy] of [[9, 0], [13, 1], [12, 2], [7, 3]]) rect(g, ax + 3 - w, at - 25 + dy, ax + 4 + w, at - 24 + dy, (x) => dy === 0 ? P.leafL : hash2(x, dy, 71) > .6 ? P.leafD : P.leaf); },
+  persian(g, cx, P) { const h = 14, b = WY - h, top = mound(g, cx, HW, h), px = cx + 4, W2 = 28, H2 = 30;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, px - 11], flowers: [P.pink, P.red], fd: .08 });
+    const cypress = (x, hh) => { const t = top(x); rect(g, x, t - 3, x + 1, t, P.woodD);
+      for (let y = t - hh; y < t - 2; y++) { const v = (y - t + hh) / hh, w = Math.round(Math.sin(Math.PI * Math.min(1, v * 1.1)) * 2.6); rect(g, x - w, y, x + w + 1, y + 1, (xx) => xx > x || hash2(xx, y, 72) > .6 ? P.leafD : P.leaf); } };
+    cypress(cx - 62, 30); cypress(cx - 50, 40); cypress(cx + 58, 40); cypress(cx + 70, 30);
+    for (const tx of [cx - 37, cx + 44]) { tree(g, tx, top(tx) - 12, 7, R.leafA, top(tx)); for (let i = 0; i < 5; i++) setp(g, tx - 5 + Math.floor(hash2(tx, i, 70) * 11), top(tx) - 16 + Math.floor(hash2(i, tx, 70) * 8), P.red); } // pomegranates
+    const niche = (x, yb, ys, ya, hw, c) => { for (let dx = -hw; dx <= hw; dx++) { const u = Math.abs(dx) / hw; rect(g, x + dx, Math.round(ys - (ys - ya) * Math.sqrt(1 - u)), x + dx + 1, yb, c); } };
+    rect(g, px - W2, b - H2, px + W2 + 1, b, (x, y) => (b - y) % 4 === 0 || (x + (Math.floor((b - y) / 4) % 2) * 3) % 6 === 0 || x > px + W2 - 8 ? P.woodL : P.sand); // the pavilion, in brick
+    rect(g, px - W2, b - H2 - 3, px + W2 + 1, b - H2, (x) => x % 3 === 1 ? P.white : P.turq); for (let x = px - W2; x <= px + W2; x += 4) rect(g, x, b - H2 - 5, x + 2, b - H2 - 3, P.sand);
+    rect(g, px - 11, b - 28, px + 12, b, (x, y) => (x + y) % 4 ? P.turq : P.white); niche(px, b, b - 14, b - 26, 9, P.blue); rect(g, px - 3, b - 10, px + 4, b, P.woodD); // the iwan
+    for (const sx of [px - 20, px + 20]) { niche(sx, b, b - 7, b - 12, 4, P.woodD); niche(sx, b - 16, b - 21, b - 26, 4, P.blue); }
+    rect(g, px - 8, b - H2 - 9, px + 9, b - H2 - 5, P.sand); // the dome on its drum
+    for (let j = 0; j < 10; j++) { const w = Math.round(9 * Math.sqrt(1 - (j / 10) ** 2)); rect(g, px - w, b - H2 - 10 - j, px + w + 1, b - H2 - 9 - j, (x) => j % 3 === 1 && x % 4 === 0 ? P.white : P.turq); }
+    rect(g, px, b - H2 - 23, px + 1, b - H2 - 19, P.gold); },
+  pavilion(g, cx, P) { const h = 12, b = WY - h, top = mound(g, cx, HW, h, "rock");
+    dress(g, cx, HW, top, P, { flowers: [P.pink], fd: .03 });
+    rect(g, cx - 32, b - 4, cx + 33, b, (x, y) => y === b - 4 ? P.stoneL : x % 6 === 0 ? P.stoneD : P.stone); rect(g, cx - 38, b - 2, cx - 32, b, P.stoneL);
+    for (const px of [-26, -13, 0, 13, 26]) rect(g, cx + px - 1, b - 28, cx + px + 1, b - 4, P.red);
+    for (let x = cx - 26; x < cx + 27; x++) { setp(g, x, b - 10, P.red); if (x % 3 === 0) rect(g, x, b - 9, x + 1, b - 4, P.red); }
+    rect(g, cx - 27, b - 30, cx + 28, b - 28, (x) => x % 4 ? P.woodD : P.gold);
+    roof(g, cx, b - 29, 36, 7, P.teal, P.stoneDD, 4);
+    rect(g, cx - 14, b - 42, cx + 15, b - 35, (x) => x % 4 === 0 ? P.red : P.woodD);
+    roof(g, cx, b - 41, 25, 7, P.teal, P.stoneDD, 3); rect(g, cx, b - 52, cx + 1, b - 47, P.gold); setp(g, cx, b - 53, P.gold);
+    for (const [dx, hh, lean] of [[-72, 42, -4], [-67, 52, -1], [-62, 38, 2], [-57, 47, 4]]) { const x0 = cx + dx, t = top(x0), at = (j) => x0 + Math.round(lean * (j / hh) ** 2); // a clump of bamboo: jointed canes, sprays of leaves up top
+      for (let j = 0; j < hh; j++) { const node = j % 7 === 6; setp(g, at(j), t - j, node ? P.leafD : P.leafL); setp(g, at(j) + 1, t - j, node ? P.leafD : P.leaf); }
+      for (let j = Math.round(hh * .5); j < hh - 3; j += 7) { const side = (j / 7 | 0) % 2 ? 1 : -1; blob(g, at(j) + side * 5, t - j - 1, 5, 2, R.leafA, j + dx); }
+      blob(g, at(hh) + 1, t - hh, 5, 3, R.leafA, dx); }
+    const px = cx + 60, pb = top(px), trunk = (j) => px + Math.round(3 * Math.sin(j / 38 * Math.PI)); // a cloud-pruned pine: a crooked trunk, its foliage in layered pads
+    for (let j = 0; j < 38; j++) rect(g, trunk(j) - 1, pb - j, trunk(j) + 2, pb - j + 1, (x) => x > trunk(j) ? P.woodD : P.wood1);
+    for (const [dx, dy, rx, ry] of [[-12, -15, 9, 3.5], [13, -22, 11, 4], [-10, -29, 10, 3.5], [2, -39, 11, 5]]) {
+      const j0 = -dy - 3, x0 = trunk(j0), n = Math.abs(dx); for (let i = 0; i <= n; i++) rect(g, x0 + Math.sign(dx) * i, pb - j0 - Math.round(i / n * 3), x0 + Math.sign(dx) * i + 1, pb - j0 - Math.round(i / n * 3) + 2, P.woodD);
+      blob(g, px + dx, pb + dy, rx, ry, R.leafA, dx + dy); } },
+  lighthouse(g, cx, P) { const h = 26, b = WY - h, top = mound(g, cx, HW, h, "rock"), tx = cx - 16, kx = cx + 30;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, kx - 1], flowers: [P.white, P.pink], fd: .05 });
+    for (let j = 0; j < 64; j++) { const w = Math.round(10 - j * .06), y = b - 1 - j, red = Math.floor(j / 11) % 2;
+      rect(g, tx - w, y, tx + w + 1, y + 1, (x) => x > tx + w * .35 ? (red ? P.red : P.white2) : red ? P.redL : P.white); }
+    rect(g, tx - 2, b - 10, tx + 3, b, P.woodD); win(g, tx - 1, b - 30, 2, 3, P.woodD, P.glass, false); win(g, tx - 1, b - 50, 2, 3, P.woodD, P.glass, false);
+    rect(g, tx - 10, b - 66, tx + 11, b - 64, P.woodD); for (let x = tx - 10; x <= tx + 10; x += 2) rect(g, x, b - 69, x + 1, b - 66, P.woodD); rect(g, tx - 10, b - 70, tx + 11, b - 69, P.woodD); // the gallery
+    rect(g, tx - 5, b - 78, tx + 6, b - 70, (x) => (x - tx) % 3 === 0 ? P.woodD : P.gold); // the lantern
+    roof(g, tx, b - 77, 7, 6, P.red, P.woodD); rect(g, tx, b - 86, tx + 1, b - 83, P.woodD);
+    rect(g, kx - 14, b - 16, kx + 15, b, (x) => x > kx + 8 ? P.white2 : P.white); // the keeper's house
+    win(g, kx - 9, b - 12, 4, 5, P.stoneD, P.glass); win(g, kx + 6, b - 12, 4, 5, P.stoneD, P.glass); rect(g, kx - 1, b - 10, kx + 3, b, P.red);
+    gable(g, kx, b - 16, 18, 9, P.red, P.woodD); rect(g, kx + 8, b - 27, kx + 11, b - 20, P.stone);
+    fence(g, kx + 18, kx + 26, b, P.white); },
+  greek(g, cx, P) { const h = 20, b = WY - h, top = mound(g, cx, HW, h, "rock");
+    dress(g, cx, HW, top, P, { flowers: [P.straw], fd: .15 });
+    const house = (x0, x1, y0, sh) => rect(g, x0, y0, x1, b, (x, y) => y === y0 ? P.white2 : x >= sh ? P.white2 : P.white);
+    const shutters = (x, y) => { rect(g, x, y, x + 6, y + 6, P.blue); rect(g, x + 2, y, x + 4, y + 6, P.stoneD); };
+    house(cx - 18, cx + 12, b - 34, cx + 7); shutters(cx - 10, b - 28); shutters(cx + 1, b - 28); // the upper house, behind
+    rect(g, cx - 4, b - 44, cx + 5, b - 34, P.white); rect(g, cx - 2, b - 42, cx + 3, b - 37, P.stoneD); rect(g, cx, b - 41, cx + 1, b - 38, P.gold); // its bell arch
+    house(cx - 46, cx - 18, b - 20, cx - 22); shutters(cx - 42, b - 15); rect(g, cx - 32, b - 12, cx - 27, b, P.blue); // the lower house
+    for (let s = 0; s < 7; s++) rect(g, cx - 16 + s * 2, b - 2 - s * 2, cx - 13 + s * 2, b - s * 2, P.white2); // an outside stair
+    for (let y = b - 22; y < b - 8; y++) for (let x = cx - 30; x < cx - 16; x++) if (hash2(x, y, 79) > .45 + (y - b + 22) / 16) setp(g, x, y, hash2(x, y, 78) > .3 ? P.pink : P.leafD); // bougainvillea
+    rect(g, cx + 12, b - 24, cx + 36, b, (x) => x > cx + 30 ? P.white2 : P.white); rect(g, cx + 22, b - 12, cx + 27, b, P.blue); // the little chapel
+    rect(g, cx + 17, b - 28, cx + 32, b - 24, P.white);
+    for (let j = 0; j < 9; j++) { const w = Math.round(8 * Math.sqrt(1 - (j / 9) ** 2)); rect(g, cx + 24 - w, b - 29 - j, cx + 25 + w, b - 28 - j, j === 0 ? P.white2 : P.blue); }
+    tree(g, cx + 58, top(cx + 58) - 16, 12, R.leafC, top(cx + 58)); }, // an olive
+  gazebo(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h), gx = cx + 8;
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, gx - 22], flowers: [P.pink, P.white], fd: .06 });
+    const hedge = (x0, x1, hh) => { for (let x = x0; x < x1; x++) { const t = Math.min(b, top(x)); rect(g, x, t - hh, x + 1, t + 1, (xx, y) => y === t - hh ? P.leafL : hash2(xx, y, 82) > .6 ? P.leafD : P.leaf); } };
+    hedge(cx - 76, cx - 50, 6); hedge(cx + 42, cx + 62, 6);
+    for (const bx of [cx - 46, cx + 66]) for (let j = -6; j <= 6; j++) for (let y = 0; y < 9 - Math.abs(j); y++) setp(g, bx + j, top(bx + j) - 1 - y, hash2(bx + j, y, 77) > .72 ? (j % 2 ? P.pink : P.red) : y > 5 - Math.abs(j) / 2 ? P.leafL : P.leaf); // roses
+    const ax = cx - 32; rect(g, ax - 7, b - 22, ax - 5, b, P.white); rect(g, ax + 5, b - 22, ax + 7, b, P.white); // a rose arch over the path
+    for (let a = 0; a <= Math.PI; a += .05) { setp(g, ax + Math.cos(a) * 6, b - 22 - Math.sin(a) * 6, P.white); setp(g, ax + Math.cos(a) * 7, b - 22 - Math.sin(a) * 7, P.white2); }
+    for (let y = b - 22; y < b; y++) for (const x of [ax - 8, ax + 8]) if (hash2(x, y, 76) > .45) setp(g, x, y, hash2(x, y, 75) > .55 ? P.pink : P.leaf);
+    for (let a = 0; a <= Math.PI; a += .2) setp(g, ax + Math.cos(a) * 8, b - 22 - Math.sin(a) * 8, hash2(Math.round(a * 10), 1, 75) > .5 ? P.pink : P.leaf);
+    rect(g, gx - 22, b - 3, gx + 23, b, (x, y) => y === b - 3 ? P.white : P.white2); // the gazebo
+    for (const px of [-20, -10, 0, 10, 20]) rect(g, gx + px - 1, b - 30, gx + px + 1, b - 3, P.white);
+    rect(g, gx - 20, b - 12, gx + 21, b - 11, P.white); for (let x = gx - 19; x < gx + 20; x++) { const k = (x - gx + 40) % 7; setp(g, x, b - 4 - k, P.white2); setp(g, x, b - 10 + k, P.white2); }
+    rect(g, gx - 22, b - 33, gx + 23, b - 30, P.white2); for (let x = gx - 22; x < gx + 23; x += 2) setp(g, x, b - 30, P.white);
+    for (let j = 0; j < 12; j++) { const w = Math.round(21 * Math.sqrt(1 - (j / 12) ** 2)); rect(g, gx - w, b - 34 - j, gx + w + 1, b - 33 - j, (x) => x > gx + w * .3 || (x - gx) % 7 === 0 ? P.white2 : P.white); }
+    rect(g, gx - 3, b - 50, gx + 4, b - 45, P.white); gable(g, gx, b - 50, 4, 3, P.white2); rect(g, gx, b - 56, gx + 1, b - 53, P.gold);
+    rect(g, cx + 30, b - 5, cx + 39, b - 4, P.woodL); rect(g, cx + 30, b - 9, cx + 31, b, P.woodD); rect(g, cx + 38, b - 4, cx + 39, b, P.woodD); rect(g, cx + 30, b - 9, cx + 39, b - 8, P.woodD); }, // a bench
+  palms(g, cx, P) { const h = 10, b = WY - h, top = mound(g, cx, HW, h, "sand"), hx = cx - 22;
+    dress(g, cx, HW, top, P, { tufts: false, flowers: [P.white, P.pink], fd: .04 }); // shells
+    for (const x0 of [cx - 76, cx + 52]) for (let x = x0; x < x0 + 12; x++) if (hash2(x, 2, 74) > .4) rect(g, x, top(x) - 1 - Math.round(hash2(x, 3, 74) * 3), x + 1, top(x), P.grass); // beach grass
+    const palm = (x0, hgt, lean) => { const y0 = top(x0); let x = x0;
+      for (let j = 0; j < hgt; j++) { x = x0 + lean * (j / hgt) ** 2; setp(g, x, y0 - j, j % 4 === 0 ? P.woodD : P.wood); setp(g, x + 1, y0 - j, j % 4 === 0 ? P.woodD : P.wood1); }
+      const tx = x, ty = y0 - hgt;
+      for (const a of [-3, -2.6, -2.1, -1.6, -1.1, -.6, -.15]) for (let r = 1; r < 22; r += .5) { const fx = tx + Math.cos(a) * r, fy = ty + Math.sin(a) * r * .55 + r * r * .03;
+        setp(g, fx, fy, P.leaf); if (r > 4 && Math.floor(r) % 2 === 0) { setp(g, fx, fy + 1, P.leafD); setp(g, fx, fy + 2, r > 12 ? P.leafD : P.leaf); } }
+      rect(g, tx - 1, ty + 1, tx + 2, ty + 3, P.woodD); setp(g, tx + 2, ty + 2, P.wood1); };
+    palm(cx + 26, 52, 10); palm(cx + 46, 40, -6); palm(cx - 64, 36, 5);
+    for (const px of [-16, -2, 14]) rect(g, hx + px, b - 8, hx + px + 1, b, P.woodD); // a hut on stilts
+    rect(g, hx - 19, b - 10, hx + 20, b - 8, P.woodL); rect(g, hx - 15, b - 22, hx + 16, b - 10, (x) => (x - hx) % 3 === 0 ? P.wood1 : P.straw);
+    rect(g, hx - 2, b - 19, hx + 3, b - 10, P.woodD); rect(g, hx + 7, b - 18, hx + 12, b - 14, P.woodD);
+    for (let j = 0; j < 13; j++) { const w = Math.round(24 * (1 - j / 13)); rect(g, hx - w, b - 23 - j, hx + w + 1, b - 22 - j, (x) => (x + j) % 3 === 0 ? P.woodL : P.straw); }
+    for (let x = hx - 24; x <= hx + 24; x += 2) setp(g, x, b - 22, P.straw);
+    for (const y of [b - 3, b - 6]) rect(g, hx - 23, y, hx - 19, y + 1, P.woodD);
+    rect(g, cx + 60, WY - 3, cx + 76, WY - 1, P.woodD); setp(g, cx + 59, WY - 4, P.woodD); setp(g, cx + 76, WY - 4, P.woodD); rect(g, cx + 62, WY - 3, cx + 74, WY - 2, P.wood); }, // a canoe
+  ghat(g, cx, P) { const h = 18, b = WY - h, top = mound(g, cx, HW, h);
+    dress(g, cx, HW, top, P, { flowers: [P.gold, P.red], fd: .06 });
+    for (let x = cx - 64; x < cx + 14; x++) for (let y = Math.max(b, top(x)); y < WY; y++) { const k = (y - b) % 3; setp(g, x, y, k === 0 ? P.sand : k === 1 ? P.woodL : P.wood1); } // the ghat: steps down into the water
+    for (const [lx, k] of [[-58, 1], [-49, 3], [-40, 2], [-22, 4], [-11, 1], [4, 3]]) { setp(g, cx + lx, b + 3 * k - 1, P.gold); setp(g, cx + lx, b + 3 * k, P.red); } // little lamps on the steps
+    const chhatri = (x, s) => { // a domed kiosk: a moulded plinth, four pillars under cusped arches, a sloping eave, a smooth dome on a lotus band, a finial
+      const S = (v) => Math.round(v * s), hw = S(10), pw = s > 1.5 ? 3 : 2, ph = S(13);
+      rect(g, x - hw - 1, b - 2, x + hw + 2, b, P.woodL); rect(g, x - hw, b - 4, x + hw + 1, b - 2, (xx, y) => y === b - 4 ? P.sand : xx > x + hw * .5 ? P.woodL : P.sand); // the plinth
+      const ey = b - 4 - ph, cols = [-hw + 1, -S(3.5) - 1, S(3.5) - pw + 2, hw - pw];
+      for (const c of cols) { rect(g, x + c, ey, x + c + pw, b - 4, (xx) => xx === x + c + pw - 1 ? P.woodL : P.sand); rect(g, x + c - 1, b - 5, x + c + pw + 1, b - 4, P.woodL); rect(g, x + c - 1, ey, x + c + pw + 1, ey + 1, P.woodL); }
+      for (let i = 0; i < 3; i++) { const x0 = x + cols[i] + pw, x1 = x + cols[i + 1], m = (x0 + x1) / 2, hg = (x1 - x0) / 2; // cusped arches and a marigold garland
+        for (let xx = x0; xx < x1; xx++) { const u = (xx + .5 - m) / hg, d = Math.round(1 + 3 * (1 - Math.sqrt(Math.max(0, 1 - u * u))) + (Math.abs(u) > .3 && Math.abs(u) < .6 ? 1 : 0)); rect(g, xx, ey + 1, xx + 1, ey + 1 + d, P.sand);
+          setp(g, xx, ey + 5 + Math.round(2 * Math.sin(Math.PI * (xx - x0) / (x1 - x0))), xx % 2 ? P.gold : P.red); } }
+      rect(g, x - hw, ey - 2, x + hw + 1, ey, P.sand); // the beam, then the eave sloping out over it
+      for (let k = 0; k < 3; k++) rect(g, x - hw - 1 - k, ey - 5 + k, x + hw + 2 + k, ey - 4 + k, k === 2 ? P.woodL : P.sand); rect(g, x - hw - 3, ey - 2, x - hw, ey - 1, P.wood1); rect(g, x + hw + 1, ey - 2, x + hw + 4, ey - 1, P.wood1);
+      const dw = S(6.5), dy = ey - 6; rect(g, x - dw - 1, dy - 2, x + dw + 2, dy + 1, (xx, y) => y === dy - 2 && (xx - x) % 3 !== 0 ? P.woodL : P.sand); // a drum ringed with lotus petals
+      const r = S(7.5); for (let j = 0; j <= r; j++) { const w = Math.round((r + .5) * Math.sqrt(1 - (j / (r + 1)) ** 2)), y = dy - 3 - j;
+        rect(g, x - w, y, x + w + 1, y + 1, (xx) => { const u = (xx - x) / (w + .5); return u > -.55 && u < -.35 && j > 1 && j < r - 1 ? P.white : u < .15 ? P.sand : u > .55 || bay(xx, y) < (u - .15) / .4 ? P.woodL : P.sand; }); }
+      const ft = dy - 4 - r; rect(g, x - 1, ft - 2, x + 2, ft + 1, P.gold); rect(g, x, ft - 6, x + 1, ft - 2, P.gold); }; // a kalash finial
+    const tx = cx + 60, tb = top(tx); // a banyan: a fluted trunk parting into limbs, roots hanging in clusters and propping it up, a broad canopy in two depths
+    const stamp = (x0, y0, x1, y1, w, c) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) rect(g, x0 + (x1 - x0) * i / n - w / 2, y0 + (y1 - y0) * i / n, x0 + (x1 - x0) * i / n + w / 2, y0 + (y1 - y0) * i / n + 1, c); };
+    for (const [dx, dy] of [[-18, -12], [-7, -16], [8, -15], [19, -11]]) stamp(tx, b - 24, tx + dx, b - 24 + dy, 3, P.wood1);
+    for (let y = b - 26; y <= tb; y++) { const w = 4 + (y > tb - 3 ? 2 : 0); rect(g, tx - w, y, tx + w + 1, y + 1, (x) => (x - tx + 9) % 3 === 0 ? P.woodD : x > tx + 1 ? P.wood1 : P.wood); }
+    const root = (x, len, ph, bow, prop) => { for (let j = 0; j < len; j++) { const xx = x + Math.round(Math.sin(j * .22 + ph) * .9 + bow * Math.sin(Math.PI * j / len)), w = prop ? (j > len - 3 ? 3 : 2) : j < len * .55 ? 2 : 1;
+      rect(g, xx, b - 30 + j, xx + w, b - 29 + j, (x2) => !prop && j === len - 1 ? P.wood : x2 === xx ? P.wood : P.woodD); } };
+    for (const [dx, k] of [[-27, 0], [-25, 1], [-17, 2], [-15, 3], [-11, 4], [11, 5], [14, 6], [23, 7], [25, 8], [27, 9]]) root(tx + dx, 14 + Math.round(hash2(dx, k, 55) * 8), k, 0, false);
+    for (const [dx, bow] of [[-21, -1.5], [-13, -1], [13, 1], [19, 1.5]]) root(tx + dx, top(tx + dx) - b + 31, dx, bow, true);
+    const lobes = (list) => { for (const [dx, dy, r] of list) tree(g, tx + dx, b + dy, r, R.leafA, b + dy + Math.round(r * .3) + 2); };
+    lobes([[-14, -38, 11], [13, -39, 11], [0, -43, 10]]); // the back of the canopy, in shade
+    for (let y = b - 58; y < b - 24; y++) for (let x = tx - 32; x <= tx + 32; x++) { const i = y * g.W + x, c = g.land[i]; if (c >> 5 === R.leafA && (c & 31) < 16) g.land[i] = code(R.leafA, Math.max(0, (c & 31) - 3)); }
+    lobes([[-22, -29, 10], [21, -29, 10], [-8, -32, 12], [8, -33, 12]]); // the front of it
+    chhatri(cx - 30, 1.25); chhatri(cx + 20, 1.7); },
+  chalet(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h);
+    dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 2], flowers: [P.white, P.gold, P.heather], fd: .1 });
+    pine(g, cx - 70, top(cx - 70) + 1, 40); pine(g, cx - 54, top(cx - 54) + 1, 54);
+    rect(g, cx - 26, b - 12, cx + 27, b, masonry(cx - 26, b - 12, P, cx + 16)); rect(g, cx - 3, b - 9, cx + 4, b, P.woodD); rect(g, cx - 2, b - 10, cx + 3, b - 9, P.woodD); // stone below
+    rect(g, cx - 24, b - 32, cx + 25, b - 12, (x, y) => (y - b) % 3 === 0 || x > cx + 16 ? P.wood1 : P.wood); // timber above
+    for (const wx of [cx - 17, cx + 9]) { rect(g, wx - 3, b - 27, wx - 1, b - 19, P.red); rect(g, wx + 7, b - 27, wx + 9, b - 19, P.red); win(g, wx, b - 27, 6, 8, P.white, P.glass); }
+    rect(g, cx - 28, b - 15, cx + 29, b - 13, P.woodD); for (let x = cx - 28; x <= cx + 28; x += 2) rect(g, x, b - 19, x + 1, b - 15, P.woodD); rect(g, cx - 28, b - 20, cx + 29, b - 19, P.woodD); // the balcony
+    for (let x = cx - 26; x < cx + 27; x++) if (hash2(x, 3, 81) > .35) setp(g, x, b - 21, x % 3 ? P.red : P.pink); // flower boxes
+    for (let j = 0; j < 11; j++) { const w = Math.round(38 - j * 3.3); rect(g, cx - w, b - 33 - j, cx + w + 1, b - 32 - j, j === 0 ? P.woodD : (x) => hash2(x, j, 80) > .9 ? P.stoneL : j % 2 ? P.wood1 : P.woodD); } // a wide low roof
+    win(g, cx - 2, b - 40, 4, 4, P.white, P.glass, false);
+    const wx = cx + 34; for (let y = b - 10; y < b; y += 2) for (let x = wx; x < wx + 12; x += 2) { setp(g, x, y, P.woodL); setp(g, x + 1, y, P.wood1); setp(g, x, y + 1, P.wood1); setp(g, x + 1, y + 1, P.woodD); } // a woodpile
+    pine(g, cx + 62, top(cx + 62) + 2, 46); pine(g, cx + 74, top(cx + 74) + 1, 30); },
+};
+const THEMES = [ // islet and the bridge that leads to it
+  { id: "shrine", name: "Shrine island", bridge: "taiko", blurb: "a low vermilion-railed arch to a torii, a raised hall, two stone lanterns, a cherry and a black pine" },
+  { id: "crag", name: "Highland crag", bridge: "arches", blurb: "a stone arched bridge to a craggy rock in heather: a ruined keep with ivy, a curtain wall and gate, a broken turret" },
+  { id: "baobab", name: "Baobab isle", bridge: "reeds", blurb: "a reed walk on poles to a baobab, a round house painted in Ndebele blocks and lines under a thatched cone, a plainer hut, clay pots and an acacia" },
+  { id: "persian", name: "Persian garden", bridge: "brick", blurb: "a bridge of pointed brick arches to a brick pavilion with a tiled iwan, a turquoise dome, cypresses and pomegranates" },
+  { id: "pavilion", name: "Lake pavilion", bridge: "zigzag", blurb: "a zigzag stone walk to a two-roofed pavilion on a plinth, a clump of bamboo and a cloud-pruned pine" },
+  { id: "lighthouse", name: "Lighthouse rock", bridge: "rope", blurb: "a rope walk to a striped lighthouse with a gallery, and a keeper's house behind a fence" },
+  { id: "greek", name: "Whitewashed isle", bridge: "causeway", blurb: "a causeway to white houses with blue shutters, a bell arch, bougainvillea, a domed chapel and an olive" },
+  { id: "gazebo", name: "Garden gazebo", bridge: "lattice", blurb: "a lattice bridge to a domed gazebo, a rose arch over the path, box hedges, roses and a bench" },
+  { id: "palms", name: "Palm cay", bridge: "bamboo", blurb: "a bamboo walk to a sandy cay with three palms, a thatched hut on stilts and a canoe" },
+  { id: "ghat", name: "Ghats and chhatris", bridge: "jali", blurb: "a sandstone walk with a pierced screen rail to stone steps running down into the water, little lamps, two domed chhatris hung with marigolds and a broad banyan on prop roots" },
+  { id: "chalet", name: "Alpine chalet", bridge: "covered", blurb: "a covered bridge to a chalet with a stone floor, a flowered balcony, a wide roof, a woodpile and pines" },
+];
+function routeFor(seed, path) { // the islets in walking order: a fresh order for every Path, never opening on the islet the last one opened on
+  let prev = null, order = null;
+  for (let p = 1; p <= path; p++) { order = shuffle(THEMES, rng(seed * 7919 + 1 + (p - 1) * 104729)); if (order[0] === prev) order.push(order.shift()); prev = order[0]; }
+  return order.slice(0, SLOTS);
+}
+
+// ================= the Shoreline: a loop around the lake =================
+// Left to right, and round again: the landing (Settings, About, and the Recap: we come ashore here), the pond (home),
+// today's lily (Probes), then eight themed islets joined by bridges (a Path walks from one to the next), then a last
+// jetty to the shore, which is the landing again. The islets and their order are drawn from the Inquiry's seed and the Path.
+const WY = 480, SLOTS = 8, STEP = 262, HW = 84, ROUTE_X0 = 1330, PIER = [1090, 1160], LAND_X = 420;
+const TODAY = { x: 1040, y: WY + 94 }, MOOR = { x: 680, y: WY + 40 }, DROP = { x: 640, y: WY + 132 };
+const slotX = (k) => ROUTE_X0 + k * STEP;
+const WORLD_W = slotX(SLOTS - 1) + 190, WORLD_H = 1180;
+function signpost(g, x, base) {
+  const nt = N[R.trunk], px = [];
+  for (let j = 0; j < 18; j++) { px.push([0, -j, code(R.trunk, 1)]); px.push([1, -j, code(R.trunk, 0)]); }
+  for (let y = -21; y <= -14; y++) for (let xx = -8; xx <= 9; xx++) px.push([xx, y, code(R.trunk, y === -21 ? nt - 1 : xx === -8 || xx === 9 || y === -14 ? 1 : 2)]);
+  for (const xx of [-5, -3, -1, 2, 4, 6]) px.push([xx, -17, code(R.trunk, 0)]);
+  g.sprites.push({ x, y: base, px, bob: false });
+}
+function boathouse(g, x, base) {
+  const ns = N[R.stone], px = [], w = 20, h = 16;
+  for (let y = -h; y < 0; y++) for (let xx = -w; xx <= w; xx++) px.push([xx, y, code(R.trunk, (xx + 40) % 5 === 0 ? 0 : xx > w - 6 ? 1 : 2)]);
+  for (let y = -10; y < 0; y++) for (let xx = -6; xx <= 6; xx++) px.push([xx, y, code(R.trunk, 0)]);
+  for (let r = 0; r < 10; r++) for (let xx = -w - 4 + r; xx <= w + 4 - r; xx++) px.push([xx, -h - r, code(R.stone, r === 0 ? 2 : r > 7 ? ns - 1 : ns - 3)]);
+  g.sprites.push({ x, y: base, px, bob: false });
+}
+const item = (g, id, x, y, rx, ry, label) => { g.items[id] = { id, x, y, rx, ry, label }; };
+function buildShore(season, seed, path) {
+  const W = WORLD_W, H = WORLD_H, g = newWorld(W, H, 11 + (season === "autumn" ? 5 : 0)), nf = N[R.far], P = pal();
+  Object.assign(g, { items: {}, spring: season === "spring", moon: SEASONS[season].moon, themes: [] });
+  P.glass = g.spring ? P.blue : P.gold; // windows catch the sky by day and are lit in the evening
+  hills(g, 0, W, WY, { seed: 5, snow: true, layers: [[250, nf - 1], [165, nf - 2], [84, nf - 4]] });
+  // the near shore: the landing and home, wrapping round from the far end of the world
+  farTrees(g, -260, 960, WY); mist(g, 0, W, WY);
+  treeRow(g, 0, 330, WY); treeRow(g, W - 150, W, WY, { front: false }); pine(g, 880, WY - 3, 44); pine(g, 902, WY - 3, 34);
+  bank(g, 0, 960, WY); bank(g, W - 150, W, WY);
+  for (let x = 960; x < W - 150; x++) { const h = 2 + Math.round(2 * Math.sin(x * .05) + hash2(x >> 2, 1, 91) * 3); for (let y = WY - h; y < WY; y++) g.land[y * W + x] = code(R.far, y === WY - h ? 2 : 0); }
+  water(g, 0, W, WY, H);
+  // today's lily's pier, then the islets
+  jetty(g, PIER[0], PIER[1], WY - 6);
+  const picks = routeFor(seed, path), edge = Math.round(HW * .82); // bridges first, so each islet's banks cover its ends
+  picks.forEach((t, k) => BRIDGES[t.bridge](g, k ? slotX(k - 1) + edge : PIER[1], slotX(k) - edge, P));
+  jetty(g, slotX(SLOTS - 1) + edge, W - 140, WY - 6); // ashore: the last walk is a plain jetty to the landing
+  // the walk: the row a walker's feet stand on, all the way round (bank, pier, decks, islet tops, the last jetty)
+  const wy = new Float32Array(W).fill(WY - 3);
+  for (let x = PIER[0]; x <= PIER[1]; x++) wy[x] = WY - 6;
+  for (let x = slotX(SLOTS - 1) + edge; x < W - 140; x++) wy[x] = WY - 6;
+  picks.forEach((t, k) => { const xa = k ? slotX(k - 1) + edge : PIER[1], xb = slotX(k) - edge; for (let x = xa; x <= xb; x++) wy[x] = DECK[t.bridge](xa, xb, x); });
+  picks.forEach((t, k) => {
+    g.rand = rng(seed * 31 + k * 7 + path * 977);
+    ISLETS[t.id](g, slotX(k), P);
+    for (let x = slotX(k) - edge; x <= slotX(k) + edge; x++) wy[x] = g.lastTop(x);
+    item(g, "s" + k, slotX(k), WY - 24, HW, 34, t.name); g.themes.push(t);
+  });
+  for (let pass = 0; pass < 3; pass++) { const c = wy.slice(); for (let x = 0; x < W; x++) { let s = 0; for (let d = -4; d <= 4; d++) s += c[(x + d + W) % W]; wy[x] = s / 9; } } // banks become slopes
+  g.walkY = wy;
+  g.rand = rng(3);
+  signpost(g, 360, WY - 3); item(g, "sign", 360, WY - 14, 12, 12, "About");
+  boathouse(g, 470, WY - 2);
+  item(g, "boat", MOOR.x, MOOR.y - 3, 14, 7, "Settings");
+  item(g, "new", 720, WY + 64, 20, 12, "Begin today's Inquiry");
+  sky(g, 0, WY, { x: 750, y: WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
+  finish(g, season);
+  g.LUT = makeLUT(season, "normal");
+  return g;
+}
+
+// ================= mock content =================
+const COPY = {
+  problem: "Everyone my age seems further along. I keep counting the years.",
+  probes: ["Who decided where you should be by now?", "What does “further along” measure?", "Is counting the years the same as living them?", "What would you be, if you stopped measuring how far behind you are?"],
+  steps: [
+    { q: "Who decided where you should be by now?", r: "I suppose nobody decided. I picked it up from watching my brother." },
+    { q: "If nobody decided, where does the deadline you feel come from?", r: "From comparing, I think. Each birthday I go down the list." },
+    { q: "What happens in you when you go down the list?", r: "A tightness. Like I'm late for something." },
+    { q: "Late for what, exactly?", r: "I can't really say. A life that looks right from outside." },
+    { q: "Whose outside is that?", r: "My parents', mostly. And people I went to school with." },
+    { q: "When you picture them looking, what are they looking for?", r: "Proof I turned out fine." },
+    { q: "Is “fine” something you could see, or only something you could be told?", r: "Told, I think. I've never seen it." },
+    { q: "Then what are you measuring when you count the years?", r: "Maybe just the distance from what I was told." },
+  ],
+  oq: "Is there a right age for anything?",
+  recap: { title: "Who set the clock I keep checking?",
+    card: { probe: "Who decided where you should be by now?", a: "Someone has decided where I should be by now.", quote: "“I picked it up from watching my brother.”" } },
+};
+const ABOUT = {
+  name: "Islands and bridges",
+  blurb: "The open lake, with a journey across it. From today's lily a pier leads to a chain of eight islets, each with its own theme and a bridge to match: a vermilion arch to a shrine, a stone bridge to a crag with a ruined tower, a reed walk to a baobab isle, and so on. Each Path draws eight of eleven themes in a fresh order. Each Path step walks the next bridge and stops on that islet to think. Finishing walks on and comes ashore at the landing, which holds the Recap. \"Row home\" takes the rowboat back to the pond, dropping the new Recap's flower on the way. The world is a loop, so the landing is both the start and the end of the journey.",
+};
+const RULES = (g, need) => [ // the rule sheet if the current variant wins
+  ...({
+    A: ["<b>The piece:</b> a small figure in a long coat, side on, its edge in the coat's darker step, never black. It is the person, not a guide: it never speaks, gestures or leads.",
+      "<b>At rest:</b> it stands on the near side of the islet, so the islet's buildings stay clear, and does not idle-animate.",
+      "<b>Submit:</b> it walks at once, across the rest of the islet and the next bridge, feet on the deck, reflection under it. The camera keeps pace, so it holds its place on screen while the world moves past."],
+    B: ["<b>The piece:</b> the rowboat, with its rower. Begin rows it from its mooring to the pier; each step moors it in front of the next islet.",
+      "<b>Submit:</b> it rows at once; a short wake trails and fades. The bridges are scenery it passes, not a way it takes.",
+      "<b>The Recap:</b> the boat is already at the landing, so \"Row home\" finishes the same trip."],
+    C: ["<b>The piece:</b> a warm light on the islet's path, a bright core and a dithered glow, shown in the water. It breathes slowly at rest (3 fps steps).",
+      "<b>Submit:</b> it travels at once along the bridge, lighting the deck under it, with an afterglow behind that fades within a second. Nothing stays lit.",
+      "<b>Finishing:</b> it runs the whole chain and the last jetty to the landing, quickly."],
+    D: ["<b>The piece:</b> none at rest. Submit skims a stone from this islet to the next in four shrinking hops, a ring at every touch and a bigger one where it sinks.",
+      "<b>Finishing:</b> no skim; the camera just goes."],
+  })[st.variant],
+  "<b>The walk is the wait:</b> Submit sets off at once; the next question fades in on arrival, or when the reply lands if it is later. The koi and dragonfly come only if it is still out on arrival, and the dragonfly lifts as it lands, with a ring by the piece.",
+  "<b>Back:</b> the piece goes back the way it came, at the same pace. Jumps skip the walk.",
+  "<b>No reward:</b> the same piece, size and pace on every step of every Inquiry; nothing left behind, nothing lit, counted or collected by how far a person got.",
+  "<b>Reduce Motion:</b> the piece dissolves in at its new place with the 8-step dither; no walk cycle, wake or rings. <b>Still water:</b> it is simply there.",
+  `<b>World:</b> ${g.W} × ${g.H} art px, a loop, as on #83. Every frame fits within y ${need.y0}–${need.y1}${need.ok ? "" : ", but some frames clamp (see the readout)"}.`,
+];
+
+// ================= state =================
+const st = { beat: "home", device: "i17", season: "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false,
+  seed: 1, path: 1, steps: 4, homeFull: false, safe: true, rowed: false, variant: "A", size: "M", latency: 3, cues: "big" };
+try { Object.assign(st, JSON.parse(localStorage.getItem("path-motion") || "{}")); } catch {}
+for (const [k, val] of new URLSearchParams(location.search)) if (k in st) st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?variant=B&beat=p2
+let rowing = false; // the row home is playing
+const save = () => { try { localStorage.setItem("path-motion", JSON.stringify(st)); } catch {} };
+const replyAt = {}; // step beat → when its mock reply lands (seconds), set by Submit
+const motion = () => st.still ? "still" : st.reduce ? "reduce" : "full";
+const now = () => performance.now() / 1000;
+const cueAt = {};
+function enterCues(beat) { cueAt[beat] = now(); }
+const ct = (beat) => st.still || !(beat in cueAt) ? 1e9 : now() - cueAt[beat];
+const beats = () => ["home", "probes", ...Array.from({ length: Math.min(SLOTS, st.steps) }, (_, i) => "p" + (i + 1)), "recap"];
+const LABEL = (b) => ({ home: "Home", probes: "Probes", recap: "Recap" })[b] || "Step " + b.slice(1) + " · " + world().themes[+b.slice(1) - 1].name;
+
+let G = null, gKey = "";
+function world() { const k = [st.season, st.seed, st.path].join(); if (gKey !== k) { G = buildShore(st.season, st.seed, st.path); gKey = k; drawMapBase(); } return G; }
+
+// ================= the scene: sprites drawn from the beat =================
+const PLAN = [[0, 0, 15, 5.1], [-34, -12, 12, .6], [31, -15, 12, 2.4], [-24, 21, 11, 4.0], [29, 19, 10, 1.3]];
+const padCache = new Map();
+function padArt(r, notch, u) {
+  const k = r + "|" + notch + "|" + u;
+  if (!padCache.has(k)) padCache.set(k, padPx(Math.max(3, Math.round(r * u)), notch, 0));
+  return padCache.get(k);
+}
+function lily(x, y, mirror, flower, scale = 1, fade = 1) {
+  const sp = [];
+  PLAN.forEach(([dx, dy, r, notch], i) => {
+    const nt = mirror ? Math.PI - notch : notch, art = padArt(Math.round(r * scale), nt, 1), px = art.px.slice();
+    if (i === 0 && flower) for (const [fx, fy, c] of rowsPx(flower === "closed" ? BUD : BIGFLOWER, flowerMap())) px.push([fx - Math.round(r * .15), fy - Math.round(art.ry * .2), c]);
+    sp.push({ x: x + Math.round((mirror ? -dx : dx) * scale), y: y + Math.round(dy * scale), px, bob: true, i, fade });
+  });
+  return sp;
+}
+function rings(x, y, t, at, out) {
+  if (motion() !== "full") return;
+  for (const lag of [0, .3]) {
+    const e = t - at - lag; if (e < 0 || e > 1) continue;
+    const q = Math.floor(e * 8) / 8, rx = 3 + 14 * q, ry = Math.max(1, rx * .35), px = [];
+    for (let a = 0; a < 360; a += 3) px.push([Math.round(Math.cos(a * Math.PI / 180) * rx), Math.round(Math.sin(a * Math.PI / 180) * ry), code(R.glint, q < .5 ? 1 : 0)]);
+    out.push({ x, y, px, bob: false, fade: .85 - q * .5 });
+  }
+}
+function newPad(out) {
+  const art = padArt(17, 1.2, 1), px = art.px.concat(rowsPx(BIGFLOWER, flowerMap()).map(([x, y, c]) => [x - 3, y - 3, c]));
+  out.push({ x: 720, y: WY + 68, px, bob: true, i: 0 });
+}
+const BOAT_PX = () => { const nt = N[R.trunk]; return rowsPx(BOAT, { T: code(R.trunk, nt - 1), t: code(R.trunk, 2), d: code(R.trunk, 0), o: code(R.trunk, 1) }); };
+const ROW = { from: LAND_X + 30, dur: 1.4 };
+function boatX(beat) { // the rowboat: waiting at the landing on the Recap, rowing home after it, else moored by home
+  if (beat === "recap") return ROW.from;
+  if (beat === "home" && rowing) { const t = ct("home"); return t >= ROW.dur ? MOOR.x : Math.round(lerp(ROW.from, MOOR.x + WORLD_W * 0, smooth(t / ROW.dur))); }
+  return MOOR.x;
+}
+const HOME_FULL = { unfinished: [560, WY + 150], flowers: [[810, WY + 128], [700, WY + 226], [838, WY + 262]], closed: [[598, WY + 318], [632, WY + 336], [592, WY + 352]] };
+// ================= the moving piece: what stands for the person on a Path (this prototype's question) =================
+const mod = (a) => ((a % WORLD_W) + WORLD_W) % WORLD_W;
+const walkAt = (x) => world().walkY[mod(Math.round(x))];
+const stepK = (beat) => beat && beat[0] === "p" && beat !== "probes" ? +beat.slice(1) : 0;
+const q8 = (p) => Math.max(1 / 8, Math.ceil(clamp(p, 0, 1) * 8) / 8); // an 8-step dither fade
+function walkerPx(h, frame, dir) { // a small figure in a long coat, side on; never black, its edge in the coat's own darker step
+  const px = [], coat = code(R.flower, 4), lit = code(R.flower, 6), edge = code(R.flower, 1), skin = code(R.light, 2), hair = code(R.trunk, 0), leg = code(R.trunk, 1);
+  const hr = Math.max(2, Math.round(h * .12)), legL = Math.max(3, Math.round(h * .3)), lift = frame % 2 ? -1 : 0, top = -h + lift, neck = top + 2 * hr;
+  const stride = [-1, 0, 1, 0][frame] * Math.max(1, Math.round(h * .13)), lw = h >= 20 ? 2 : 1;
+  for (const sgn of [1, -1]) for (let y = -legL; y <= -1; y++) { const x = Math.round(sgn * stride * (y + legL) / (legL - 1)); for (let w = 0; w < lw; w++) px.push([x + w * dir, y, leg]); }
+  const hem = -legL + 1 + lift, w0 = Math.max(1, Math.round(h * .13)), w1 = Math.max(2, Math.round(h * .22));
+  for (let y = neck; y <= hem; y++) { const w = Math.round(lerp(w0, w1, (y - neck) / Math.max(1, hem - neck)));
+    for (let x = -w; x <= w; x++) px.push([x, y, y === hem || x === w ? edge : x === -w ? lit : coat]); }
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x, top + hr + y, y === -hr || x * dir < 0 ? hair : skin]);
+  return px;
+}
+function boatPx(L, fh, frame, dir) { // the rowboat with its rower; L half-length, fh the rower's height
+  const nt = N[R.trunk], px = [], coat = code(R.flower, 4), edge = code(R.flower, 1), skin = code(R.light, 2), hair = code(R.trunk, 0);
+  for (let x = -L; x <= L; x++) { px.push([x, -3, code(R.trunk, nt - 1)]); px.push([x, -2, code(R.trunk, Math.abs(x) === L ? 1 : 3)]); if (Math.abs(x) < L) px.push([x, -1, code(R.trunk, 1)]); if (Math.abs(x) < L - 2) px.push([x, 0, code(R.trunk, 0)]); }
+  px.push([-L - 1, -4, code(R.trunk, nt - 1)], [L + 1, -4, code(R.trunk, nt - 1)]);
+  const hr = Math.max(1, Math.round(fh * .18)), bodyTop = -3 - fh + 2 * hr + 1;
+  for (let y = bodyTop; y <= -4; y++) for (let x = -1; x <= 1 + (fh > 9 ? 1 : 0); x++) px.push([x, y, x === -1 ? edge : coat]);
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + .6) px.push([x, bodyTop - hr - 1 + y, y === -hr ? hair : skin]);
+  const blade = frame ? [Math.round(L * .55) * -dir, 1] : [Math.round(L * .5) * dir, bodyTop - 2], hx = 0, hy = bodyTop + 2; // stroke: blade in the water behind, then lifted forward
+  const n = Math.max(Math.abs(blade[0] - hx), Math.abs(blade[1] - hy));
+  for (let i = 0; i <= n; i++) px.push([Math.round(hx + (blade[0] - hx) * i / n), Math.round(hy + (blade[1] - hy) * i / n), code(R.trunk, 2)]);
+  return px;
+}
+function lightPx(r, breathe) { // a warm light: a bright core and a dithered glow
+  const px = [], nl = N[R.light];
+  for (let y = -3 * r; y <= 3 * r; y++) for (let x = -3 * r; x <= 3 * r; x++) { const d = Math.hypot(x, y * 1.1);
+    if (d <= r) px.push([x, y, code(R.light, d < r * .5 ? nl - 1 : nl - 2)]); // the light ramp has only three steps
+    else if (d <= 3 * r) px.push([x, y, d < 2 * r ? code(R.light, 0) : code(R.glint, 1), (1 - (d - r) / (2 * r)) * .6 * breathe]); }
+  return px;
+}
+function bigRings(x, y, t, at, out, s) { // rings, scaled with the piece
+  if (motion() !== "full") return;
+  for (const lag of [0, .3]) { const e = t - at - lag; if (e < 0 || e > 1.1) continue;
+    const q = Math.floor(e / 1.1 * 8) / 8, rx = 3 + 14 * s * q, ry = Math.max(1, rx * .32), px = [];
+    for (let a = 0; a < 360; a += 2) px.push([Math.round(Math.cos(a * Math.PI / 180) * rx), Math.round(Math.sin(a * Math.PI / 180) * ry), code(R.glint, q < .5 ? 1 : 0)]);
+    out.push({ x, y, px, bob: false, fade: .9 - q * .5 }); }
+}
+const SZ = () => ({ S: 0, M: 1, L: 2 })[st.size] ?? 1;
+const VARIANTS = {
+  A: { name: "Walker", speed: 90, long: "fade",
+    blurb: "A small figure stands for the person. It waits on the islet's near side while they think, and on Submit it walks the rest of the islet and the bridge to the next one, its feet on the deck, its reflection under it on the water. Back walks it back. The camera keeps pace, so the figure stays put on the screen while the world moves past: the motion is the world's, the figure's is the walk. Finishing fades it out and in on the landing.",
+    h: () => [12, 18, 24][SZ()],
+    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[0] + 16 } : k ? { x: slotX(k - 1) - 52 } : b === "recap" ? { x: WORLD_W + LAND_X + 80 } : null; },
+    top(tk) { return walkAt(tk.x) - this.h() - 2; },
+    draw(out, tk) { const h = this.h(), frame = tk.moving && motion() === "full" ? Math.floor(Math.abs(tk.x - tk.from.x) / Math.max(3, h * .32)) % 4 : 0;
+      out.push({ x: Math.round(tk.x), y: Math.round(walkAt(tk.x)), px: walkerPx(h, frame, tk.dir || 1), bob: false, refl: true, fade: tk.fade ?? 1 }); },
+    sizes: ["12 px tall", "18 px tall", "24 px tall"] },
+  B: { name: "Rowboat", speed: 75, long: "fade", boat: true,
+    blurb: "The rowboat is the piece. Begin rows it from its mooring by home to today's lily's pier; each Submit rows it along the islets' front to moor at the next one, a short wake behind it that fades. Back rows it back. At the Recap it is already at the landing, so \"Row home\" is the same boat finishing the same trip. The bridges stay scenery: the person passes under the walks rather than over them.",
+    dims: () => [[11, 8], [14, 11], [18, 14]][SZ()],
+    spot(b) { const k = stepK(b); return b === "home" ? { x: MOOR.x, y: MOOR.y } : b === "probes" ? { x: PIER[1] - 4, y: WY + 15 } : k ? { x: slotX(k - 1) - 30, y: WY + 17 } : b === "recap" ? { x: WORLD_W + ROW.from, y: MOOR.y } : null; },
+    top(tk) { return tk.y - this.dims()[1] - 5; },
+    draw(out, tk, v) { const [L, fh] = this.dims(), full = motion() === "full", frame = tk.moving && full ? Math.floor(now() * 2.2) % 2 : 0, dir = tk.dir || 1;
+      out.push({ x: Math.round(tk.x), y: Math.round(tk.y), px: boatPx(L, fh, frame, dir), bob: !tk.moving, i: 3, fade: tk.fade ?? 1 });
+      if (tk.moving && full) { const px = []; for (let k = 1; k <= 6; k++) for (const s of [-1, 1]) px.push([-dir * (L + k * 4), 1 + s * Math.round(k * .6), code(R.glint, k < 3 ? 1 : 0), 1 - k / 7]); out.push({ x: Math.round(tk.x), y: Math.round(tk.y), px, bob: false }); } },
+    sizes: ["22 px long", "28 px long (#85)", "36 px long"] },
+  C: { name: "Light", speed: 120, long: "travel",
+    blurb: "No figure: a warm light rests on the islet's path while the person thinks, breathing slowly. On Submit it travels the bridge to the next islet, lighting the deck under it and leaving a short afterglow that fades within a second; its glow shows in the water. Finishing, it runs the whole chain and the last jetty to the landing. It reads best in the evening; in the spring morning it is pale on a pale sky.",
+    r: () => [2, 3, 4][SZ()],
+    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[0] + 20 } : k ? { x: slotX(k - 1) - 44 } : b === "recap" ? { x: WORLD_W + LAND_X + 70 } : null; },
+    top(tk) { return walkAt(tk.x) - 4 * this.r() - 8; },
+    draw(out, tk) { const r = this.r(), x = Math.round(tk.x), y = Math.round(walkAt(tk.x) - r - 5), full = motion() === "full", nl = N[R.light];
+      const breathe = full && !tk.moving ? .75 + .25 * Math.sin(Math.floor(now() * 3) / 3 * 1.4) : 1;
+      if (tk.moving) { const px = [], dir = tk.dir || 1, back = 46, ahead = 4 * r; // the deck lit under it, and a short afterglow behind
+        for (let d = -back; d <= ahead; d++) { const wx = x + d * dir, f = d < 0 ? 1 + d / back : 1 - d / ahead; px.push([wx - x, Math.round(walkAt(wx)) - y, code(R.light, nl - 1), f * .9], [wx - x, Math.round(walkAt(wx)) - 1 - y, code(R.light, 0), f * .5]); }
+        out.push({ x, y, px, bob: false, refl: true, fade: tk.fade ?? 1 }); }
+      out.push({ x, y, px: lightPx(r, breathe), bob: false, refl: true, fade: tk.fade ?? 1 }); },
+    sizes: ["core 5 px", "core 7 px", "core 9 px"] },
+  D: { name: "Skimming stone", speed: 220, long: "fade", maxDur: 2,
+    blurb: "Today's cue, made bigger, to compare: nothing stands for the person while they think. On Submit a stone skims from this islet to the next in four shrinking hops, each touch a ring, and sinks with a last ring by the next islet. Back skims it back. Finishing skims nowhere: the camera just goes.",
+    r: () => [1, 3, 5][SZ()],
+    spot(b) { const k = stepK(b); return b === "probes" ? { x: PIER[1] - 8, y: WY + 10 } : k ? { x: slotX(k - 1) - 40, y: WY + 12 } : b === "recap" ? { x: WORLD_W + LAND_X + 40, y: WY + 12 } : null; },
+    top(tk) { return tk.y - 26; },
+    draw(out, tk, v) { if (!tk.moving || motion() !== "full") return; const r = this.r(), a = tk.from, b = tk.to, F = [.38, .27, .2, .15], t = tk.p;
+      let c0 = 0; for (let i = 0; i < F.length; i++) { const c1 = c0 + F[i], x0 = lerp(a.x, b.x, c0), x1 = lerp(a.x, b.x, c1);
+        if (t >= c0 && t < c1) { const q = Math.floor((t - c0) / F[i] * 8) / 8, px = [];
+          for (let y = -r; y <= r; y++) for (let x = -r - 1; x <= r + 1; x++) if ((x / (r + 1.5)) ** 2 + (y / (r * .6 + .6)) ** 2 <= 1) px.push([x, y, code(R.stone, y < 0 ? N[R.stone] - 2 : 3)]);
+          out.push({ x: Math.round(lerp(x0, x1, q)), y: Math.round(lerp(a.y, b.y, c0) - Math.sin(q * Math.PI) * 22 * F[i] / .38 * (.6 + .2 * r)), px, bob: false }); }
+        c0 = c1; }
+    },
+    sizes: ["3 × 2 px (today)", "8 × 4 px", "12 × 6 px"] },
+};
+const VKEYS = Object.keys(VARIANTS), VAR = () => VARIANTS[st.variant] || VARIANTS.A;
+function pieceAt(v) { // where the piece is now: at rest at its beat's spot, or on its way between two
+  const V = VAR(), mv = v.move, rest = V.spot(v.beat);
+  if (!mv || !mv.token) return rest && { ...rest, moving: false, fade: 1 };
+  const { a, b } = mv.token, p = clamp((performance.now() - mv.t0) / mv.dur, 0, 1);
+  if (mv.style !== "pan" || !a) return b && { ...b, moving: false, fade: q8(p) };
+  if (!b) return { ...a, moving: false, fade: 1 - Math.ceil(p * 8) / 8 };
+  if (mv.token.far) return p < .25 ? { ...a, moving: false, fade: 1 - Math.ceil(p / .25 * 8) / 8 } : p > .75 ? { ...b, moving: false, fade: q8((p - .75) / .25) } : null;
+  const e = ease(p);
+  return { x: lerp(a.x, b.x, e), y: lerp(a.y ?? 0, b.y ?? 0, e), moving: true, dir: Math.sign(b.x - a.x) || 1, from: a, to: b, p };
+}
+function skimRings(out, v) { // D: every touch of the skim leaves a ring, which outlives the move
+  const mv = v.move || v.lastMove; if (!mv || !mv.token || !mv.token.a || !mv.token.b || mv.token.far || VAR() !== VARIANTS.D || mv.style !== "pan") return;
+  const { a, b } = mv.token, F = [.38, .27, .2, .15], s = .6 + .25 * VARIANTS.D.r(); let c = 0;
+  F.forEach((f, i) => { c += f; bigRings(Math.round(lerp(a.x, b.x, c)), Math.round(lerp(a.y, b.y, c)) + 1, now(), mv.t0 / 1000 + mv.dur / 1000 * c, out, i === F.length - 1 ? s * 1.4 : s); });
+}
+function koi(x, y, t, from, to, out) { // waiting: a dim shape just under the surface, with a faint blush of colour when big
+  const m = motion(); if (m === "still" || t < from || t > to + .5) return;
+  const big = st.cues === "big", rx = big ? 14 : 6, ry = big ? 3.4 : 1.2, px = [];
+  for (let dx = -rx; dx <= rx; dx++) for (let dy = -Math.ceil(ry); dy <= Math.ceil(ry); dy++) if ((dx / rx) ** 2 + (dy / ry) ** 2 <= 1) {
+    px.push([dx, dy, code(R.water, 0)]); if (big && dy < 0 && hash2(dx, dy, 5) > .45) px.push([dx, dy, code(R.flower, 3), .45]); }
+  const tl = big ? 5 : 2; for (let k = 1; k <= tl; k++) for (let dy = -Math.round(k * .8); dy <= Math.round(k * .8); dy++) if (Math.abs(dy) >= Math.round(k * .8) - 1) px.push([-rx - k, dy, code(R.water, 0)]);
+  if (big) px.push([-2, -4, code(R.water, 0)], [-3, -5, code(R.water, 0)], [-2, 4, code(R.water, 0)], [-3, 5, code(R.water, 0)]);
+  const fade = clamp(Math.min((t - from) / .3, (to + .5 - t) / .5), 1 / 8, 1);
+  out.push({ x: x + (m === "full" ? Math.round(Math.sin(t * 1.3) * (big ? 4 : 1)) : 0), y, px, bob: false, fade });
+}
+function dragonfly(x, y, t, from, to, out) { // waiting on the app: hovers, darts at most once every ~3 s, lifts away when the reply lands
+  const m = motion(); if (m === "still" || t < from) return;
+  const lift = t > to ? (t - to) / .6 : 0; if (lift >= 1) return;
+  const big = st.cues === "big", f8 = Math.floor(t * 8), wing = m === "full" && f8 % 2 ? code(R.glint, 1) : code(R.glint, 3), body = code(R.trunk, 0), eye = code(R.flower, N[R.flower] - 1);
+  let px;
+  if (big) { px = []; // 24 × 18: a long body, two pairs of wings spread across it, each wing a clear pane with a vein-coloured edge
+    const vein = code(R.water, 1), seg = code(R.far, 1);
+    for (const [cx, rxw] of [[3, 2.2], [-2, 2]]) for (const s of [-1, 1]) for (let yy = 1; yy <= 8; yy++) for (let xx = -3; xx <= 3; xx++) {
+      const e = (xx / rxw) ** 2 + ((yy - 4.5) / 4.5) ** 2; if (e > 1) continue;
+      const X = cx + xx + (s < 0 ? -1 : 1) * Math.round(yy * .25), Y = s < 0 ? -yy : yy + 1, rim = e > .45;
+      px.push(rim ? [X, Y, vein, .9] : [X, Y, wing, .4]); }
+    for (let x = -10; x <= 9; x++) { px.push([x, 0, x > 6 ? eye : x < 0 && x % 2 ? seg : body]); if (x > -3) px.push([x, 1, x > 6 ? eye : body]); }
+  } else px = [[-3, 0, body], [-2, 0, body], [-1, 0, body], [0, 0, body], [1, 0, body], [2, 0, eye], [-1, -1, wing], [0, -1, wing], [1, -1, wing], [-1, 1, wing], [0, 1, wing], [1, 1, wing], [0, -2, wing], [0, 2, wing]];
+  const dart = m === "full" && Math.floor((t - from) / 3) % 2 ? (big ? 14 : 9) : 0, hover = m === "full" ? (f8 % 4 < 2 ? 0 : -1) : 0;
+  const fade = m === "reduce" ? clamp(Math.min(t - from, to + .6 - t) / .3, 1 / 8, 1) : 1;
+  out.push({ x: x + dart, y: Math.round(y + hover - (m === "full" ? lift * 30 : 0)), px, bob: false, fade: fade * (m === "reduce" ? 1 - lift : 1) });
+}
+function scene(v) {
+  const beat = v.beat, out = [], V = VAR(), tk = pieceAt(v); newPad(out);
+  const boatIsPiece = V.boat && (beat !== "home" || (v.move && v.move.token && !rowing));
+  if (!boatIsPiece) { const bx = boatX(beat); // A, C and D: the boat stays moored, as on #83; B's boat, when home
+    out.push({ x: bx, y: MOOR.y, px: V.boat ? boatPx(...V.dims(), 0, 1) : BOAT_PX(), bob: true, i: 3, fade: motion() === "reduce" && rowing && beat === "home" ? q8(ct("home") / ROW.dur) : 1 }); }
+  if (st.homeFull) {
+    out.push(...lily(...HOME_FULL.unfinished, false, null, .8));
+    for (const p of HOME_FULL.flowers) out.push(...lily(...p, true, "open", .75));
+    for (const p of HOME_FULL.closed) out.push(...lily(...p, false, "closed", .45));
+  }
+  // the new Recap's flower, dropped by the boat as it passes
+  if (st.rowed) {
+    const tDrop = rowing && beat === "home" ? ROW.dur * .62 : -1e9, t = ct("home");
+    if (t >= tDrop) { out.push(...lily(DROP.x, DROP.y, true, "open", .75, motion() === "still" ? 1 : Math.max(1 / 8, Math.ceil(clamp((t - tDrop) / .5, 0, 1) * 8) / 8))); rings(DROP.x, DROP.y + 3, t, tDrop, out); }
+  }
+  if (beat !== "home" && beat !== "recap") out.push(...lily(TODAY.x, TODAY.y, true, null));
+  if (tk) V.draw(out, tk, v);
+  skimRings(out, v);
+  // the walk is the wait: the koi and dragonfly come only if the reply is still out when the piece arrives, and the dragonfly lifts as it lands
+  const r = replyAt[beat] || 0, arr = v.arrived ?? 0, rest = V.spot(beat);
+  if (r && rest && !v.move && r > arr + .15) {
+    const x = rest.x, wy = rest.y ?? walkAt(x), t = now();
+    koi(x + (V.boat ? -4 : 10), V.boat ? wy + 14 : WY + 24, t, arr, r, out);
+    dragonfly(x + 8, Math.round(V.top({ x, y: wy })) - (st.cues === "big" ? 8 : 2), t, arr + .6, r, out);
+  }
+  if (r && rest && !v.move && v.shownAt) bigRings(rest.x + (V.boat ? 0 : 6), V.boat ? (rest.y + 2) : WY + 6, now(), v.shownAt, out, .8);
+  return out;
+}
+
+// ================= devices and the camera =================
+const DEVICES = [
+  { id: "se", name: "iPhone SE (3rd gen)", w: 750, h: 1334, dpr: 2, top: 20, bottom: 0, cls: "phone" },
+  { id: "i17", name: "iPhone 17", w: 1206, h: 2622, dpr: 3, top: 62, bottom: 34, cls: "phone", island: true },
+  { id: "p8", name: "Pixel 8 Pro", w: 1344, h: 2992, dpr: 3, top: 48, bottom: 24, cls: "phone" },
+  { id: "a06", name: "Galaxy A06", w: 720, h: 1600, dpr: 2, top: 36, bottom: 24, cls: "phone" },
+  { id: "ipad", name: "iPad 11\" portrait", w: 1640, h: 2360, dpr: 2, top: 24, bottom: 20, cls: "tablet" },
+  { id: "laptop", name: "Laptop web 1440×900", w: 2880, h: 1800, dpr: 2, top: 0, bottom: 0, cls: "web", web: true },
+];
+const PHONE_CSS_PER_ART = 1.25, REF_H = 656;
+function scaleFor(d, g) {
+  let k = d.cls === "phone" ? Math.max(1, Math.round(d.w / 320)) : Math.max(1, Math.ceil(d.dpr * PHONE_CSS_PER_ART - 1e-6));
+  while (Math.ceil(d.h / k) > g.H) k++;
+  return { k, vw: Math.ceil(d.w / k), vh: Math.ceil(d.h / k) };
+}
+const cssW = (d) => d.w / d.dpr, cssH = (d) => d.h / d.dpr;
+function frameFor(beat) {
+  if (beat === "home") return { x: 720, share: .4 };
+  if (beat === "probes") return { x: TODAY.x + 6, share: .6 };
+  if (beat === "recap") return { x: LAND_X, share: .26 };
+  return { x: slotX(Math.min(SLOTS, +beat.slice(1)) - 1), share: .44 };
+}
+function cameraRaw(g, beat, d, sc) {
+  const f = frameFor(beat), at = d.cls !== "phone" ? Math.max(f.share * sc.vh, sc.vh - (1 - f.share) * REF_H) : f.share * sc.vh;
+  return { x: Math.round(f.x - sc.vw / 2), y: Math.round(WY - at) };
+}
+function cameraFor(g, beat, d, sc) { const c = cameraRaw(g, beat, d, sc); return { x: c.x, y: clamp(c.y, 0, g.H - sc.vh) }; }
+function needed(g) { // vertical room every frame needs (the loop has no horizontal edge)
+  const n = { y0: 1e9, y1: -1e9, clamps: [] }, all = ["home", "probes", "p1", "recap"];
+  for (const d of DEVICES) { const sc = scaleFor(d, g); for (const b of all) {
+    const c = cameraRaw(g, b, d, sc), k = cameraFor(g, b, d, sc);
+    n.y0 = Math.min(n.y0, c.y); n.y1 = Math.max(n.y1, c.y + sc.vh);
+    if (k.y !== c.y) n.clamps.push(`${d.name} · ${b}: y ${k.y - c.y}`);
+  } }
+  n.ok = !n.clamps.length;
+  return n;
+}
+const wrapNear = (x, ref) => x + Math.round((ref - x) / WORLD_W) * WORLD_W; // the copy of world x nearest ref, round the loop
+
+// ================= what each frame holds =================
+const P_ = (cls, t) => `<p class="blk ${cls}">${t}</p>`;
+const Gp = (cls, inner, attr = "") => `<div class="g ${cls}" data-g ${attr}>${inner}</div>`;
+const Bt = (cls, inner, go, attr = "") => `<button type="button" class="g ${cls}" data-g data-go="${go}" ${attr}>${inner}</button>`;
+const capg = (t) => Gp("capg", P_("cap", t));
+const topbar = (c, left, right = "") => `<div class="top" style="top:${c.top + 8}px">${left}<span style="flex:1"></span>${right}</div>`;
+const backBtn = () => Bt("ctl", "‹ Back", "back"), helpBtn = () => Bt("ctl", "Help", "noop");
+const above = (c, inner, cls = "") => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + 10}px">${inner}</div>`;
+const below = (c, inner, bottom) => `<div class="col" style="top:${c.wl + 10}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
+function hits(c, ids) {
+  const g = world(); let h = "";
+  for (const [id, go] of ids) {
+    const it = g.items[id], w = Math.max(44, 2 * it.rx * c.s), hh = Math.max(44, 2 * it.ry * c.s), l = c.x(it.x) - w / 2, t = c.y(it.y) - hh / 2;
+    h += `<button type="button" class="hit" data-go="${go}" aria-label="${it.label}" style="left:${l}px;top:${t}px;width:${w}px;height:${hh}px"></button>`;
+  }
+  return h;
+}
+const composer = (c, text, btn, go) => `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_(text ? "per" : "per it dim", text || "Reflect, or tap the mic")}<div class="row2"><span class="ctl">Mic</span><button type="button" class="cbtn walk" data-go="${go}">${btn}</button></div></div>`;
+function frameHTML(c, beat) {
+  if (beat === "home") {
+    let h = hits(c, [["new", "probes"], ["boat", "noop"], ["sign", "noop"]]) + topbar(c, Gp("", P_("wm", "Look Together")))
+      + `<div class="tag" style="left:${c.x(720)}px;top:${c.y(WY + 83)}px">${Bt("", P_("ctl", "Begin today's Inquiry"), "probes")}</div>`;
+    if (st.homeFull) { const [ux, uy] = HOME_FULL.unfinished; h += `<div class="tag" style="left:${c.x(ux)}px;top:${c.y(uy + 22)}px">${Gp("", P_("ctl", "4 days left · Why do I…"))}</div>`; }
+    return h;
+  }
+  if (beat === "probes") return topbar(c, backBtn(), helpBtn()) + above(c, capg("Probes") + COPY.probes.map((q) => Bt("row", P_("rd", q), "p1")).join(""))
+    + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)));
+  if (beat === "recap") { const R_ = COPY.recap, k = R_.card;
+    return topbar(c, "", helpBtn()) + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title)))
+      + below(c, Gp("", P_("cap", "Your Problem") + P_("per", COPY.problem)) + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
+      + Bt("card", P_("ctl it", k.probe) + P_("rd", k.a) + `<div class="cwl"></div>` + P_("per", k.quote) + P_("ctl more", "›"), "noop")
+      + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join(""))
+      + Bt("row", P_("rd", "Row home ›"), "row")); }
+  const n = +beat.slice(1), s = COPY.steps[(n - 1) % COPY.steps.length], last = n >= Math.min(SLOTS, st.steps);
+  if (c.pend) return topbar(c, backBtn(), helpBtn()) + `<div class="g composer" data-g style="bottom:${c.bot + 10}px">${P_("per dim", COPY.steps[(n - 2) % COPY.steps.length].r)}</div>`; // waiting on the reply: only what was just said, where it was said, so the water by the islet stays clear
+  return topbar(c, backBtn(), helpBtn()) + above(c, Gp("", P_("q", s.q)), "skytop") + composer(c, s.r, last ? "Submit and finish ›" : "Submit", last ? "recap" : "p" + (n + 1));
+}
+function overlay(v, beat, cam) {
+  const { d, sc } = v, s = sc.k / d.dpr, H = cssH(d), W = cssW(d), wl = Math.round((WY - cam.y) * s);
+  return frameHTML({ s, H, W, wl, top: d.top, bot: d.bottom, pend: v.pending, x: (wx) => (wrapNear(wx, cam.x + sc.vw / 2) - cam.x) * s, y: (wy) => (wy - cam.y) * s }, beat);
+}
+
+// ================= views and painting =================
+const TINT = {
+  spring: { above: [252, 249, 238], below: [230, 243, 242], lit: [255, 255, 252], shade: [120, 152, 162], dark: [44, 58, 66] },
+  autumn: { above: [66, 40, 54], below: [22, 24, 50], lit: [255, 204, 156], shade: [10, 8, 22], dark: [8, 6, 16] },
+};
+const unpack = (u) => [u & 255, u >>> 8 & 255, u >>> 16 & 255];
+function makeView(d, host, fitW, fitH) {
+  const g = world(), sc = scaleFor(d, g), W = cssW(d), H = cssH(d), s = Math.min(fitW / W, fitH / H, 1);
+  const wrap = document.createElement("div"); wrap.className = "devWrap";
+  const cap = document.createElement("div"); cap.className = "devCap";
+  const box = document.createElement("div"); box.className = "devBox";
+  box.style.width = Math.round(W * s) + "px"; box.style.height = Math.round(H * s) + "px";
+  const dev = document.createElement("div"); dev.className = "dev " + st.season;
+  dev.style.width = W + "px"; dev.style.height = H + "px"; dev.style.transform = `scale(${s})`;
+  const cv = document.createElement("canvas"); cv.width = sc.vw; cv.height = sc.vh;
+  cv.style.width = (sc.vw * sc.k / d.dpr) + "px"; cv.style.height = (sc.vh * sc.k / d.dpr) + "px"; cv.setAttribute("aria-hidden", "true");
+  const ovOld = document.createElement("div"), ov = document.createElement("div"), deco = document.createElement("div");
+  ovOld.className = "layer ov old"; ov.className = "layer ov"; deco.className = "layer deco";
+  dev.append(cv, ovOld, ov, deco); box.append(dev); wrap.append(cap, box); host.append(wrap);
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(sc.vw, sc.vh);
+  const v = { d, sc, s, dev, cv, ctx, img, pix: new Uint32Array(img.data.buffer), buf: new Uint16Array(sc.vw * sc.vh), ov, ovOld, deco, cam: null, html: "", lastKey: "" };
+  cap.innerHTML = `<b>${d.name}</b> · art px = ${sc.k} device px · sees ${sc.vw}×${sc.vh}`;
+  return v;
+}
+function decoHTML(v) {
+  const { d } = v; let h = "";
+  if (st.safe) {
+    if (d.top) h += `<div class="inset" style="top:0;height:${d.top}px"></div>`;
+    if (d.bottom) h += `<div class="inset" style="bottom:0;height:${d.bottom}px"></div>`;
+    if (d.island) h += `<div class="island" style="top:11px;width:124px;height:36px"></div>`;
+  }
+  return h;
+}
+function rectsArt(v, sel) { // DOM boxes → art-pixel rects in the view, clipped by their column
+  const dr = v.dev.getBoundingClientRect(), k = v.s * v.sc.k / v.d.dpr, out = [];
+  for (const el of v.dev.querySelectorAll(sel)) {
+    let r = el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) continue;
+    let x0 = r.left, y0 = r.top, x1 = r.right, y1 = r.bottom;
+    for (const clipSel of [".col", ".above"]) { const cl = el.parentElement && el.parentElement.closest(clipSel); if (cl) { const c = cl.getBoundingClientRect(); x0 = Math.max(x0, c.left); x1 = Math.min(x1, c.right); y0 = Math.max(y0, c.top); y1 = Math.min(y1, c.bottom); } }
+    const a = { x0: Math.max(0, Math.floor((x0 - dr.left) / k)), y0: Math.max(0, Math.floor((y0 - dr.top) / k)), x1: Math.min(v.sc.vw, Math.ceil((x1 - dr.left) / k)), y1: Math.min(v.sc.vh, Math.ceil((y1 - dr.top) / k)), el };
+    if (a.x1 - a.x0 > 2 && a.y1 - a.y0 > 2) out.push(a);
+  }
+  return out;
+}
+function frost(pix, vw, r, wlArt, m) {
+  const t = TINT[st.season], tint = (r.y0 + r.y1) / 2 < wlArt ? t.above : t.below, C = 3;
+  const q = (x) => clamp(Math.round(x / 16) * 16, 0, 255);
+  for (let cy = r.y0; cy < r.y1; cy += C) for (let cx = r.x0; cx < r.x1; cx += C) {
+    let Rr = 0, Gg = 0, B = 0, n = 0;
+    for (let y = cy; y < Math.min(cy + C, r.y1); y++) for (let x = cx; x < Math.min(cx + C, r.x1); x++) { const c = pix[y * vw + x]; Rr += c & 255; Gg += c >>> 8 & 255; B += c >>> 16 & 255; n++; }
+    const o = pack([q(Rr / n * (1 - m) + tint[0] * m), q(Gg / n * (1 - m) + tint[1] * m), q(B / n * (1 - m) + tint[2] * m)]);
+    for (let y = cy; y < Math.min(cy + C, r.y1); y++) for (let x = cx; x < Math.min(cx + C, r.x1); x++) pix[y * vw + x] = o;
+  }
+  const edge = (x, y, to, a) => { const i = y * vw + x, c = unpack(pix[i]); pix[i] = pack(c.map((v, j) => Math.round(v * (1 - a) + to[j] * a))); };
+  for (let x = r.x0; x < r.x1; x++) { edge(x, r.y0, t.lit, .55); edge(x, r.y1 - 1, t.shade, .35); }
+  for (let y = r.y0 + 1; y < r.y1 - 1; y++) { edge(r.x0, y, t.lit, .4); edge(r.x1 - 1, y, t.shade, .3); }
+}
+function notch(pix, vw, r, src) {
+  for (const [x, y] of [[r.x0, r.y0], [r.x0 + 1, r.y0], [r.x0, r.y0 + 1], [r.x1 - 1, r.y0], [r.x1 - 2, r.y0], [r.x1 - 1, r.y0 + 1],
+    [r.x0, r.y1 - 1], [r.x0 + 1, r.y1 - 1], [r.x0, r.y1 - 2], [r.x1 - 1, r.y1 - 1], [r.x1 - 2, r.y1 - 1], [r.x1 - 1, r.y1 - 2]]) pix[y * vw + x] = src[y * vw + x];
+}
+const READING = (b) => b !== "home";
+let T = 0;
+function paint(v, cam, mix) {
+  const g = world(), { vw, vh } = v.sc, dyn = scene(v);
+  compose(g, cam.x, cam.y, vw, vh, T, motion(), v.buf, dyn);
+  if (mix) {
+    const b2 = v.buf2 || (v.buf2 = new Uint16Array(vw * vh));
+    compose(g, mix.cam2.x, mix.cam2.y, vw, vh, T, "reduce", b2, dyn);
+    const p = Math.floor(mix.p * 8) / 8;
+    for (let y = 0; y < vh; y++) for (let x = 0; x < vw; x++) if (bay(x, y) < p) v.buf[y * vw + x] = b2[y * vw + x];
+  }
+  const L = lutNow(T), pix = v.pix, buf = v.buf;
+  for (let i = 0; i < buf.length; i++) pix[i] = L[buf[i]];
+  const src = pix.slice(), wlArt = WY - cam.y;
+  const frostSel = v.ov.style.visibility === "hidden" ? ".ov.old [data-g]" : ".ov [data-g]";
+  for (const r of rectsArt(v, frostSel)) { frost(pix, vw, r, wlArt, READING(v.beat) ? .72 : .55); notch(pix, vw, r, src); }
+  v.ctx.putImageData(v.img, 0, 0);
+}
+function lutNow(T) {
+  const Lb = world().LUT, out = Lb.slice(), b = code(R.glint, 0), tc = st.still ? 0 : Math.floor(T * (st.reduce ? 2.5 : 5));
+  for (let s = 0; s < 4; s++) out[b + s] = Lb[b + (s + tc) % 4];
+  return out;
+}
+
+// ================= stage =================
+let views = [];
+const single = document.getElementById("single"), stageEl = document.getElementById("stage");
+function layout() {
+  single.innerHTML = ""; views = [];
+  if (!beats().includes(st.beat)) st.beat = "home";
+  const d = DEVICES.find((x) => x.id === st.device) || DEVICES[1];
+  views.push(makeView(d, single, stageEl.clientWidth - 32, stageEl.clientHeight - 110));
+  for (const v of views) setScreen(v, st.beat, false);
+  renderPanel();
+}
+function setScreen(v, beat, animate) {
+  const g = world(), raw = cameraFor(g, beat, v.d, v.sc), from = v.cam, prevHTML = v.html, prevBeat = v.beat;
+  const to = from ? { x: wrapNear(raw.x, from.x), y: raw.y } : raw; // the shorter way round the loop
+  if (from && beat === "recap" && stepK(prevBeat)) to.x = from.x + mod(raw.x - from.x); // coming ashore: always onward, round the loop
+  v.pending = (replyAt[beat] || 0) > now(); v.shownAt = 0; v.lastMove = null;
+  v.html = overlay(v, beat, to);
+  v.ov.innerHTML = v.html; v.ov.style.cssText = ""; v.ov.className = "layer ov"; v.ovOld.innerHTML = ""; v.ovOld.style.cssText = "";
+  v.lastKey = ""; v.beat = beat;
+  if (!animate || !from || (from.x === to.x && from.y === to.y)) { v.cam = { x: wrapNear(to.x, 0), y: to.y }; v.move = null; v.arrived = now(); v.deco.innerHTML = decoHTML(v); return; }
+  v.ovOld.innerHTML = prevHTML;
+  const style = st.reduce || st.still ? "dissolve" : "pan", dist = Math.hypot(to.x - from.x, to.y - from.y), V = VAR();
+  let a = V.spot(prevBeat), b = V.spot(beat), token = null, dur = clamp(dist / 260, .7, 2.4);
+  if (rowing) a = b = null; // the row home is #83's, unchanged
+  if (a || b) {
+    if (a && b) { const dc = Math.sign(to.x - from.x) || 1; b = { ...b, x: dc > 0 ? a.x + mod(b.x - a.x) : a.x - mod(a.x - b.x) }; } // the piece goes the way the camera goes
+    token = { a, b, far: !!(a && b && Math.abs(b.x - a.x) > 700 && V.long === "fade") };
+    if (a && b && !token.far) dur = clamp(Math.abs(b.x - a.x) / V.speed, .9, V.maxDur || 3.6); // the camera keeps the piece's pace
+  }
+  v.move = { from, to, t0: performance.now(), dur: style === "pan" ? dur * 1000 : st.still ? 1 : 700, style, token };
+  if (rowing && beat === "home") v.move.dur = Math.max(v.move.dur, ROW.dur * 1000 * (style === "pan" ? 1 : .5)); // the camera rides with the boat
+  v.deco.innerHTML = ""; v.ov.style.visibility = "hidden";
+}
+const ease = (t) => .5 - .5 * Math.cos(Math.PI * t);
+let lastT = performance.now();
+function frame(nowMs) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(.1, (nowMs - lastT) / 1000); lastT = nowMs;
+  T += st.reduce || st.still ? 0 : dt * (READING(st.beat) ? .5 : 1);
+  for (const v of views) {
+    let cam = v.cam, mix = null;
+    if (v.move) {
+      const mv = v.move, p = clamp((nowMs - mv.t0) / mv.dur, 0, 1), s = v.sc.k / v.d.dpr;
+      if (p > 0) v.ov.style.visibility = "";
+      if (mv.style === "pan") {
+        const e = rowing && v.beat === "home" ? smooth(p) : ease(p); cam = { x: Math.round(lerp(mv.from.x, mv.to.x, e)), y: Math.round(lerp(mv.from.y, mv.to.y, e)) };
+        v.ov.style.transform = `translate(${(mv.to.x - cam.x) * s}px, ${(mv.to.y - cam.y) * s}px)`;
+        v.ovOld.style.transform = `translate(${(mv.from.x - cam.x) * s}px, ${(mv.from.y - cam.y) * s}px)`;
+      } else { cam = mv.from; mix = { cam2: mv.to, p }; v.ovOld.style.opacity = clamp(1 - p * 2, 0, 1); v.ov.style.opacity = clamp(p * 2 - 1, 0, 1); }
+      if (p >= 1) { v.move = null; v.lastMove = mv; v.arrived = now(); v.cam = { x: wrapNear(mv.to.x, 0), y: mv.to.y }; cam = mv.to; mix = null; v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); v.html = overlay(v, v.beat, v.cam); v.ov.innerHTML = v.html; }
+    }
+    if (v.pending && !v.move && now() >= replyAt[v.beat]) { // the reply lands: the question fades in over the islet
+      v.pending = false; v.shownAt = now(); v.html = overlay(v, v.beat, v.cam); v.ov.innerHTML = v.html; v.ov.classList.add("fresh"); v.lastKey = "";
+    }
+    const t = now(), busy = v.move || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 1.8 || t - (v.arrived ?? -9) < 1.8 || (st.variant === "C" && !st.reduce && !st.still);
+    const key = `${cam.x},${cam.y}|${mix ? Math.floor(mix.p * 8) : ""}|${st.still ? 0 : Math.floor(T * 8)}|${Math.floor(T * 5)}|${busy ? Math.floor(nowMs / 60) : ""}`;
+    if (key === v.lastKey) continue;
+    v.lastKey = key; paint(v, cam, mix);
+  }
+  if (views.length) drawMapCams();
+}
+const BACK = (b) => b === "probes" || b === "recap" || b === "home" ? "home" : b === "p1" ? "probes" : "p" + (+b.slice(1) - 1);
+function go(to) {
+  if (!to || to === "noop") return;
+  if (to === "back") to = BACK(st.beat);
+  if (to === "row") { st.rowed = true; rowing = true; return navTo("home"); }
+  const submit = stepK(st.beat) && stepK(to) === stepK(st.beat) + 1; // a Dialogue turn: the next question waits on the model; a Probe tapped is already there
+  replyAt[to] = submit ? now() + st.latency : 0;
+  navTo(to);
+}
+function navTo(beat, jump = false) {
+  if (beat !== "home") rowing = false;
+  if (jump) replyAt[beat] = 0;
+  const B = beats(), fwd = B.indexOf(beat) >= B.indexOf(st.beat) || rowing;
+  if (fwd) enterCues(beat); else cueAt[beat] = -1e9;
+  st.beat = beat; save();
+  for (const v of views) setScreen(v, beat, !jump);
+  renderPanel();
+}
+function rerender() { for (const v of views) setScreen(v, st.beat, false); renderPanel(); }
+stageEl.addEventListener("click", (e) => { const t = e.target.closest("[data-go]"); if (!t || t.disabled || t.closest(".old")) return; go(t.dataset.go); });
+stageEl.addEventListener("scroll", () => { for (const v of views) v.lastKey = ""; }, true);
+
+// ================= panel =================
+const $ = (id) => document.getElementById(id);
+function pchip(label, pressed, on, sub) {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "pchip"; b.setAttribute("aria-pressed", pressed ? "true" : "false");
+  b.innerHTML = label + (sub ? `<i>${sub}</i>` : ""); b.onclick = on; return b;
+}
+function rowEl(label, chips) {
+  const r = document.createElement("div"); r.className = "prow";
+  const s = document.createElement("span"); s.textContent = label;
+  const c = document.createElement("div"); c.className = "chips"; c.append(...chips);
+  r.append(s, c); return r;
+}
+function set(k, val, relayout) { st[k] = val; save(); if (relayout) layout(); else rerender(); }
+function renderPanel() {
+  const g = world(), need = needed(g);
+  const V = VAR(), dv = DEVICES.find((x) => x.id === st.device) || DEVICES[1], k = scaleFor(dv, g).k, pt = (n) => Math.round(n * k / dv.dpr);
+  $("vname").textContent = `${st.variant} · ${V.name}`; $("vblurb").textContent = V.blurb;
+  $("label").innerHTML = `<b>${st.variant}</b>${V.name}`;
+  $("pieceUi").replaceChildren(
+    rowEl("Variant", VKEYS.map((key) => pchip(`${key} ${VARIANTS[key].name}`, st.variant === key, () => setVariant(key)))),
+    rowEl("Size", ["S", "M", "L"].map((s, i) => pchip(s, st.size === s, () => set("size", s), V.sizes[i]))),
+    rowEl("Reply takes", [[.8, "0.8 s"], [3, "3 s"], [7, "7 s"]].map(([s, l]) => pchip(l, st.latency === s, () => set("latency", s)))),
+    rowEl("Koi, dragonfly", [pchip("Today's", st.cues === "small", () => set("cues", "small"), "13 and 7 px"), pchip("#85 sizes", st.cues === "big", () => set("cues", "big"), "36×20, 24×18 canvas")]));
+  $("flow").replaceChildren(
+    rowEl("Jump", beats().map((b) => pchip(b[0] === "p" && b !== "probes" ? "Step " + b.slice(1) : LABEL(b), st.beat === b, () => { rowing = false; navTo(b, true); }))),
+    rowEl("Row home", [pchip("Play from the Recap", false, () => { rowing = false; st.beat = "recap"; for (const v of views) setScreen(v, "recap", false); setTimeout(() => go("row"), 250); }),
+      pchip("Clear the dropped flower", false, () => { st.rowed = false; rowing = false; save(); rerender(); })]));
+  $("inqUi").replaceChildren(
+    rowEl("Seed", [1, 2, 3, 4, 5].map((s) => pchip(String(s), st.seed === s, () => set("seed", s, true))).concat(pchip("New seed", st.seed > 5, () => set("seed", 6 + Math.floor(Math.random() * 1e6), true), st.seed > 5 ? String(st.seed) : ""))),
+    rowEl("Path", ["First", "Second", "Third"].map((l, i) => pchip(l, st.path === i + 1, () => set("path", i + 1, true), i ? "new order" : ""))),
+    rowEl("Path steps", Array.from({ length: SLOTS }, (_, i) => pchip(String(i + 1), st.steps === i + 1, () => set("steps", i + 1, true)))),
+    rowEl("Islets", g.themes.map((t, k) => pchip(`${k + 1} ${t.name}`, st.beat === "p" + (k + 1), () => { if (st.steps < k + 1) { st.steps = k + 1; save(); layout(); } rowing = false; navTo("p" + (k + 1), true); }))),
+    rowEl("Home", [pchip("New person", !st.homeFull, () => set("homeFull", false)), pchip("A few weeks in", st.homeFull, () => set("homeFull", true), "lilies, flowers")]));
+  $("devices").replaceChildren(rowEl("Device", DEVICES.map((d) => pchip(d.name, st.device === d.id, () => set("device", d.id, true)))));
+  $("worldUi").replaceChildren(
+    rowEl("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => pchip(l, st.season === k, () => set("season", k, true)))),
+    rowEl("Motion", [pchip("Reduce Motion", st.reduce, () => set("reduce", !st.reduce)), pchip("Still water", st.still, () => set("still", !st.still))]),
+    rowEl("Layers", [pchip("Safe areas", st.safe, () => set("safe", !st.safe))]));
+  const pieceArt = V === VARIANTS.A ? V.h() : V === VARIANTS.B ? V.dims()[0] * 2 + 3 : V === VARIANTS.C ? V.r() * 6 + 1 : V.r() * 2 + 3;
+  $("stats").textContent = `piece        ${V.sizes[SZ()]}: ${pieceArt} art px = ${pt(pieceArt)} pt on ${dv.name} (art px = ${k} device px)\nkoi          ${st.cues === "big" ? 36 : 13} art px = ${pt(st.cues === "big" ? 36 : 13)} pt; dragonfly ${st.cues === "big" ? 24 : 7} art px = ${pt(st.cues === "big" ? 24 : 7)} pt\nwalk pace    ${V.speed} art px/s; a step is ~${(STEP / V.speed).toFixed(1)} s, finishing ${V.long === "fade" ? "fades out and in" : "travels the whole way"}\n\nworld        ${g.W} × ${g.H} art px, a loop\nislets       ${SLOTS}, ${2 * HW + 1} wide, centres ${STEP} apart, x ${slotX(0)}–${slotX(SLOTS - 1)}\nRecap        the landing, x ${LAND_X} (${WORLD_W - slotX(SLOTS - 1) + LAND_X} px on from the last islet)\nall frames   y ${need.y0}–${need.y1}\n`
+    + (need.ok ? "no frame clamps on any device" : "clamped:\n  " + need.clamps.join("\n  "))
+    + `\n\ntheme catalogue\n` + THEMES.map((t) => `  ${g.themes.includes(t) ? "●" : "○"} ${t.name}: ${t.blurb}`).join("\n");
+  $("rules").innerHTML = RULES(g, need).map((x) => `<li>${x}</li>`).join("");
+  mapKey = ""; drawMapCams();
+}
+const mapEl = $("map"); let mapBase = null, mapKey = "";
+function drawMapBase() {
+  const g = G, off = document.createElement("canvas"); off.width = g.W; off.height = g.H;
+  const c = off.getContext("2d"), img = c.createImageData(g.W, g.H), pix = new Uint32Array(img.data.buffer), buf = new Uint16Array(g.W * g.H);
+  compose(g, 0, 0, g.W, g.H, 0, "still", buf, []);
+  for (let i = 0; i < buf.length; i++) pix[i] = g.LUT[buf[i]];
+  c.putImageData(img, 0, 0); mapBase = off; mapKey = "";
+}
+function drawMapCams() {
+  if (!mapBase) return;
+  const g = world(), wmax = Math.max(220, Math.min(368, $("panel").clientWidth - 32)), sc = wmax / g.W, y0 = 120, y1 = 820;
+  const W = Math.round(g.W * sc), H = Math.round((y1 - y0) * sc), v = views[0], cam = v && v.cam;
+  const key = [W, st.season, st.seed, st.path, st.steps, st.beat, cam && cam.x, cam && cam.y, st.device].join();
+  if (key === mapKey) return; mapKey = key;
+  mapEl.width = W * 2; mapEl.height = H * 2; mapEl.style.width = W + "px"; mapEl.style.height = H + "px";
+  const c = mapEl.getContext("2d"); c.setTransform(2, 0, 0, 2, 0, 0); c.imageSmoothingEnabled = true;
+  c.drawImage(mapBase, 0, y0, g.W, y1 - y0, 0, 0, W, H);
+  if (v) {
+    c.strokeStyle = "rgba(255,255,255,.55)"; c.fillStyle = "rgba(255,255,255,.9)";
+    for (const b of beats()) { const x = frameFor(b).x * sc, y = (WY + 40 - y0) * sc; c.beginPath(); c.arc(x, y, 2, 0, 7); c.fill(); }
+  }
+  if (cam) { c.lineWidth = 2; c.strokeStyle = "#e9c47e"; const x = wrapNear(cam.x, g.W / 2) * sc; for (const dx of [0, -W, W]) c.strokeRect(x + dx, (cam.y - y0) * sc, v.sc.vw * sc, v.sc.vh * sc); }
+}
+
+// ================= switcher: the variants =================
+function setVariant(key) {
+  st.variant = key; save();
+  const u = new URL(location.href); u.searchParams.set("variant", key); history.replaceState(null, "", u);
+  rerender();
+}
+function cycle(dir) { setVariant(VKEYS[(VKEYS.indexOf(st.variant) + dir + VKEYS.length) % VKEYS.length]); }
+$("prev").onclick = () => cycle(-1); $("next").onclick = () => cycle(1);
+$("panelBtn").onclick = () => { const p = $("panel"); p.hidden = !p.hidden; $("panelBtn").setAttribute("aria-expanded", String(!p.hidden)); };
+addEventListener("keydown", (e) => {
+  if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+  if (e.key === "ArrowLeft") cycle(-1); else if (e.key === "ArrowRight") cycle(1);
+});
+let rT = 0; addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(layout, 150); });
+if (matchMedia("(max-width: 820px)").matches) { $("panel").hidden = true; $("panelBtn").setAttribute("aria-expanded", "false"); }
+document.fonts.ready.then(() => { for (const v of views) v.lastKey = ""; });
+layout();
+requestAnimationFrame(frame);
+</script>
