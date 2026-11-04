@@ -871,13 +871,20 @@ const ISLETS = {
     dress(g, cx, HW, top, P, { flowers: [P.gold, P.red], fd: .06 });
     for (let x = cx - 64; x < cx + 14; x++) for (let y = Math.max(b, top(x)); y < WY; y++) { const k = (y - b) % 3; setp(g, x, y, k === 0 ? P.sand : k === 1 ? P.woodL : P.wood1); } // the ghat: steps down into the water
     for (const [lx, k] of [[-58, 1], [-49, 3], [-40, 2], [-22, 4], [-11, 1], [4, 3]]) { setp(g, cx + lx, b + 3 * k - 1, P.gold); setp(g, cx + lx, b + 3 * k, P.red); } // little lamps on the steps
-    const chhatri = (x, s) => { // a domed kiosk on four pillars, a deep eave, a marigold garland
-      rect(g, x - 9 * s, b - 3, x + 9 * s + 1, b, P.woodL);
-      for (const dx of [-7, -2, 2, 7]) rect(g, x + Math.round(dx * s), b - 3 - Math.round(13 * s), x + Math.round(dx * s) + 2, b - 3, P.sand);
-      const ey = b - 3 - Math.round(13 * s); rect(g, x - 11 * s, ey - 2, x + 11 * s + 1, ey, P.woodL); rect(g, x - 12 * s, ey, x + 12 * s + 1, ey + 1, P.wood1);
-      for (let xx = Math.round(x - 10 * s); xx <= x + 10 * s; xx++) setp(g, xx, ey + 2 + Math.round(1.5 * Math.sin(Math.PI * ((xx - x + 80) % 6) / 6)), xx % 2 ? P.gold : P.red);
-      const r = Math.round(8 * s); for (let j = 0; j <= r; j++) { const w = Math.round(r * Math.sqrt(1 - (j / (r + 1)) ** 2)); rect(g, x - w, ey - 3 - j, x + w + 1, ey - 2 - j, (xx) => (xx - x) % 4 === 0 || xx > x + w * .4 ? P.woodL : P.sand); }
-      rect(g, x - 1, ey - 3, x + 2, ey - 2, P.sand); rect(g, x, ey - 7 - r, x + 1, ey - 3 - r, P.gold); };
+    const chhatri = (x, s) => { // a domed kiosk: a moulded plinth, four pillars under cusped arches, a sloping eave, a smooth dome on a lotus band, a finial
+      const S = (v) => Math.round(v * s), hw = S(10), pw = s > 1.5 ? 3 : 2, ph = S(13);
+      rect(g, x - hw - 1, b - 2, x + hw + 2, b, P.woodL); rect(g, x - hw, b - 4, x + hw + 1, b - 2, (xx, y) => y === b - 4 ? P.sand : xx > x + hw * .5 ? P.woodL : P.sand); // the plinth
+      const ey = b - 4 - ph, cols = [-hw + 1, -S(3.5) - 1, S(3.5) - pw + 2, hw - pw];
+      for (const c of cols) { rect(g, x + c, ey, x + c + pw, b - 4, (xx) => xx === x + c + pw - 1 ? P.woodL : P.sand); rect(g, x + c - 1, b - 5, x + c + pw + 1, b - 4, P.woodL); rect(g, x + c - 1, ey, x + c + pw + 1, ey + 1, P.woodL); }
+      for (let i = 0; i < 3; i++) { const x0 = x + cols[i] + pw, x1 = x + cols[i + 1], m = (x0 + x1) / 2, hg = (x1 - x0) / 2; // cusped arches and a marigold garland
+        for (let xx = x0; xx < x1; xx++) { const u = (xx + .5 - m) / hg, d = Math.round(1 + 3 * (1 - Math.sqrt(Math.max(0, 1 - u * u))) + (Math.abs(u) > .3 && Math.abs(u) < .6 ? 1 : 0)); rect(g, xx, ey + 1, xx + 1, ey + 1 + d, P.sand);
+          setp(g, xx, ey + 5 + Math.round(2 * Math.sin(Math.PI * (xx - x0) / (x1 - x0))), xx % 2 ? P.gold : P.red); } }
+      rect(g, x - hw, ey - 2, x + hw + 1, ey, P.sand); // the beam, then the eave sloping out over it
+      for (let k = 0; k < 3; k++) rect(g, x - hw - 1 - k, ey - 5 + k, x + hw + 2 + k, ey - 4 + k, k === 2 ? P.woodL : P.sand); rect(g, x - hw - 3, ey - 2, x - hw, ey - 1, P.wood1); rect(g, x + hw + 1, ey - 2, x + hw + 4, ey - 1, P.wood1);
+      const dw = S(6.5), dy = ey - 6; rect(g, x - dw - 1, dy - 2, x + dw + 2, dy + 1, (xx, y) => y === dy - 2 && (xx - x) % 3 !== 0 ? P.woodL : P.sand); // a drum ringed with lotus petals
+      const r = S(7.5); for (let j = 0; j <= r; j++) { const w = Math.round((r + .5) * Math.sqrt(1 - (j / (r + 1)) ** 2)), y = dy - 3 - j;
+        rect(g, x - w, y, x + w + 1, y + 1, (xx) => { const u = (xx - x) / (w + .5); return u > -.55 && u < -.35 && j > 1 && j < r - 1 ? P.white : u < .15 ? P.sand : u > .55 || bay(xx, y) < (u - .15) / .4 ? P.woodL : P.sand; }); }
+      const ft = dy - 4 - r; rect(g, x - 1, ft - 2, x + 2, ft + 1, P.gold); rect(g, x, ft - 6, x + 1, ft - 2, P.gold); }; // a kalash finial
     const tx = cx + 60, tb = top(tx); // a banyan: a fluted trunk parting into limbs, roots hanging in clusters and propping it up, a broad canopy in two depths
     const stamp = (x0, y0, x1, y1, w, c) => { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)); for (let i = 0; i <= n; i++) rect(g, x0 + (x1 - x0) * i / n - w / 2, y0 + (y1 - y0) * i / n, x0 + (x1 - x0) * i / n + w / 2, y0 + (y1 - y0) * i / n + 1, c); };
     for (const [dx, dy] of [[-18, -12], [-7, -16], [8, -15], [19, -11]]) stamp(tx, b - 24, tx + dx, b - 24 + dy, 3, P.wood1);
@@ -890,7 +897,7 @@ const ISLETS = {
     lobes([[-14, -38, 11], [13, -39, 11], [0, -43, 10]]); // the back of the canopy, in shade
     for (let y = b - 58; y < b - 24; y++) for (let x = tx - 32; x <= tx + 32; x++) { const i = y * g.W + x, c = g.land[i]; if (c >> 5 === R.leafA && (c & 31) < 16) g.land[i] = code(R.leafA, Math.max(0, (c & 31) - 3)); }
     lobes([[-22, -29, 10], [21, -29, 10], [-8, -32, 12], [8, -33, 12]]); // the front of it
-    chhatri(cx - 30, 1); chhatri(cx + 22, 1.4); },
+    chhatri(cx - 30, 1.25); chhatri(cx + 20, 1.7); },
   chalet(g, cx, P) { const h = 16, b = WY - h, top = mound(g, cx, HW, h);
     dress(g, cx, HW, top, P, { path: [cx - HW * .8, cx - 2], flowers: [P.white, P.gold, P.heather], fd: .1 });
     pine(g, cx - 70, top(cx - 70) + 1, 40); pine(g, cx - 54, top(cx - 54) + 1, 54);
