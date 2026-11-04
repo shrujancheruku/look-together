@@ -193,11 +193,12 @@
 "use strict";
 // ================= engine: pure, no DOM =================
 // ---------- palette: the chosen kit (issue #70), 12-step full colour, sky 16 ----------
-const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone", "coat", "skin"];
+const RAMPS = ["sky", "cloud", "far", "leafA", "leafB", "leafC", "trunk", "grass", "water", "glint", "light", "pad", "flower", "mist", "stone", "coat", "skin", "paint"];
 // the walker's rows (issue #84): set colour by colour, not as a ramp. coat: five jackets, each lit, base and edge. skin: five tones, each lit and shade, then hair.
 const EXPLICIT = {
   coat: [[.80, .09, 5], [.68, .11, 10], [.48, .10, 15], [.76, .09, 135], [.62, .10, 140], [.43, .08, 145], [.78, .07, 240], [.64, .09, 245], [.45, .08, 250],
     [.85, .11, 82], [.74, .13, 72], [.53, .10, 62], [.72, .02, 260], [.57, .025, 260], [.39, .02, 260]],
+  paint: [[.30, .09, 262], [.38, .10, 260], [.50, .18, 28], [.58, .18, 30]], // the boat's paint: navy, then a true red
   skin: [[.89, .045, 65], [.80, .06, 55], [.80, .07, 60], [.70, .08, 50], [.68, .08, 55], [.58, .08, 45], [.55, .08, 50], [.46, .07, 42], [.43, .06, 45], [.34, .05, 40], [.27, .03, 40], [.40, .05, 50]],
 };
 const R = Object.fromEntries(RAMPS.map((n, i) => [n, i]));
@@ -237,7 +238,7 @@ const lerp = (a, b, t) => a + (b - a) * t;
 function stepsFor(name) {
   switch (name) {
     case "sky": return PAL.sky; case "glint": return 4; case "light": return 3; case "mist": return 2; case "stone": return 8;
-    case "far": return PAL.steps - 2; case "trunk": return 4; case "coat": return 15; case "skin": return 12; default: return PAL.steps;
+    case "far": return PAL.steps - 2; case "trunk": return 4; case "coat": return 15; case "skin": return 12; case "paint": return 4; default: return PAL.steps;
   }
 }
 const N = RAMPS.map(stepsFor);
@@ -1181,7 +1182,7 @@ function boatPx(frame, rower, dir = 1) { // the rowboat, sized to the walker so 
   if (rower && frame >= 0) { // the stroke: the drive (blade in the water, sweeping aft) then the recovery (blade lifted, swinging back)
     const ph = frame / 8 * 2 * Math.PI, u = Math.cos(ph), drive = Math.sin(ph) > .15, face = -dir;
     const r = rowerPx(h, face, u); px = r.px.map(([x, y, c]) => [x, y + seatY, c]);
-    const shaft = code(R.light, 0), blade = code(R.flower, 1), pv = [face * 2, gun(face * 2) - 1], hand = [r.hand[0], r.hand[1] + seatY];
+    const shaft = code(R.light, 0), blade = code(R.paint, 2), pv = [face * 2, gun(face * 2) - 1], hand = [r.hand[0], r.hand[1] + seatY];
     const tipX = pv[0] - face * Math.round(u * 8), tipY = drive ? 3 : -1; // the blade sweeps from ahead of the rower (the catch) to behind (the finish), in the water only on the drive
     line(hand[0], hand[1], pv[0], pv[1], shaft, oar); line(pv[0], pv[1], tipX, tipY - 3, shaft, oar);
     for (let j = 0; j < 4; j++) oar.push([tipX, tipY - j, blade], [tipX + 1, tipY - j, blade]); // the blade, painted to match the bow
@@ -1190,8 +1191,8 @@ function boatPx(frame, rower, dir = 1) { // the rowboat, sized to the walker so 
   const hull = [];
   for (let x = -L; x <= L; x++) { const g0 = gun(x), k0 = keel(x); if (k0 <= g0 + 1) continue;
     for (let y = g0; y <= k0; y++) { const r = y - g0, depth = (y - g0) / Math.max(1, k0 - g0), end = Math.abs(x) >= L - 1;
-      const bow = x * dir >= L - 3 && r <= 2; // wood, as before, with a thin blue strake and a red mark at the bow
-      hull.push([x, y, bow ? code(R.flower, 1) : r === 0 ? code(R.trunk, 3) : r === 2 ? code(R.water, 2) : depth > .8 || end ? code(R.trunk, 0) : r % 3 === 0 ? code(R.trunk, 1) : code(R.trunk, 2)]); } }
+      const bow = x * dir >= L - 3 && r <= 2; // wood, as before, with a thin navy strake and a red mark at the bow
+      hull.push([x, y, bow ? code(R.paint, 2) : r === 0 ? code(R.trunk, 3) : r === 2 ? code(R.paint, 0) : depth > .8 || end ? code(R.trunk, 0) : r % 3 === 0 ? code(R.trunk, 1) : code(R.trunk, 2)]); } }
   if (frame < 0) line(-L + 6, gun(0) - 1, L - 6, gun(0) - 1, code(R.trunk, 2), oar); // oars along the gunwale
   return px.concat(hull, oar);
 }
