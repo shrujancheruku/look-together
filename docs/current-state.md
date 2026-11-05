@@ -114,7 +114,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Infrastructure and model
 
-- **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript, all in Google Cloud project `look-together` ([Backend language][26], [Regional layout][28], [Dictation][36]).
+- **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript on Hono, with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript, all in Google Cloud project `look-together` ([Backend language][26], [Regional layout][28], [Dictation][36]).
 - **LLM interface:** `call(kind: breakdown | turn | classify, prompt, input)` returns the parsed output with provider-neutral usage, or `blocked`, or `failed`. Thinking level, output schema and every Vertex setting live in the adapter; the turn module decides what `blocked` means. The evaluation judge is outside it ([Architecture review][88]).
 - **Region config:** each backend builds one region value at boot and passes it into every adapter; nothing else reads the environment for it ([Architecture review][88]).
 - **Model:** Gemini 3.8 Flash in both regions, on pinned `us`/`eu` endpoints, never `global`. The Breakdown runs on high thinking, the Dialogue turn on low. Two prompts plus the distress classifier, and no Recap prompt ([Launch][14], [Inquiry driver][33]).
@@ -259,7 +259,7 @@ These lines still sit in older tickets but no longer hold:
 
 ## Out of scope for the spec
 
-Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 choice and mid-range Android frame rate, visual polish, pixel-art branding and store art, home spacing, dictation and Path UX tuning, the pre-launch legal list, and acting on post-launch signals. Patterns, cloud storage, paid plans, other languages and on-device models are post-MVP. All are listed on the [map][1] under **Out of scope**.
+Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 choice and mid-range Android frame rate ([Skia measurements][140]), visual polish, pixel-art branding and store art, home spacing, dictation and Path UX tuning, the pre-launch legal list, and acting on post-launch signals. Patterns, cloud storage, paid plans, other languages and on-device models are post-MVP. All are listed on the [map][1] under **Out of scope**.
 
 [1]: https://github.com/shrujancheruku/look-together/issues/1
 [3]: https://github.com/shrujancheruku/look-together/issues/3
@@ -321,3 +321,4 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [85]: https://github.com/shrujancheruku/look-together/issues/85
 [86]: https://github.com/shrujancheruku/look-together/issues/86
 [88]: https://github.com/shrujancheruku/look-together/issues/88
+[140]: https://github.com/shrujancheruku/look-together/issues/140
