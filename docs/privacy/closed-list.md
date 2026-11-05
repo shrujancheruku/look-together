@@ -11,7 +11,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 | Store | Fields | Kept for |
 |---|---|---|
 | **Account** (Firestore) | account id, email or Apple relay, sign-in provider, created date, region, platform, marketing consent (yes/no + timestamp) | Until the person deletes it, or 24 months with no authenticated request; gone from backups within 30 days ([ADR 0006](../adr/0006-sign-in-is-required-and-knows-nothing-of-inquiries.md)) |
-| **Meters** (Firestore), keyed by account id | `inquiries` (1 / 24 h), model calls (100 / 24 h), reports (20 / 24 h), content reports (5 / 24 h): counts and window starts only | 48 h TTL |
+| **Meters** (Firestore), keyed by account id | `inquiries` (1 / 24 h), Breakdown calls (6 / 24 h), model calls (100 / 24 h, including `/speak`), dictation minutes (60 / 24 h), reports (20 / 24 h), content reports (5 / 24 h): counts and window starts only. No meter is keyed by an Inquiry id | 48 h TTL |
 | **Sign-up and sign-in meters** (Firestore) | new Accounts per attested install and per salted IP hash (2 / 30 days); email codes sent per salted IP hash and per address; web Inquiries per salted IP hash (~3 / 24 h) | 30-day TTL for sign-up meters, 48 h for the rest |
 | **Content Reports** (Firestore, apart from Accounts) | the masked exchange, reasons, stage, prompt version, model id, region, platform, app version, date; no Account or Inquiry id | 30-day TTL, read only by the founder, every access logged |
 | **Aggregate counters** (Firestore) | see [What we count](#what-we-count) | Kept as aggregates |
@@ -23,7 +23,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 
 **Admin audit logs** (`_Required`, global, 400 days, fixed by Google) record only the founder's and service accounts' actions on the project. Data Access audit logs stay off.
 
-**Crash reports** are on by default with an off switch in settings. They carry no breadcrumbs, screenshots, view hierarchy, replay, URLs, request data, user id or session tracking. `beforeSend` overwrites the user, and Sentry is set server-side to prevent storing IPs and to drop geo data.
+**Crash reports** are on by default with an off switch in settings. They carry no breadcrumbs, screenshots, view hierarchy, replay, URLs, request data, user id or session tracking. `beforeSend` overwrites the user, and Sentry is set server-side to prevent storing IPs and to drop geo data. On the device, a crash before the Account's region is known is held in memory and sent once the region is known, or dropped if the app closes first; it never goes to the other region's org.
 
 ## What we count
 

@@ -44,6 +44,10 @@ _Avoid_: Homework, takeaway, advice
 What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Assumptions explored, any change in understanding in the person's own words, the Open Questions, and the Assumptions not looked at yet.
 _Avoid_: Summary, results, takeaways, report
 
+**Shelf**:
+All of a person's Inquiries on one device, and the rules that span them: at most 3 unfinished at once, each unfinished one ending by itself 7 days after it was last touched, and whether today's Inquiry can begin.
+_Avoid_: Library, history, list, pond
+
 **Step-out**:
 The app leaving an Inquiry because the person may be at risk, to point them to people who can help. An Inquiry that has been stepped out of never resumes.
 _Avoid_: Escalation, intervention, crisis mode
@@ -99,7 +103,7 @@ How the world behaves while a person reads or writes: it runs at half speed and 
 _Avoid_: Focus mode, pause
 
 **Cue**:
-A short one-off animation the world plays when an Inquiry's state changes, from a closed list. A cue never replays, never blocks a reply, and never rewards or counts anything.
+A short one-off animation the world plays when an Inquiry's state changes or the person does something in the world, from a closed list. A cue never replays, never hides words or holds back a reply, and never rewards or counts anything. The one wait it causes: the next question appears only once the walker sits, at most 2 s after Submit.
 _Avoid_: Reward, effect, celebration, feedback
 
 **Still water**:

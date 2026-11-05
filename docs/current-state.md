@@ -2,7 +2,7 @@
 
 What the MVP map ([Look Together MVP][1]) has decided, once every "partly supersedes" is applied. `/to-spec` reads this sheet instead of the decision tickets, which overwrite one another. Each rule links the ticket it comes from. Open a ticket for the detail; this sheet gives only the rule that stands now.
 
-Where two tickets disagree, the later one wins, and the sheet states only the later rule. [Leftovers from dropped ideas](#leftovers-from-dropped-ideas) lists what no longer holds, so a stale line in an older ticket isn't mistaken for a rule. The rules settled while writing this sheet are tagged [Reconcile][82].
+Where two tickets disagree, the later one wins, and the sheet states only the later rule. [Leftovers from dropped ideas](#leftovers-from-dropped-ideas) lists what no longer holds, so a stale line in an older ticket isn't mistaken for a rule. The rules settled while writing this sheet are tagged [Reconcile][82]. The rules settled by the architecture review of the MVP tickets are tagged [Architecture review][88].
 
 Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADRs in [`docs/adr/`](adr/) and the closed list in [`docs/privacy/closed-list.md`](privacy/closed-list.md).
 
@@ -18,7 +18,8 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Inquiry
 
-- **App-owned state machine:** the device holds the Inquiry and its Assumption records. Each model call returns `{reply, distress, events}`, and one pure shared reducer, `step(inquiry, input)`, checks every event before applying it. It runs on the backend for model turns (`POST /turn`) and on the device for app-only moves ([ADR 0004](adr/0004-inquiry-is-an-app-owned-state-machine.md), [Inquiry driver][33]).
+- **App-owned state machine:** the device holds the Inquiry and its Assumption records. Each model call returns `{reply, distress, events}`, and one pure shared reducer, `step(inquiry, input)`, checks every event before applying it. It returns `{ inquiry, applied, refused }` and never throws on a model's event; each refusal carries its reason and whether it holds the reply back ([Architecture review][88]). It runs on the backend for model turns (`POST /turn`) and on the device for app-only moves ([ADR 0004](adr/0004-inquiry-is-an-app-owned-state-machine.md), [Inquiry driver][33]).
+- **One turn module on the backend** owns the whole sequence of a turn (classifier, model, reducer, hold-back retry, Step-out precedence, charging) and returns exactly one of `breakdown | clarify | decline | reply | step_out | no_answer | busy | limited | update_required`. HTTP only maps that result to a response, and the device switches on the same set. The classifier and the model run in parallel, and the reply is discarded on a Step-out ([Architecture review][88]).
 - **Opening:** the Problem is written or dictated in the composer and sent with **Begin** ([Wording][61]). At most one clarifying question. A non-Problem (homework, a factual question, "write me X") gets a `decline` the app words, and it doesn't use the day ([No answer][41]).
 - **Breakdown:** a flat list of 3–5 Assumptions, each a hidden premise shown as a **Probe** with highlighted key words. It runs on high thinking and also returns a **title** of 10 words or fewer ([Inquiry driver][33], [Recap][60]).
 - **Pushback** reveals the premise, then rewords, rejects or adds. Nothing is deleted, and earlier wordings are kept with the person's quote. The model sets `resetAngles` only when the premise really changed ([Inquiry driver][33], [Awkward cases][34]).
@@ -30,17 +31,19 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **At most 3 additions** ("Add it?" or own) per Inquiry. After that the model makes no offer and "add your own" is disabled. That fits the lily's 9 slots: the Problem, 5 Probes and 3 additions ([Lily][74], [Reconcile][82]).
 - **A refused state-changing event** holds the reply back for one more call. If the retry is refused too, the reply is kept and the event dropped ([Awkward cases][34]).
 - **Finishing:** "Finish Inquiry" sits on the Probes screen once one Path has ended, and is offered when all have. It is the only way to the Recap. A Path's end always goes back to the Probes ([Dictation][36], [Reconcile][82]).
+- **The Shelf** (one pure module over all of a device's Inquiries, the clock and today's allowance) decides whether today's Inquiry can begin, which Inquiries end by expiry, and which fill home's lily slots. The driver, import, home and the boat all read it ([Architecture review][88]).
 - **Unfinished Inquiries:** at most **3 at once**. A fourth can't begin until the person finishes or deletes one, and the boat says so ([Reconcile][82]). Each ends by itself 7 days after `lastActiveAt`: into a Recap if a Path finished, otherwise it quietly goes ([Awkward cases][34], [Recap][60]).
 - **Recap** is a view of the stored records, never a model call. Order: the Problem (with "First put as"), how it ended if not on Finish, Open Questions, one card per Assumption looked at (`left` included), Not looked at yet (as Probes), "Was this worth your time?", Share. A card shows no outcome cue except one line just after Finish ([Recap][60]).
 - **Recap after a Step-out:** only if a Path finished. It says "This Inquiry stopped early…" and has no "worth" question ([Recap][60], [Awkward cases][34]).
 
 ## Storage on the device
 
+- **Two store seams on the device:** an Inquiry store (Inquiries and their drafts) and a settings store (settings, walker, last known country, sent reports), each with an on-device adapter for native and a tab-memory adapter for web, which tests also use. The Inquiry driver's interface is `begin · submit · pick · pause · finish · delete` ([Architecture review][88]).
 - **Native:** SQLCipher `expo-sqlite`, with one database and one key per Account. Finished Inquiries keep their full transcript. Drafts are kept with a live Inquiry and deleted when it ends. A stepped-out Inquiry stores only `ending: 'step_out'`, never the kind of risk ([On-device keeping][46], [Inquiry driver][33]).
 - **Backups allowed, end-to-end encrypted:** the key travels in iCloud Keychain on iOS and in Google Block Store on Android, and Android cloud backup happens only when it's end-to-end encrypted. Backups that come back without their key get a Try again / Delete them screen ([ADR 0008](adr/0008-inquiries-travel-only-in-the-persons-own-encrypted-backups-and-exports.md), [On-device keeping][46]).
 - **Web keeps nothing past the tab.** Closing or reloading the tab loses an unfinished Inquiry and its draft. JSON import loads into the tab only, and "Sent reports" lasts only for the tab. A `beforeunload` prompt guards a live Inquiry. The 7-day rule doesn't arise on web ([On-device keeping][46], [No answer][41], [Inquiry driver][33], [Reconcile][82]).
 - **Export:** PDF (pdf-lib, "Made with Look Together", an "Include the Paths" toggle), Text or JSON. The JSON has `schemaVersion` and carries the "Anyone with this file can read it" note. Settings → Export all gives one JSON file and one text file ([On-device keeping][46], [Wording][61]).
-- **Import:** JSON on native and web, checked against the schema and migrated forward. An unfinished Inquiry continues if it's within 7 days, and stepped-out ones come back locked ([On-device keeping][46], [Versioning][48]).
+- **Import:** JSON on native and web, checked against the schema and migrated forward. An unfinished Inquiry continues if it's within 7 days, and stepped-out ones come back locked ([On-device keeping][46], [Versioning][48]). Import never drops an Inquiry to keep the cap: it may leave more than 3 unfinished, and today's Inquiry can't begin until fewer than 3 are ([Architecture review][88]).
 - **Deletion:** one Inquiry, Delete everything (per Account, offering Export all first), Delete account (wipes this device's Inquiries by default) ([On-device keeping][46]).
 - **No cross-platform sync.** A second device starts empty, and moving between platforms goes through JSON ([On-device keeping][46]).
 
@@ -58,8 +61,9 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ## Limits and abuse
 
 - **One Inquiry a day per Account**, counted only when the backend returns its Breakdown, on a rolling 24 h. A Step-out after the Breakdown doesn't give the day back ([Usage limits][30], [No answer][41]).
-- **Inside an Inquiry:** 20 dictation minutes and 40 Reflections, with a quiet heads-up before either. A failed or blocked Reflection doesn't count ([Dictation][36], [No answer][41]).
-- **Meters** (generic name / window / limit in server config, keyed by Account id, 48 h TTL): `inquiries` 1 / 24 h, model calls 100 / 24 h, reports 20 / 24 h, content reports 5 / 24 h. At most 3 Breakdown calls per Inquiry id ([closed list](privacy/closed-list.md), [No answer][41]).
+- **Inside an Inquiry:** 20 dictation minutes and 40 Reflections, with a quiet heads-up before either, both counted on the device. A failed or blocked Reflection doesn't count ([Dictation][36], [No answer][41], [Architecture review][88]).
+- **Meters** (generic name / window / limit in server config, keyed by Account id, 48 h TTL): `inquiries` 1 / 24 h, Breakdown calls 6 / 24 h, model calls 100 / 24 h (including `/speak`), dictation minutes 60 / 24 h, reports 20 / 24 h, content reports 5 / 24 h. No meter is keyed by an Inquiry id ([closed list](privacy/closed-list.md), [No answer][41], [Architecture review][88]).
+- **One admission module** decides every gate (meters, sign-up meters, spend ceiling, pause switch, version window) through `admit` and `charge`, and is the one place that keeps Help, the Step-out and contacts ungated. `GET /allowance` returns `{ canBegin, nextAt }` with no counts, and each result that charges the day returns `nextAt` ([Architecture review][88]).
 - **Never gated:** Help, the Step-out and crisis contacts. The classifier's calls are never counted against the person ([Usage limits][30]).
 - **Native guard:** App Attest / Play Integrity (Play nonce hashed), at most 2 new Accounts per attested install per 30 days ([Sign-in][37], [Telemetry][44]).
 - **Web guard, now:** sign-in plus the Account meters, plus three meters on a salted IP hash: new Accounts (2 / 30 days), email codes sent (also per address), and web Inquiries (~3 / 24 h for shared networks). Plus the regional spend ceiling. **No App Check or reCAPTCHA** ([Telemetry][44], [Sign-in][37], [closed list](privacy/closed-list.md), [Reconcile][82]).
@@ -93,9 +97,9 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Telemetry
 
-- **The closed list is the source of truth** for everything kept, counted or shared. Any PR that adds a field, counter or party updates [`docs/privacy/closed-list.md`](privacy/closed-list.md) ([Telemetry][44]).
+- **The closed list is the source of truth** for everything kept, counted or shared. Any PR that adds a field, counter or party updates [`docs/privacy/closed-list.md`](privacy/closed-list.md) ([Telemetry][44]). In code it is one typed, platform-free package that the logger allowlist, counters, Firestore record types and Sentry scrubber are typed from; CI regenerates the markdown tables from it ([Architecture review][88]).
 - **No analytics SDK, no push, no stable id for analytics.** Aggregate counters only, in regional Firestore. Return rate comes from the device-side `returning` bucket ([Telemetry][44]).
-- **Sentry:** a US and an EU org, on by default with an off switch, stripped of ids and content ([Telemetry][44]).
+- **Sentry:** a US and an EU org, on by default with an off switch, stripped of ids and content ([Telemetry][44]). A device crash before the region is known waits in memory until it is, or is dropped ([Architecture review][88]).
 - **Logs:** one typed allowlisted logger into regional buckets for 30 days. Cloud Run request logs are excluded and Error Reporting is off ([Telemetry][44]).
 - **No OTA updates in store builds.** Beta builds keep EAS Update, which the beta invite discloses ([Telemetry][44]).
 - **Reminder:** an opt-in local notification on native ("Today's Inquiry is open."), never naming a Problem ([Telemetry][44], [Wording][61]).
@@ -111,6 +115,8 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ## Infrastructure and model
 
 - **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript, all in Google Cloud project `look-together` ([Backend language][26], [Regional layout][28], [Dictation][36]).
+- **LLM interface:** `call(kind: breakdown | turn | classify, prompt, input)` returns the parsed output with provider-neutral usage, or `blocked`, or `failed`. Thinking level, output schema and every Vertex setting live in the adapter; the turn module decides what `blocked` means. The evaluation judge is outside it ([Architecture review][88]).
+- **Region config:** each backend builds one region value at boot and passes it into every adapter; nothing else reads the environment for it ([Architecture review][88]).
 - **Model:** Gemini 3.8 Flash in both regions, on pinned `us`/`eu` endpoints, never `global`. The Breakdown runs on high thinking, the Dialogue turn on low. Two prompts plus the distress classifier, and no Recap prompt ([Launch][14], [Inquiry driver][33]).
 - **Vertex settings:** caching off (`disableCache: true`, enforced by infra), request-response logging off, no grounding, all four safety filters `OFF` on every call. A block is a billed 200 with an empty candidate and maps to "no answer". Google may keep flagged prompts up to 90 days in-region, which we disclose, and we promise no "zero retention" ([Caching][32], [Abuse logging][22], [Safety filters][40]).
 - **Cost:** about $0.03 per text Inquiry including the classifier ([Inquiry cost][29]).
@@ -119,7 +125,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Evaluation and launch
 
-- **Evaluation set:** synthetic, ~30 ordinary and ~30 distress cases plus injection and non-Problem cases. A fast tier runs on PRs and a gate tier (5 runs each) before launch or any model or prompt change. Code checks what's countable and an Opus 5.5 judge the rest; the founder's blind read decides. Zero tolerance on hard lines. The distress classifier is picked on 100% Step-out recall ([Evaluation][17], [No answer][41]).
+- **Evaluation set:** synthetic, ~30 ordinary and ~30 distress cases plus injection and non-Problem cases. A fast tier runs on PRs and a gate tier (5 runs each) before launch or any model or prompt change. Code checks what's countable, by running the model's output through the reducer and failing on any refusal, plus the text checks (no "I", no Krishnamurti), and an Opus 5.5 judge the rest; the founder's blind read decides. Zero tolerance on hard lines. The distress classifier is picked on 100% Step-out recall ([Evaluation][17], [No answer][41]).
 - **Gate records:** one pass per (prompt hash, model id, protocol version), in the repo. A deploy that lacks one fails ([Versioning][48]).
 - **Order:** friends test (15–20 known adults) → closed beta (~100 strangers by link) → public launch. Nobody but the founder sees the app before the whole pixel world is built. The beta opens only after the full gate, the LLC and the lawyer and clinician reviews ([Beta][81]).
 
@@ -128,6 +134,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **One protocol version** covers the stored `schemaVersion`, the event set and the reducer rules. The backend serves N and N-1 side by side and retires N-1 at <2% of turns or after 90 days, or at once for a hard-line break ([ADR 0009](adr/0009-the-backend-serves-two-protocol-versions-side-by-side.md), [Versioning][48]).
 - **Below the window**, only new turns are blocked, with a calm update screen. Web offers "Export, then reload" ([Versioning][48]).
 - **Release order:** backend → web → stores. Forward-only migrations run on the device and on import, tested against golden fixtures ([Versioning][48]).
+- **Versions as folders:** each protocol version is a frozen `vN/` folder in the protocol package (types, schema, reducer) behind one `versions` index, with migrations outside the folders. Prompts are backend-only, as `prompts/vN`. The app imports only the current version. Only a change to the stored schema, the event set or the reducer's rules bumps the version; a prompt change alone goes through the gate record ([Architecture review][88]).
 
 ## Screens and flow
 
@@ -145,7 +152,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ### Rendering
 
 - **We render our own pixel art, with no game engine and no watercolour.** React Native Skia v2 draws the world at art resolution offscreen and upscales it by a whole number, under native text, on iOS, Android and web ([ADR 0010](adr/0010-we-render-our-own-pixel-art-world-without-a-game-engine.md), [Pixel scene][68], [Pixel art][69]).
-- **Plain TypeScript:** a pure `sceneFromState` over the Inquiry's records, plus a director that plays **cues** and never writes back. Screens are camera framings of one world, and the clock runs only while something moves. Seeded choices use integer maths, checked byte for byte in CI ([Pixel scene][68], [Lily][74]).
+- **Plain TypeScript:** a pure `sceneFromState` over the Inquiry's records, plus a director that plays **cues** and never writes back. The director reads `(prev, next)` of a world view (the records, what the driver has in flight, and one-off moments such as a lily tap or a season flip) and returns each cue with its duration; when the next question appears, the later of the walker sitting and the reply landing, is worked out there too ([Architecture review][88]). Screens are camera framings of one world, and the clock runs only while something moves. Seeded choices use integer maths, checked byte for byte in CI ([Pixel scene][68], [Lily][74]).
 - **Indexed colour:** one master index, and one palette PNG with a row per season × mode: **Normal, Still water, Step-out, Guide**, each with its reflection twin. It also holds the coat, skin, paint and fur rows ([Asset spec][75], [Shoreline welcome][80], [Walker][84], [Home backdrop][86]).
 
 ### Style
@@ -248,6 +255,7 @@ These lines still sit in older tickets but no longer hold:
 - **Back at the top left; swipe between steps** ([Screens][47], [Look and voice][54]) → mid-height ‹ ›, swipe off with screen readers ([Home backdrop][86], [Accessibility][56]).
 - **Mirrored question/answer pairs; the "In your words" label and outcome tags on Recap cards** ([Look and voice][54], [Guided first Inquiry][55]) → frost cards with no outcome cue ([Recap][60]).
 - **Season by the clock** ([Look and voice][54]) → by system appearance ([Inquiry moments][73]).
+- **At most 3 Breakdown calls per Inquiry id** ([No answer][41]) → Breakdown calls 6 / 24 h per Account, so no Inquiry id reaches the server ([Architecture review][88]).
 
 ## Out of scope for the spec
 
@@ -312,3 +320,4 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [84]: https://github.com/shrujancheruku/look-together/issues/84
 [85]: https://github.com/shrujancheruku/look-together/issues/85
 [86]: https://github.com/shrujancheruku/look-together/issues/86
+[88]: https://github.com/shrujancheruku/look-together/issues/88
