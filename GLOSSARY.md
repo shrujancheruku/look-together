@@ -45,7 +45,7 @@ What the person sees when an Inquiry ends: what was looked at, not what was lear
 _Avoid_: Summary, results, takeaways, report
 
 **Shelf**:
-All of a person's Inquiries on one device, and the rules that span them: at most 3 unfinished at once, each unfinished one ending by itself 7 days after it was last touched, and whether today's Inquiry can begin.
+All of a person's Inquiries on one device, and the rules that span them: at most 3 unfinished at once, each unfinished one ending by itself 7 days after it last moved on (opening or reading it doesn't count), and whether today's Inquiry can begin.
 _Avoid_: Library, history, list, pond
 
 **Step-out**:
