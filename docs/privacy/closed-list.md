@@ -13,7 +13,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 | **Account** (Firestore) | account id, email or Apple relay, linked identities (provider + the provider's subject id, one per Apple, Google or email sign-in), created date, region, platform, marketing consent (yes/no + timestamp), `lastSeenMonth` (`YYYY-MM`, written at most once a month) | Until the person deletes it, or 24 months past `lastSeenMonth`; gone from backups within 30 days ([ADR 0006](../adr/0006-sign-in-is-required-and-knows-nothing-of-inquiries.md)) |
 | **Meters** (Firestore), keyed by account id | `inquiries` (1 / 24 h), Breakdown calls (6 / 24 h), model calls (100 / 24 h, including `/speak`), dictation minutes (60 / 24 h), reports (20 / 24 h), content reports (5 / 24 h): counts and window starts only. No meter is keyed by an Inquiry id | 48 h TTL |
 | **Sign-up and sign-in meters** (Firestore) | new Accounts per attested install and per salted IP hash (2 / 30 days); email codes sent per salted IP hash and per address; email lookups ("does a region hold this email?") per salted IP hash (10 / 24 h); web Inquiries per salted IP hash (~3 / 24 h) | 30-day TTL for sign-up meters, 48 h for the rest |
-| **Content Reports** (Firestore, apart from Accounts) | the masked exchange, reasons, stage, prompt version, model id, region, platform, app version, date; no Account or Inquiry id | 30-day TTL, read only by the founder, every access logged |
+| **Content Reports** (Firestore, apart from Accounts) | the masked exchange, encrypted with the region's Cloud KMS `reports` key; reasons, stage, prompt version, model id, region, platform, app version, date. The document id is the SHA-256 of a delete token only the sending device holds; no Account or Inquiry id, and the token itself is never stored | 30-day TTL, or until the device deletes it. Only the founder can decrypt, so every read is a logged KMS decrypt |
 | **Aggregate counters** (Firestore) | see [What we count](#what-we-count) | Kept as aggregates |
 | **Operational logs** (Cloud Logging, regional buckets) | only the allowlisted fields below | 30 days |
 | **Monitoring metrics** (Cloud Monitoring, **global**) | log-based counts and latencies by allowlisted log fields only, uptime-check results for `/healthz`; alerts on them reach only the founder (Google Cloud mobile app, email) as metric names and values | 24 months (Google's fixed retention) |
@@ -21,7 +21,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 
 **Allowlisted log fields:** route, status, latency, outcome kind, region, call type, model id, prompt version, app version, platform. Never request or response bodies, account id, email, IP, user agent or Inquiry id, and never an upstream error body. One logger with a typed field list enforces this, with a test that fails on any other field. Cloud Run's built-in request logs (which carry IP and user agent) are excluded on the `_Default` sink, and `_Default` is routed to the regional buckets. Error Reporting is turned off (it is global).
 
-**Admin audit logs** (`_Required`, global, 400 days, fixed by Google) record only the founder's and service accounts' actions on the project. Data Access audit logs stay off.
+**Admin audit logs** (`_Required`, global, 400 days, fixed by Google) record only the founder's and service accounts' actions on the project. Data Access audit logs stay off, except for **Cloud KMS**, which logs each encrypt and decrypt on the `reports` key with the principal and time and no user data, into the regional buckets for 30 days. Firestore's stay off, because they would log Account ids in document paths.
 
 **Crash reports** are on by default with an off switch in settings. They carry no breadcrumbs, screenshots, view hierarchy, replay, URLs, request data, user id or session tracking. `beforeSend` overwrites the user, and Sentry is set server-side to prevent storing IPs and to drop geo data. On the device, a crash before the Account's region is known is held in memory and sent once the region is known, or dropped if the app closes first; it never goes to the other region's org.
 
@@ -42,7 +42,7 @@ Aggregate counters, no Account id, Inquiry id or content in any of them. The bac
 | Failures | outcome kind, region, call type | Backend |
 | Dropped events | region, call type | Backend |
 | Estimated spend | region, day, call type | Backend, from each call's token, audio-second and character counts × the server-config price table; gates new Breakdowns at the regional ceiling |
-| Reports | reason, stage, prompt version, model id, region, platform, app version, day, whether the Inquiry later stepped out | Backend |
+| Reports | reason, stage, prompt version, model id, region, platform, app version, day | Backend |
 
 Device increments go over an authenticated request so they can't be spammed; the backend never stores who sent them.
 
