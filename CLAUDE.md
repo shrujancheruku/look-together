@@ -16,6 +16,7 @@ Every PR keeps these. Where a lint rule or test is named, add it with the first 
 - A PR that adds a field we keep, a counter, a meter or a party changes the closed-list package, and CI regenerates `docs/privacy/closed-list.md` from it.
 - Every fixed string comes from the copy deck. The app says "we", never "I". The not-therapy wording list is a test over the deck and the store listing.
 - Shared files are registries: one file per entry plus an index (closed-list entries, copy-deck sections, Settings rows, Hono routes, Pulumi resources). Add a file rather than editing a hand-maintained list.
+- App state on the device lives in Zustand stores, created with `createStore` in the composition root and read with `useStore(store, selector)`. The bare `create()` import and the `persist` middleware are banned (lint). A store's `setState` is called only by its owning module after the pure logic has run; screens never set app state. Per-frame animation values stay in Reanimated shared values.
 - Tests go through the public seams (`step`, the turn and admission modules, `worldView`, `sceneFromState`, the director) and name things in glossary words.
 - Commits and PR titles follow Conventional Commits, with no attribution lines or trailers.
 
