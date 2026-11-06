@@ -10,9 +10,9 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 
 | Store | Fields | Kept for |
 |---|---|---|
-| **Account** (Firestore) | account id, email or Apple relay, sign-in provider, created date, region, platform, marketing consent (yes/no + timestamp) | Until the person deletes it, or 24 months with no authenticated request; gone from backups within 30 days ([ADR 0006](../adr/0006-sign-in-is-required-and-knows-nothing-of-inquiries.md)) |
+| **Account** (Firestore) | account id, email or Apple relay, linked identities (provider + the provider's subject id, one per Apple, Google or email sign-in), created date, region, platform, marketing consent (yes/no + timestamp), `lastSeenMonth` (`YYYY-MM`, written at most once a month) | Until the person deletes it, or 24 months past `lastSeenMonth`; gone from backups within 30 days ([ADR 0006](../adr/0006-sign-in-is-required-and-knows-nothing-of-inquiries.md)) |
 | **Meters** (Firestore), keyed by account id | `inquiries` (1 / 24 h), Breakdown calls (6 / 24 h), model calls (100 / 24 h, including `/speak`), dictation minutes (60 / 24 h), reports (20 / 24 h), content reports (5 / 24 h): counts and window starts only. No meter is keyed by an Inquiry id | 48 h TTL |
-| **Sign-up and sign-in meters** (Firestore) | new Accounts per attested install and per salted IP hash (2 / 30 days); email codes sent per salted IP hash and per address; web Inquiries per salted IP hash (~3 / 24 h) | 30-day TTL for sign-up meters, 48 h for the rest |
+| **Sign-up and sign-in meters** (Firestore) | new Accounts per attested install and per salted IP hash (2 / 30 days); email codes sent per salted IP hash and per address; email lookups ("does a region hold this email?") per salted IP hash (10 / 24 h); web Inquiries per salted IP hash (~3 / 24 h) | 30-day TTL for sign-up meters, 48 h for the rest |
 | **Content Reports** (Firestore, apart from Accounts) | the masked exchange, reasons, stage, prompt version, model id, region, platform, app version, date; no Account or Inquiry id | 30-day TTL, read only by the founder, every access logged |
 | **Aggregate counters** (Firestore) | see [What we count](#what-we-count) | Kept as aggregates |
 | **Operational logs** (Cloud Logging, regional buckets) | only the allowlisted fields below | 30 days |
@@ -62,6 +62,7 @@ Device increments go over an authenticated request so they can't be spammed; the
 
 ## Not collected
 
+- No session store: the session token is signed and checked against the Account, so nothing is kept per session. On the device it is kept only in the secure store, this device only (native), or the tab's memory (web).
 - No analytics or attribution SDK, and no stable install or user id sent for analytics.
 - No push notifications or push tokens. A reminder that the next Inquiry has opened, if any, is a local notification scheduled on the device.
 - No reCAPTCHA or App Check on web.
