@@ -159,9 +159,10 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **Intro**, all on the landing and before any model call: a 6-step welcome (its lily grows, the camera stays still), then the AI notice with the 18+ confirmation, then privacy (short, plus a "How your words are handled" page), then sign-in, then the region choice for new Accounts only. Sign-in pans right to home, which is the arrival ([Guided first Inquiry][55], [Shoreline welcome][80], [Region][66], [Wording][61], [Reconcile][82]).
 - **Guided first Inquiry:** **leaf notes** (plain frost with a "Guide" caption, the Guide palette row dimming everything else, "Got it"). Skip appears on the first note. Settings → "Show the guide again". The first home note points at the **boat** ([Guided first Inquiry][55], [Shoreline welcome][80], [Reconcile][82]).
 - **Home** is the pond (see [Home](#home)). Settings is the boathouse and About the signpost, both on the landing to the left. Opening either pans left ([Frames][78], [Walker][84]).
+- **Routes over one world:** expo-router routes `/welcome`, `/` (home), `/settings`, `/about`, `/i/[id]` (Probes), `/i/[id]/path/[n]`, `/i/[id]/recap` and `/i/[id]/step-out`, all drawn over one Skia world that stays mounted in the root layout behind a `Slot`. Help is a sheet, never a route, and a Path's steps are not history entries: ‹ › move within the route, and Android or browser Back from a Path goes to the Probes. The Recap and the Step-out are entered with `dismissTo('/')` plus a push, so Back from either goes home (from the Recap, as Row home). A finished or stepped-out Inquiry's Probes and Path URLs redirect to its Recap, else home. Predictive back stays off ([Persistent Skia world][147], [Navigation and world view][148]).
 - **Inquiry screens:** Probes, Path and Recap are frost columns over scenery that can't be touched. Back is a mid-height **‹** on the left. A **›** on the right shows only over steps already reached, and an answered step shows its Reflection under "You reflected" ([Frames][78], [Home backdrop][86]).
 - **The composer** grows with the text and can expand to a full-screen editor, the default at AX sizes. It shows a count near the cap ([Screens][47], [Accessibility][56]).
-- **Wide web:** panes open to the right (Inquiry list | Probes | Path), with one camera behind them. Below the breakpoint, web falls back to the phone stack ([Screens][47], [Shoreline][71]).
+- **Wide web:** above the breakpoint, `/i/[id]` shows the Probes pane alone and `/i/[id]/path/[n]` shows Probes | Path, with the camera on the Path's framing behind both; there is no list pane. The panes are a layout of the Inquiry routes, not routes of their own. Home, the Recap, settings, About and the Step-out stay one column, and below the breakpoint web falls back to the phone stack ([Screens][47], [Shoreline][71], [Navigation and world view][148]).
 - **Sheets** only for short tasks: Report, Share (PDF | Text | JSON) and the Help pause ([Screens][47], [Wording][61]).
 - **Settings:** walker, season, Still water, crash reports, reminder (native), the region (read-only), export, import, Sent reports, "Show the guide again", Delete everything, sign out, Delete account ([Screens][47], [Walker][84], [Region][66], [Accessibility][56], [Inquiry moments][73]).
 
@@ -170,8 +171,10 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ### Rendering
 
 - **We render our own pixel art, with no game engine and no watercolour.** React Native Skia v2 draws the world at art resolution offscreen and upscales it by a whole number, under native text, on iOS, Android and web ([ADR 0010](adr/0010-we-render-our-own-pixel-art-world-without-a-game-engine.md), [Pixel scene][68], [Pixel art][69]).
-- **Plain TypeScript:** a pure `sceneFromState` over the Inquiry's records, plus a director that plays **cues** and never writes back. The director reads `(prev, next)` of a world view (the records, what the driver has in flight, and one-off moments such as a lily tap or a season flip) and returns each cue with its duration; when the next question appears, the later of the walker sitting and the reply landing, is worked out there too ([Architecture review][88]). Screens are camera framings of one world, and the clock runs only while something moves. Seeded choices use integer maths, checked byte for byte in CI ([Pixel scene][68], [Lily][74]).
+- **One world view:** a pure `worldView(sources)` assembles the route and its params, the Shelf's home slots, the routed Inquiry's record, what the driver has in flight, the settings store (season, Still water, walker), the system appearance and Reduce Motion, and a **world-moments store** that screens write (Help open, the leaf note showing, reading mode, the Path step viewed, a lily tap). It returns `{ framing, slots, inquiry, walker, inFlight, row, motion, readingMode, moment }`, and is the one place palette precedence lives. One `<World>` in the root layout subscribes to the sources and feeds `sceneFromState` and the director, which read only a `WorldView` ([Navigation and world view][148]).
+- **Plain TypeScript:** a pure `sceneFromState(view)`, plus a director that plays **cues** and never writes back. The director reads `(prev, next)` of the world view and returns each cue with its duration; with no `prev` (a cold start or reload) it plays nothing; when the next question appears, the later of the walker sitting and the reply landing, is worked out there too ([Architecture review][88]). Screens are camera framings of one world, and the clock runs only while something moves. Seeded choices use integer maths, checked byte for byte in CI ([Pixel scene][68], [Lily][74]).
 - **Indexed colour:** one master index, and one palette PNG with a row per season × mode: **Normal, Still water, Step-out, Guide**, each with its reflection twin. It also holds the coat, skin, paint and fur rows ([Asset spec][75], [Shoreline welcome][80], [Walker][84], [Home backdrop][86]).
+- **Palette precedence**, two axes: the **row** is Step-out > Help (the Still water row) > Guide > the Still water setting > Normal, always in the current season; **motion** is frozen on the Step-out or Still water row or when the setting is on, and Reduce Motion keeps only slow cycling. Help hides any leaf note until "Back to my Inquiry". A season flip under Help or a Step-out swaps the row at once, with no cue. Contrast settings never change the row, only make frost solid ([Navigation and world view][148]).
 
 ### Style
 
@@ -186,7 +189,8 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **One wide world, a horizontal loop**, about 3354 × 1180 art px. From left to right: the landing (signpost, boathouse, Recap spot), home's pond in the forest, today's lily with its pier, then eight islets across a lake under mountains, then a jetty ashore at the landing. Opening a screen pans right, Back pans left, and the words travel with the world ([Shoreline][71], [Scenery][83], [Home backdrop][86]).
 - **Scaling:** whole numbers only. Phones use round(width ÷ 320); tablets and web use ceil(dpr × 1.25). Extra height on tablets and wide views goes to the sky ([Shoreline][71], [Frames][78]).
 - **Waterline shares:** Probes ~60%, Path ~44%, Recap ~76% with the boat low on the water ([Frames][78], [Walker][84]).
-- **Help and the Step-out never move the camera.** They only switch to the Still water or Step-out row ([Shoreline][71], [Inquiry moments][73]).
+- **The camera:** the world view's `framing` is a pure function of the route, the viewed step and the viewport, and `<World>` animates towards it; Reduce Motion cuts, and a cold start or reload sets it without animating. A pan between framings is not a cue: the Finish cue is the walker's walk while the camera pans to the Recap framing ([Navigation and world view][148]).
+- **Help and the Step-out never move the camera.** They only switch to the Still water or Step-out row. Help is not part of the framing, and `/i/[id]/step-out` holds wherever the camera is (the Probes framing on a cold load) ([Shoreline][71], [Inquiry moments][73], [Navigation and world view][148]).
 
 ### Home
 
@@ -217,6 +221,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ### Text over the world
 
 - **Frost panels:** one pane per group of words, made of 3-art-px cells averaged from the art, tinted sky or water by side of the waterline, with notched corners and a lit top edge. No halo. 55% tint at rest, 72% in reading mode, a solid plate under contrast settings ([Frost panels][72]).
+- **Frost follows native scroll:** the world canvas draws each pane from shared values, its `onLayout` minus `useScrollOffset`, snapped to whole art pixels. Same-frame sync is measured with the Skia measurements before the renderer is built; if the frost trails, panes that scroll with text become small canvases inside the scroll content sampling a cached image of the world frame ([Skia measurements][140], [Navigation and world view][148]).
 - **Reading mode** starts on opening the Probes, a Path or a Recap, on the keyboard or on scrolling. The world runs at half speed with the palette unchanged ([Frost panels][72]).
 - **Raise the evening sky tint at rest** until it passes 4.5:1 on its own ([Frost panels][72]).
 - **Recap cards** are frost cards in art pixels, with the Probe and Assumption above their waterline and the quote below. Tapping a card opens its Path ([Recap][60], [Frost panels][72]).
@@ -243,7 +248,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 - **WCAG 2.2 AA** on all three platforms. The scene is hidden from screen readers, and controls are named in glossary words, never by metaphor. The boat is "Begin today's Inquiry" or "Row home", the boathouse is "Settings" ([Accessibility][56], [Reconcile][82]).
 - **Large text:** a Path step that doesn't fit lets go of the fixed waterline and scrolls as one column ([Accessibility][56]).
-- **Focus** moves to each new heading and to the new question. Help comes straight after Back. The ‹ › arrows replace swipe ([Accessibility][56]).
+- **Focus** moves to each new heading and to the new question. Help comes straight after Back. The ‹ › arrows replace swipe ([Accessibility][56]). No navigator does this, so one focus module in the root layout focuses the route's heading on every pathname change (`sendAccessibilityEvent(ref, 'focus')` on native; a `tabIndex={-1}` heading and the title via `expo-router/head` on web) and the question when the director reveals it ([Navigation and world view][148]).
 - **Checks:** CI runs axe, React Native lint and a headless contrast render of every frost pane per scene, season and mode. A manual screen-reader pass, and a screen-reader user in the beta ([Accessibility][56], [Frost panels][72]).
 
 ## Leftovers from dropped ideas
@@ -277,6 +282,7 @@ These lines still sit in older tickets but no longer hold:
 - **The device sends the Inquiry and gets the new Inquiry back; body ≤ 64 KB** ([Architecture review][88]) → a turn context out, the reply and applied events back, body ≤ 1 MB ([Turn wire contract][143]).
 - **Referral counts by trigger, all sent from the device; Step-out from Help; the classifier on a window of recent turns** ([Distress][10], [Architecture review][88]) → by source, Step-outs counted by the turn module; Help only pauses; the classifier reads the request body ([Distress merge][146]).
 - **The adapter picks the output schema by `kind`; a separate JSON export schema** ([Architecture review][88]) → the caller passes `vN`'s schema into `call`, and the export is the stored record in an envelope ([Schema owner][145]).
+- **An Inquiry list pane on wide web** ([Screens][47], [Shoreline][71]) → Probes | Path only ([Navigation and world view][148]).
 
 ## Out of scope for the spec
 
@@ -347,6 +353,8 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [144]: https://github.com/shrujancheruku/look-together/issues/144
 [145]: https://github.com/shrujancheruku/look-together/issues/145
 [146]: https://github.com/shrujancheruku/look-together/issues/146
+[147]: https://github.com/shrujancheruku/look-together/issues/147
+[148]: https://github.com/shrujancheruku/look-together/issues/148
 [149]: https://github.com/shrujancheruku/look-together/issues/149
 [150]: https://github.com/shrujancheruku/look-together/issues/150
 [152]: https://github.com/shrujancheruku/look-together/issues/152
