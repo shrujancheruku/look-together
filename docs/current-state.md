@@ -100,6 +100,10 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 - **What can be reported:** each Probe and each Path reply, through a quiet "…" / long-press menu, never the Recap or app copy. Multi-select reasons are counted in aggregate ([Reports][43]).
 - **Sending the exchange:** opt-in, asked every time. Names are masked by a stateless `POST /mask`, the preview is read-only, and the exchange is kept 30 days in-region, founder-only, with no Account id. It can be deleted from the device. Never offered for a stepped-out Inquiry ([ADR 0007](adr/0007-a-report-may-carry-one-exchange-by-choice.md), [Reports][43]).
+- **Deleting a sent exchange:** the device makes a random 128-bit delete token for each content Report and keeps it in "Sent reports". The stored document's id is the token's SHA-256, so the server holds no token, Account id or Inquiry id. `DELETE /reports { token }` goes through the session `client` to the Account's region and is idempotent (204 even after the TTL). It removes the exchange; counts stay. Delete everything and Delete account first send it for every token the device holds, best effort ([Reports seams][151]).
+- **"Sent reports"** lists content Reports only, as `{ token, sentAt, stage, reasons }` with no text from the exchange, and drops each entry after 30 days. A reasons-only Report is a count, with nothing to delete ([Reports seams][151]).
+- **Founder reads are logged by KMS:** the backend encrypts each exchange with the region's Cloud KMS `reports` key (encrypt only); only the founder can decrypt, through one local `reports:read` script. Data Access audit logs are on for Cloud KMS only, so every read is a logged decrypt, and the console or a backup shows ciphertext ([Reports seams][151]).
+- **Owners:** one backend `reports` module owns submit, encrypt and delete; one device Reports module owns the menu, the preview and "Sent reports", over the settings store and `client` ([Reports seams][151]).
 
 ## Telemetry
 
@@ -357,5 +361,6 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [148]: https://github.com/shrujancheruku/look-together/issues/148
 [149]: https://github.com/shrujancheruku/look-together/issues/149
 [150]: https://github.com/shrujancheruku/look-together/issues/150
+[151]: https://github.com/shrujancheruku/look-together/issues/151
 [152]: https://github.com/shrujancheruku/look-together/issues/152
 [153]: https://github.com/shrujancheruku/look-together/issues/153
