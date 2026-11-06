@@ -38,6 +38,11 @@ docs/
 ├── privacy/      # the closed list: everything we keep, count or let others see
 └── research/     # the research the decisions cite
 prototypes/       # throwaway prototypes that answered design questions, kept as references for the build
+scripts/
+├── provision.sh      # the wizard that sets up the accounts, projects and credentials (#194)
+└── provisioned.env   # the public ids it saved, which workers and CI read: never a secret
 ```
+
+To set up or change an account, project or credential, run `scripts/provision.sh` (`--list` shows the stages, `scripts/provision.sh <stage>` redoes one) rather than doing it by hand.
 
 Issues are tracked in [GitHub Issues](https://github.com/shrujancheruku/look-together/issues). Use the glossary's terms in issues, code and copy.
