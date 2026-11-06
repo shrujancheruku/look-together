@@ -19,7 +19,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 | **Monitoring metrics** (Cloud Monitoring, **global**) | log-based counts and latencies by allowlisted log fields only, uptime-check results for `/healthz`; alerts on them reach only the founder (Google Cloud mobile app, email) as metric names and values | 24 months (Google's fixed retention) |
 | **Crash reports** (Sentry, US or EU org by region) | exception type, stack trace, the message for our own error classes only, app version, OS, device model, region | 30 days (Developer plan) |
 
-**Allowlisted log fields:** route, status, latency, outcome kind, region, call type, model id, prompt version, app version, platform. Never request or response bodies, account id, email, IP, user agent or Inquiry id, and never an upstream error body. One logger with a typed field list enforces this, with a test that fails on any other field. Cloud Run's built-in request logs (which carry IP and user agent) are excluded on the `_Default` sink, and `_Default` is routed to the regional buckets. Error Reporting is turned off (it is global).
+**Allowlisted log fields:** route, status, latency, outcome kind, region, call type, model id, prompt version, app version, platform. Never request or response bodies, account id, email, IP, user agent or Inquiry id, and never an upstream error body. One logger with a typed field list enforces this, with a test that fails on any other field. Cloud Run's built-in request logs (which carry IP and user agent) are excluded on the `_Default` sink, and so is the load balancer's (`http_load_balancer`), whose request logging stays off, and `_Default` is routed to the regional buckets. Error Reporting is turned off (it is global).
 
 **Admin audit logs** (`_Required`, global, 400 days, fixed by Google) record only the founder's and service accounts' actions on the project. Data Access audit logs stay off.
 
@@ -57,6 +57,7 @@ Device increments go over an authenticated request so they can't be spammed; the
 | **Apple / Google sign-in** | Identity tokens, verified on our backend | Apple, Google |
 | **Email provider** (in the person's region; to be chosen) | Email address, one-time code, account notices; marketing email only with opt-in | Per the provider |
 | **Sentry** | Crash reports as above. Its own account and settings data is always in the US | US (Iowa) or EU (Frankfurt) org |
+| **Google, Firebase Hosting** (web) | Web visitors' IP addresses, for abuse detection and usage analysis. Hosting request logs are never linked to our Cloud Logging | Global, "a few months" (Google's own retention) |
 | **Expo, beta builds only** | `EAS-Client-ID`, IP, platform, runtime version, on each update check from `development` / `preview` builds; told in the beta invite | US. Store builds have updates disabled and send nothing |
 | **Apple iCloud / Google backup** | The person's encrypted Inquiries, with the key carried end-to-end encrypted (iCloud Keychain, Block Store), unreadable to Apple or Google ([ADR 0008](../adr/0008-inquiries-travel-only-in-the-persons-own-encrypted-backups-and-exports.md)) | The person's own backup |
 
@@ -67,9 +68,8 @@ Device increments go over an authenticated request so they can't be spammed; the
 - No push notifications or push tokens. A reminder that the next Inquiry has opened, if any, is a local notification scheduled on the device.
 - No reCAPTCHA or App Check on web.
 - No over-the-air updates in store builds, and no `expo-insights` or EAS Observe.
-- No IP-derived state stored: the Utah check runs in memory and returns a flag.
+- No IP-derived location stored: the load balancer resolves the country from the IP in transit, `GET /country` returns only the country, and it is never stored or logged server-side. No state or city is looked up. On the device the last looked-up country and any manual pick are kept in the settings store.
 
 ## Still to check
 
-- What Firebase Hosting logs for the web app, and where.
 - Apple's App Attest data handling, from Apple's own pages.
