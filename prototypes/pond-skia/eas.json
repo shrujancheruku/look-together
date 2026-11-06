@@ -1,0 +1,9 @@
+{
+  "cli": { "appVersionSource": "local" },
+  "build": {
+    "proto": { "distribution": "internal", "android": { "buildType": "apk" }, "env": { "EXPO_PUBLIC_SKIA": "v2" } },
+    "bench": { "extends": "proto", "env": { "EXPO_PUBLIC_SKIA": "v2", "EXPO_PUBLIC_AUTOBENCH": "1" } },
+    "proto-v3": { "extends": "proto", "env": { "EXPO_PUBLIC_SKIA": "v3" } },
+    "bench-v3": { "extends": "proto", "env": { "EXPO_PUBLIC_SKIA": "v3", "EXPO_PUBLIC_AUTOBENCH": "1" } }
+  }
+}
