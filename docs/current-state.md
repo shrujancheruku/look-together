@@ -107,7 +107,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **No analytics SDK, no push, no stable id for analytics.** Aggregate counters only, in regional Firestore. Return rate comes from the device-side `returning` bucket ([Telemetry][44]).
 - **Sentry:** a US and an EU org, on by default with an off switch, stripped of ids and content ([Telemetry][44]). A device crash before the region is known waits in memory until it is, or is dropped ([Architecture review][88]).
 - **Logs:** one typed allowlisted logger into regional buckets for 30 days. Cloud Run request logs are excluded and Error Reporting is off ([Telemetry][44]).
-- **No OTA updates in store builds.** Beta builds keep EAS Update, which the beta invite discloses ([Telemetry][44]).
+- **No OTA updates in store builds.** Beta builds keep EAS Update on channel `beta`, which the beta invite discloses ([Telemetry][44], [Environments][150]).
 - **Reminder:** an opt-in local notification on native ("Today's Inquiry is open."), never naming a Problem ([Telemetry][44], [Wording][61]).
 - **Monitoring:** log-based metrics from allowlisted fields. Urgent alerts go by Google Cloud app push, notices by email. A daily phone dashboard, a weekly review via `pnpm stats`. Alerts are tested on staging before launch ([Running it alone][59]).
 
@@ -120,7 +120,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Infrastructure and model
 
-- **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript on Hono, with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript, all in Google Cloud project `look-together` ([Backend language][26], [Regional layout][28], [Dictation][36]).
+- **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript on Hono, with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript; production in Google Cloud project `look-together`, staging in `look-together-staging` ([Backend language][26], [Regional layout][28], [Dictation][36], [Environments][150]).
 - **LLM interface:** `call(kind: breakdown | turn | classify, prompt, input, outputSchema)` returns the output typed by that schema with provider-neutral usage, or `blocked`, or `failed`. The caller passes the schema (`vN`'s model output, or the classifier's backend-owned one) and the adapter never imports `versions`. Thinking level and every Vertex setting live in the adapter; the turn module decides what `blocked` means. The evaluation judge is outside it ([Architecture review][88], [Schema owner][145]).
 - **Vertex schema:** the adapter converts the schema with `z.toJSONSchema` plus a Gemini override (`const` → one-value `enum`, no `$schema`), sends it as `responseJsonSchema`, and re-parses every reply with the same schema, since Gemini ignores length keywords; a parse failure is `failed`. A test fails on any keyword outside Vertex's supported list ([Schema source][144], [Schema owner][145]).
 - **Region config:** each backend builds one region value at boot and passes it into every adapter; nothing else reads the environment for it ([Architecture review][88]).
@@ -135,6 +135,16 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **Evaluation set:** synthetic, ~30 ordinary and ~30 distress cases plus injection and non-Problem cases, each a `vN` request body run through the turn module ([Turn wire contract][143]). A fast tier runs on PRs and a gate tier (5 runs each) before launch or any model or prompt change. Code checks what's countable, by running the model's output through the reducer and failing on any refusal, plus the text checks (no "I", no Krishnamurti), and an Opus 5.5 judge the rest; the founder's blind read decides. Zero tolerance on hard lines. The distress classifier is picked on 100% Step-out recall ([Evaluation][17], [No answer][41]).
 - **Gate records:** one pass per (prompt hash, model id, protocol version), in the repo. The prompt hash covers the prompt text plus the generated Vertex schema ([Schema owner][145]). A deploy that lacks one fails ([Versioning][48]).
 - **Order:** friends test (15–20 known adults) → closed beta (~100 strangers by link) → public launch. Nobody but the founder sees the app before the whole pixel world is built. The beta opens only after the full gate, the LLC and the lawyer and clinician reviews ([Beta][81]).
+
+## Environments and release
+
+- **Two environments, two projects.** Staging (`staging-eu`, `staging-us` in `look-together-staging`) is a throwaway two-region copy on real Vertex with its own lowered quota, billing budget, `disableCache` and a low spend ceiling; its data is never promoted. Production (`prod-eu`, `prod-us` in `look-together`) serves the friends test, the closed beta and launch alike. Every Pulumi stack names its project. The fake model is for CI and the smoke test only ([Environments][150]).
+- **Our own API hostnames:** `eu.api.<domain>` and `us.api.<domain>` (staging under `api.staging.<domain>`), never `run.app`, because store builds bundle the region table and get no OTA. What fronts them is the crisis-contact country ticket's call. Staging may use `run.app` until the domain exists; production can't ([Environments][150]).
+- **Web:** one Firebase Hosting site per environment, with request logging off. Hosting keeps visitor IPs for "a few months", globally, which the closed list records ([Environments][150], [IP lookup research][152]).
+- **Three EAS profiles, one set of bundle ids:** `development` (dev client, founder only, staging, OTA on), `preview` (TestFlight external and the Play closed track, production, EAS Update on channel `beta`) and `production` (stores, production, updates disabled). `runtimeVersion` follows the fingerprint, and each profile bundles its environment's region table. A store build replaces the beta build in place, so Accounts carry over ([Environments][150], [Beta][81]).
+- **Release path:** a merge to `main` deploys the staging backends and web. A SemVer tag `vX.Y.Z` versions the whole repo and runs one release workflow: production backend in both regions (failing without a gate record) → web. Then either `eas update --channel beta`, or a manual dispatch that builds and submits to TestFlight external and the Play closed track (to store review after launch), since App Review timing is the founder's call ([Environments][150]).
+- **Secrets:** each region's session signing key, IP-hash salt (never rotated, since that resets every meter), email-provider keys and the Apple sign-in key are regional Secret Manager secrets in that region's project. A wizard sets them once; Pulumi references them by name, never holding values in config or state. CI uses Workload Identity Federation, with no JSON keys. App Store Connect and Play credentials are EAS secrets. Google client ids and Sentry DSNs are bundled ([Environments][150]).
+- **Invite gate before launch:** a new Account on web needs a shared invite code from the friends-test or beta link (`?invite=…`), each with a seat cap. Signing in to an existing Account never needs one, and native needs none, since TestFlight, the Play Google Group and attestation gate it. Codes and a per-region `signups: invite | open` switch live in server config beside the pause switch, checked as one admission row. The Account carries no beta flag; launch flips the switch to `open` with no migration. "New Accounts per invite code" is counted ([Environments][150]).
 
 ## Versioning
 
@@ -338,3 +348,5 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [145]: https://github.com/shrujancheruku/look-together/issues/145
 [146]: https://github.com/shrujancheruku/look-together/issues/146
 [149]: https://github.com/shrujancheruku/look-together/issues/149
+[150]: https://github.com/shrujancheruku/look-together/issues/150
+[152]: https://github.com/shrujancheruku/look-together/issues/152
