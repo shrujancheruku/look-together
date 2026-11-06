@@ -8,7 +8,7 @@ Inspired by the way J. Krishnamurti asked questions. Knowing anything about him 
 
 ## Status
 
-Planning. Nothing is built yet beyond throwaway prototypes. The route to an MVP spec is charted on the [Map: Look Together MVP](https://github.com/shrujancheruku/look-together/issues/1), whose decision tickets are worked one at a time.
+Building. The decisions were made on the [Map: Look Together MVP](https://github.com/shrujancheruku/look-together/issues/1) and stand in [`docs/current-state.md`](docs/current-state.md); the MVP is built from the [spec](https://github.com/shrujancheruku/look-together/issues/88) and its tickets. Nothing runs yet beyond throwaway prototypes.
 
 ## Principles
 
@@ -32,10 +32,12 @@ Planning. Nothing is built yet beyond throwaway prototypes. The route to an MVP 
 ```text
 GLOSSARY.md       # domain language: Problem, Inquiry, Assumption, Breakdown, Probe, Path, Reflection, Recap...
 docs/
+├── current-state.md  # every decision that stands, once each "partly supersedes" is applied
 ├── adr/          # decisions that are hard to reverse
 ├── agents/       # how agent skills use the issue tracker, labels and domain docs
-└── privacy/      # the closed list: everything we keep, count or let others see
-prototypes/       # throwaway prototypes that answered design questions
+├── privacy/      # the closed list: everything we keep, count or let others see
+└── research/     # the research the decisions cite
+prototypes/       # throwaway prototypes that answered design questions, kept as references for the build
 ```
 
 Issues are tracked in [GitHub Issues](https://github.com/shrujancheruku/look-together/issues). Use the glossary's terms in issues, code and copy.

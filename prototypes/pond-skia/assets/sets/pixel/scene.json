@@ -1,0 +1,87 @@
+{
+  "version": 0,
+  "set": "pixel",
+  "kind": "pixel",
+  "source": "Gemini 3 Pro Image; backgrounds snapped at --grid 7.11, sprites (sprites-scene) on their detected grid",
+  "art": {
+    "width": 214,
+    "height": 384
+  },
+  "waterTop": {
+    "spring": 232,
+    "autumn": 224
+  },
+  "seasons": {
+    "spring": {
+      "bg": "bg-spring.png"
+    },
+    "autumn": {
+      "bg": "bg-autumn.png"
+    }
+  },
+  "sprites": {
+    "file": "sprites.png",
+    "boxes": {
+      "padFresh": {
+        "x": 5,
+        "y": 5,
+        "w": 33,
+        "h": 24
+      },
+      "padYellow": {
+        "x": 43,
+        "y": 5,
+        "w": 32,
+        "h": 24
+      },
+      "padBrown": {
+        "x": 80,
+        "y": 5,
+        "w": 33,
+        "h": 24
+      },
+      "lotus": {
+        "x": 5,
+        "y": 34,
+        "w": 30,
+        "h": 26
+      },
+      "bud": {
+        "x": 40,
+        "y": 34,
+        "w": 17,
+        "h": 23
+      },
+      "boat": {
+        "x": 65,
+        "y": 31,
+        "w": 43,
+        "h": 20
+      },
+      "leafGreen1": {
+        "x": 62,
+        "y": 53,
+        "w": 12,
+        "h": 9
+      },
+      "leafOrange1": {
+        "x": 77,
+        "y": 53,
+        "w": 9,
+        "h": 9
+      },
+      "leafOrange2": {
+        "x": 89,
+        "y": 54,
+        "w": 11,
+        "h": 9
+      },
+      "leafGreen2": {
+        "x": 103,
+        "y": 53,
+        "w": 10,
+        "h": 8
+      }
+    }
+  }
+}

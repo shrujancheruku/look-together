@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inquiry Flow Prototype</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1d1d1b;--muted:#6b6b66;--line:#e3e2dc;--card:#fff;--accent:#2f5d8a;--accent-soft:#e7eef6;--ok:#2e7d4f;--drop:#b3402a;--app:#8a6400;--chg:#fff4cc;--mark:#fde7a6}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe6;--muted:#9a9993;--line:#34342f;--card:#1f1f1d;--accent:#8db4dc;--accent-soft:#22303d;--ok:#6fcf97;--drop:#ff8a70;--app:#e0b84a;--chg:#3b3420;--mark:#5a4a14}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:24px 16px 8px;max-width:1300px;margin:0 auto}
+h1{margin:0 0 4px;font-size:22px}
+h2{font-size:15px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+h3{font-size:16px;margin:0 0 6px}
+.lede{color:var(--muted);max-width:900px;margin:4px 0}
+.badge{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;max-width:1300px;margin:0 auto;padding:12px 16px 60px}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+section.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tabs button{border:1px solid var(--line);background:transparent;color:var(--fg);padding:5px 10px;border-radius:99px;font-size:13px;cursor:pointer}
+.tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+button.act{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:8px 10px;border-radius:8px;margin:6px 0;cursor:pointer;font-size:14px}
+button.act .sub{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+button.act.next{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+button.act.done{opacity:.55}
+button.act:disabled{cursor:default}
+button.small,.fp button{border:1px solid var(--accent);background:transparent;color:var(--accent);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:13px;margin:2px 4px 2px 0}
+.fp label{font-size:12.5px;color:var(--muted);display:block;margin-top:6px}
+.fp input,.fp select,.fp textarea{width:100%;font:inherit;font-size:13.5px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg)}
+.fp .row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}
+.fp .row>*{flex:1 1 140px}
+.fp fieldset{border:1px solid var(--line);border-radius:8px;margin:10px 0;padding:8px 10px}
+.fp legend{font-size:13px;font-weight:600;padding:0 4px}
+.qs{margin:8px 0 0;padding-left:18px;color:var(--fg)}
+.qs li{margin:3px 0}
+.watch{background:var(--accent-soft);border-radius:8px;padding:8px 10px;margin:8px 0;font-size:14px}
+.log li{list-style:none;margin:3px 0;padding-left:22px;position:relative}
+.log{padding:0;margin:0}
+.log li::before{position:absolute;left:0;font-weight:700}
+.log .ok::before{content:"✓";color:var(--ok)}
+.log .drop{color:var(--drop)}.log .drop::before{content:"✕";color:var(--drop)}
+.log .app::before{content:"→";color:var(--app)}
+.log .app{color:var(--app)}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:3px 12px;margin:0}
+dl.kv dt{color:var(--muted);font-size:13px}
+dl.kv dd{margin:0}
+.cards{display:grid;gap:10px}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.card.chg{background:var(--chg)}
+.card.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.card .top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.chip{font-size:12px;padding:0 7px;border-radius:99px;border:1px solid var(--line)}
+.probe{font-size:15.5px;margin:4px 0}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:3px}
+.premise{font-size:13.5px}
+.hidden{color:var(--muted);font-style:italic}
+.meta{font-size:13px;color:var(--muted)}
+.turns{max-height:340px;overflow:auto;border-top:1px solid var(--line);margin-top:6px}
+.turn{padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
+.turn .who{font-size:12px;color:var(--muted)}
+.gone{opacity:.45}
+.banner{border-left:3px solid var(--drop);padding:6px 10px;margin:8px 0;background:var(--chg);font-size:14px}
+.recap{border:1px solid var(--accent);border-radius:10px;padding:14px}
+.recap li{margin:6px 0}
+.flag{font-size:12.5px;color:var(--drop)}
+code{font-size:12.5px}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">PROTOTYPE · throwaway</span>
+  <h1>Does the chosen Inquiry structure hold up in the awkward cases?</h1>
+  <p class="lede">The device holds an Inquiry and its Assumptions as records. Each model reply comes with proposed <b>events</b>, and one shared set of rules checks each event before applying it (from <i>Who drives an Inquiry: an app-owned flow or one conversation with the model?</i>). This page lets you push that model through the awkward cases. The model's replies are scripted: no real model is called. On the left, pick a walkthrough and press its steps in order, or use free play. On the right is everything the device holds, re-drawn after each press.</p>
+  <p class="lede">Key: <span style="color:var(--ok)">✓ applied</span> · <span style="color:var(--drop)">✕ refused by the rules</span> · <span style="color:var(--app)">→ what the app does on its own</span>. A yellow card changed with the last press.</p>
+</header>
+<main>
+  <div>
+    <section class="panel">
+      <h2>Guided walkthroughs</h2>
+      <div class="tabs" id="tabs"></div>
+      <div id="scenario"></div>
+    </section>
+    <section class="panel fp" id="freeplay"></section>
+  </div>
+  <div id="state"></div>
+</main>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// The portable module: the Inquiry rules. Pure: no DOM. step(inquiry, input)
+// returns { inquiry, log }. The log is a prototype convenience that explains
+// each decision in plain words.
+// ─────────────────────────────────────────────────────────────────────────────
+const Inquiry = (() => {
+  const ANGLE_LIMIT = 3
+  const RESUME_DAYS = 7
+  const DAY = 86400000
+  const HANDOFF = "I'm going to stop the Inquiry here. I'm an AI, not a crisis service, and what you've just said matters more than this. Please reach out to one of these people now: [your local crisis contacts]."
+  const ANGLES = { name: 'Name that it is stuck', narrow: 'Narrow it', slow: 'Slow down', analogy: 'Try an analogy', reveal: 'Reveal the premise' }
+
+  const norm = s => (s || '').toLowerCase().replace(/\s+/g, ' ').trim()
+  const quoteFound = (quote, text) => norm(quote) !== '' && norm(text).includes(norm(quote))
+
+  function create({ id, problem, region = 'us', at }) {
+    return {
+      schemaVersion: 1, id, createdAt: at, region, problem,
+      state: { kind: 'opening' }, paused: false, assumptions: [], transcript: [],
+      soften: { on: false, checkInDone: false },
+    }
+  }
+
+  const find = (inq, id) => inq.assumptions.find(a => a.id === id)
+  const current = inq => inq.state.kind === 'dialogue' ? find(inq, inq.state.assumptionId) : undefined
+
+  function newAssumption(inq, { premise, probe, keyWords }, origin) {
+    const a = { id: 'A' + (inq.assumptions.length + 1), premise, probe, keyWords, origin, status: 'not_looked_at', angles: [], earlier: [] }
+    inq.assumptions.push(a)
+    return a
+  }
+
+  function addTurn(inq, role, text, channel, at) {
+    const t = { id: 'T' + (inq.transcript.length + 1), role, text, channel, at }
+    const cur = current(inq)
+    if (cur) t.assumptionId = cur.id
+    inq.transcript.push(t)
+  }
+
+  function endInquiry(inq, how, at, L) {
+    for (const a of inq.assumptions) if (a.status === 'exploring') {
+      a.status = 'done'
+      if (!a.outcome) { a.outcome = 'unchallenged'; L.app(`${a.id} was still being looked at, so it's closed as "unchallenged".`) }
+    }
+    if (inq.pendingAdd) { L.app('"Add it?" was never answered, so the offered Assumption is dropped.'); delete inq.pendingAdd }
+    inq.state = { kind: 'ended', how }
+    inq.endedAt = at
+    inq.paused = false
+  }
+
+  // Returns true when the turn ends in a Step-out.
+  function distress(inq, out, classifier, kind, at, channel, L) {
+    if (classifier === 'step_out' || out.distress === 'step_out') {
+      endInquiry(inq, 'step_out', at, L)
+      inq.stepOut = { trigger: classifier === 'step_out' ? 'classifier' : 'model', kind: kind || 'self', at }
+      addTurn(inq, 'app', HANDOFF, channel, at)
+      L.app(`Step-out, triggered by ${inq.stepOut.trigger === 'classifier' ? 'the distress classifier' : "the model's distress flag"}. The model's reply and events on this turn are ignored, and the fixed handoff is shown instead. This Inquiry can never resume.`)
+      return true
+    }
+    if ((classifier === 'soften' || out.distress === 'soften') && !inq.soften.on) {
+      inq.soften.on = true
+      L.ok('Soften is on: from now on every call tells the model to go gentler.')
+    }
+    return false
+  }
+
+  function pickRefusal(inq, id) {
+    if (inq.pendingAdd) return '"Add it?" is still waiting for an answer'
+    if (!['choosing', 'dialogue'].includes(inq.state.kind)) return 'nothing can be picked right now'
+    const a = find(inq, id)
+    if (!a) return `there is no ${id}`
+    if (a.status === 'done') return `${id} is already finished`
+    if (current(inq)?.id === id) return `${id} is already being looked at`
+    return null
+  }
+
+  function doPick(inq, id, focusWord, how, L) {
+    const a = find(inq, id)
+    const prev = current(inq)
+    let fw = focusWord
+    if (fw && !a.keyWords.includes(fw)) { L.drop(`"${fw}" isn't one of ${id}'s key words, so the focus word is ignored.`); fw = undefined }
+    a.status = 'exploring'
+    inq.state = fw ? { kind: 'dialogue', assumptionId: id, focusWord: fw } : { kind: 'dialogue', assumptionId: id }
+    L.ok(`${how}: Dialogue on ${id}${fw ? ` (focus: "${fw}")` : ''}.` + (prev ? ` ${prev.id} is left part-way: still being looked at, with no outcome.` : ''))
+  }
+
+  function applyEvent(inq, ev, personText, L) {
+    const a = ev.assumptionId ? find(inq, ev.assumptionId) : undefined
+    const unknown = () => L.drop(`${ev.type} refused: there is no ${ev.assumptionId}.`)
+    switch (ev.type) {
+      case 'pick': {
+        const why = pickRefusal(inq, ev.assumptionId)
+        if (why) return L.drop(`The model's pick of ${ev.assumptionId} is refused: ${why}.`)
+        return doPick(inq, ev.assumptionId, ev.focusWord, `The model heard a pick of ${ev.assumptionId}`, L)
+      }
+      case 'angle': {
+        const cur = current(inq)
+        if (!cur) return L.drop('Angle refused: no Assumption is being looked at.')
+        cur.angles.push(ev.angle)
+        let note = ''
+        if (ev.angle === 'reveal' && !cur.premiseShown) { cur.premiseShown = 'angle'; note = ' The premise is now shown on the card.' }
+        return L.ok(`Angle on ${cur.id}: "${ANGLES[ev.angle]}". ${cur.angles.length} of ${ANGLE_LIMIT} used.${note}`)
+      }
+      case 'reveal_for_pushback': {
+        if (!a) return unknown()
+        if (a.premiseShown) return L.ok(`${a.id}'s premise is already on screen.`)
+        a.premiseShown = 'pushback'
+        return L.ok(`The person pushed back, so ${a.id}'s premise is now shown on its card.`)
+      }
+      case 'reword': {
+        if (!a) return unknown()
+        if (a.status === 'done') return L.drop(`Reword refused: ${a.id} is already finished.`)
+        if (!a.premiseShown) return L.drop(`Reword refused: ${a.id}'s premise hasn't been shown yet. Pushback shows it first.`)
+        if (!quoteFound(ev.quote, personText)) return L.drop(`Reword refused: "${ev.quote}" isn't word for word in what the person just said.`)
+        a.earlier.push({ premise: a.premise, probe: a.probe, quote: ev.quote })
+        Object.assign(a, { premise: ev.premise, probe: ev.probe, keyWords: ev.keyWords })
+        let note = ''
+        if (inq.state.kind === 'dialogue' && inq.state.assumptionId === a.id && inq.state.focusWord && !a.keyWords.includes(inq.state.focusWord)) {
+          delete inq.state.focusWord; note = ' The old focus word is no longer in the wording, so it is cleared.'
+        }
+        return L.ok(`${a.id} reworded (${a.earlier.length === 1 ? 'once' : a.earlier.length + ' times'}). The earlier wording is kept with the person's words. Angles stay at ${a.angles.length} of ${ANGLE_LIMIT}.${note}`)
+      }
+      case 'reject': {
+        if (!a) return unknown()
+        if (a.status === 'done') return L.drop(`Reject refused: ${a.id} is already finished.`)
+        if (!a.premiseShown) return L.drop(`Reject refused: the person hasn't seen ${a.id}'s premise, so they can't have rejected it.`)
+        if (!quoteFound(ev.quote, personText)) return L.drop(`Reject refused: "${ev.quote}" isn't word for word in what the person just said.`)
+        Object.assign(a, { status: 'done', outcome: 'rejected', quote: ev.quote })
+        if (current(inq)?.id === a.id || inq.state.assumptionId === a.id) inq.state = { kind: 'choosing' }
+        return L.ok(`${a.id} ends as "rejected", with the person's words. It stays on the card, never deleted.`)
+      }
+      case 'challenged': {
+        if (!a) return unknown()
+        if (a.status !== 'exploring') return L.drop(`Challenged refused: ${a.id} isn't being looked at.`)
+        if (!quoteFound(ev.quote, personText)) return L.drop(`Challenged refused: "${ev.quote}" isn't word for word in what the person just said.`)
+        Object.assign(a, { outcome: 'challenged', quote: ev.quote })
+        return L.ok(`${a.id} marked "challenged": the person questioned it themselves. Still being looked at.`)
+      }
+      case 'done': {
+        const cur = current(inq)
+        if (!cur || cur.id !== ev.assumptionId) return L.drop(`Done refused: ${ev.assumptionId} isn't the Assumption being looked at.`)
+        cur.status = 'done'
+        if (!cur.outcome) cur.outcome = 'unchallenged'
+        if (ev.openQuestion) cur.openQuestion = ev.openQuestion
+        inq.state = { kind: 'choosing' }
+        L.ok(`${cur.id} finished as "${cur.outcome}"${ev.openQuestion ? ', with an Open Question' : ''}. Back to choosing.`)
+        if (inq.assumptions.every(x => x.status === 'done')) L.app('Every Assumption is finished. The app could offer to stop.')
+        return
+      }
+      case 'propose_add': {
+        if (inq.pendingAdd) return L.drop('A second "Add it?" is refused: one is already waiting.')
+        inq.pendingAdd = { premise: ev.premise, probe: ev.probe, keyWords: ev.keyWords }
+        return L.ok('"Add it?" is now waiting for an answer. Picking is blocked until it is answered.')
+      }
+      case 'answer_add': {
+        if (!inq.pendingAdd) return L.drop('Answer refused: no "Add it?" is waiting.')
+        if (ev.accepted) { const n = newAssumption(inq, inq.pendingAdd, 'dialogue'); L.ok(`${n.id} added to the Breakdown from the Dialogue.`) }
+        else L.ok('"Add it?" declined. Nothing added.')
+        delete inq.pendingAdd
+        return
+      }
+      case 'offer_stop':
+        return L.app('The app shows "Stop here?" with an End button. Nothing changes unless the person ends.')
+    }
+  }
+
+  // Applies one model reply. Returns 'retry' when the whole reply is held back.
+  function applyOut(inq, out, personText, channel, at, L) {
+    const cur = current(inq)
+    const angleCount = (out.events || []).filter(e => e.type === 'angle').length
+    if (cur && angleCount && cur.angles.length + angleCount > ANGLE_LIMIT) {
+      L.drop(`The model tried angle ${cur.angles.length + 1} on ${cur.id}, but only ${ANGLE_LIMIT} are allowed. The whole reply is held back: not shown, not spoken.`)
+      L.app('The app calls the model once more for this turn, adding "angles left: 0. Leave an Open Question now."')
+      return 'retry'
+    }
+    for (const ev of out.events || []) applyEvent(inq, ev, personText, L)
+    addTurn(inq, 'app', out.reply, channel, at)
+  }
+
+  function step(inq0, input) {
+    const inq = structuredClone(inq0)
+    const log = []
+    const L = { ok: t => log.push({ kind: 'ok', text: t }), drop: t => log.push({ kind: 'drop', text: t }), app: t => log.push({ kind: 'app', text: t }) }
+    const at = input.at
+    const k = inq.state.kind
+    const live = () => {
+      if (k === 'ended') { L.drop('Refused: this Inquiry has ended.'); return false }
+      if (inq.paused) { L.drop('Refused: the Inquiry is paused (the help control is open).'); return false }
+      return true
+    }
+
+    switch (input.type) {
+      case 'breakdown': {
+        if (!live()) break
+        if (!['opening', 'clarifying'].includes(k)) { L.drop('Refused: the Breakdown has already been made.'); break }
+        const text = k === 'opening' ? inq.problem : input.personText
+        if (k === 'clarifying') inq.clarify.answer = text
+        addTurn(inq, 'person', text, input.channel || 'text', at)
+        const out = input.out
+        if (distress(inq, out, input.classifier, input.kind, at, input.channel || 'text', L)) break
+        if (out.clarify) {
+          if (inq.clarify) { L.drop('A second clarifying question is refused: only one is allowed.'); L.app('The app calls the model again, asking for the Breakdown.'); break }
+          inq.clarify = { question: out.clarify }
+          inq.state = { kind: 'clarifying' }
+          addTurn(inq, 'app', out.clarify, input.channel || 'text', at)
+          L.ok('The model asked one clarifying question before the Breakdown.')
+          break
+        }
+        const n = out.assumptions.length
+        if (n < 3 || n > 5) { L.drop(`A Breakdown of ${n} Assumptions is refused: it must be 3 to 5.`); L.app('The app calls the model again.'); break }
+        for (const x of out.assumptions) newAssumption(inq, x, 'breakdown')
+        inq.state = { kind: 'choosing' }
+        addTurn(inq, 'app', `(Breakdown shown: ${n} Probes. Shown on screen, not read aloud.)`, input.channel || 'text', at)
+        L.ok(`Breakdown of ${n} Assumptions. The person sees only each Probe. The premises stay hidden.`)
+        break
+      }
+
+      case 'turn': {
+        if (!live()) break
+        if (['opening', 'clarifying'].includes(k)) { L.drop('Refused: Dialogue turns start after the Breakdown.'); break }
+        const { input: ti, out, classifier, kind } = input
+        const ch = ti.channel || 'text'
+        addTurn(inq, 'person', ti.text, ch, at)
+        if (distress(inq, out, classifier, kind, at, ch, L)) break
+        let events = out.events || []
+        if (ti.kind === 'add_own') {
+          const p = events.find(e => e.type === 'propose_add')
+          events = events.filter(e => e !== p)
+          if (!p) L.drop("The model didn't return a premise and Probe for the person's own Assumption, so nothing was added.")
+          else { const a = newAssumption(inq, p, 'person'); L.ok(`${a.id} added: the person's own Assumption, worded by the model as a premise and a Probe.`) }
+        }
+        applyOut(inq, { ...out, events }, ti.text, ch, at, L)
+        break
+      }
+
+      case 'retry': {
+        if (!live()) break
+        const last = inq.transcript[inq.transcript.length - 1]
+        if (!last || last.role !== 'person') { L.drop('Refused: there is no held-back turn to call again.'); break }
+        if (distress(inq, input.out, 'none', 'self', at, last.channel, L)) break
+        const cur = current(inq)
+        if (applyOut(inq, input.out, last.text, last.channel, at, L) === 'retry') break
+        if (cur && current(inq)?.id === cur.id && cur.angles.length >= ANGLE_LIMIT)
+          L.drop(`The retried reply still didn't finish ${cur.id} with an Open Question. Nothing forces one.`)
+        break
+      }
+
+      case 'tap_pick': {
+        if (!live()) break
+        const why = pickRefusal(inq, input.assumptionId)
+        if (why) { L.drop(`The tap on ${input.assumptionId} is refused: ${why}.`); break }
+        doPick(inq, input.assumptionId, input.focusWord, `The person tapped ${input.assumptionId}`, L)
+        break
+      }
+
+      case 'pause':
+        if (k === 'ended') { L.drop('Refused: this Inquiry has ended.'); break }
+        if (inq.paused) { L.drop('Already paused.'); break }
+        inq.paused = true
+        L.ok('Paused: the help control is open. The Inquiry is not locked: it can resume.')
+        break
+
+      case 'resume':
+        if (!inq.paused) { L.drop('Not paused.'); break }
+        inq.paused = false
+        L.ok('Resumed where it was.')
+        break
+
+      case 'end':
+        if (k === 'ended') { L.drop('Refused: this Inquiry has already ended.'); break }
+        endInquiry(inq, 'recap', at, L)
+        L.ok('The person ended the Inquiry. The Recap is built from the records, and the transcript is deleted.')
+        break
+
+      case 'launch': {
+        if (k === 'ended') { L.ok('App opened. This Inquiry had already ended.'); break }
+        const age = Date.parse(at) - Date.parse(inq.createdAt)
+        if (age >= RESUME_DAYS * DAY) {
+          endInquiry(inq, 'recap', at, L)
+          L.app(`App opened ${Math.floor(age / DAY)} days after this Inquiry began. It's past ${RESUME_DAYS} days, so the app ends it now: the Recap is built and the transcript deleted.`)
+        } else L.ok(`App opened on day ${Math.floor(age / DAY)}. The unfinished Inquiry can be resumed for ${(RESUME_DAYS * DAY - age) / DAY < 1 ? 'under a day' : Math.floor((RESUME_DAYS * DAY - age) / DAY) + ' more days'}.`)
+        break
+      }
+    }
+    return { inquiry: inq, log }
+  }
+
+  // What stays on the device once an Inquiry ends.
+  function toStored(inq) {
+    if (inq.state.kind !== 'ended') return null
+    const s = { schemaVersion: inq.schemaVersion, id: inq.id, createdAt: inq.createdAt, endedAt: inq.endedAt, region: inq.region, problem: inq.problem, ending: inq.state.how, assumptions: inq.assumptions }
+    if (inq.clarify?.answer) s.clarify = inq.clarify
+    return s
+  }
+
+  // The Recap is a view of the stored records, nothing more.
+  function recap(s) {
+    const item = a => ({ id: a.id, origin: a.origin, premise: a.premise, probe: a.probe, firstPutAs: a.earlier[0]?.premise, rewords: a.earlier.length, outcome: a.outcome, quote: a.quote, openQuestion: a.openQuestion, premiseNeverShown: !a.premiseShown })
+    return {
+      problem: s.problem, ending: s.ending,
+      lookedAt: s.assumptions.filter(a => a.status === 'done').map(item),
+      notLookedAt: s.assumptions.filter(a => a.status !== 'done').map(item),
+    }
+  }
+
+  return { create, step, toStored, recap, current, ANGLES, ANGLE_LIMIT, DAY }
+})()
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Throwaway page shell: scripted scenarios, the voice session stand-in, render.
+// ─────────────────────────────────────────────────────────────────────────────
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
+const START = Date.parse('2026-11-02T09:00:00Z')
+
+const PROBLEM = "My first product launch flopped and now I keep thinking I'm just not cut out for building things."
+const BREAKDOWN = {
+  distress: 'none',
+  assumptions: [
+    { premise: "that one failed launch decides whether you're any good", probe: "What makes one launch the measure of whether you're any good?", keyWords: ["whether you're any good"] },
+    { premise: 'that being cut out for something is fixed before you start', probe: 'Where does the idea come from that people are cut out for building things or not?', keyWords: ['cut out for'] },
+    { premise: 'that going over it again will settle it', probe: 'What are you hoping to find by going over it again?', keyWords: ['going over it again'] },
+    { premise: 'that others see the launch the way you do', probe: 'How do you know how the others see it?', keyWords: ['the others'] },
+  ],
+}
+
+const E = {
+  pick: (id, w) => ({ type: 'pick', assumptionId: id, ...(w ? { focusWord: w } : {}) }),
+  angle: a => ({ type: 'angle', angle: a }),
+  reveal: id => ({ type: 'reveal_for_pushback', assumptionId: id }),
+  reword: (id, premise, probe, keyWords, quote) => ({ type: 'reword', assumptionId: id, premise, probe, keyWords, quote }),
+  reject: (id, quote) => ({ type: 'reject', assumptionId: id, quote }),
+  challenged: (id, quote) => ({ type: 'challenged', assumptionId: id, quote }),
+  done: (id, openQuestion) => ({ type: 'done', assumptionId: id, ...(openQuestion ? { openQuestion } : {}) }),
+  add: (premise, probe, keyWords) => ({ type: 'propose_add', premise, probe, keyWords }),
+  answer: accepted => ({ type: 'answer_add', accepted }),
+  stop: () => ({ type: 'offer_stop' }),
+}
+
+function eventText(e) {
+  switch (e.type) {
+    case 'pick': return `pick ${e.assumptionId}${e.focusWord ? ` on "${e.focusWord}"` : ''}`
+    case 'angle': return `angle: ${Inquiry.ANGLES[e.angle]}`
+    case 'reveal_for_pushback': return `show ${e.assumptionId}'s premise`
+    case 'reword': return `reword ${e.assumptionId} to "${e.premise}", quoting "${e.quote}"`
+    case 'reject': return `reject ${e.assumptionId}, quoting "${e.quote}"`
+    case 'challenged': return `${e.assumptionId} challenged, quoting "${e.quote}"`
+    case 'done': return `finish ${e.assumptionId}${e.openQuestion ? ` with Open Question "${e.openQuestion}"` : ''}`
+    case 'propose_add': return `"Add it?": "${e.premise}"`
+    case 'answer_add': return `"Add it?" answered ${e.accepted ? 'yes' : 'no'}`
+    case 'offer_stop': return 'offer to stop'
+  }
+}
+function outText(reply, events = [], o = {}) {
+  const bits = [`Model replies: "${reply}"`]
+  if (events.length) bits.push('events: ' + events.map(eventText).join('; '))
+  if (o.distress && o.distress !== 'none') bits.push(`model's distress flag: ${o.distress}`)
+  if (o.classifier && o.classifier !== 'none') bits.push(`classifier: ${o.classifier}`)
+  return bits.join(' · ')
+}
+
+// Scripted steps
+const S_ = {
+  start: () => [
+    { label: 'The person writes their Problem', sub: `"${PROBLEM}"`, act: { type: 'start', problem: PROBLEM } },
+    { label: 'The model returns the Breakdown: 4 Probes', act: { type: 'breakdown', out: BREAKDOWN } },
+  ],
+  tap: (id, w) => ({ label: `The person taps ${id}${w ? ` on "${w}"` : ''}`, act: { type: 'tap_pick', assumptionId: id, focusWord: w } }),
+  say: (text, reply, events = [], o = {}) => ({
+    label: `The person ${o.own ? 'adds their own Assumption' : 'writes'}: "${text}"`, sub: outText(reply, events, o),
+    act: { type: 'turn', input: { kind: o.own ? 'add_own' : 'say', text, channel: 'text' }, out: { reply, distress: o.distress || 'none', events }, classifier: o.classifier || 'none', kind: o.kind },
+  }),
+  retry: (reply, events) => ({ label: 'The model is called again', sub: outText(reply, events), act: { type: 'retry', out: { reply, distress: 'none', events } } }),
+  end: () => ({ label: 'The person ends the Inquiry', act: { type: 'end' } }),
+  launch: days => ({ label: `The person closes the app and opens it ${days} day${days > 1 ? 's' : ''} later`, act: { type: 'launch', days } }),
+  pause: () => ({ label: 'The person opens the help control (pause)', act: { type: 'pause' } }),
+  resume: () => ({ label: 'The person closes the help control (resume)', act: { type: 'resume' } }),
+  vconnect: () => ({ label: 'The person switches to voice', act: { type: 'v_connect' } }),
+  vhear: text => ({ label: `The person says: "${text}"`, act: { type: 'v_hear', text } }),
+  vthink: () => ({ label: 'The person says "let me think"', act: { type: 'v_think' } }),
+  vmic: () => ({ label: 'The person taps to turn the mic back on', act: { type: 'v_mic' } }),
+  vdone: (reply, events = [], o = {}) => ({ label: 'The person taps Done', sub: outText(reply, events, o) + (o.save === false ? ' · the app speaks before the device saves' : ''), act: { type: 'v_done', out: { reply, distress: o.distress || 'none', events }, classifier: o.classifier || 'none', save: o.save !== false } }),
+  vdrop: () => ({ label: 'The connection drops', act: { type: 'v_drop' } }),
+  vreconnect: () => ({ label: 'The app reconnects', act: { type: 'v_connect', reconnect: true } }),
+}
+
+const SCENARIOS = [
+  {
+    id: 'happy', title: 'Baseline',
+    about: 'An ordinary Inquiry, for comparison: pick a Probe, the person questions the premise themselves, the Assumption finishes, they end.',
+    watch: 'A1 ends as "challenged" with the quote checked word for word. The Recap shows the premise of every Assumption, including those not looked at.',
+    questions: ['The Recap shows A2–A4\'s premises, which the person never saw during the Inquiry (marked ⚑). Is the Recap where hidden premises should first appear, or should "not looked at" show the Probes?'],
+    steps: () => [...S_.start(), S_.tap('A1', "whether you're any good"),
+      S_.say("I guess because it was the first one. If I can't do the first one, why the second?", 'What would the first one prove that the second wouldn\'t?'),
+      S_.say('Nothing, really. I just decided it would prove something.', 'Is deciding that part of what weighs on you?', [E.challenged('A1', 'I just decided it would prove something')]),
+      S_.say('Yes. I think so.', 'Then let\'s leave that one there for now.', [E.done('A1')]),
+      S_.end()],
+  },
+  {
+    id: 'midangle', title: 'Pushback mid-angle',
+    about: 'The person is on A2 and one angle in ("Narrow it") when they push back on the premise. It is shown, then reworded, and the Dialogue carries on.',
+    watch: 'The angle count stays at 1 after the reword, and the next angle makes it 2 of 3, though the premise is now a different one.',
+    questions: ['Should a reword reset the angles, since the person is now looking at a different premise? Today the old premise\'s angles count against the new one.', 'The reveal and the reword happen on separate turns here. The rules would also accept both on one turn, before the person has answered "Does that fit?". Should they?'],
+    steps: () => [...S_.start(), S_.tap('A2', 'cut out for'),
+      S_.say('My dad always said some people are builders and some aren\'t.', 'What do you make of that, now?'),
+      S_.say('I don\'t know.', 'Let\'s narrow it: when did you last feel you weren\'t one?', [E.angle('narrow')]),
+      S_.say('Hang on, I don\'t think it\'s fixed. That\'s not what I\'m saying.', 'The question rests on this: that being cut out for something is fixed before you start. Does that fit?', [E.reveal('A2')]),
+      S_.say('No. It\'s more that I\'m scared it might be true.', 'So perhaps: that one launch can show you\'re not a builder. What would showing that take?', [E.reword('A2', 'that one launch can show you\'re not a builder', 'What would it take to find out you\'re not a builder?', ['find out'], 'I\'m scared it might be true')]),
+      S_.say('Another flop, I suppose.', 'Slowly, then: what happens in you when you picture another one?', [E.angle('slow')]),
+      S_.end()],
+  },
+  {
+    id: 'reword', title: 'Reword, reject, add',
+    about: 'A4 is reworded twice; a different belief is offered with "Add it?" in the same turn as the second reword; a rejection first fails the word-for-word check, then succeeds.',
+    watch: 'The refused reject: the record does not change, but the model\'s reply ("That one doesn\'t fit, then") is still shown. The Recap shows "first put as" with the original wording.',
+    questions: ['When an event is refused but the reply is kept, the person can hear something the records don\'t reflect ("doesn\'t fit, then" while A4 stays open). Keep the reply, or call the model again?', 'The Recap shows the first wording only. Should it show every rewording, or none?'],
+    steps: () => [...S_.start(), S_.tap('A4', 'the others'),
+      S_.say('Everyone on the team saw it fail. It\'s obvious.', 'The question rests on this: that others see the launch the way you do. Does that fit?', [E.reveal('A4')]),
+      S_.say('Not quite. They see it failed, but they don\'t judge me for it.', 'Then perhaps: that the team\'s view of the launch is the true one. What makes it the true one?', [E.reword('A4', 'that the team\'s view of the launch is the true one', 'What makes the team\'s view the true one?', ['the true one'], 'They see it failed')]),
+      S_.say('It\'s not about the team. It\'s my investors.', 'So: that your investors see you through this one launch. And maybe also something you feel you owe them. Add it?', [E.reword('A4', 'that your investors see you through this one launch', 'What do your investors actually see when they look at you?', ['investors'], 'It\'s my investors'), E.add('that you owe your investors a success', 'What do you think you owe them?', ['owe'])]),
+      S_.say('Yes, add it. And honestly I never cared what they think.', 'That one doesn\'t fit, then.', [E.answer(true), E.reject('A4', 'I never cared what anyone thinks')]),
+      S_.say('Right. I never cared what they think of me.', 'Then let\'s set that one aside, in your words.', [E.reject('A4', 'I never cared what they think')]),
+      S_.end()],
+  },
+  {
+    id: 'stuck', title: 'Stuck → reveal → reject',
+    about: 'On A3 the person has nothing to say. The model names that it is stuck, then reveals the premise as its second angle, and the person rejects it.',
+    watch: 'The premise is shown "as a stuck angle", and the reject is allowed only because it was shown. Try the free-play "reject" on a hidden premise: it is refused.',
+    questions: ['A rejected premise that was revealed as an angle, not by pushback: does "you said this didn\'t fit" read right in the Recap?'],
+    steps: () => [...S_.start(), S_.tap('A3', 'going over it again'),
+      S_.say('I don\'t know. Answers?', 'We seem to be going round. What answer are you hoping for?', [E.angle('name')]),
+      S_.say('I don\'t know.', 'Let me put the idea under the question plainly: that going over it again will settle it. Does it?', [E.angle('reveal')]),
+      S_.say('No, that\'s not it. I go over it because I can\'t stop, not to settle anything.', 'Then that one doesn\'t fit you.', [E.reject('A3', 'I can\'t stop, not to settle anything')]),
+      S_.end()],
+  },
+  {
+    id: 'angles', title: 'Angles run out',
+    about: 'Three angles on A1, then the model tries a fourth. The app holds back the whole reply and calls the model again for an Open Question.',
+    watch: 'The 4th-angle reply never reaches the transcript. The retry finishes A1 with an Open Question. Use free play to retry without a "finish": nothing forces it.',
+    questions: ['If the retry still doesn\'t leave an Open Question, what does the app do: write a fixed one, finish A1 with none, or call a third time?'],
+    steps: () => [...S_.start(), S_.tap('A1'),
+      S_.say('I can\'t explain it.', 'It seems to be stuck. Can we stay with that?', [E.angle('name')]),
+      S_.say('Not really.', 'Narrower, then: what about that one day felt like a verdict?', [E.angle('narrow')]),
+      S_.say('All of it.', 'If a friend\'s launch flopped, would it decide whether they\'re any good?', [E.angle('analogy')]),
+      S_.say('That\'s different.', 'Slowly: what makes it different?', [E.angle('slow')]),
+      S_.retry('Let\'s leave this one open. A question to take with you: what would you need to see to believe one launch doesn\'t decide it?', [E.done('A1', 'What would you need to see to believe one launch doesn\'t decide it?')]),
+      S_.end()],
+  },
+  {
+    id: 'shift', title: 'The Problem shifts',
+    about: 'Mid-Dialogue the person says the real thing is their co-founder leaving. There is no event to change the Problem, so the model can only offer a new Assumption.',
+    watch: 'The Problem stays as first written. A1 is left part-way when A5 is picked, then closes as "unchallenged" at the end.',
+    questions: ['Should there be a way to change the Problem (an event, or the person editing it), or does the Recap\'s "You came with…" rightly keep the original?', 'A1 was left after one turn and is recorded as "unchallenged", the same as a fully explored one. Should "left part-way" be its own outcome?'],
+    steps: () => [...S_.start(), S_.tap('A1'),
+      S_.say('Actually it\'s not the launch. It\'s that my co-founder left right after and I feel abandoned.', 'That sounds closer. Underneath it there may be this: that someone leaving says you weren\'t worth staying for. Add it?', [E.add('that someone leaving means you weren\'t worth staying for', 'What does their leaving say about you?', ['say about you'])]),
+      S_.say('Yes, add it. Let\'s look at that.', 'What does their leaving say about you?', [E.answer(true), E.pick('A5', 'say about you')]),
+      S_.say('That I wasn\'t enough to stay for.', 'Who decided that it says that?'),
+      S_.end()],
+  },
+  {
+    id: 'distress', title: 'Distress on the 3rd angle',
+    about: 'Soften turns on during the second angle; the third turn trips the classifier. The angle the model proposed on that turn is ignored, and the Inquiry is locked.',
+    watch: 'Events on the Step-out turn are ignored. A1 is closed as "unchallenged". The stored record keeps only "ending: step_out", not the kind of risk.',
+    questions: ['Does the person ever see a Recap of a stepped-out Inquiry (say, later on a list of past Inquiries)? If so, A1\'s "Looked at" reads oddly next to what happened.', 'Should a stepped-out Inquiry keep its Assumption records at all?'],
+    steps: () => [...S_.start(), S_.tap('A1'),
+      S_.say('I can\'t explain it.', 'It seems to be stuck. Can we stay with that?', [E.angle('name')]),
+      S_.say('I\'m just so tired of all of it.', 'That\'s a lot to carry. Let\'s go gently: what about the launch is heaviest?', [E.angle('narrow')], { distress: 'soften' }),
+      S_.say('Honestly some days I don\'t see the point of any of it. Of being here.', 'If a friend\'s launch flopped, would it decide…', [E.angle('analogy')], { classifier: 'step_out', kind: 'self' }),
+      S_.say('Sorry, I didn\'t mean it like that. Can we go on?', 'What makes one launch the measure?'),
+      S_.end()],
+  },
+  {
+    id: 'channels', title: 'Voice → text → voice',
+    about: 'Voice first, picking by speech; then text on a train; then voice again. Each voice session starts from the device\'s copy.',
+    watch: 'Each turn in the transcript keeps its channel. Switching to text closes the voice session; the second voice session starts from the device\'s copy.',
+    questions: ['When the person types while a voice session is open, should that quietly end the voice session, as here, or is voice a mode they leave explicitly?'],
+    steps: () => [...S_.start(), S_.vconnect(),
+      S_.vhear('The second one, about being cut out for it.'),
+      S_.vdone('Where does the idea come from, that people are cut out for building things or not?', [E.pick('A2', 'cut out for')]),
+      S_.say('Typing now, I\'m on a train. My dad said it so often I stopped hearing it.', 'And when you hear it now?'),
+      S_.vconnect(),
+      S_.vhear('Maybe I don\'t believe it. I just repeat it.'),
+      S_.vdone('You don\'t believe it, you repeat it. Stay with that a moment.', [E.challenged('A2', 'I don\'t believe it. I just repeat it')]),
+      S_.end()],
+  },
+  {
+    id: 'reconnect', title: '"Let me think" and a reconnect',
+    about: 'Mid-turn the person says "let me think"; the mic is off until they tap. Later the connection drops after the app has spoken a reply but before the device saved it.',
+    watch: 'Speech while the mic is off is not heard. The words before and after "let me think" join into one turn. After the drop, the reconnect starts from the device\'s copy, and the turn the person heard is gone.',
+    questions: ['Should the worker send the new Inquiry back for the device to save before it speaks the reply, so a drop can never lose a turn the person heard?', 'A tap on the device while voice is open changes the device\'s copy; here it is pushed to the worker. If the worker has an unsaved turn at that moment, which copy wins?'],
+    steps: () => [...S_.start(), S_.vconnect(), S_.tap('A4', 'the others'),
+      S_.vhear('I think it\'s because everyone saw it.'),
+      S_.vthink(),
+      S_.vhear('(mutters to themselves)'),
+      S_.vmic(),
+      S_.vhear('No. It\'s because I saw it.'),
+      S_.vdone('You saw it. What did you see?', [], { save: false }),
+      S_.vdrop(),
+      S_.vreconnect(),
+      S_.vhear('Sorry, did that go through?'),
+      S_.vdone('What would you like to say about how the others see it?'),
+      S_.end()],
+  },
+  {
+    id: 'own', title: 'The person\'s own Assumption',
+    about: 'The person adds a belief of their own. The model words it as a premise and a Probe. There is no dedicated event, so the model\'s "Add it?" event is reused and accepted straight away.',
+    watch: 'A5 comes from "the person". Its premise is the model\'s wording of what they wrote, hidden like the others.',
+    questions: ['The person wrote the belief themselves, so should its premise be shown straight away, or even be their own words?', 'If the model returns no wording, nothing is added. Should the app add the person\'s text as-is instead?'],
+    steps: () => [...S_.start(),
+      S_.say('I think I also assume I should have known better.', 'Added.', [E.add('that you should have seen the failure coming', 'What would knowing better have looked like?', ['knowing better'])], { own: true }),
+      S_.tap('A5', 'knowing better'),
+      S_.say('Spotting the signs, I guess.', 'Which signs were there to spot, at the time?'),
+      S_.end()],
+  },
+  {
+    id: 'pending', title: '"Add it?" left open',
+    about: 'An "Add it?" is waiting when the person taps another Assumption, then asks for it by voice. Both are refused until the "Add it?" is answered.',
+    watch: 'The tap is refused. The spoken pick is refused but the model\'s reply ("Sure, that one") is still shown, so the screen and the reply disagree.',
+    questions: ['Should picking another Assumption silently decline the open "Add it?", instead of being refused?'],
+    steps: () => [...S_.start(), S_.tap('A1'),
+      S_.say('It just felt like a test I failed.', 'There might be another belief here: that life is a series of tests. Add it?', [E.add('that life is a series of tests you pass or fail', 'Who is doing the marking?', ['marking'])]),
+      S_.tap('A3', 'going over it again'),
+      S_.say('Let\'s do the going-over-it one.', 'Sure, that one.', [E.pick('A3', 'going over it again')]),
+      S_.say('Oh, no, don\'t add that. The going-over-it one.', 'What are you hoping to find by going over it again?', [E.answer(false), E.pick('A3', 'going over it again')]),
+      S_.end()],
+  },
+  {
+    id: 'early', title: 'Ending before anything',
+    about: 'The model asks one clarifying question, the person answers, the Breakdown comes, and they end before looking at any Assumption.',
+    watch: 'Every Assumption is "not looked at". The Recap has no "looked at" section and shows four premises for the first time.',
+    questions: ['A Recap with nothing looked at: show it at all, or just "You came with… and stopped before looking"?'],
+    steps: () => [{ label: 'The person writes their Problem', sub: `"${PROBLEM}"`, act: { type: 'start', problem: PROBLEM } },
+      { label: 'The model asks a clarifying question', act: { type: 'breakdown', out: { clarify: 'When you say "not cut out for building things", is that about your work, or about you?', distress: 'none' } } },
+      { label: 'The person answers; the model returns the Breakdown', sub: '"About me, I think."', act: { type: 'breakdown', personText: 'About me, I think.', out: BREAKDOWN } },
+      S_.end()],
+  },
+  {
+    id: 'expiry', title: '7-day limit',
+    about: 'The person leaves an Inquiry part-way, comes back on day 3, adds a turn, then returns on day 7.',
+    watch: 'The 7 days run from when the Inquiry began, not from the last turn, so it ends at launch although it was used four days earlier. A2 is closed as "unchallenged".',
+    questions: ['Should 7 days run from the start, or from the last turn? From the last turn needs a "last active" field the records don\'t have.', 'Does the person see the Recap of an Inquiry that ended by itself, with a note that it timed out?'],
+    steps: () => [...S_.start(), S_.tap('A2', 'cut out for'),
+      S_.say('I\'ve always thought it.', 'Since when?'),
+      S_.launch(3),
+      S_.say('Since school, maybe.', 'What happened at school?'),
+      S_.launch(4),
+      S_.say('I want to carry on.', 'Where were we?')],
+  },
+]
+
+// Page state
+let S
+function reset() { S = { device: null, voice: null, lostWorker: null, now: START, log: [], before: {}, walk: null, idx: 0, queue: [] } }
+reset()
+
+const at = () => new Date(S.now).toISOString()
+const cardKey = inq => Object.fromEntries((inq?.assumptions || []).map(a => [a.id, JSON.stringify(a)]))
+const DEVICE_MOVES = ['tap_pick', 'pause', 'resume', 'end', 'launch']
+
+function runStep(input) {
+  const r = Inquiry.step(S.device, { ...input, at: at() })
+  S.device = r.inquiry
+  return r.log
+}
+
+function dispatch(act) {
+  S.before = cardKey(S.device)
+  S.now += 60000
+  let log = []
+  const V = S.voice
+  const note = (kind, text) => log.push({ kind, text })
+
+  if (act.type === 'start') {
+    S.device = Inquiry.create({ id: 'I1', problem: act.problem, at: at() }); S.voice = null; S.lostWorker = null
+    note('ok', 'A new Inquiry starts on the device.')
+  } else if (!S.device) {
+    note('drop', 'Start an Inquiry first.')
+  } else if (act.type === 'v_connect') {
+    if (S.device.state.kind === 'ended') note('drop', 'Refused: this Inquiry has ended.')
+    else if (V) note('drop', 'Voice is already on.')
+    else {
+      S.voice = { mic: 'on', heard: [], worker: S.device, unsaved: false }
+      note('ok', act.reconnect ? 'Reconnected. The device sends its saved copy to the voice worker.' : 'Voice is on. The device sends its copy of the Inquiry to the voice worker, which holds it in memory only.')
+      if (S.lostWorker && S.lostWorker.transcript.length > S.device.transcript.length) {
+        const gone = S.lostWorker.transcript.slice(S.device.transcript.length)
+        note('drop', 'Lost in the drop, never saved on the device: ' + gone.map(t => `${t.role === 'person' ? 'the person' : 'the app'}: "${t.text}"`).join(' / ') + '. The person heard the app\'s reply, but the Inquiry no longer has it.')
+      }
+      S.lostWorker = null
+    }
+  } else if (act.type.startsWith('v_')) {
+    if (!V) note('drop', 'Voice is off.')
+    else if (act.type === 'v_hear') {
+      if (V.mic === 'off') note('drop', `The mic is off ("let me think"), so this isn't heard: "${act.text}".`)
+      else { V.heard.push(act.text); note('ok', `Heard. Waiting for Done; the turn so far: "${V.heard.join(' ')}".`) }
+    } else if (act.type === 'v_think') { V.mic = 'off'; note('ok', '"Let me think" matched the fixed phrase list: the mic is off until the next tap. What was said so far is kept for this turn.') }
+    else if (act.type === 'v_mic') { V.mic = 'on'; note('ok', 'The mic is back on. The same turn continues.') }
+    else if (act.type === 'v_done') {
+      if (!V.heard.length) note('drop', 'Done with nothing said: no turn is sent.')
+      else {
+        const r = Inquiry.step(V.worker, { type: 'turn', input: { kind: 'say', text: V.heard.join(' '), channel: 'voice' }, out: act.out, classifier: act.classifier, at: at() })
+        V.worker = r.inquiry; V.heard = []
+        note('app', 'Done tapped. The voice worker calls the turn API with its copy.')
+        log.push(...r.log)
+        note('app', 'The app speaks the reply.')
+        if (act.save) { S.device = V.worker; note('ok', 'The worker sends the new Inquiry back, and the device saves it.') }
+        else { V.unsaved = true; note('app', 'The worker hasn\'t sent the new Inquiry back yet: the device\'s copy is a turn behind.') }
+        if (V.worker.state.kind === 'ended') { S.device = V.worker; S.voice = null; note('app', 'Voice ends with the Inquiry.') }
+      }
+    } else if (act.type === 'v_drop') {
+      S.lostWorker = V.unsaved ? V.worker : null
+      S.voice = null
+      note('drop', 'The connection dropped. The voice worker and its in-memory copy are gone.' + (V.unsaved ? ' Its copy was ahead of the device\'s.' : ''))
+    }
+  } else if (act.type === 'turn' || act.type === 'retry' || act.type === 'breakdown') {
+    if (V) {
+      if (V.unsaved) S.device = V.worker
+      S.voice = null
+      note('app', 'The person typed, so the voice session ends. The device keeps its copy and goes on in text.')
+    }
+    log.push(...runStep(act))
+  } else if (DEVICE_MOVES.includes(act.type)) {
+    if (act.type === 'launch') { S.now += act.days * Inquiry.DAY; S.voice = null; S.lostWorker = null }
+    log.push(...runStep(act))
+    if (S.voice) {
+      if (S.device.state.kind === 'ended') { S.voice = null; note('app', 'Voice ends with the Inquiry.') }
+      else { S.voice.worker = S.device; note('app', 'The device sends its updated copy to the voice worker.') }
+    }
+  }
+  S.log = log
+  render()
+}
+
+// ─── Render ──────────────────────────────────────────────────────────────────
+function highlight(text, words) {
+  let h = esc(text)
+  for (const w of words || []) {
+    const e = esc(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    h = h.replace(new RegExp(e, 'i'), m => `<mark>${m}</mark>`)
+  }
+  return h
+}
+const ORIGIN = { breakdown: 'from the Breakdown', dialogue: 'added in the Dialogue', person: 'the person\'s own' }
+const STATUS = { not_looked_at: 'Not looked at', exploring: 'Being looked at', done: 'Finished' }
+const OUTCOME = { rejected: 'Rejected', challenged: 'Challenged', unchallenged: 'Unchallenged' }
+function stateLabel(inq) {
+  const s = inq.state
+  switch (s.kind) {
+    case 'opening': return 'Problem written, waiting for the Breakdown'
+    case 'clarifying': return 'Waiting for the answer to the clarifying question'
+    case 'breakdown': return 'Making the Breakdown'
+    case 'choosing': return 'Choosing an Assumption to look at'
+    case 'dialogue': return `Dialogue on ${s.assumptionId}${s.focusWord ? ` (focus: "${s.focusWord}")` : ''}`
+    case 'ended': return s.how === 'recap' ? 'Ended: Recap' : 'Stepped out'
+  }
+}
+function dayClock() {
+  const d = Math.floor((S.now - START) / Inquiry.DAY)
+  return `day ${d}, ${new Date(S.now).toISOString().slice(11, 16)} UTC`
+}
+
+function renderCard(a, inq) {
+  const cur = Inquiry.current(inq)?.id === a.id
+  const chg = S.before[a.id] !== JSON.stringify(a)
+  const premise = a.premiseShown
+    ? `<div class="premise"><b>Premise</b> <span class="meta">(shown ${a.premiseShown === 'pushback' ? 'after pushback' : 'as a stuck angle'})</span>: ${esc(a.premise)}</div>`
+    : `<div class="premise hidden">Premise, hidden from the person: ${esc(a.premise)}</div>`
+  const rows = []
+  if (a.status !== 'not_looked_at') rows.push(`Angles: ${a.angles.length} of ${Inquiry.ANGLE_LIMIT}${a.angles.length ? ' (' + a.angles.map(x => Inquiry.ANGLES[x]).join(', ') + ')' : ''}`)
+  if (a.outcome) rows.push(`Outcome: <b>${OUTCOME[a.outcome]}</b>${a.quote ? ` · in their words: “${esc(a.quote)}”` : ''}`)
+  if (a.openQuestion) rows.push(`Open Question: ${esc(a.openQuestion)}`)
+  for (const [i, e] of a.earlier.entries()) rows.push(`Wording ${i + 1}, before pushback “${esc(e.quote)}”: ${esc(e.premise)}`)
+  return `<div class="card${chg ? ' chg' : ''}${cur ? ' cur' : ''}">
+    <div class="top"><span><b>${a.id}</b> · ${ORIGIN[a.origin]}</span><span class="chip">${STATUS[a.status]}</span></div>
+    <div class="probe">${highlight(a.probe, a.keyWords)}</div>${premise}
+    ${rows.map(r => `<div class="meta">${r}</div>`).join('')}</div>`
+}
+
+function renderRecap(inq) {
+  const st = Inquiry.toStored(inq)
+  const r = Inquiry.recap(st)
+  const flag = x => x.premiseNeverShown ? ' <span class="flag">⚑ premise never shown during the Inquiry</span>' : ''
+  const looked = r.lookedAt.map(x => `<li><b>${esc(x.premise)}</b>${flag(x)}<br>
+      <span class="meta">${x.outcome === 'rejected' ? `You said it didn't fit: “${esc(x.quote)}”` : x.outcome === 'challenged' ? `You questioned it: “${esc(x.quote)}”` : 'Looked at'}
+      ${x.firstPutAs ? `<br>First put as: ${esc(x.firstPutAs)}${x.rewords > 1 ? ` (reworded ${x.rewords} times)` : ''}` : ''}
+      ${x.openQuestion ? `<br>Open Question: <i>${esc(x.openQuestion)}</i>` : ''}
+      ${x.origin === 'person' ? '<br>You added this one.' : ''}</span></li>`).join('')
+  const notLooked = r.notLookedAt.map(x => `<li>${esc(x.premise)}${flag(x)}</li>`).join('')
+  return `<section class="panel"><h2>Recap · built only from the stored records</h2>
+    ${r.ending === 'step_out' ? '<div class="banner">This Inquiry was stepped out of. Whether the person ever sees this Recap is an open question; it is drawn here to show what the records would say.</div>' : ''}
+    <div class="recap"><div class="meta">You came with:</div><p style="margin:2px 0 10px">“${esc(r.problem)}”</p>
+    ${r.lookedAt.length ? `<h3>What you looked at</h3><ul>${looked}</ul>` : '<p class="meta">Nothing was looked at.</p>'}
+    ${r.notLookedAt.length ? `<h3>Not looked at yet</h3><ul>${notLooked}</ul>` : ''}</div>
+    <details style="margin-top:10px"><summary class="meta">What is stored on the device (the transcript is gone)</summary><pre style="white-space:pre-wrap;font-size:12px">${esc(JSON.stringify(st, null, 2))}</pre></details></section>`
+}
+
+function renderState() {
+  const el = document.getElementById('state')
+  const logHtml = S.log.length ? `<ul class="log">${S.log.map(l => `<li class="${l.kind}">${esc(l.text)}</li>`).join('')}</ul>` : '<p class="meta">Nothing yet. Press a step on the left.</p>'
+  const inq = S.device
+  if (!inq) { el.innerHTML = `<section class="panel"><h2>What just happened</h2>${logHtml}</section>`; return }
+  const V = S.voice
+  const kv = [['Problem', `“${esc(inq.problem)}”`]]
+  if (inq.clarify) kv.push(['Clarifying', `${esc(inq.clarify.question)}<br><span class="meta">Answer:</span> ${inq.clarify.answer ? esc(inq.clarify.answer) : '<i>waiting</i>'}`])
+  kv.push(['Now', `<b>${esc(stateLabel(inq))}</b>${inq.paused ? ' · <b style="color:var(--drop)">Paused</b> (help control open)' : ''}`])
+  kv.push(['Soften', inq.soften.on ? 'On: the model goes gentler' : 'Off'])
+  if (inq.pendingAdd) kv.push(['"Add it?"', `Waiting for an answer: ${esc(inq.pendingAdd.premise)}`])
+  if (inq.stepOut) kv.push(['Step-out', `by ${inq.stepOut.trigger}, kind: ${inq.stepOut.kind} <span class="meta">(not kept once ended)</span>`])
+  kv.push(['Voice', V ? `On · mic ${V.mic === 'on' ? 'listening' : 'off ("let me think")'}${V.heard.length ? ` · this turn so far: “${esc(V.heard.join(' '))}”` : ''}` : 'Off (text)'])
+  kv.push(['Clock', `${dayClock()} · began ${inq.createdAt.slice(0, 10)}`])
+  const banner = V?.unsaved ? `<div class="banner">The voice worker's copy is ahead of the device's by ${V.worker.transcript.length - inq.transcript.length} turns. The person has heard a reply the device hasn't saved.</div>` : ''
+  const shown = V?.unsaved ? V.worker : inq
+  const ended = inq.state.kind === 'ended'
+  const turns = shown.transcript.map(t => `<div class="turn"><div class="who">${t.role === 'person' ? 'Person' : 'App'} · ${t.channel}${t.assumptionId ? ' · on ' + t.assumptionId : ''}</div>${esc(t.text)}</div>`).join('')
+  el.innerHTML = `
+    <section class="panel"><h2>What just happened</h2>${logHtml}</section>
+    <section class="panel"><h2>The Inquiry on the device</h2>${banner}<dl class="kv">${kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></section>
+    ${shown.assumptions.length ? `<section class="panel"><h2>Breakdown · what the person sees is the Probe</h2><div class="cards">${shown.assumptions.map(a => renderCard(a, shown)).join('')}</div></section>` : ''}
+    ${ended ? renderRecap(inq) : ''}
+    <section class="panel ${ended ? 'gone' : ''}"><h2>Transcript${ended ? ' · deleted now the Inquiry has ended' : ' · live only'}</h2><div class="turns">${turns || '<p class="meta">Empty.</p>'}</div></section>`
+}
+
+function renderScenario() {
+  document.getElementById('tabs').innerHTML = SCENARIOS.map(s => `<button class="${S.walk?.id === s.id ? 'on' : ''}" data-tab="${s.id}">${esc(s.title)}</button>`).join('')
+  const el = document.getElementById('scenario')
+  if (!S.walk) { el.innerHTML = '<p class="meta">Pick a walkthrough. Each one starts from a fresh Inquiry.</p>'; return }
+  const sc = S.walk
+  el.innerHTML = `<h3>${esc(sc.title)}</h3><p style="margin:0 0 6px">${esc(sc.about)}</p>
+    <div class="watch"><b>Watch for:</b> ${esc(sc.watch)}</div>
+    ${sc.list.map((st, i) => `<button class="act ${i < S.idx ? 'done' : i === S.idx ? 'next' : ''}" data-step="${i}" ${i !== S.idx ? 'disabled' : ''}>${i < S.idx ? '✓ ' : `${i + 1}. `}${esc(st.label)}${st.sub ? `<span class="sub">${esc(st.sub)}</span>` : ''}</button>`).join('')}
+    ${S.idx >= sc.list.length ? '<p class="meta">Walkthrough finished. Carry on in free play, or restart.</p>' : ''}
+    <button class="small" data-restart>Restart this walkthrough</button>
+    <h3 style="margin-top:14px">Questions this case raises</h3><ul class="qs">${sc.questions.map(q => `<li>${esc(q)}</li>`).join('')}</ul>`
+}
+
+// ─── Free play ───────────────────────────────────────────────────────────────
+const EV_FIELDS = {
+  pick: ['aid', 'focus'], angle: ['angle'], reveal_for_pushback: ['aid'], reword: ['aid', 'premise', 'probe', 'kw', 'quote'],
+  reject: ['aid', 'quote'], challenged: ['aid', 'quote'], done: ['aid', 'oq'], propose_add: ['premise', 'probe', 'kw'],
+  answer_add: ['accepted'], offer_stop: [],
+}
+function renderFreeplay() {
+  const el = document.getElementById('freeplay')
+  const keep = {}
+  el.querySelectorAll('[id]').forEach(n => { keep[n.id] = n.type === 'checkbox' ? n.checked : n.value })
+  const ids = (S.voice?.unsaved ? S.voice.worker : S.device)?.assumptions.map(a => a.id) || []
+  const opts = ids.map(id => `<option>${id}</option>`).join('')
+  el.innerHTML = `<h2>Free play</h2>
+    <fieldset><legend>Start</legend>
+      <label>Problem</label><textarea id="fp-problem" rows="2">${esc(PROBLEM)}</textarea>
+      <button data-fp="start">Start a new Inquiry</button><button data-fp="bd">Model returns the Breakdown</button>
+      <div class="row"><div><label>Clarifying question</label><input id="fp-clar" value="Is that about your work, or about you?"></div><div><button data-fp="clar">Model asks it</button></div></div>
+      <div class="row"><div><label>Person's answer</label><input id="fp-clarans" value="About me."></div><div><button data-fp="clarans">Answer, then Breakdown</button></div></div>
+    </fieldset>
+    <fieldset><legend>The person, on the device</legend>
+      <div class="row"><div><label>Assumption</label><select id="fp-tap">${opts}</select></div><div><label>Key word (optional)</label><input id="fp-tapw"></div><div><button data-fp="tap">Tap to pick</button></div></div>
+      <button data-fp="pause">Pause (help control)</button><button data-fp="resume">Resume</button><button data-fp="end">End the Inquiry</button>
+      <div class="row"><div><label>Close the app; reopen after N days</label><input id="fp-days" type="number" value="7" min="0"></div><div><button data-fp="launch">Reopen</button></div></div>
+    </fieldset>
+    <fieldset><legend>A turn</legend>
+      <label>The person says</label><input id="fp-say" value="I never cared what they think.">
+      <div class="row"><div><label>As</label><select id="fp-kind"><option value="say">a normal turn</option><option value="add_own">their own Assumption</option></select></div></div>
+      <label>Model's reply</label><input id="fp-reply" value="Then that one doesn't fit.">
+      <div class="row"><div><label>Model's distress flag</label><select id="fp-dist"><option>none</option><option>soften</option><option>step_out</option></select></div>
+        <div><label>Classifier</label><select id="fp-cls"><option>none</option><option>soften</option><option>step_out</option></select></div></div>
+      <label>Model's events (applied in order)</label>
+      <div class="row"><div><select id="fp-ev">${Object.keys(EV_FIELDS).map(k => `<option>${k}</option>`).join('')}</select></div>
+        <div data-f="aid"><select id="fp-aid">${opts}</select></div>
+        <div data-f="focus"><input id="fp-focus" placeholder="focus word (optional)"></div>
+        <div data-f="angle"><select id="fp-angle">${Object.entries(Inquiry.ANGLES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></div>
+        <div data-f="premise"><input id="fp-premise" placeholder="premise: that…"></div>
+        <div data-f="probe"><input id="fp-probe" placeholder="Probe question"></div>
+        <div data-f="kw"><input id="fp-kw" placeholder="key words, comma separated"></div>
+        <div data-f="quote"><input id="fp-quote" placeholder="quote (word for word)"></div>
+        <div data-f="oq"><input id="fp-oq" placeholder="Open Question (optional)"></div>
+        <div data-f="accepted"><label><input type="checkbox" id="fp-acc" checked style="width:auto"> accepted</label></div>
+        <div><button data-fp="queue">+ Add event</button></div></div>
+      <ul class="qs" id="fp-queue">${S.queue.map((e, i) => `<li>${esc(eventText(e))} <button class="small" data-unq="${i}">×</button></li>`).join('') || '<li class="meta">No events: a plain reply.</li>'}</ul>
+      <button data-fp="send">Send as a text turn</button><button data-fp="retry">Send as the model's retry</button>
+    </fieldset>
+    <fieldset><legend>Voice</legend>
+      <button data-fp="vconnect">Voice on / reconnect</button><button data-fp="vthink">"Let me think"</button><button data-fp="vmic">Tap: mic back on</button><button data-fp="vdrop">Drop the connection</button>
+      <div class="row"><div><label>The person says</label><input id="fp-vsay" value="It's because I saw it."></div><div><button data-fp="vhear">Speak</button></div></div>
+      <button data-fp="vdone">Done (uses the reply and events above)</button><button data-fp="vdonens">Done, but the app speaks before the device saves</button>
+    </fieldset>`
+  for (const [id, v] of Object.entries(keep)) { const n = document.getElementById(id); if (n) { if (n.type === 'checkbox') n.checked = v; else if (n.tagName !== 'SELECT' || [...n.options].some(o => o.value === v)) n.value = v } }
+  syncEvFields()
+}
+function syncEvFields() {
+  const t = document.getElementById('fp-ev').value
+  document.querySelectorAll('[data-f]').forEach(n => { n.style.display = EV_FIELDS[t].includes(n.dataset.f) ? '' : 'none' })
+}
+const val = id => document.getElementById(id).value
+function fpEvent() {
+  const t = val('fp-ev'), kw = val('fp-kw').split(',').map(s => s.trim()).filter(Boolean)
+  const m = { pick: () => E.pick(val('fp-aid'), val('fp-focus') || undefined), angle: () => E.angle(val('fp-angle')), reveal_for_pushback: () => E.reveal(val('fp-aid')),
+    reword: () => E.reword(val('fp-aid'), val('fp-premise'), val('fp-probe'), kw, val('fp-quote')), reject: () => E.reject(val('fp-aid'), val('fp-quote')),
+    challenged: () => E.challenged(val('fp-aid'), val('fp-quote')), done: () => E.done(val('fp-aid'), val('fp-oq') || undefined),
+    propose_add: () => E.add(val('fp-premise'), val('fp-probe'), kw), answer_add: () => E.answer(document.getElementById('fp-acc').checked), offer_stop: () => E.stop() }
+  return m[t]()
+}
+const fpOut = () => ({ reply: val('fp-reply'), distress: val('fp-dist'), events: S.queue })
+function fpAction(k) {
+  S.walk = null
+  const q = () => { S.queue = [] }
+  switch (k) {
+    case 'start': dispatch({ type: 'start', problem: val('fp-problem') }); break
+    case 'bd': dispatch({ type: 'breakdown', out: BREAKDOWN }); break
+    case 'clar': dispatch({ type: 'breakdown', out: { clarify: val('fp-clar'), distress: 'none' } }); break
+    case 'clarans': dispatch({ type: 'breakdown', personText: val('fp-clarans'), out: BREAKDOWN }); break
+    case 'tap': dispatch({ type: 'tap_pick', assumptionId: val('fp-tap'), focusWord: val('fp-tapw') || undefined }); break
+    case 'pause': case 'resume': case 'end': dispatch({ type: k }); break
+    case 'launch': dispatch({ type: 'launch', days: +val('fp-days') || 0 }); break
+    case 'queue': S.queue.push(fpEvent()); render(); break
+    case 'send': dispatch({ type: 'turn', input: { kind: val('fp-kind'), text: val('fp-say'), channel: 'text' }, out: fpOut(), classifier: val('fp-cls') }); q(); render(); break
+    case 'retry': dispatch({ type: 'retry', out: fpOut() }); q(); render(); break
+    case 'vconnect': dispatch({ type: 'v_connect', reconnect: !!S.lostWorker }); break
+    case 'vthink': dispatch({ type: 'v_think' }); break
+    case 'vmic': dispatch({ type: 'v_mic' }); break
+    case 'vdrop': dispatch({ type: 'v_drop' }); break
+    case 'vhear': dispatch({ type: 'v_hear', text: val('fp-vsay') }); break
+    case 'vdone': case 'vdonens': dispatch({ type: 'v_done', out: fpOut(), classifier: val('fp-cls'), save: k === 'vdone' }); q(); render(); break
+  }
+}
+
+function render() { renderScenario(); renderState(); renderFreeplay() }
+
+function startWalk(id) {
+  const sc = SCENARIOS.find(s => s.id === id)
+  reset()
+  S.walk = { ...sc, list: sc.steps() }
+  render()
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button')
+  if (!t) return
+  if (t.dataset.tab) return startWalk(t.dataset.tab)
+  if (t.hasAttribute('data-restart')) return startWalk(S.walk.id)
+  if (t.dataset.step !== undefined) { const st = S.walk.list[+t.dataset.step]; S.idx++; return dispatch(st.act) }
+  if (t.dataset.unq !== undefined) { S.queue.splice(+t.dataset.unq, 1); return render() }
+  if (t.dataset.fp) return fpAction(t.dataset.fp)
+})
+document.addEventListener('change', e => { if (e.target.id === 'fp-ev') syncEvFields() })
+
+startWalk('happy')
+</script>
+</body>
+</html>

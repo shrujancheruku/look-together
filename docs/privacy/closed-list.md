@@ -12,6 +12,7 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 |---|---|---|
 | **Account** (Firestore) | account id, email or Apple relay, linked identities (provider + the provider's subject id, one per Apple, Google or email sign-in), created date, region, platform, marketing consent (yes/no + timestamp), `lastSeenMonth` (`YYYY-MM`, written at most once a month) | Until the person deletes it, or 24 months past `lastSeenMonth`; gone from backups within 30 days ([ADR 0006](../adr/0006-sign-in-is-required-and-knows-nothing-of-inquiries.md)) |
 | **Meters** (Firestore), keyed by account id | `inquiries` (1 / 24 h), Breakdown calls (6 / 24 h), model calls (100 / 24 h, including `/speak`), dictation minutes (60 / 24 h), reports (20 / 24 h), content reports (5 / 24 h), `device_counts` (20 / 24 h, one shared budget for every device increment, never which counter was sent): counts and window starts only, plus on `inquiries` the SHA-256 of the device's begin key that used the day (never the key itself), so a lost Breakdown can be retried without a second charge. No meter is keyed by an Inquiry id | 48 h TTL |
+| **Pending email codes** (Firestore) | the address, a salted hash of the 6-digit code, the attempt count (void after 5), region, created | 10 minutes TTL, or until the code is used |
 | **Sign-up and sign-in meters** (Firestore) | new Accounts per attested install and per salted IP hash (2 / 30 days); email codes sent per salted IP hash and per address; email lookups ("does a region hold this email?") per salted IP hash (10 / 24 h); web Inquiries per salted IP hash (~3 / 24 h) | 30-day TTL for sign-up meters, 48 h for the rest |
 | **Content Reports** (Firestore, apart from Accounts) | the masked exchange, encrypted with the region's Cloud KMS `reports` key; reasons, stage, prompt version, model id, region, platform, app version, date. The document id is the SHA-256 of a delete token only the sending device holds; no Account or Inquiry id, and the token itself is never stored | 30-day TTL, or until the device deletes it. Only the founder can decrypt, so every read is a logged KMS decrypt |
 | **Aggregate counters** (Firestore) | see [What we count](#what-we-count) | Kept as aggregates |
@@ -27,13 +28,13 @@ Unless a line says otherwise, everything is kept in the person's region (`us` or
 
 ## What we count
 
-Aggregate counters, no Account id, Inquiry id or content in any of them. The backend sums increments in memory and writes them to the region's Firestore every 60 s.
+Aggregate counters, no Account id, Inquiry id or content in any of them. The backend sums increments in memory and writes them to the region's Firestore every 60 s and on shutdown.
 
 | Counter | Dimensions | Counted by |
 |---|---|---|
 | Signups | region, platform, day | Backend, on Account creation |
 | Daily active Accounts | region, platform, day | Backend, a distinct count of today's meter keys, stored as a number |
-| Inquiries started (Breakdown returned) | `returning` (`first` / `within_7d` / `within_30d` / `older`, from the device's own records), region, platform, app version, day | Backend, with the bucket from the device |
+| Inquiries started (Breakdown returned) | `returning` (`first` / `within_7d` / `within_30d` / `older`, from the device's own records), region, platform, app version, day | Backend, with the bucket from the device; it arrives on the authenticated Breakdown request and is never stored with the Account |
 | Recap reached / abandoned | region, platform, app version, day | Device, a bare increment |
 | Change in understanding (yes / no) | region, platform, app version, day | Device, from the records |
 | "Was this worth your time?" (yes / not sure / no) | region, platform, app version, day | Device |

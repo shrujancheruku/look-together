@@ -1,0 +1,85 @@
+{
+  "version": 0,
+  "set": "standin-half",
+  "authored": {
+    "width": 1242,
+    "height": 2688
+  },
+  "pixels": {
+    "width": 621,
+    "height": 1344
+  },
+  "seasons": {
+    "spring": {
+      "sky": {
+        "file": "spring/sky.webp",
+        "opaque": true,
+        "bytes": 3212
+      },
+      "bank": {
+        "file": "spring/bank.webp",
+        "opaque": false,
+        "bytes": 56484
+      },
+      "water": {
+        "file": "spring/water.webp",
+        "opaque": false,
+        "bytes": 3910
+      },
+      "wash": {
+        "file": "spring/wash.webp",
+        "opaque": false,
+        "bytes": 17644
+      },
+      "line": {
+        "file": "spring/line.webp",
+        "opaque": false,
+        "bytes": 21332
+      }
+    },
+    "autumn": {
+      "sky": {
+        "file": "autumn/sky.webp",
+        "opaque": true,
+        "bytes": 4886
+      },
+      "bank": {
+        "file": "autumn/bank.webp",
+        "opaque": false,
+        "bytes": 56964
+      },
+      "water": {
+        "file": "autumn/water.webp",
+        "opaque": false,
+        "bytes": 3894
+      },
+      "wash": {
+        "file": "autumn/wash.webp",
+        "opaque": false,
+        "bytes": 17202
+      },
+      "line": {
+        "file": "autumn/line.webp",
+        "opaque": false,
+        "bytes": 17008
+      }
+    }
+  },
+  "sprites": {
+    "file": "sprites.webp",
+    "cell": 128,
+    "columns": 12,
+    "rows": {
+      "spring": 0,
+      "autumn": 1
+    },
+    "drop": [
+      0,
+      8
+    ],
+    "leaf": [
+      8,
+      4
+    ]
+  }
+}
