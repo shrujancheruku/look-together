@@ -37,8 +37,8 @@ Aggregate counters, no Account id, Inquiry id or content in any of them. The bac
 | Recap reached / abandoned | region, platform, app version, day | Device, a bare increment |
 | Change in understanding (yes / no) | region, platform, app version, day | Device, from the records |
 | "Was this worth your time?" (yes / not sure / no) | region, platform, app version, day | Device |
-| Step-out referrals | trigger (classifier / model / help control), region | Device, a bare increment |
-| Soften | region, platform, app version, day | Device |
+| Step-out referrals | source (classifier / model / help), region | Backend's turn module for `classifier` and `model`; device, a bare increment on each Help open, for `help` |
+| Soften | region, platform, app version, day | Backend's turn module, on a result carrying `soften` |
 | Failures | outcome kind, region, call type | Backend |
 | Dropped events | region, call type | Backend |
 | Estimated spend | region, day, call type | Backend, from each call's token, audio-second and character counts × the server-config price table; gates new Breakdowns at the regional ceiling |

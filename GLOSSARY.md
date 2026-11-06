@@ -49,8 +49,16 @@ All of a person's Inquiries on one device, and the rules that span them: at most
 _Avoid_: Library, history, list, pond
 
 **Step-out**:
-The app leaving an Inquiry because the person may be at risk, to point them to people who can help. An Inquiry that has been stepped out of never resumes.
-_Avoid_: Escalation, intervention, crisis mode
+The app leaving an Inquiry because the person may be at risk, to point them to people who can help. It names the risk gently: to the person, to others, or from others. An Inquiry that has been stepped out of never resumes.
+_Avoid_: Escalation, intervention, crisis mode, trigger
+
+**Soften**:
+The app going gentler in an Inquiry when the person seems acutely distressed but not at risk, for the rest of that Inquiry. It never becomes a Step-out by repetition.
+_Avoid_: De-escalate, calm mode
+
+**Help**:
+The control on every Inquiry screen that pauses the Inquiry and shows crisis contacts. It never ends the Inquiry.
+_Avoid_: SOS, panic button, Step-out
 
 **Report**:
 A person telling Look Together that something the app wrote broke how it should reply, by reason. With their explicit choice, it can include that one exchange.
