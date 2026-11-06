@@ -40,12 +40,12 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Storage on the device
 
-- **Two store seams on the device:** an Inquiry store (Inquiries and their drafts) and a settings store (settings, walker, last known country, sent reports), each with an on-device adapter for native and a tab-memory adapter for web, which tests also use. The Inquiry driver's interface is `begin · submit · pick · pause · finish · delete` ([Architecture review][88]).
+- **Two store seams on the device:** an Inquiry store (Inquiries and their drafts) and a settings store (settings, walker, last known country, sent reports), each with an on-device adapter for native and a tab-memory adapter for web, which tests also use. The Inquiry driver's interface is `begin · submit · pick · pause · finish · delete` ([Architecture review][88]). Each Inquiry is kept as one JSON record with its own `schemaVersion`, and both adapters read it back through the protocol package's one `load` (migrate forward, then parse). A record that fails `load` is kept untouched, hidden from the Shelf and counted to Sentry ([Schema owner][145]).
 - **Native:** SQLCipher `expo-sqlite`, with one database and one key per Account. Finished Inquiries keep their full transcript. Drafts are kept with a live Inquiry and deleted when it ends. A stepped-out Inquiry stores only `ending: 'step_out'`, never the kind of risk ([On-device keeping][46], [Inquiry driver][33]).
 - **Backups allowed, end-to-end encrypted:** the key travels in iCloud Keychain on iOS and in Google Block Store on Android, and Android cloud backup happens only when it's end-to-end encrypted. Backups that come back without their key get a Try again / Delete them screen ([ADR 0008](adr/0008-inquiries-travel-only-in-the-persons-own-encrypted-backups-and-exports.md), [On-device keeping][46]).
 - **Web keeps nothing past the tab.** Closing or reloading the tab loses an unfinished Inquiry and its draft. JSON import loads into the tab only, and "Sent reports" lasts only for the tab. A `beforeunload` prompt guards a live Inquiry. The 7-day rule doesn't arise on web ([On-device keeping][46], [No answer][41], [Inquiry driver][33], [Reconcile][82]).
-- **Export:** PDF (pdf-lib, "Made with Look Together", an "Include the Paths" toggle), Text or JSON. The JSON has `schemaVersion` and carries the "Anyone with this file can read it" note. Settings → Export all gives one JSON file and one text file ([On-device keeping][46], [Wording][61]).
-- **Import:** JSON on native and web, checked against the schema and migrated forward. An unfinished Inquiry continues if it's within 7 days, and stepped-out ones come back locked ([On-device keeping][46], [Versioning][48]). Import never drops an Inquiry to keep the cap: it may leave more than 3 unfinished, and today's Inquiry can't begin until fewer than 3 are ([Architecture review][88]).
+- **Export:** PDF (pdf-lib, "Made with Look Together", an "Include the Paths" toggle), Text or JSON. The JSON is the stored records themselves in an unversioned envelope `{ format, note, inquiries }` carrying the "Anyone with this file can read it" note, for one Recap and for Export all alike ([Schema owner][145]). Settings → Export all gives one JSON file and one text file ([On-device keeping][46], [Wording][61]).
+- **Import:** JSON on native and web, each Inquiry run through the same `load` as the store; one that fails is skipped with a calm notice and the rest import ([Schema owner][145]). An unfinished Inquiry continues if it's within 7 days, and stepped-out ones come back locked ([On-device keeping][46], [Versioning][48]). Import never drops an Inquiry to keep the cap: it may leave more than 3 unfinished, and today's Inquiry can't begin until fewer than 3 are ([Architecture review][88]).
 - **Deletion:** one Inquiry, Delete everything (per Account, offering Export all first), Delete account (wipes this device's Inquiries by default) ([On-device keeping][46]).
 - **No cross-platform sync.** A second device starts empty, and moving between platforms goes through JSON ([On-device keeping][46]).
 
@@ -69,7 +69,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **Never gated:** Help, the Step-out and crisis contacts. The classifier's calls are never counted against the person ([Usage limits][30]).
 - **Native guard:** App Attest / Play Integrity (Play nonce hashed), at most 2 new Accounts per attested install per 30 days ([Sign-in][37], [Telemetry][44]).
 - **Web guard, now:** sign-in plus the Account meters, plus three meters on a salted IP hash: new Accounts (2 / 30 days), email codes sent (also per address), and web Inquiries (~3 / 24 h for shared networks). Plus the regional spend ceiling. **No App Check or reCAPTCHA** ([Telemetry][44], [Sign-in][37], [closed list](privacy/closed-list.md), [Reconcile][82]).
-- **Size caps on `POST /turn`:** Problem ≤ 2,000 characters, Reflection ≤ 4,000, body ≤ `vN.turnBodyBytes` (1 MB, fitted by a test of the worst-case turn context; a 413 is a device bug shown as "no answer") ([Turn wire contract][143]). The device's copy is trusted, with no signed state ([No answer][41], [Inquiry driver][33]).
+- **Size caps on `POST /turn`:** body ≤ `vN.turnBodyBytes` (1 MB, fitted by a test of the worst-case turn context; a 413 is a device bug shown as "no answer") ([Turn wire contract][143]), then the whole body is parsed with the declared version's request schema, which carries Problem ≤ 2,000 characters and Reflection ≤ 4,000 (a 400). Every cap is a `vN/limits` constant read by the schemas, the composer and `step`; changing one bumps the protocol version. The 40 Reflections and 20 dictation minutes are counted on the device only ([Schema owner][145]). The device's copy is trusted, with no signed state ([No answer][41], [Inquiry driver][33]).
 - **Spend ceiling** per region per day, estimated by the backend from each call's usage × a price table. It gates new Breakdowns only, behind a monthly billing budget and a lowered Vertex quota. No automatic billing shut-off ([Running it alone][59], [No answer][41]).
 - **Pause switch:** `newInquiries: paused` per region in server config shows the "busy" line, and Dialogues underway finish ([Running it alone][59]).
 
@@ -117,7 +117,8 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ## Infrastructure and model
 
 - **Per region (`us`, `eu`):** one Cloud Run backend in Node/TypeScript on Hono, with `@google/genai` behind the LLM abstraction. Firestore holds Accounts, meters, counters and content Reports. Web is on Firebase Hosting. Pulumi in TypeScript, all in Google Cloud project `look-together` ([Backend language][26], [Regional layout][28], [Dictation][36]).
-- **LLM interface:** `call(kind: breakdown | turn | classify, prompt, input)` returns the parsed output with provider-neutral usage, or `blocked`, or `failed`. Thinking level, output schema and every Vertex setting live in the adapter; the turn module decides what `blocked` means. The evaluation judge is outside it ([Architecture review][88]).
+- **LLM interface:** `call(kind: breakdown | turn | classify, prompt, input, outputSchema)` returns the output typed by that schema with provider-neutral usage, or `blocked`, or `failed`. The caller passes the schema (`vN`'s model output, or the classifier's backend-owned one) and the adapter never imports `versions`. Thinking level and every Vertex setting live in the adapter; the turn module decides what `blocked` means. The evaluation judge is outside it ([Architecture review][88], [Schema owner][145]).
+- **Vertex schema:** the adapter converts the schema with `z.toJSONSchema` plus a Gemini override (`const` → one-value `enum`, no `$schema`), sends it as `responseJsonSchema`, and re-parses every reply with the same schema, since Gemini ignores length keywords; a parse failure is `failed`. A test fails on any keyword outside Vertex's supported list ([Schema source][144], [Schema owner][145]).
 - **Region config:** each backend builds one region value at boot and passes it into every adapter; nothing else reads the environment for it ([Architecture review][88]).
 - **Model:** Gemini 3.8 Flash in both regions, on pinned `us`/`eu` endpoints, never `global`. The Breakdown runs on high thinking, the Dialogue turn on low. Two prompts plus the distress classifier, and no Recap prompt ([Launch][14], [Inquiry driver][33]).
 - **Vertex settings:** caching off (`disableCache: true`, enforced by infra), request-response logging off, no grounding, all four safety filters `OFF` on every call. A block is a billed 200 with an empty candidate and maps to "no answer". Google may keep flagged prompts up to 90 days in-region, which we disclose, and we promise no "zero retention" ([Caching][32], [Abuse logging][22], [Safety filters][40]).
@@ -128,7 +129,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 ## Evaluation and launch
 
 - **Evaluation set:** synthetic, ~30 ordinary and ~30 distress cases plus injection and non-Problem cases, each a `vN` request body run through the turn module ([Turn wire contract][143]). A fast tier runs on PRs and a gate tier (5 runs each) before launch or any model or prompt change. Code checks what's countable, by running the model's output through the reducer and failing on any refusal, plus the text checks (no "I", no Krishnamurti), and an Opus 5.5 judge the rest; the founder's blind read decides. Zero tolerance on hard lines. The distress classifier is picked on 100% Step-out recall ([Evaluation][17], [No answer][41]).
-- **Gate records:** one pass per (prompt hash, model id, protocol version), in the repo. A deploy that lacks one fails ([Versioning][48]).
+- **Gate records:** one pass per (prompt hash, model id, protocol version), in the repo. The prompt hash covers the prompt text plus the generated Vertex schema ([Schema owner][145]). A deploy that lacks one fails ([Versioning][48]).
 - **Order:** friends test (15–20 known adults) → closed beta (~100 strangers by link) → public launch. Nobody but the founder sees the app before the whole pixel world is built. The beta opens only after the full gate, the LLC and the lawyer and clinician reviews ([Beta][81]).
 
 ## Versioning
@@ -137,6 +138,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - **Below the window**, only new turns are blocked, with a calm update screen. Web offers "Export, then reload" ([Versioning][48]).
 - **Release order:** backend → web → stores. Forward-only migrations run on the device and on import, tested against golden fixtures ([Versioning][48]).
 - **Versions as folders:** each protocol version is a frozen `vN/` folder in the protocol package (types, schema, reducer) behind one `versions` index, with migrations outside the folders. Prompts are backend-only, as `prompts/vN`. The app imports only the current version. Only a change to the stored schema, the event set or the reducer's rules bumps the version; a prompt change alone goes through the gate record ([Architecture review][88]).
+- **One schema source per version:** every `vN` is written with `zod/mini` (plain `zod` is banned in the package and the app) and satisfies one `Protocol` interface: `{ v, limits, schemas: { inquiry, turnRequest, turnResponse, modelOutput }, turnContext, check, step }`. Types, the Vertex schema and import validation all come from it, and schemas carry no descriptions for the model. Migrations import old versions' types only. An unknown or future `v` is a 400 reported to Sentry, and the device parses every `/turn` response, showing "no answer" on a failure ([Schema source][144], [Schema owner][145]).
 
 ## Screens and flow
 
@@ -259,6 +261,7 @@ These lines still sit in older tickets but no longer hold:
 - **Season by the clock** ([Look and voice][54]) → by system appearance ([Inquiry moments][73]).
 - **At most 3 Breakdown calls per Inquiry id** ([No answer][41]) → Breakdown calls 6 / 24 h per Account, so no Inquiry id reaches the server ([Architecture review][88]).
 - **The device sends the Inquiry and gets the new Inquiry back; body ≤ 64 KB** ([Architecture review][88]) → a turn context out, the reply and applied events back, body ≤ 1 MB ([Turn wire contract][143]).
+- **The adapter picks the output schema by `kind`; a separate JSON export schema** ([Architecture review][88]) → the caller passes `vN`'s schema into `call`, and the export is the stored record in an envelope ([Schema owner][145]).
 
 ## Out of scope for the spec
 
@@ -326,3 +329,5 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [88]: https://github.com/shrujancheruku/look-together/issues/88
 [140]: https://github.com/shrujancheruku/look-together/issues/140
 [143]: https://github.com/shrujancheruku/look-together/issues/143
+[144]: https://github.com/shrujancheruku/look-together/issues/144
+[145]: https://github.com/shrujancheruku/look-together/issues/145
