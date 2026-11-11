@@ -36,7 +36,6 @@ Aggregate counters, no Account id, Inquiry id or content in any of them. The bac
 | Daily active Accounts | region, platform, day | Backend, a distinct count of today's meter keys, stored as a number |
 | Inquiries started (Breakdown returned) | `returning` (`first` / `within_7d` / `within_30d` / `older`, from the device's own records), region, platform, app version, day | Backend, with the bucket from the device; it arrives on the authenticated Breakdown request and is never stored with the Account |
 | Recap reached / abandoned | region, platform, app version, day | Device, a bare increment |
-| Change in understanding (yes / no) | region, platform, app version, day | Device, from the records |
 | "Was this worth your time?" (yes / not sure / no) | region, platform, app version, day | Device |
 | Step-out referrals | source (classifier / model / help), region | Backend's turn module for `classifier` and `model`; device, a bare increment on each Help open, for `help` |
 | Soften | region, platform, app version, day | Backend's turn module, on a result carrying `soften` |
