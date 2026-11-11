@@ -1550,7 +1550,7 @@ function dragonflyPx(big, wing) {
 }
 function koiSpot(v, beat, cam) { // a place in open water, well out: not under the walker, the pier, the boat or today's lily, and never under a pane
   const rest0 = spot(beat); if (!rest0) return null;
-  const { vw, vh } = v.sc, cx = cam.x + vw / 2, rest = { ...rest0, x: wrapNear(rest0.x, cx) }, shift = rest0.x - rest.x; // round 3: the walker's x taken round the loop to the camera's (the Path's end was missed) g = world(), hy = Math.round(headY(rest)) - 4;
+  const { vw, vh } = v.sc, cx = cam.x + vw / 2, rest = { ...rest0, x: wrapNear(rest0.x, cx) }, shift = rest0.x - rest.x, g = world(), hy = Math.round(headY(rest)) - 4; // round 3: the walker's x taken round the loop to the camera's (the Path's end was missed)
   const open = (sd) => { let n = 0; for (let dx = 36; dx <= 64; dx += 4) for (let dy = -6; dy <= 4; dy += 2) { const i = (hy + dy) * g.W + mod(Math.round(rest.x + sd * dx)), c = g.land[i]; if (c === TR || (c >> 5) === R.sky || (c >> 5) === R.cloud || (c >> 5) === R.far || (c >> 5) === R.mist) n++; } return n; };
   const toward = Math.sign(cx - rest.x) || 1, dfSide = open(-toward) > open(toward) + 6 ? -toward : toward; // the dragonfly hovers on the open side, against sky or far ridges, not over a house
   const panes = rectsArt(v, ".layer.ov:not(.old) [data-g]").map((r) => ({ x0: cam.x + r.x0 - 8, x1: cam.x + r.x1 + 8, y0: cam.y + r.y0 - 8, y1: cam.y + r.y1 + 8 }));
