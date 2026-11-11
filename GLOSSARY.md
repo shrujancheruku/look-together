@@ -44,8 +44,12 @@ _Avoid_: Homework, takeaway, advice
 A change of approach the app makes when a Path is stuck: naming the stall as ours, narrowing to the one thread, slowing down, offering an analogy, or revealing the premise. An ordinary question is not an angle.
 _Avoid_: Technique, tactic, hint, nudge
 
+**Outcome**:
+What the person did with an Assumption by the time the Inquiry ended: rejected it, looked at it, set it down part-way, or didn't look at it. Never how well they looked, or whether the Assumption held.
+_Avoid_: Result, score, verdict, challenged, unchallenged
+
 **Recap**:
-What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Assumptions explored, any change in understanding in the person's own words, the Open Questions, and the Assumptions not looked at yet.
+What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Open Questions, the Assumptions explored with the person's own words on each, and the Assumptions not looked at yet.
 _Avoid_: Summary, results, takeaways, report
 
 **Shelf**:
