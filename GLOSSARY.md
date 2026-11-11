@@ -37,8 +37,12 @@ What a person gives the app at each step of a Path, written or dictated, then re
 _Avoid_: Message, answer, reply, turn
 
 **Open Question**:
-A question handed back to the person, deliberately unanswered, when a Dialogue can find no further angle of questioning.
+The question a Path leaves standing, handed back to the person deliberately unanswered.
 _Avoid_: Homework, takeaway, advice
+
+**Angle**:
+A change of approach the app makes when a Path is stuck: naming the stall as ours, narrowing to the one thread, slowing down, offering an analogy, or revealing the premise. An ordinary question is not an angle.
+_Avoid_: Technique, tactic, hint, nudge
 
 **Outcome**:
 What the person did with an Assumption by the time the Inquiry ended: rejected it, looked at it, set it down part-way, or didn't look at it. Never how well they looked, or whether the Assumption held.
@@ -95,7 +99,7 @@ One of the small themed islands a Path crosses, one per step, each joined to the
 _Avoid_: Level, stage, checkpoint
 
 **Walker**:
-The small figure that stands for the person on the Shoreline, set up by them in Settings. It walks one islet per Reflection and rows the boat; it never speaks, gestures or leads.
+The small figure that stands for the person on the Shoreline, set up by them on the Make yourself at home step or in Settings. It walks one islet per Reflection and rows the boat; it never speaks, gestures or leads.
 _Avoid_: Avatar, character, guide, companion
 
 **Lily**:
@@ -119,8 +123,20 @@ A short one-off animation the world plays when an Inquiry's state changes or the
 _Avoid_: Reward, effect, celebration, feedback
 
 **Still water**:
-The setting, and the matching colours, in which the world stops moving altogether. Help uses the same still colours.
+The setting, and the matching colours, in which the world stops moving altogether and goes quiet. Help uses the same still colours.
 _Avoid_: Pause, low-power mode
+
+**Soundscape**:
+The looping sound of the place the camera is on: water, wind and birds, never a melody. It goes quiet wherever the world stops moving, and whenever the person dictates or listens to a reply.
+_Avoid_: Music, soundtrack, ambience track
+
+**Cue sound**:
+The short sound a cue makes, always the noise of the thing itself (footsteps, oars, water). Not every cue has one, and nothing the person taps makes one.
+_Avoid_: SFX, sound effect, chime, audio feedback
+
+**Make yourself at home**:
+The step after the welcome where the person may choose their season, whether the world has sound, and their walker. Nothing on it has to be chosen.
+_Avoid_: Personalise, onboarding, preferences, customise
 
 **Leaf note**:
 A note from the guide on the person's first Inquiry, set beside the thing it explains while everything else dims.
