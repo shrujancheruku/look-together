@@ -37,8 +37,12 @@ What a person gives the app at each step of a Path, written or dictated, then re
 _Avoid_: Message, answer, reply, turn
 
 **Open Question**:
-A question handed back to the person, deliberately unanswered, when a Dialogue can find no further angle of questioning.
+The question a Path leaves standing, handed back to the person deliberately unanswered.
 _Avoid_: Homework, takeaway, advice
+
+**Angle**:
+A change of approach the app makes when a Path is stuck: naming the stall as ours, narrowing to the one thread, slowing down, offering an analogy, or revealing the premise. An ordinary question is not an angle.
+_Avoid_: Technique, tactic, hint, nudge
 
 **Recap**:
 What the person sees when an Inquiry ends: what was looked at, not what was learned. It lists the Assumptions explored, any change in understanding in the person's own words, the Open Questions, and the Assumptions not looked at yet.
