@@ -147,7 +147,7 @@
   .bbar { position: absolute; left: 14px; right: 14px; max-width: 34em; margin-inline: auto; display: flex; align-items: center; gap: 8px; }
   .pillg { flex-direction: row; padding: 8px 15px; border-radius: 999px; }
   .pillg.off { opacity: .35; cursor: default; }
-  .pillg.solid { outline: 1.5px solid currentColor; }
+  .pillg.solid { font-weight: 700; } /* round 2: no ink outline, frost only; Next and Continue are heavier instead */
   .strip { flex-direction: row !important; gap: 5px !important; padding: 9px 11px !important; }
   .strip span { width: 22px; height: 4px; border-radius: 2px; background: currentColor; opacity: .25; }
   .strip span.on { opacity: .9; }
@@ -555,7 +555,7 @@ function finish(g, season) {
 
 // ---------- compose one view of the world (from prototypes/pond-world) ----------
 const RIPPLE = .26; // was .9: a full ripple in under a second read as racing water (#86)
-function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
+function compose(g, cx, cy, vw, vh, T, motion, out, dyn = [], M = null) { // M: { lit, wet } masks for the view (round 2)
   const { W, H, land, body, bodies } = g, nW = N[R.water];
   const full = motion === "full";
   const tw = full ? Math.floor(T * 8) : 0, ts = full ? Math.floor(T * 3) : 0; // water updates at 8 fps, but each update moves the ripple only RIPPLE rad: a cycle every ~3 s
@@ -565,6 +565,7 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
     for (let x = 0; x < vw; x++) {
       const wx = ((cx + x) % W + W) % W; // the world is a loop: past its right end is its left end
       const i = wy * W + wx, b = body[i];
+      if (M) M.wet[o + x] = b ? 1 : 0;
       if (!b) { out[o + x] = land[i]; continue; }
       const B = bodies[b], d = wy - B.y0, sy = B.y0 - 1 - d;
       const dx = full ? Math.round(Math.sin(wy * .66 + tw * RIPPLE) * (.3 + Math.min(1.2, d / 17))) : 0;
@@ -576,7 +577,9 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
     }
   }
   const rel = (x) => ((x - cx) % W + W) % W; // where world x falls in this view, across the loop's seam
-  const put = (x, y, c) => { x = rel(x); y -= cy; if (x < vw && y >= 0 && y < vh) out[y * vw + x] = c; };
+  if (M) M.lit.fill(0);
+  let lit = 0;
+  const put = (x, y, c) => { x = rel(x); y -= cy; if (x < vw && y >= 0 && y < vh) { out[y * vw + x] = c; if (M) M.lit[y * vw + x] = lit; } };
   const off = (x0, x1) => rel(x0) > vw && rel(x1) > vw && rel(x0) <= rel(x1); // a span entirely outside the view
   for (const gl of g.glints) {
     if (gl.y < cy || gl.y >= cy + vh || off(gl.x, gl.x + gl.len)) continue;
@@ -584,6 +587,7 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
     for (let k = 0; k < gl.len; k++) put(gl.x + k + dx, gl.y, code(R.glint, gl.s));
   }
   for (const s of g.sprites.concat(dyn)) {
+    lit = s.lit ? 1 : 0;
     const bob = full && s.bob ? ((ts + (s.i ?? 0)) % 2) : 0;
     if (off(s.x - 40, s.x + 40) || s.y + 30 < cy || s.y - 90 > cy + vh) continue;
     for (const [dx, dy, c, pf] of s.px) { // a fade below 1 dissolves the sprite in by ordered dither
@@ -598,19 +602,23 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = []) {
 // ---------- more scenery primitives (this prototype) ----------
 function hills(g, x0, x1, base, o) { // distant ridges, lighter the further back; drawn first, mirrored like everything above the water
   const { W, land } = g, nf = N[R.far], nc = N[R.cloud], rand = rng(o.seed);
-  for (const [amp, shade] of o.layers) { // back to front
+  o.layers.forEach(([amp, shade], li) => { // back to front
     const ph = [rand() * 9, rand() * 9, rand() * 9], tau = 2 * Math.PI / W, f = [tau * (3 + Math.floor(rand() * 3)), tau * (10 + Math.floor(rand() * 6)), tau * (30 + Math.floor(rand() * 12))]; // whole cycles, so the ridge meets itself across the loop
+    // round 2: where home's backdrop clears the sky, each ridge eases down to nothing (no dithered cut); each layer ends at its own x and over its own width
+    const clr = o.clear, endL = clr ? clr[0] + [50, 0, -45][li % 3] : 0, endR = clr ? clr[1] + [-40, 15, 55][li % 3] : 0, tw = [340, 290, 250][li % 3];
+    const env = (x) => !clr ? 1 : smooth(clamp(Math.max(endL - x, x - endR) / tw, 0, 1));
     for (let x = Math.max(0, x0); x < Math.min(W, x1); x++) {
-      const k = .55 + .3 * Math.sin(x * f[0] + ph[0]) + .12 * Math.sin(x * f[1] + ph[1]) + .05 * Math.sin(x * f[2] + ph[2]);
-      const top = Math.round(base - amp * k);
+      const e = env(x); if (e <= 0) continue;
+      const k = (.55 + .3 * Math.sin(x * f[0] + ph[0]) + .12 * Math.sin(x * f[1] + ph[1]) + .05 * Math.sin(x * f[2] + ph[2]));
+      const top = Math.round(base - amp * k * e);
       for (let y = Math.max(0, top); y < base; y++) {
         const d = y - top;
         let c = code(R.far, d === 0 ? Math.min(nf - 1, shade + 1) : (hash2(x >> 2, y >> 2, 61 + shade) > .8 ? Math.max(0, shade - 1) : shade));
-        if (o.snow && k > .86 && d < 2 + (k - .86) * 40 + hash2(x, 1, 63) * 2) c = code(R.cloud, nc - 1 - (x % 3 === 0 ? 1 : 0));
+        if (o.snow && e > .9 && k > .86 && d < 2 + (k - .86) * 40 + hash2(x, 1, 63) * 2) c = code(R.cloud, nc - 1 - (x % 3 === 0 ? 1 : 0));
         land[y * W + x] = c;
       }
     }
-  }
+  });
 }
 function willow(g, cx, cy, Rr, base) { // a crown with strands hanging to the water
   tree(g, cx, cy, Rr, R.leafC, base);
@@ -849,16 +857,25 @@ const ISLETS = {
     for (const [dx, len, rise] of [[-3, -15, .5], [-1, -7, 1.2], [1, 8, 1.1], [3, 16, .45]]) { const s = Math.sign(len); let ex = 0, ey = 0; // short arms, little crowns
       for (let i = 0; i <= Math.abs(len); i++) { ex = bx + dx + s * i; ey = b - 34 - Math.round(i * rise); setp(g, ex, ey, P.stoneD); setp(g, ex, ey + 1, P.stoneD); }
       tree(g, ex, ey - 3, 6, R.leafA, ey + 1); }
-    const ww = 17; // a painted house: white walls, black lines, blocks of colour
-    rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = x - hx + ww, v = b - y, k = u % 8;
-      if (v === 1 || v === 8 || v === 17 || (v > 8 && k === 0)) return P.woodD;
-      if (v > 8) return Math.abs(k - 4) + Math.abs(v - 12.5) < 3 ? P.white : [P.red, P.gold, P.blue][Math.floor(u / 8) % 3];
-      return (u + v) % 6 === 0 ? P.woodD : P.white; });
+    // round 2: both houses as shaded volumes lit from the upper left (a light side, a base tone, a shade side, a darker eave), thatch in soft bands
+    const nc = N[R.cloud], nC = N[R.leafC], nt = N[R.trunk], side = (u, l, m, d) => u < -.5 ? l : u > .42 ? d : m;
+    const TH = [code(R.leafC, nC - 1), code(R.leafC, nC - 2), code(R.leafC, nC - 3), P.woodL]; // thatch: light, base, shade, and one step darker for a band's lip
+    const thatch = (x0, yb, w0, rows, tiers) => { // a cone of thatch: 2–3 bands, each lipped a step darker, a ragged eave
+      for (let j = 0; j < rows; j++) { const w = Math.round(w0 * (1 - j / rows)), y = yb - j, lip = tiers.includes(j);
+        rect(g, x0 - w, y, x0 + w + 1, y + 1, (x) => { const u = (x - x0) / (w + .5), i = u < -.45 ? 0 : u > .4 ? 2 : 1; return j === 0 ? (u > .4 ? P.wood1 : P.wood) : TH[Math.min(3, i + (lip ? 1 : 0))]; }); }
+      for (let x = x0 - w0; x <= x0 + w0; x++) if (hash2(x >> 1, yb, 88) > .55) setp(g, x, yb + 1, (x - x0) / w0 > .4 ? P.wood1 : P.wood); }; // the eave hangs a pixel lower in places
+    const ww = 17, wall = [code(R.cloud, nc - 1), code(R.cloud, nc - 2), code(R.cloud, nc - 4)]; // a painted house: lime-white walls, one band of colour blocks
+    rect(g, hx - ww, b - 18, hx + ww + 1, b, (x, y) => { const u = (x - hx) / (ww + .5), v = b - y, k = x - hx + ww;
+      if (v === 6 || v === 11) return P.woodD; // the band's edges
+      if (v > 6 && v < 11) return k % 9 === 0 ? P.woodD : [P.red, P.gold, P.blue][Math.floor(k / 9) % 3];
+      const t = side(u, 0, 1, 2) + (v >= 16 ? 1 : 0); return v <= 1 ? P.stone : t > 2 ? P.white2 : wall[t]; }); // under the eave a step darker; a stone foot
     rect(g, hx - 3, b - 12, hx + 4, b, P.woodD); rect(g, hx - 4, b - 13, hx + 5, b - 12, P.red);
-    for (let j = 0; j < 18; j++) { const w = Math.round((ww + 4) * (1 - j / 18)); rect(g, hx - w, b - 19 - j, hx + w + 1, b - 18 - j, (x) => j === 0 ? P.woodL : (x + j) % 3 ? P.straw : P.woodL); } // a thatched cone
+    thatch(hx, b - 19, ww + 4, 18, [7, 13]);
     rect(g, hx, b - 40, hx + 1, b - 36, P.woodD);
-    const rx = cx + 44, rw = 11; rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => y > b - 4 ? P.wood1 : x > rx + 6 ? P.wood : P.woodL); rect(g, rx - 2, b - 9, rx + 3, b, P.woodD); // a plain round house
-    for (let j = 0; j < 13; j++) { const w = Math.round((rw + 3) * (1 - j / 13)); rect(g, rx - w, b - 14 - j, rx + w + 1, b - 13 - j, (x) => (x + j) % 3 ? P.straw : P.woodL); }
+    const rx = cx + 44, rw = 11; // a plain round house: mud walls in the trunk ramp
+    rect(g, rx - rw, b - 13, rx + rw + 1, b, (x, y) => { const u = (x - rx) / (rw + .5), v = b - y; return v <= 3 ? side(u, P.wood, P.wood1, P.woodD) : v >= 12 ? side(u, P.wood, P.wood, P.wood1) : side(u, P.woodL, code(R.trunk, Math.max(3, nt - 2)), P.wood); });
+    rect(g, rx - 2, b - 9, rx + 3, b, P.woodD);
+    thatch(rx, b - 14, rw + 3, 13, [6]);
     for (const [ox, oy] of [[cx + 26, 0], [cx + 29, 0], [cx + 27, -4]]) { rect(g, ox - 1, b - 4 + oy, ox + 2, b + oy, P.wood); setp(g, ox, b - 5 + oy, P.wood1); } // clay pots
     const ax = cx + 70, at = top(ax); for (let j = 0; j < 22; j++) setp(g, ax + Math.round(j * .15), at - j, P.woodD); // an acacia, its crown flat
     for (const [w, dy] of [[9, 0], [13, 1], [12, 2], [7, 3]]) rect(g, ax + 3 - w, at - 25 + dy, ax + 4 + w, at - 24 + dy, (x) => dy === 0 ? P.leafL : hash2(x, dy, 71) > .6 ? P.leafD : P.leaf); },
@@ -1042,9 +1059,9 @@ function boathouse(g, x, base) {
 const item = (g, id, x, y, rx, ry, label) => { g.items[id] = { id, x, y, rx, ry, label }; };
 function buildShore(season, seed, path) { // the world key below includes st.bd
   const W = WORLD_W, H = WORLD_H, g = newWorld(W, H, 11 + (season === "autumn" ? 5 : 0)), nf = N[R.far], P = pal();
-  Object.assign(g, { items: {}, spring: season === "spring", moon: SEASONS[season].moon, themes: [] });
+  Object.assign(g, { items: {}, spring: season === "spring", moon: SEASONS[season].moon && st.sky !== "low", themes: [] }); // Sky light Low: the body is drawn in view space instead
   P.glass = g.spring ? P.blue : P.gold; // windows catch the sky by day and are lit in the evening
-  hills(g, 0, W, WY, { seed: 5, snow: true, layers: [[250, nf - 1], [165, nf - 2], [84, nf - 4]] });
+  hills(g, 0, W, WY, { seed: 5, snow: true, layers: [[250, nf - 1], [165, nf - 2], [84, nf - 4]], clear: HOME[BD()].clear });
   // the near shore: the landing and home, wrapping round from the far end of the world
   farTrees(g, -260, 960, WY); mist(g, 0, W, WY);
   treeRow(g, 0, 330, WY); treeRow(g, W - 150, W, WY, { front: false }); if (HOME[BD()].pines !== false) { pine(g, 880, WY - 3, 44); pine(g, 902, WY - 3, 34); }
@@ -1078,7 +1095,7 @@ function buildShore(season, seed, path) { // the world key below includes st.bd
   item(g, "house", 470, WY - 12, 22, 14, "Settings");
   item(g, "lily", 772, WY + 82, 30, 20, "Today's Recap");
   item(g, "old0", 716, WY + 150, 20, 13, "An older Recap"); item(g, "old1", 664, WY + 202, 15, 10, "An older Recap");
-  sky(g, 0, WY, { x: g.sunX ?? 750, y: g.sunY ?? WY - 80, r: 520, s: g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
+  sky(g, 0, WY, { x: g.sunX ?? 750, y: g.sunY ?? WY - 80, r: 520, s: st.sky === "low" ? 0 : g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
   finish(g, season);
   g.LUT = makeLUT(season, "normal");
   return g;
@@ -1098,10 +1115,6 @@ function cattails(g, x0, x1, n) { // reeds with brown heads at the far waterline
     else for (let j = 0; j < 6; j++) px.push([lean + (j > 3 ? lean : 0), -h - j, code(R.grass, ng - 2)]);
     g.sprites.push({ x, y: WY + 1, px, bob: false, refl: true });
   }
-}
-function clearSky(g, x0, x1, fadeW = 50) { // lift the distant hills off a stretch of the near shore, dithered out at its ends
-  const { W, land } = g;
-  for (let x = x0; x < x1; x++) { const e = clamp(Math.min(x - x0, x1 - x) / fadeW, 0, 1); for (let y = 0; y < WY; y++) { const i = y * W + ((x % W) + W) % W; if (land[i] >> 5 === R.far && bay(x, y) < e) land[i] = TR; } }
 }
 function wood(g, x0, x1, topFn, o = {}) { // a forest whose crowns reach topFn: rows of round crowns, the back rows first, over a dark understorey
   const r = rng(o.seed ?? 1), R0 = o.R ?? 16, base = o.base ?? WY, ramps = o.ramps ?? LEAF, under = code(o.under ?? R.leafA, 0);
@@ -1147,7 +1160,7 @@ const HOME = {
     blurb: "The baseline from #84: distant hills over a thin far bank, two pines, and open water. For comparison only.",
     rules: ["<b>As on #84:</b> hills, far trees and mist over a thin bank, two pines to the right, open water with the moored boat and the lilies."],
     build() {} },
-  B: { name: "The kit's forest", pines: false,
+  B: { name: "The kit's forest", pines: false, clear: [380, 1040], // round 2: the hills ease down to nothing over this stretch (hills' clear), in place of a dithered cut
     blurb: "The style kit's bank brought back to home, now three rows deep (the back row hazy, in the far ramp), with one or two small forest scenes picked at random each time home comes round: deer, a fox, rabbits, a heron, ducks, a rope swing, a tent, a firepit, a picnic, a canoe, an owl, fireflies or butterflies. Before: two rows of big round crowns along the far shore, blossom among them, light shafts from the upper left and cattails at the waterline. The distant hills drop away behind it, so the forest meets the sky as it did in the kit. Past the pier the mountains and the open lake return.",
     rules: ["<b>The forest:</b> three rows. A deep row of smaller crowns in the far ramp, then a mist band, then the kit's back and front rows of round crowns (40–80 art px across) in the leaf ramps with blossom (leafB) among them. The far ramp keeps the deep row apart in both seasons: pale blue-green behind green and pink in spring, dusk-purple behind orange in autumn.",
       "<b>Details:</b> each time home comes round (opening the app, rowing home, coming back from the landing), one or two are picked at random from twelve, at places that don't crowd each other or the boat and lilies. Picked by chance, never earned: no detail is rarer, none is tied to an Inquiry, nothing is kept or collected.",
@@ -1157,7 +1170,7 @@ const HOME = {
       "<b>Light:</b> shafts from the upper left, as the kit's Luminous light. Drawn once; nothing in them moves.",
       "<b>Cattails:</b> clumps at the far waterline on both sides of the boat."],
     build(g) {
-      clearSky(g, 380, 1040, 70); farTrees(g, 380, 1040, WY);
+      farTrees(g, 380, 1040, WY);
       { const r = rng(451); for (let c = 370; c < 1050; c += 18 + r() * 12) { const Rr = 12 + r() * 6; tree(g, c, WY - 54 - Rr * .8 - r() * 12, Rr, R.far, WY); } } // a deeper row, in the far ramp: paler and bluer in spring, dusk-purple in autumn
       haze(g, 380, 1040, WY - 44, 9, .4); mist(g, 380, 1040, WY);
       treeRow(g, 380, 1040, WY, { front: false, dense: .8 });
@@ -1182,14 +1195,13 @@ const HOME = {
       bank(g, 380, 1060, WY);
       cattails(g, 560, 610, 6);
     } },
-  D: { name: "Clearing in the deep wood", pines: false,
+  D: { name: "Clearing in the deep wood", pines: false, clear: [360, 1080],
     blurb: "The pond is a clearing deep in the forest. Near trunks stand at both edges of the frame, their canopy hangs across the top, and a dark wall of trees closes in behind. Light falls through the one gap overhead onto the far trees. Lost in a wood, with the water the one open place.",
     rules: ["<b>Near trunks:</b> two or three wide trunks at each side, standing in front of the water, rooted in a bank in the lower corners. Wider screens see more of them.",
       "<b>Canopy:</b> leafy masses hang across the top of the frame from the trunks, leaving a gap of sky over the pond.",
       "<b>Behind:</b> a high, dark forest wall (leafA and leafC, no blossom), no hills.",
       "<b>Light:</b> shafts through the gap, falling right across the back wall. The wordmark and Help sit on the canopy in their frost panels."],
     build(g) {
-      clearSky(g, 360, 1080, 60);
       wood(g, 360, 1080, (x) => WY - 165 - 25 * Math.sin((x - 360) / 60) - 12 * Math.sin(x / 19), { R: 15, seed: 421, ramps: [R.leafA, R.leafA, R.leafC], pine: .12 });
       bank(g, 360, 1080, WY);
       shafts(g, 600, 900, WY - 230, WY, { period: 70, width: 20, strength: .65 });
@@ -1199,7 +1211,7 @@ const HOME = {
       for (const [cx, cy, rx, ry, s] of [[520, 215, 110, 52, 1], [598, 262, 52, 26, 2], [930, 210, 120, 55, 3], [846, 256, 50, 24, 4], [720, 190, 60, 26, 5]]) blob(g, cx, cy, rx, ry, R.leafA, s);
       cattails(g, 610, 640, 4); cattails(g, 800, 830, 4);
     } },
-  E: { name: "The way out of the wood", pines: false,
+  E: { name: "The way out of the wood", pines: false, clear: [300, 760],
     blurb: "Thick, high forest on the left, the side the person comes from, thinning and stepping down to the right until it opens onto the bright lake and the mountains, the way the boat rows to begin. The sun sits in the opening and its light lies across the water to the boat. The wood is where the Inquiry begins; the opening is where the Path leads.",
     rules: ["<b>The wood:</b> ~200 art px of forest on the left, dark and dense, falling in steps to the bank by the right edge of home.",
       "<b>The opening:</b> past it the lake, the far shore and the mountains are open, as on the islets; the sun's glow sits there.",
@@ -1207,7 +1219,6 @@ const HOME = {
       "<b>Never a reward:</b> the opening is always there, whatever the person has done; it is where the boat goes, not a prize."],
     build(g) {
       g.sunX = 900; g.sunY = WY - 70;
-      clearSky(g, 300, 760, 80);
       const top = (x) => x < 600 ? WY - 215 - 12 * Math.sin(x / 31) : x < 810 ? lerp(WY - 215, WY - 36, smooth((x - 600) / 210)) - 8 * Math.sin(x / 17) : WY - 36;
       wood(g, 300, 830, top, { R: 17, seed: 431, ramps: [R.leafA, R.leafA, R.leafC, R.leafA], pine: .1 });
       bank(g, 300, 1000, WY);
@@ -1255,7 +1266,7 @@ const isWel = (b) => WEL.includes(b);
 const narrow = () => matchMedia("(max-width: 820px)").matches;
 const st = { beat: "w1", device: "p8", season: matchMedia("(prefers-color-scheme: dark)").matches ? "autumn" : "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false, reading: "auto",
   seed: 1, path: 1, size: "M", latency: 3, finishPan: 2.4, cues: "big", figure: "woman", coat: "rose", skin: 2, bd: "B", reach: 0, done: 0, begun: false, walked: false, finished: false,
-  picks: [], only: "", count: "1-2", typed: {}, sent: {} };
+  picks: [], only: "", count: "1-2", typed: {}, sent: {}, waterline: "one", dragonfly: "far", focus: "dim", sky: "low", evening: "moon" };
 try { Object.assign(st, JSON.parse(localStorage.getItem("journey") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st && typeof st[k] !== "object") st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?device=real&beat=p2
 st.bd = "B"; if (!st.typed || typeof st.typed !== "object") st.typed = {}; if (!st.sent || typeof st.sent !== "object") st.sent = {};
@@ -1264,7 +1275,11 @@ let helpOpen = false; // the Help sheet: the Inquiry is paused, the world on the
 const save = () => { try { localStorage.setItem("journey", JSON.stringify(st)); } catch {} };
 const replyAt = {}; // beat → when its mock reply lands (seconds), set by Begin and Submit
 const motion = () => helpOpen || st.still ? "still" : st.reduce ? "reduce" : "full";
-const rowName = () => helpOpen || st.still ? "still" : "normal"; // palette precedence here: Help (the Still water row) > the Still water setting > Normal
+const rowName = () => helpOpen || st.still ? "still" : st.focus === "dim" && isWel(st.beat) ? "guide" : "normal"; // palette precedence here: Help (the Still water row) > the Still water setting > the welcome's focus (Guide) > Normal
+const litOf = (row) => row === "guide" ? "normal" : row; // round 2: the welcome's lily, its rings, stone and flower stay on the Normal row while the rest is on the Guide row
+let springHold = false; // round 2: the welcome always plays in spring; an autumn setting arrives home in spring and dissolves once the pan has landed
+const SEA = () => isWel(st.beat) || springHold ? "spring" : st.season; // the season on screen
+let seasonFx = null; // a dissolve between two composed frames, one per season: { from, t0 }, 8 ordered-dither steps over 0.9 s
 const now = () => performance.now() / 1000;
 const cueAt = {}; // beat → when its cues started; a beat already played, or gone back to, shows its end state (a cue is never replayed)
 function enterCues(beat) { if (!(beat in cueAt)) cueAt[beat] = now(); else cueAt[beat] = -1e9; }
@@ -1279,8 +1294,11 @@ const SHORT = (b) => isWel(b) ? "W" + b.slice(1) : stepK(b) ? "Step " + b.slice(
 if (narrow()) st.device = "real";
 if (!beats().includes(st.beat)) st.beat = "w1";
 
-let G = null, gKey = "";
-function world() { const k = [st.season, st.seed, st.path, BD()].join(); if (gKey !== k) { G = buildShore(st.season, st.seed, st.path); gKey = k; drawMapBase(); } return G; }
+let G = null; const worlds = new Map(); // round 2: worlds cached by key, so a season can dissolve into the other one
+const wKey = (season) => [season, st.seed, st.path, BD(), st.sky].join();
+function worldFor(season) { const k = wKey(season); let g = worlds.get(k); if (!g) { g = buildShore(season, st.seed, st.path); worlds.set(k, g); if (worlds.size > 4) worlds.delete(worlds.keys().next().value); } return g; }
+function world() { const g = worldFor(SEA()); if (G !== g) { G = g; drawMapBase(); } return g; }
+function prebuild() { const o = SEA() === "spring" ? "autumn" : "spring"; if (!worlds.has(wKey(o))) (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(() => worldFor(o)); } // the other season, built when idle
 
 // ================= the scene: sprites drawn from the beat =================
 const PLAN = [[0, 0, 15, 5.1], [-34, -12, 12, .6], [31, -15, 12, 2.4], [-24, 21, 11, 4.0], [29, 19, 10, 1.3]]; // the Problem's pad, then one per Probe
@@ -1341,13 +1359,15 @@ function skim(x0, y, t, at, out) { // a stone skimming off to the right: three t
     x += dx || 24; tt += dur; rings(x, y, t, tt, out);
   }
 }
-const WLILY = { x: LAND_X + 6, y: WY + 64, scale: .9 }; // the welcome's lily, on the water in front of the landing
+const WLILY = { x: LAND_X + 6, y: WY + 128, scale: 1.2 }; // the welcome's lily: centred under the words (the camera centres on it), in the middle of the open water, a little larger (round 2)
 function welcomeLily(out, k, t) { // k: the welcome step (0–5); t: seconds into that step's cues
   const at = (step, time) => k > step ? -1e9 : k === step ? time : null;
   const pad0 = at(1, .35), pads = [0, 1, 2, 3].map((j) => at(2, .1 + j * .4));
+  const n0 = out.length;
   out.push(...lily(WLILY.x, WLILY.y, false, flowerAt(t, at(4, .1)), WLILY.scale, 1, (i) => i === 0 ? dissolveIn(t, pad0) : unfurl(t, pads[i - 1])));
   if (k === 1) rings(WLILY.x, WLILY.y + 2, t, 0, out);
   if (k === 3) skim(WLILY.x + 22, WLILY.y + 4, t, .1, out);
+  for (let i = n0; i < out.length; i++) out[i] = { ...out[i], lit: true }; // round 2: kept on the Normal row (Welcome focus: Dim the rest)
 }
 function todayLily(out, beat) { // today's lily: Begin drops onto the pond and its first pad dissolves in; the Breakdown landing unfurls one pad per Probe
   const n = now(), c0 = beat === "probes" && cueAt.probes > 0 ? cueAt.probes : -1e9, land = beat === "probes" && replyAt.probes ? replyAt.probes : -1e9;
@@ -1384,7 +1404,7 @@ function walkerPx(h, frame, dir) { // side on, walking; its edge in the jacket's
   for (let y = top + hr; y <= neck + long; y++) for (let x = 1; x <= hr; x++) if (y > top + hr || x < hr) px.push([-dir * x, y, k.hair]);
   return px;
 }
-function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang over its edge, on the ground they cross
+function sitterPx(h, ground, hd = 0) { // facing us, sitting: on a ledge the legs hang over its edge, on the ground they cross
   const k = paints(), f = FIG[st.figure] || FIG.woman, px = [];
   const hr = Math.max(2, Math.round(h * .12)), torso = Math.max(4, Math.round(h * .34)), w0 = Math.max(2, Math.round(h * .14)), w1 = Math.max(3, Math.round(h * (f.flare - .02)));
   const lapW = ground ? w1 + 3 : w1 + 1, lap = f.hem < .03 && !ground ? k.coat : k.leg;
@@ -1394,8 +1414,8 @@ function sitterPx(h, ground) { // facing us, sitting: on a ledge the legs hang o
     for (let x = -w; x <= w; x++) px.push([x, y, x === w ? k.edge : x === -w ? k.lit : k.coat]); }
   px.push([-1, -3, k.skin], [1, -3, k.skin]); // hands in the lap
   const cy = -torso - 3 - hr, long = f.hair === 2 ? Math.round(h * .2) : f.hair === 1 ? 1 : 0;
-  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x, cy + y, y <= -hr + 1 || (f.hair && Math.abs(x) === hr) ? k.hair : x === hr ? k.shade : k.skin]);
-  for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x, y, k.hair]); // hair to the shoulders
+  for (let y = -hr; y <= hr; y++) for (let x = -hr; x <= hr; x++) if (x * x + y * y <= hr * hr + hr * .6) px.push([x + hd, cy + y, y <= -hr + 1 || (f.hair && Math.abs(x) === hr) || (hd && x * hd === -hr) ? k.hair : x === hr ? k.shade : k.skin]); // hd: the head turned 1 px (to the dragonfly)
+  for (let y = cy; y <= cy + hr + long; y++) for (const x of [-hr - 1, hr + 1]) if (long && y > cy) px.push([x + hd, y, k.hair]); // hair to the shoulders
   return px;
 }
 function rowerPx(h, face, u) { // side on, sitting on the thwart (y 0), facing the way the boat moves; u: 1 at the catch (reaching), -1 at the finish (pulled in)
@@ -1461,7 +1481,7 @@ function drawWalker(out, v) {
   const boat = (x, y, moving, fade = 1, dir = 1) => out.push({ x: Math.round(x), y: Math.round(y), px: boatPx(moving ? (full ? Math.floor(now() * 8) % 8 : 2) : -1, true, dir), bob: !moving, i: 3, fade });
   const at = (s, fade = 1) => { if (!s) return;
     if (s.kind === "boat") boat(s.x, s.y, false, fade);
-    else if (s.kind === "sit") out.push({ x: s.x, y: s.y, px: sitterPx(h, s.ground), bob: false, refl: true, fade });
+    else if (s.kind === "sit") out.push({ x: s.x, y: s.y, px: sitterPx(h, s.ground, v.headDx || 0), bob: false, refl: true, fade });
     else out.push({ x: s.x, y: Math.round(walkAt(s.x)), px: walkerPx(h, 0, 1), bob: false, refl: true, fade }); };
   const empty = () => out.push({ x: MOOR.x, y: MOOR.y, px: boatPx(-1, false), bob: true, i: 3 });
   if (isWel(v.beat)) return empty(); // no walker during the welcome: the boat waits empty at its mooring
@@ -1498,32 +1518,72 @@ function homeLily(out, v) { // a new person: no lily at home until today's Recap
   out.push(...lily(HOME_LILY.x, HOME_LILY.y, false, blooming ? flowerAt(now(), v.arrived) : "open", .85));
   if (blooming) rings(HOME_LILY.x, HOME_LILY.y + 3, now(), v.arrived, out);
 }
-function koi(x, y, t, from, to, out) { // waiting: a dim shape just under the surface, with a faint blush of colour
-  const m = motion(); if (m === "still" || t < from || t > to + .5) return;
-  const big = st.cues === "big", rx = big ? 14 : 6, ry = big ? 3.4 : 1.2, px = [];
+// ---- round 2: the wait. The koi comes as the wait starts and glides a slow arc in open water; the dragonfly comes ~2.5 s in, if the reply is still out ----
+const mir = (px) => px.map((p) => [-p[0], p[1], p[2], p[3]]);
+const waitAt = {}; // beat → when its wait started (Begin or Submit)
+function koiPx(big) {
+  const rx = big ? 14 : 6, ry = big ? 3.4 : 1.2, px = [];
   for (let dx = -rx; dx <= rx; dx++) for (let dy = -Math.ceil(ry); dy <= Math.ceil(ry); dy++) if ((dx / rx) ** 2 + (dy / ry) ** 2 <= 1) {
     px.push([dx, dy, code(R.water, 0)]); if (big && dy < 0 && hash2(dx, dy, 5) > .45) px.push([dx, dy, code(R.flower, 3), .45]); }
   const tl = big ? 5 : 2; for (let k = 1; k <= tl; k++) for (let dy = -Math.round(k * .8); dy <= Math.round(k * .8); dy++) if (Math.abs(dy) >= Math.round(k * .8) - 1) px.push([-rx - k, dy, code(R.water, 0)]);
   if (big) px.push([-2, -4, code(R.water, 0)], [-3, -5, code(R.water, 0)], [-2, 4, code(R.water, 0)], [-3, 5, code(R.water, 0)]);
-  const fade = clamp(Math.min((t - from) / .3, (to + .5 - t) / .5), 1 / 8, 1);
-  out.push({ x: x + (m === "full" ? Math.round(Math.sin(t * 1.3) * (big ? 4 : 1)) : 0), y, px, bob: false, fade });
+  return px; // faces +x
 }
-function dragonfly(x, y, t, from, to, out) { // waiting on the app: hovers, darts at most once every ~3 s, lifts away when the reply lands
-  const m = motion(); if (m === "still" || t < from) return;
-  const lift = t > to ? (t - to) / .6 : 0; if (lift >= 1) return;
-  const big = st.cues === "big", f8 = Math.floor(t * 8), wing = m === "full" && f8 % 2 ? code(R.glint, 1) : code(R.glint, 3), body = code(R.trunk, 0), eye = code(R.flower, N[R.flower] - 1);
-  let px;
-  if (big) { px = [];
-    const vein = code(R.water, 1), seg = code(R.far, 1);
-    for (const [cx, rxw] of [[3, 2.2], [-2, 2]]) for (const s of [-1, 1]) for (let yy = 1; yy <= 8; yy++) for (let xx = -3; xx <= 3; xx++) {
-      const e = (xx / rxw) ** 2 + ((yy - 4.5) / 4.5) ** 2; if (e > 1) continue;
-      const X = cx + xx + (s < 0 ? -1 : 1) * Math.round(yy * .25), Y = s < 0 ? -yy : yy + 1, rim = e > .45;
-      px.push(rim ? [X, Y, vein, .9] : [X, Y, wing, .4]); }
-    for (let x = -10; x <= 9; x++) { px.push([x, 0, x > 6 ? eye : x < 0 && x % 2 ? seg : body]); if (x > -3) px.push([x, 1, x > 6 ? eye : body]); }
-  } else px = [[-3, 0, body], [-2, 0, body], [-1, 0, body], [0, 0, body], [1, 0, body], [2, 0, eye], [-1, -1, wing], [0, -1, wing], [1, -1, wing], [-1, 1, wing], [0, 1, wing], [1, 1, wing], [0, -2, wing], [0, 2, wing]];
-  const dart = m === "full" && Math.floor((t - from) / 3) % 2 ? (big ? 14 : 9) : 0, hover = m === "full" ? (f8 % 4 < 2 ? 0 : -1) : 0;
-  const fade = m === "reduce" ? clamp(Math.min(t - from, to + .6 - t) / .3, 1 / 8, 1) : 1;
-  out.push({ x: x + dart, y: Math.round(y + hover - (m === "full" ? lift * 30 : 0)), px, bob: false, fade: fade * (m === "reduce" ? 1 - lift : 1) });
+function dragonflyPx(big, wing) {
+  const body = code(R.trunk, 0), eye = code(R.flower, N[R.flower] - 1);
+  if (!big) return [[-3, 0, body], [-2, 0, body], [-1, 0, body], [0, 0, body], [1, 0, body], [2, 0, eye], [-1, -1, wing], [0, -1, wing], [1, -1, wing], [-1, 1, wing], [0, 1, wing], [1, 1, wing], [0, -2, wing], [0, 2, wing]];
+  const px = [], vein = code(R.water, 1), seg = code(R.far, 1);
+  for (const [cx, rxw] of [[3, 2.2], [-2, 2]]) for (const s of [-1, 1]) for (let yy = 1; yy <= 8; yy++) for (let xx = -3; xx <= 3; xx++) {
+    const e = (xx / rxw) ** 2 + ((yy - 4.5) / 4.5) ** 2; if (e > 1) continue;
+    const X = cx + xx + (s < 0 ? -1 : 1) * Math.round(yy * .25), Y = s < 0 ? -yy : yy + 1;
+    px.push(e > .45 ? [X, Y, vein, .9] : [X, Y, wing, .4]); }
+  for (let x = -10; x <= 9; x++) { px.push([x, 0, x > 6 ? eye : x < 0 && x % 2 ? seg : body]); if (x > -3) px.push([x, 1, x > 6 ? eye : body]); }
+  return px;
+}
+function koiSpot(v, beat, cam) { // a place in open water, well out: not under the walker, the pier, the boat or today's lily, and never under a pane
+  const rest = spot(beat); if (!rest) return null;
+  const { vw, vh } = v.sc, cx = cam.x + vw / 2, g = world(), hy = Math.round(headY(rest)) - 4;
+  const open = (sd) => { let n = 0; for (let dx = 36; dx <= 64; dx += 4) for (let dy = -6; dy <= 4; dy += 2) { const i = (hy + dy) * g.W + mod(Math.round(rest.x + sd * dx)), c = g.land[i]; if (c === TR || (c >> 5) === R.sky || (c >> 5) === R.cloud || (c >> 5) === R.far || (c >> 5) === R.mist) n++; } return n; };
+  const toward = Math.sign(cx - rest.x) || 1, dfSide = open(-toward) > open(toward) + 6 ? -toward : toward; // the dragonfly hovers on the open side, against sky or far ridges, not over a house
+  const panes = rectsArt(v, ".layer.ov:not(.old) [data-g]").map((r) => ({ x0: cam.x + r.x0 - 8, x1: cam.x + r.x1 + 8, y0: cam.y + r.y0 - 8, y1: cam.y + r.y1 + 8 }));
+  const block = [{ x0: PIER[0] - 8, x1: PIER[1] + 8, y0: WY - 10, y1: WY + 40 }, { x0: PIERBOAT.x - 34, x1: PIERBOAT.x + 34, y0: WY, y1: WY + 36 },
+    { x0: TODAY.x - 58, x1: TODAY.x + 58, y0: TODAY.y - 40, y1: TODAY.y + 40 }, { x0: rest.x - 34, x1: rest.x + 34, y0: WY - 60, y1: WY + 70 }].concat(panes);
+  const hit = (a) => block.some((b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0);
+  for (const side of [-dfSide, dfSide]) for (const dy of [44, 58, 32, 74, 92, 112]) for (const dx of [80, 100, 64, 122, 146]) {
+    const x = rest.x + side * dx, y = WY + dy, a = { x0: x - 40, x1: x + 40, y0: y - 9, y1: y + 9 };
+    if (x - 40 < cam.x + 8 || x + 40 > cam.x + vw - 8 || y + 10 > cam.y + vh - 4 || hit(a)) continue;
+    if (side === dfSide && Math.abs(dx) < 110) continue; // the dragonfly's side: only well apart from it
+    return { x, y, dfSide };
+  }
+  return { x: null, dfSide };
+}
+function waitCues(v, out) { // returns the dragonfly's side while it is near the walker (the seated walker's head turns to it)
+  const beat = v.beat, w0 = waitAt[beat], r = replyAt[beat] || 0, rest = spot(beat), m = motion();
+  if (!w0 || !r || !rest || m === "still" || !v.koi || v.koi.beat !== beat || v.koi.w0 !== w0) return 0;
+  const t = now(), L = v.pending ? 1e9 : Math.max(w0, v.shownAt || r), big = st.cues === "big", K = v.koi, full = m === "full";
+  // the koi: in over ~1.5 s, a slow arc, then after the reply lands it turns and sinks over ~2.5 s; never less than ~6 s in all
+  const out0 = Math.max(L, w0 + 3.5), e = t - w0;
+  if (K.x != null && t >= w0 && t < out0 + 2.5) {
+    const dir = K.x > rest.x ? 1 : -1, glide = (u) => full ? Math.round(22 * Math.sin(.2 * u - Math.PI / 2) * dir) : 0, rise = (u) => full ? Math.round(5 * Math.sin(.4 * u)) : 0;
+    let x = K.x + glide(e), y = K.y + rise(e), fade = q8(e / 1.5), face = full ? (Math.cos(.2 * e - Math.PI / 2) * dir >= 0 ? 1 : -1) : -dir, px = koiPx(big);
+    if (t >= out0) { const s = (t - out0) / 2.5, xo = K.x + glide(out0 - w0), yo = K.y + rise(out0 - w0), f0 = full ? (Math.cos(.2 * (out0 - w0) - Math.PI / 2) * dir >= 0 ? 1 : -1) : -dir;
+      face = full ? -f0 : f0; x = xo + (full ? Math.round(face * 6 * s) : 0); y = yo + (full ? Math.round(3 * s) : 0); fade = Math.min(fade, Math.max(0, Math.floor((1 - s) * 8) / 8));
+      px = px.filter((p) => p.length < 4); } // sinking: the blush goes first
+    if (fade > 0) out.push({ x, y, px: face < 0 ? mir(px) : px, bob: false, fade });
+  }
+  // the dragonfly: comes ~2.5 s in, only if the reply is still out; eases in from the side, hovers, leaves unhurried
+  const d0 = w0 + 2.5; if (L <= d0 || t < d0 || t > L + 1.8) return 0;
+  const side = K.dfSide, hand = st.dragonfly === "hand" && rest.kind === "sit", f8 = Math.floor(t * 8), headY_ = Math.round(headY(rest));
+  const H = hand ? { x: rest.x, y: rest.y - 4 } : { x: rest.x + side * 50, y: headY_ - (big ? 6 : 2) };
+  const inP = smooth((t - d0) / 1.6), outP = t > L ? smooth((t - L) / 1.8) : 0, landed = hand && inP >= 1 && !outP;
+  let x = H.x, y = H.y, fade = 1;
+  if (full) { if (!hand || !landed) { x += Math.round(5 * Math.sin(t * .6)) * (hand ? 0 : 1); y += hand ? 0 : Math.round(2 * Math.sin(t * .9)); }
+    x = Math.round(lerp(lerp(H.x + side * 110, x, inP), H.x + side * 130, outP)); y = Math.round(lerp(lerp(H.y - 26, y, inP), H.y - 46, outP)); }
+  else fade = Math.min(q8((t - d0) / .8), outP ? Math.max(0, Math.floor((1 - outP) * 8) / 8) : 1); // Reduce Motion: dissolves only, no drift
+  if (fade <= 0) return 0;
+  const wing = landed || !full ? code(R.glint, 3) : f8 % 2 ? code(R.glint, 1) : code(R.glint, 3), px = dragonflyPx(hand ? false : big, wing);
+  out.push({ x, y, px: side > 0 && !hand ? mir(px) : px, bob: false, fade }); // facing the walker
+  return !hand && inP > .5 && outP < .5 ? side : 0;
 }
 // ================= home's details (issue #86, round 3): small forest scenes, one or two picked at random each time home comes round =================
 const F = (i) => code(R.fur, i);
@@ -1610,7 +1670,7 @@ const DETAILS = {
     for (const ex of [-2, 2]) { s.set(ex, -13, blink ? D : FUR.beak, .9, false); if (!blink) s.set(ex, -14, FUR.beak, .9, false); }
     s.set(0, -12, FUR.dark, 0, false);
     return [{ x, y: WY - 40, px: s.px() }]; } },
-  lights: { name: "Fireflies or butterflies", where: [742], sprites: (x) => { const px = [], spring = st.season === "spring";
+  lights: { name: "Fireflies or butterflies", where: [742], sprites: (x) => { const px = [], spring = SEA() === "spring";
     for (let i = 0; i < (spring ? 5 : 14); i++) { const a = T * (spring ? .5 : .2) + i * 2.1, fx = Math.round(Math.sin(a + i) * 70 + Math.sin(a * 1.7) * 8), fy = Math.round(-10 - (i * 9) % 36 + Math.cos(a * 1.3) * 5);
       if (spring) { const up = tick(4 + (i % 3)) % 2, wing = code(R.flower, N[R.flower] - 2 - (i % 2) * 3), body = F(8); px.push([fx, fy, body], [fx, fy + 1, body], [fx - 1, fy - up, wing], [fx - 2, fy - up, wing], [fx + 1, fy - up, wing], [fx + 2, fy - up, wing], [fx - 1, fy + 1, wing], [fx + 1, fy + 1, wing]); }
       else if ((tick(2) + i * 3) % 5 !== 0) px.push([fx, fy, code(R.light, 2)], [fx + 1, fy, code(R.light, 1)]); }
@@ -1632,10 +1692,9 @@ function scene(v) {
   if (isWel(beat)) welcomeLily(out, WEL.indexOf(beat), ct(beat));
   else if (beat === "home" && v.move && isWel(v.prevBeat)) welcomeLily(out, WEL.indexOf(v.prevBeat), 1e9); // kept while the camera pans home
   if (beat === "probes" || beat === "recap" || slotK(beat)) todayLily(out, beat);
-  drawWalker(out, v);
-  // the walk is the wait: the koi and dragonfly come only if the reply is still out when the walker is at rest, and the dragonfly lifts as it lands
-  const r = replyAt[beat] || 0, arr = v.arrived ?? 0, rest = spot(beat);
-  if (r && rest && !v.move && r > arr + .15) { const t = now(); koi(rest.x + 10, WY + 24, t, arr, r, out); dragonfly(rest.x + 8, Math.round(headY(rest)) - (st.cues === "big" ? 10 : 4), t, arr + .6, r, out); }
+  const cues = [], side = waitCues(v, cues); v.headDx = side && !v.move ? side : 0; // round 2: the wait's koi and dragonfly
+  drawWalker(out, v); out.push(...cues);
+  const r = replyAt[beat] || 0, rest = spot(beat);
   if (r && rest && !v.move && v.shownAt) bigRings(rest.x + 6, WY + 6, now(), v.shownAt, out, .8);
   return out;
 }
@@ -1661,8 +1720,12 @@ function scaleFor(d, g) {
   return { k, vw: Math.ceil(d.w / k), vh: Math.ceil(d.h / k) };
 }
 const cssW = (d) => d.w / d.dpr, cssH = (d) => d.h / d.dpr;
+const ONE_SHARE = .56; // round 2, Waterline "One height": every framing puts the waterline at this share of the screen, so every pan is level
 function frameFor(beat) {
-  if (isWel(beat)) return { x: LAND_X + 10, share: .56 }; // the welcome: on the landing, the camera still
+  const f = frameRaw(beat); return st.waterline === "one" ? { x: f.x, share: ONE_SHARE } : f;
+}
+function frameRaw(beat) {
+  if (isWel(beat)) return { x: WLILY.x, share: .56 }; // the welcome: on the landing, the camera still, its lily centred under the words
   if (beat === "home") return { x: 720, share: .4 };
   if (beat === "problem" || beat === "probes") return { x: TODAY.x + 6, share: .6 };
   if (beat === "recap") return { x: LAND_X + 40, share: .76 };
@@ -1700,6 +1763,12 @@ const sideNav = (c, beat) => { const y = Math.round(c.H / 2), f = fwdOf(beat);
   return `<button type="button" class="g side" data-g data-go="back" aria-label="Back" style="left:4px;top:${y}px">‹</button>`
     + (f && !c.pend && beats().indexOf(f) <= st.reach ? `<button type="button" class="g side" data-g data-go="fwd" aria-label="Forward" style="right:4px;top:${y}px">›</button>` : ""); };
 const helpBtn = () => Bt("ctl", "Help", "help", `aria-expanded="${helpOpen}"`);
+const PROBLEM_MIN = 96; // css px Your Problem needs: its caption and two lines
+function clearGap(c, beat) { // round 2: a pane hanging from the waterline stops above the walker's head (and its seat), never over them
+  const s = spot(beat); if (!s) return 10;
+  const head = s.kind === "sit" ? s.y - walkerH() - 4 : s.kind === "stand" ? walkAt(s.x) - walkerH() - 2 : WY;
+  return Math.max(10, Math.round((WY - head + 6) * c.s));
+}
 const above = (c, inner, cls = "", gap = 10) => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + gap}px">${inner}</div>`;
 const below = (c, inner, bottom, gap = 10) => `<div class="col" style="top:${c.wl + gap}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
 const bottomBar = (c, inner) => `<div class="bbar" style="bottom:${c.bot + 12}px">${inner}</div>`;
@@ -1734,12 +1803,16 @@ const helpSheet = () => `<div class="scrim" data-go="noop"></div><div class="she
   + `${P_("per dim", "Here we list crisis contacts for your country, so you can reach a person right now. This prototype leaves them out.")}<button type="button" class="cbtn walk hb" data-go="helpclose">Back to my Inquiry</button></div>`;
 function inquiryFrame(c, beat) {
   const top = topbar(c, "", helpBtn()), k = slotK(beat), problem = Gp("", P_("cap", "Your Problem") + P_("per", sentText("problem")));
-  if (beat === "problem") return top + sideNav(c, beat) + above(c, Gp("", P_("q", "What are you facing?") + P_("rd dim", "Write it as it comes. It isn't here to be fixed, just looked at.")), "skytop")
+  if (beat === "problem") return top + sideNav(c, beat) + above(c, Gp("", P_("q", "What are you facing?") + P_("rd dim", "Write it as it comes. It isn't here to be fixed, just looked at.")), "", clearGap(c, beat)) // round 2: hangs from the waterline, like the questions
     + composer(c, "problem", "Begin", "Write it, or tap the mic");
   if (beat === "probes") {
-    if (c.pend) return top + below(c, problem + `<span class="sr" role="status">Waiting for a reply</span>`, undefined, 28); // the Breakdown is out: only the Problem, below the water
-    return top + above(c, capg("Probes") + COPY.probes.map((q, i) => Bt("row", `<span class="rt">${P_("rd", q)}${i === 0 && st.walked ? P_("ctl dim", "Walked") : ""}</span>`, i === 0 && !st.walked ? "p1" : "noop")).join(""), "", 40)
-      + below(c, (st.walked ? Bt("row", P_("rd", "Finish Inquiry ›"), "finish") : "") + problem, undefined, 28);
+    if (c.pend) return top + `<span class="sr" role="status">Waiting for a reply</span>`; // round 2: the Breakdown is out: an empty screen, only Help
+    // round 2: no caption, just the four questions; Finish and Your Problem go below today's lily, never over it, and Your Problem is dropped when there's no room
+    const fin = st.walked ? Bt("row", P_("rd", "Finish Inquiry ›"), "finish") : "", lilyBot = c.y(TODAY.y + 34) + 8, room = c.H - (c.bot + 10) - lilyBot;
+    const qs = COPY.probes.map((q, i) => Bt("row", `<span class="rt">${P_("rd", q)}${i === 0 && st.walked ? P_("ctl dim", "Walked") : ""}</span>`, i === 0 && !st.walked ? "p1" : "noop")).join("");
+    const lower = (fin ? (room >= 52 ? fin : "") : "") + (room >= (fin ? 52 : 0) + PROBLEM_MIN ? problem : "");
+    c.dropped = room < (fin ? 52 : 0) + PROBLEM_MIN;
+    return top + above(c, qs + (fin && room < 52 ? fin : ""), "", clearGap(c, beat)) + (lower ? `<div class="col" style="top:${lilyBot}px;bottom:${c.bot + 10}px">${lower}</div>` : "");
   }
   if (beat === "recap") { const R_ = COPY.recap, kc = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
     return top + hits(c, [["landboat", "row"]]) + `<div class="tag" style="left:${c.x(LANDBOAT.x)}px;top:${c.y(LANDBOAT.y + 6)}px">${Bt("", P_("ctl", "Row home"), "row")}</div>`
@@ -1751,8 +1824,8 @@ function inquiryFrame(c, beat) {
   }
   if (c.pend) return top + sideNav(c, beat) + reflected(c, "p" + (k - 1)); // waiting on the reply: only what was just said, where it was said
   if (beat === "end") return top + above(c, Gp("", P_("q", "That's where this Path ends.")), "skytop")
-    + below(c, Gp("card", P_("cap", "An Open Question") + P_("rd", COPY.oq) + P_("ctl dim", "To keep with you, not to answer now.")) + Bt("row", P_("rd", "Back to the Probes ›"), "toprobes"));
-  const s = COPY.steps[k - 1], q = above(c, Gp("", P_("q", s.q)), "skytop scroll");
+    + below(c, Gp("card", P_("cap", "An Open Question") + P_("rd", COPY.oq) + P_("ctl dim", "To keep with you, not to answer now.")) + Bt("row", P_("rd", "Back to the questions ›"), "toprobes"));
+  const s = COPY.steps[k - 1], q = above(c, Gp("", P_("q", s.q)), "", clearGap(c, beat)); // round 2: the question hangs just above the waterline, clear of the seated walker
   if (k <= st.done) return top + sideNav(c, beat) + q + reflected(c, "p" + k); // already answered: the Reflection as sent, no Submit
   return top + sideNav(c, beat) + q + composer(c, "p" + k, "Submit", "Reflect, or tap the mic");
 }
@@ -1788,7 +1861,7 @@ function makeView(d, host, fitW, fitH) {
   const cap = document.createElement("div"); cap.className = "devCap";
   const box = document.createElement("div"); box.className = "devBox" + (d.real ? " real" : "");
   box.style.width = Math.round(W * s) + "px"; box.style.height = Math.round(H * s) + "px";
-  const dev = document.createElement("div"); dev.className = "dev " + st.season;
+  const dev = document.createElement("div"); dev.className = "dev " + SEA();
   dev.style.width = W + "px"; dev.style.height = H + "px"; dev.style.transform = `scale(${s})`;
   const cv = document.createElement("canvas"); cv.width = sc.vw; cv.height = sc.vh;
   cv.style.width = (sc.vw * sc.k / d.dpr) + "px"; cv.style.height = (sc.vh * sc.k / d.dpr) + "px"; cv.setAttribute("aria-hidden", "true");
@@ -1820,8 +1893,8 @@ function rectsArt(v, sel) { // DOM boxes → art-pixel rects in the view, clippe
   }
   return out;
 }
-function frost(pix, vw, r, wlArt, m) {
-  const t = TINT[st.season], tint = (r.y0 + r.y1) / 2 < wlArt ? t.above : t.below, C = 3;
+function frost(pix, vw, r, wlArt, m, season) {
+  const t = TINT[season], tint = (r.y0 + r.y1) / 2 < wlArt ? t.above : t.below, C = 3;
   const q = (x) => clamp(Math.round(x / 16) * 16, 0, 255);
   for (let cy = r.y0; cy < r.y1; cy += C) for (let cx = r.x0; cx < r.x1; cx += C) {
     let Rr = 0, Gg = 0, B = 0, n = 0;
@@ -1841,30 +1914,86 @@ const READING = (b) => st.reading === "auto" && INQ(b); // reading mode: the Pro
 let T = 0, Tg = 0; // the world clock in real seconds (half speed in reading mode, stopped by Reduce Motion, Still water and Help); Tg: the glints' cycle, which Reduce Motion slows but keeps
 const lutCache = new Map();
 function lutFor(season, row) { const k = season + "|" + row; if (!lutCache.has(k)) lutCache.set(k, makeLUT(season, row)); return lutCache.get(k); }
-function lutNow(row) {
-  const Lb = lutFor(st.season, row), out = Lb.slice(), b = code(R.glint, 0), tc = Math.floor(Tg);
+function lutNow(row, season = SEA()) {
+  const Lb = lutFor(season, row), out = Lb.slice(), b = code(R.glint, 0), tc = Math.floor(Tg);
   for (let s = 0; s < 4; s++) out[b + s] = Lb[b + (s + tc) % 4];
   return out;
 }
 let palFx = null; // a palette dissolve between rows: { from, t0 }, 8 ordered-dither steps over 0.7 s
 let paintCount = 0, paintFps = 0;
-function paint(v, cam, mix) {
-  const g = world(), { vw, vh } = v.sc, dyn = scene(v);
-  compose(g, cam.x, cam.y, vw, vh, T, motion(), v.buf, dyn);
-  if (mix) {
-    const b2 = v.buf2 || (v.buf2 = new Uint16Array(vw * vh));
-    compose(g, mix.cam2.x, mix.cam2.y, vw, vh, T, "reduce", b2, dyn);
-    const p = Math.floor(mix.p * 8) / 8;
-    for (let y = 0; y < vh; y++) for (let x = 0; x < vw; x++) if (bay(x, y) < p) v.buf[y * vw + x] = b2[y * vw + x];
+// ---- round 2, Sky light Low: one body low in the sky, drawn in view space (it is far away: it doesn't move as the camera pans), with its reflection ----
+function skyBody(season) { // up: art px above the waterline. 300 puts it in the band of sky that no pane covers on a phone (below the top bar, above the four questions)
+  if (st.sky !== "low") return null;
+  if (season === "spring") return { kind: "sun", r: 6, up: 300, glow: 46, gs: 3, lift: 1, wide: 1.4, dens: .45 }; // a pale morning sun; its column faint
+  return st.evening === "sun" ? { kind: "setting", r: 9, up: 92, glow: 70, gs: 5, lift: 6, wide: 2.6, dens: 1 } // a setting sun, low on the ridges: seen on home and the welcome, behind the panes on the Inquiry's screens
+    : { kind: "moon", r: 5, up: 300, glow: 30, gs: 3, lift: 6, wide: 2.6, dens: .8 }; // a low moon
+}
+const BODY_X = .75; // a quarter in from the right: clear of the main words pane and the walker's column
+let skyPanes = []; // the panes below the waterline: words first, the streaks pass behind them unlit (the lift stays)
+function skyLight(buf, wet, vw, vh, wl, season, T, motion) {
+  const B = skyBody(season); if (!B) return;
+  const bx = Math.round(vw * BODY_X), by = Math.round(Math.max(B.r + 70, wl - B.up)), S0 = code(R.sky, 0), nS = N[R.sky], isSky = (c) => c >= S0 && c < S0 + 16;
+  for (let y = Math.max(0, by - B.glow); y < Math.min(vh, wl, by + B.glow); y++) for (let x = Math.max(0, bx - B.glow); x < Math.min(vw, bx + B.glow); x++) { // the glow: sky steps lifted by ordered dither, only on sky
+    const i = y * vw + x, c = buf[i]; if (!isSky(c)) continue;
+    const d = Math.hypot(x - bx, (y - by) * 1.15) / B.glow; if (d >= 1) continue;
+    const a = (1 - d) ** 2 * B.gs, n = Math.floor(a) + (bay(x, y) < a % 1 ? 1 : 0);
+    buf[i] = S0 + Math.min(nS - 1, (c - S0) + n);
   }
-  const Lto = lutNow(rowName()), pix = v.pix, buf = v.buf;
-  let Lfrom = null, p = 1;
-  if (palFx) { p = Math.ceil(clamp((now() - palFx.t0) / .7, 0, 1) * 8) / 8; if (p >= 1) palFx = null; else Lfrom = lutNow(palFx.from); }
-  if (Lfrom) { for (let y = 0; y < vh; y++) for (let x = 0, i = y * vw; x < vw; x++, i++) pix[i] = (bay(x, y) < p ? Lto : Lfrom)[buf[i]]; }
-  else for (let i = 0; i < buf.length; i++) pix[i] = Lto[buf[i]];
+  for (let y = -B.r; y <= B.r; y++) for (let x = -B.r; x <= B.r; x++) { // the disc, only over sky: trees, ridges and islets pass in front of it
+    const X = bx + x, Y = by + y; if (X < 0 || X >= vw || Y < 0 || Y >= vh || x * x + y * y > B.r * B.r + B.r * .5) continue;
+    const i = Y * vw + X; if (!isSky(buf[i])) continue;
+    const e = Math.hypot(x, y) / B.r;
+    buf[i] = B.kind === "moon" ? code(R.light, (x + y) / B.r > .7 || hash2(x + 99 >> 1, y + 99 >> 1, 7) > .8 ? 1 : 2) : code(R.light, e > .82 ? 1 : 2);
+  }
+  // the reflection: a column of broken horizontal streaks under the body, wider and sparser further down, rippling at the water's 8 fps (frozen with the water)
+  const tw = motion === "full" ? Math.floor(T * 8) : 0, H = vh - wl, nW = N[R.water];
+  for (let y = Math.max(0, wl); y < vh; y++) {
+    const d = y - wl, f = d / Math.max(1, H), half = 8 + d * .55, dx = motion === "full" ? Math.round(Math.sin(y * .66 + tw * RIPPLE) * (.6 + Math.min(1.6, d / 20))) : 0;
+    for (let x = Math.max(0, Math.floor(bx - half * B.wide)); x < Math.min(vw, Math.ceil(bx + half * B.wide)); x++) { // the lift: the water's own steps raised around the column
+      const i = y * vw + x; if (!wet[i]) continue;
+      const u = Math.abs(x - bx) / (half * B.wide), a = (1 - u) ** 1.5 * B.lift * (1 - f * .45); if (a <= 0) continue;
+      const n = Math.floor(a) + (bay(x, y) < a % 1 ? 1 : 0); if (!n) continue;
+      const c = buf[i], r = c >> 5, st_ = c & 15; if (r === R.light || r === R.glint) continue;
+      buf[i] = (c & ~15) | Math.min((r === R.water ? nW : N[r]) - 1, st_ + n);
+    }
+    if (d < 2 || hash2(y, 3, 41) > B.dens * (.75 - f * .35)) continue; // the streaks: some rows lit, fewer further down
+    const hw = Math.round((1.5 + d * .16) * (.6 + hash2(y, 5, 43) * .8)), x0 = bx + dx + Math.round((hash2(y, 7, 47) - .5) * d * .12);
+    for (let x = x0 - hw; x <= x0 + hw; x++) {
+      if (x < 0 || x >= vw || !wet[y * vw + x] || hash2(x + dx >> 1, y, 53) < .2 + f * .3 || skyPanes.some((r) => x >= r.x0 - 1 && x < r.x1 + 1 && y >= r.y0 - 1 && y < r.y1 + 1)) continue; // broken
+      buf[y * vw + x] = code(R.light, Math.abs(x - x0) < hw * .4 && d < H * .5 && B.kind !== "sun" ? 2 : 1);
+    }
+  }
+}
+function renderTo(v, g, sea, cam, mix, out, masks) { // a composed frame for one season, through its LUT, into out
+  const { vw, vh } = v.sc, dyn = scene(v), m = motion(), buf = masks.buf, M = masks;
+  compose(g, cam.x, cam.y, vw, vh, T, m, buf, dyn, M); skyLight(buf, M.wet, vw, vh, WY - cam.y, sea, T, m);
+  if (mix) {
+    const M2 = masks.m2 || (masks.m2 = { buf: new Uint16Array(vw * vh), lit: new Uint8Array(vw * vh), wet: new Uint8Array(vw * vh) });
+    compose(g, mix.cam2.x, mix.cam2.y, vw, vh, T, "reduce", M2.buf, dyn, M2); skyLight(M2.buf, M2.wet, vw, vh, WY - mix.cam2.y, sea, T, "reduce");
+    const p = Math.floor(mix.p * 8) / 8;
+    for (let y = 0; y < vh; y++) for (let x = 0, i = y * vw; x < vw; x++, i++) if (bay(x, y) < p) { buf[i] = M2.buf[i]; M.lit[i] = M2.lit[i]; }
+  }
+  const row = rowName(), Lto = lutNow(row, sea), Lto2 = lutNow(litOf(row), sea), lit = M.lit;
+  let Lfrom = null, Lfrom2 = null, p = 1;
+  if (palFx) { p = Math.ceil(clamp((now() - palFx.t0) / .7, 0, 1) * 8) / 8; if (p >= 1) palFx = null; else { Lfrom = lutNow(palFx.from, sea); Lfrom2 = lutNow(litOf(palFx.from), sea); } }
+  for (let y = 0; y < vh; y++) for (let x = 0, i = y * vw; x < vw; x++, i++) { const to = !Lfrom || bay(x, y) < p; out[i] = (lit[i] ? (to ? Lto2 : Lfrom2) : (to ? Lto : Lfrom))[buf[i]]; }
+}
+function paint(v, cam, mix) {
+  const frostSel = v.ov.style.visibility === "hidden" ? ".ov.old [data-g]" : ".ov [data-g]", panes = rectsArt(v, frostSel);
+  skyPanes = panes.filter((r) => r.y1 > WY - cam.y);
+  const { vw, vh } = v.sc, sea = SEA(), pix = v.pix, mk = () => ({ buf: new Uint16Array(vw * vh), lit: new Uint8Array(vw * vh), wet: new Uint8Array(vw * vh) });
+  renderTo(v, world(), sea, cam, mix, pix, v.mA || (v.mA = mk()));
+  let shown = sea;
+  if (seasonFx) { // round 2: the season dissolves between two composed frames, 8 steps
+    const p = Math.ceil(clamp((now() - seasonFx.t0) / .9, 0, 1) * 8) / 8;
+    if (p >= 1 || seasonFx.from === sea) seasonFx = null;
+    else { const pB = v.pixB || (v.pixB = new Uint32Array(vw * vh)); renderTo(v, worldFor(seasonFx.from), seasonFx.from, cam, mix, pB, v.mB || (v.mB = mk()));
+      for (let y = 0; y < vh; y++) for (let x = 0, i = y * vw; x < vw; x++, i++) if (bay(x, y) >= p) pix[i] = pB[i];
+      if (p < .5) shown = seasonFx.from; }
+  }
+  if (v.shown !== shown) { v.shown = shown; v.dev.className = "dev " + shown; } // the words' ink and the frost's tint swap at the dissolve's midpoint
   const src = pix.slice(), wlArt = WY - cam.y;
-  const frostSel = v.ov.style.visibility === "hidden" ? ".ov.old [data-g]" : ".ov [data-g]";
-  for (const r of rectsArt(v, frostSel)) { frost(pix, vw, r, wlArt, READING(v.beat) ? .72 : .55); notch(pix, vw, r, src); }
+  for (const r of panes) { frost(pix, vw, r, wlArt, READING(v.beat) ? .72 : .55, shown); notch(pix, vw, r, src); }
   v.ctx.putImageData(v.img, 0, 0);
   paintCount++;
 }
@@ -1879,7 +2008,7 @@ function layout() {
   const d = real ? realDevice() : DEVICES.find((x) => x.id === st.device) || DEVICES[2];
   views.push(makeView(d, single, stageEl.clientWidth - 32, stageEl.clientHeight - 110));
   for (const v of views) setScreen(v, st.beat, false);
-  renderPanel(); onVV();
+  renderPanel(); onVV(); prebuild();
 }
 function setScreen(v, beat, animate, dir = "") {
   const g = world(), raw = cameraFor(g, beat, v.d, v.sc), from = v.cam, prevHTML = v.html, prevBeat = v.beat;
@@ -1889,6 +2018,7 @@ function setScreen(v, beat, animate, dir = "") {
   v.pending = (replyAt[beat] || 0) > now(); v.shownAt = 0; v.lastMove = null; v.prevBeat = prevBeat; v.beat = beat;
   v.ov.style.cssText = ""; v.ov.className = "layer ov"; v.ovOld.innerHTML = ""; v.ovOld.style.cssText = "";
   show(v, overlay(v, beat, to, animate ? dir : ""));
+  v.koi = v.pending && waitAt[beat] ? { beat, w0: waitAt[beat], ...koiSpot(v, beat, to) } : null; // round 2: where the wait's koi swims, clear of this screen's panes
   if (!animate || !from || (from.x === to.x && from.y === to.y)) { v.cam = { x: wrapNear(to.x, 0), y: to.y }; v.move = null; v.arrived = now(); v.deco.innerHTML = decoHTML(v); return; }
   v.ovOld.innerHTML = prevHTML;
   const style = st.reduce || st.still ? "dissolve" : "pan", dist = Math.hypot(to.x - from.x, to.y - from.y);
@@ -1927,6 +2057,7 @@ function frame(nowMs) {
       if (p >= 1) {
         const homeAgain = rowing && v.beat === "home";
         if (homeAgain) bloomPending = false;
+        if (springHold) { springHold = false; if (st.season !== "spring") { seasonFx = { from: "spring", t0: now() }; } } // landed home: now the season dissolves
         v.move = null; v.lastMove = mv; v.arrived = now(); v.cam = { x: wrapNear(mv.to.x, 0), y: mv.to.y }; cam = mv.to; mix = null;
         v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); show(v, overlay(v, v.beat, v.cam));
         if (homeAgain) v.ov.classList.add("fresh");
@@ -1935,7 +2066,7 @@ function frame(nowMs) {
     if (v.pending && !v.move && !helpOpen && now() >= replyAt[v.beat]) { // the reply lands (held while Help is open): the words fade in
       v.pending = false; v.shownAt = now(); show(v, overlay(v, v.beat, v.cam)); v.ov.classList.add("fresh");
     }
-    const t = now(), busy = v.move || palFx || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 2 || t - (v.arrived ?? -9) < 1.8;
+    const t = now(), busy = v.move || palFx || seasonFx || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 2 || t - (v.arrived ?? -9) < 1.8;
     const key = `${cam.x},${cam.y}|${mix ? Math.floor(mix.p * 8) : ""}|${m === "full" ? Math.floor(T * 8) : 0}|${Math.floor(Tg)}|${busy ? Math.floor(nowMs / 60) : ""}`;
     if (key === v.lastKey) continue;
     v.lastKey = key; paint(v, cam, mix);
@@ -1959,10 +2090,10 @@ function go(to) {
   if (to === "submit") {
     const key = b === "problem" ? "problem" : "p" + k, typed = (st.typed[key] || "").trim();
     st.sent[key] = typed || sampleFor(key); // Submit works with an empty box: it sends the sample
-    if (b === "problem") { st.begun = true; replyAt.probes = now() + st.latency; return navTo("probes"); } // Begin: the Breakdown waits on the model
+    if (b === "problem") { st.begun = true; replyAt.probes = now() + st.latency; waitAt.probes = now(); return navTo("probes"); } // Begin: the Breakdown waits on the model
     st.done = Math.max(st.done, k);
     const nx = k < STEPS ? "p" + (k + 1) : "end";
-    replyAt[nx] = now() + st.latency; return navTo(nx); // the walk is the wait
+    replyAt[nx] = now() + st.latency; waitAt[nx] = now(); return navTo(nx); // the walk is the wait
   }
   if (to === "toprobes") { st.walked = true; replyAt.probes = 0; return navTo("probes"); }
   if (to === "finish") { replyAt.recap = 0; return navTo("recap"); }
@@ -1974,10 +2105,13 @@ function navTo(beat, jump = false) {
   if (beat === "home" && from !== "home") rollDetails(); // home has come round: pick again
   if (beat !== "home") rowing = false;
   if (jump) { helpOpen = false; replyAt[beat] = 0; }
-  const fwd = B.indexOf(beat) >= B.indexOf(from) || rowing;
+  const fwd = B.indexOf(beat) >= B.indexOf(from) || rowing, s0 = SEA(), r0 = rowName();
   if (fwd) enterCues(beat); else cueAt[beat] = -1e9;
   const dir = isWel(beat) && isWel(from) && !jump ? (st.still ? "" : st.reduce ? "fade" : fwd ? "f" : "b") : "";
   st.beat = beat;
+  if (!jump && isWel(from) && !isWel(beat) && st.season !== "spring") springHold = true; // the welcome's spring holds until the pan home has landed
+  else if (s0 !== SEA()) { springHold = false; seasonFx = { from: s0, t0: now() }; }
+  if (r0 !== rowName()) palFx = { from: r0, t0: now() }; // Welcome focus: back to Normal as the camera leaves for home
   if (jump) { const k = slotK(beat);
     if (k || beat === "probes" || beat === "recap") st.begun = true;
     if (k) { st.done = k - 1; st.walked = false; }
@@ -1991,7 +2125,7 @@ function navTo(beat, jump = false) {
 function startOver() {
   Object.assign(st, { beat: "w1", reach: 0, done: 0, begun: false, walked: false, finished: false, typed: {}, sent: {} });
   for (const k in replyAt) delete replyAt[k]; for (const k in cueAt) delete cueAt[k];
-  rowing = false; bloomPending = false; helpOpen = false; palFx = null;
+  rowing = false; bloomPending = false; helpOpen = false; palFx = null; springHold = false; seasonFx = null;
   rollDetails(); save(); layout();
 }
 function rerender() { for (const v of views) setScreen(v, st.beat, false); renderPanel(); }
@@ -2025,6 +2159,7 @@ function rowEl(label, chips) {
   const c = document.createElement("div"); c.className = "chips"; c.append(...chips);
   r.append(s, c); return r;
 }
+function setSeason(k) { const s0 = SEA(); st.season = k; save(); if (s0 !== SEA()) seasonFx = { from: s0, t0: now() }; rerender(); prebuild(); } // round 2: the season switch dissolves too
 function set(k, val, relayout) { st[k] = val; save(); if (relayout) layout(); else rerender(); }
 function setRow(k, val) { const f = rowName(); st[k] = val; save(); if (f !== rowName()) palFx = { from: f, t0: now() }; rerender(); }
 function renderPanel() {
@@ -2038,7 +2173,12 @@ function renderPanel() {
     rowEl("Reply takes", [[.8, "0.8 s"], [3, "3 s"], [7, "7 s"]].map(([s, l]) => pchip(l, st.latency === s, () => set("latency", s)))),
     rowEl("Finish pan", [[2.4, "2.4 s", "today's rule"], [5, "5 s"], [9, "9 s"]].map(([s, l, sub]) => pchip(l, st.finishPan === s, () => set("finishPan", s), sub))));
   $("worldUi").replaceChildren(
-    rowEl("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => pchip(l, st.season === k, () => set("season", k, true)))),
+    rowEl("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => pchip(l, st.season === k, () => setSeason(k)), isWel(st.beat) ? "the welcome plays in spring" : "")),
+    rowEl("Sky light", [["low", "Low", "one body, low, in view"], ["now", "As now"]].map(([k, l, sub]) => pchip(l, st.sky === k, () => set("sky", k), sub))),
+    rowEl("Autumn evening", [["moon", "Moon"], ["sun", "Setting sun"]].map(([k, l]) => pchip(l, st.evening === k, () => set("evening", k)))),
+    rowEl("Waterline", [["one", "One height", "share " + ONE_SHARE], ["per", "Per screen", ".6 / .44 / .76"]].map(([k, l, sub]) => pchip(l, st.waterline === k, () => set("waterline", k, true), sub))),
+    rowEl("Welcome focus", [["dim", "Dim the rest", "Guide row, the lily on Normal"], ["plain", "Plain"]].map(([k, l, sub]) => pchip(l, st.focus === k, () => setRow("focus", k), sub))),
+    rowEl("Dragonfly", [["far", "Far, watched"], ["hand", "Lands on the hand"]].map(([k, l]) => pchip(l, st.dragonfly === k, () => set("dragonfly", k)))),
     rowEl("Motion", [pchip("Reduce Motion", st.reduce, () => set("reduce", !st.reduce)), pchip("Still water", st.still, () => setRow("still", !st.still))]),
     rowEl("Reading mode", [["auto", "Auto", "half speed, 72% frost"], ["off", "Off", "full speed, 55%"]].map(([k, l, sub]) => pchip(l, st.reading === k, () => set("reading", k), sub))));
   $("homeUi").replaceChildren(
@@ -2060,7 +2200,7 @@ function renderPanel() {
 function renderStats() {
   const g = world(), v = views[0], m = motion(), rd = READING(st.beat), r = replyAt[st.beat] || 0;
   const clock = m === "full" ? "×" + (rd ? .5 : 1) + " real time" : m === "reduce" ? "stopped (glints cycle slowly, ×" + (rd ? .5 : 1) + ")" : "frozen";
-  $("stats").textContent = `beat         ${st.beat} · ${LABEL(st.beat)}\nmotion       ${m}${helpOpen ? " (Help is open)" : ""}\npalette row  ${rowName()}${palFx ? ", dissolving from " + palFx.from : ""} · ${SEASONS[st.season].name}\nreading mode ${rd ? "on" : "off"}${st.reading === "off" ? " (turned off in the panel)" : ""}, frost ${rd ? 72 : 55}%\nclock        ${clock}; T ${T.toFixed(1)} s\nwater        8 fps, a ripple every ${(2 * Math.PI / (RIPPLE * 8) / (rd ? .5 : 1)).toFixed(1)} s; glints ${m === "full" ? 5 * (rd ? .5 : 1) : m === "reduce" ? 1.25 * (rd ? .5 : 1) : 0} fps\npaint        ${paintFps} fps measured\nreply        ${r > now() ? "out, lands in " + (r - now()).toFixed(1) + " s" : "landed"}\n`
+  $("stats").textContent = `beat         ${st.beat} · ${LABEL(st.beat)}\nmotion       ${m}${helpOpen ? " (Help is open)" : ""}\npalette row  ${rowName()}${palFx ? ", dissolving from " + palFx.from : ""} · ${SEASONS[SEA()].name}${seasonFx ? ", dissolving from " + seasonFx.from : ""}\nreading mode ${rd ? "on" : "off"}${st.reading === "off" ? " (turned off in the panel)" : ""}, frost ${rd ? 72 : 55}%\nclock        ${clock}; T ${T.toFixed(1)} s\nwater        8 fps, a ripple every ${(2 * Math.PI / (RIPPLE * 8) / (rd ? .5 : 1)).toFixed(1)} s; glints ${m === "full" ? 5 * (rd ? .5 : 1) : m === "reduce" ? 1.25 * (rd ? .5 : 1) : 0} fps\npaint        ${paintFps} fps measured\nreply        ${r > now() ? "out, lands in " + (r - now()).toFixed(1) + " s" : "landed"}\n`
     + (v ? `device       ${v.d.name}, art px = ${v.sc.k} device px, sees ${v.sc.vw}×${v.sc.vh}\n` : "")
     + `world        ${g.W} × ${g.H} art px, a loop; the Path's islets: ${g.themes.slice(0, STEPS + 1).map((t) => t.name).join(", ")}`;
 }
