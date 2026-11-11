@@ -4,15 +4,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
 <meta name="claude:viewport-fit-sides" content="cover">
 <!--
-  Three variants, switched by the bar at the bottom (‹ ›, the arrow keys) or ?variant=A|B|C; ?screen= jumps to a screen
-  (home, problem, probes, p1, p1write, walk, p2); ?bar=0 starts with the bar folded away (the tab at the top brings it back).
+  Four variants, switched by the bar at the bottom (‹ ›, the arrow keys) or ?variant=A|B|C|D (D is the default); ?screen= jumps
+  to a screen (home, boathouse, problem, probes, p1, p1write, walk, p2, p3, end, finish, recap); ?bar=0 starts with the bar
+  folded away (the tab at the top brings it back).
     A  today's art at today's size, untouched (from prototypes/journey, #206).
     B  today's size, redrawn as shaded volumes lit from the upper left: the walker (walking, sitting, rowing), the rowboat,
        the trees, the pier, both bridges and both islets. No per-pixel alternating patterns.
     C  the same redraw drawn again at its own size, about 1.5x: the walker 28 art px tall, an islet most of the screen wide.
        World distances between islets scale with it; the view is still ~320 art px across.
-  The slice: home, the Problem, the Breakdown, Path step 1 on the baobab isle, the walk over the rope bridge, Path step 2
-  on the lighthouse rock. The route is fixed (no seed shuffle). The welcome, the Path's end, the Recap and Row home are cut.
+    D  round 2: the redraw at 2x, the walker 36 art px, an islet as wide as the view, a third level of detail (faces and hands,
+       window panes, door planks, thatch courses, bark furrows, leaf clumps).
+  Round 2 also: home in B, C and D is a cove (the walker waits on a beach on the left arm with the rowboat tied off it, the near
+  land scenes sit on the right arm); Settings walks the walker into the boathouse; the Highland crag over its stone arches
+  bridge is Path step 3; panes slide fully out of view on pans before they go; lower words pin to the bottom of the screen.
+  The slice: home, the boathouse, the Problem, the Breakdown, Path steps 1 to 3 (baobab isle, lighthouse rock, Highland crag),
+  the Path's end, the questions screen, the Recap and Row home. The route is fixed (no seed shuffle). The welcome is cut.
   Everything else (the clock in real seconds, one waterline at 0.56, level pans, words hung from the top bar that stop
   above the walker's head, reading mode, Reduce Motion) is the journey file's. Fonts fall back to Georgia and the system
   sans, so the file makes no outside requests. The bar's readout gives each variant's sizes and the crossing time.
@@ -76,6 +82,8 @@
   .above { justify-content: flex-end; overflow: hidden; }
   .col { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; padding-bottom: 8px; }
   .col::-webkit-scrollbar { display: none; }
+  .col.pinb > * { flex-shrink: 0; } .col.pinb > :first-child:not(:last-child) { flex-shrink: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; } /* the thumb's control stays whole at the bottom; an upper pane that runs out of room scrolls inside itself */
+  .col.pinb > :first-child { margin-top: auto; } /* round 2: a lower group pins to the bottom of the screen and grows upward; past its top limit it scrolls inside itself */
   .pin, .tag, .tip { position: absolute; transform: translateX(-50%); }
   .tag .g { padding: 5px 10px; white-space: nowrap; }
   .tag .g.lbl { white-space: normal; width: max-content; max-width: 128px; padding: 4px 8px; }
@@ -151,7 +159,7 @@
   @keyframes slideF { from { transform: translateX(28px); opacity: 0; } }
   @keyframes slideB { from { transform: translateX(-28px); opacity: 0; } }
   @keyframes fadeIn { from { opacity: 0; } }
-  .ov.fresh [data-g] { animation: fadeIn .5s steps(8) both; } /* the reply arriving */
+  .ov.fresh [data-g].nw { animation: fadeIn .5s steps(8) both; } .ov.old [data-g].gone { animation: fadeOut .4s steps(6) forwards; pointer-events: none; } @keyframes fadeOut { to { opacity: 0; } } /* the reply arriving: round 2, only what was not already there fades in, so nothing in view blinks out first */
 
 
   /* ---- the journey (#206) ---- */
@@ -202,7 +210,7 @@
     <div id="compare" hidden></div>
   </main>
   <aside id="panel">
-    <h1 id="vname">A closer framing, with the art redrawn</h1>
+    <h1 id="vname">A closer framing at 1.5× and 2×, with the art redrawn</h1>
     <p id="vblurb"></p>
     <h2>Flow</h2>
     <p>Tap through on the device, or step with ‹ › and the arrow keys. Jumping skips the walk and the waits. Start over goes back to the welcome with nothing typed.</p>
@@ -601,7 +609,7 @@ function compose(g, cx, cy, vw, vh, T, motion, out, dyn = [], M = null) { // M: 
   for (const s of g.sprites.concat(dyn)) {
     lit = s.lit ? 1 : 0;
     const bob = full && s.bob ? ((ts + (s.i ?? 0)) % 2) : 0;
-    if (off(s.x - 80, s.x + 80) || s.y + 40 < cy || s.y - 130 > cy + vh) continue; // #221: wide enough for C's larger sprites
+    if (off(s.x - 90 * ZS, s.x + 90 * ZS) || s.y + 50 * ZS < cy || s.y - 130 * ZS > cy + vh) continue; // #221: margins grow with the variant's scale, wide enough for D's boat and figures
     for (const [dx, dy, c, pf] of s.px) { // a fade below 1 dissolves the sprite in by ordered dither
       const X = s.x + dx, Y = s.y + dy + bob, f = (pf ?? 1) * (s.fade ?? 1);
       if (f < 1 && bay(X, Y) >= f) continue;
@@ -842,10 +850,11 @@ const VARIANTS = {
   A: { label: "A (today's art, today's size)", zs: 1, redraw: false },
   B: { label: "B (redrawn, today's size)", zs: 1, redraw: true },
   C: { label: "C (redrawn, 1.5× closer)", zs: 1.5, redraw: true },
+  D: { label: "D (redrawn, 2× closer)", zs: 2, redraw: true }, // round 2: the walker 36 art px at M, an islet as wide as the view
 };
 const VKEYS = Object.keys(VARIANTS);
-let VARIANT = (new URLSearchParams(location.search).get("variant") || "B").toUpperCase(); if (!VARIANTS[VARIANT]) VARIANT = "B";
-let ZS = 1, RD = true, DET = false; // set by applyVariant: the art scale, redrawn or not, and C's extra detail
+let VARIANT = (new URLSearchParams(location.search).get("variant") || "D").toUpperCase(); if (!VARIANTS[VARIANT]) VARIANT = "D";
+let ZS = 1, RD = true, DET = false, DET2 = false; // set by applyVariant: the art scale, redrawn or not, C's extra detail, and D's further level
 const sm = (v) => Math.round(v * ZS); // an art length at this variant's scale
 const LIT = (() => { const v = [-.58, -.64, .5], n = Math.hypot(...v); return v.map((a) => a / n); })(); // the light: from the upper left, a little toward us
 const lum = (nx, ny, nz) => { const n = Math.hypot(nx, ny, nz) || 1; return clamp((nx * LIT[0] + ny * LIT[1] + nz * LIT[2]) / n, 0, 1); };
@@ -906,15 +915,17 @@ function treeV(g, x, base, o) { // a tree: a trunk and limbs lit on the left, a 
     pads.forEach(([dx, py, rx, ry], i) => leafMass(g, x + dx, py, rx, ry, LT, (o.seed | 0) + i * 17, { under: 1.1, amp: .7, clump: .8 }));
     return; }
   // broad and blossom: a short trunk forking into limbs, masses in two layers (the back ones a step darker)
-  const bl = k === "blossom", fork = base - h * (bl ? .3 : .38), ctop = base - h, ch = fork - ctop;
+  const bl = k === "blossom", fork = base - h * (o.fork ?? (bl ? .3 : .38)), ctop = base - h, ch = fork - ctop;
   const tw = Math.max(2, w * (bl ? .075 : .09)), lean = (r() - .5) * w * .08, fx = x + lean;
   const M = bl ? [[-.66, .62, .34, .22, 0], [.68, .58, .32, .21, 0], [.05, .42, .4, .24, 0], [-.36, .32, .4, .25, 1], [.4, .3, .38, .24, 1], [0, .1, .36, .22, 1], [-.82, .4, .24, .17, 1], [.86, .36, .22, .16, 1]]
     : [[-.6, .7, .36, .3, 0], [.62, .66, .34, .28, 0], [0, .55, .4, .3, 0], [-.42, .42, .42, .34, 1], [.44, .38, .4, .32, 1], [-.05, .14, .42, .34, 1], [.22, .74, .3, .22, 1]];
   const ms = M.map(([dx, dy, rx, ry, front], i) => ({ x: fx + dx * R2 + (r() - .5) * R2 * .12, y: ctop + dy * ch + (r() - .5) * ch * .08, rx: rx * R2 * (.9 + r() * .2), ry: ry * R2 * (.9 + r() * .2), front, seed: (o.seed | 0) + i * 31 }));
-  for (const m of ms) if (!m.front) leafMass(g, m.x, m.y, m.rx, m.ry, LB, m.seed, { under: .6 });
+  if (o.full) leafMass(g, fx, ctop + ch * .5, R2 * .8, ch * .42, LB, (o.seed | 0) + 5, { under: .7, clump: DET2 ? .3 : .4 }); // round 2: a full crown, its heart a step darker, so the wood has no sky inside a crown
+  for (const m of ms) if (!m.front) leafMass(g, m.x, m.y, m.rx, m.ry, LB, m.seed, { under: .6, clump: DET2 ? .34 : undefined });
   limb(g, x, base + 1, fx, fork, tw * 1.25, tw, BARK);
+  if (DET2 && !far) for (let y = Math.round(fork) + 2; y < base - 1; y += 3 + ((y * 7) % 4)) { const xx = Math.round(lerp(x, fx, (base - y) / (base - fork))) + ((y >> 2) % 2 ? 1 : -1) * Math.round(tw * .2); setp(g, xx, y, BARK[0]); setp(g, xx, y + 1, BARK[0]); } // D: furrows in the bark, a dark mark here and there
   for (const m of ms) limb(g, fx, fork + 1, m.x - (m.x - fx) * .15, m.y + m.ry * .35, tw * .62, Math.max(1, tw * .3), BARK);
-  for (const m of ms) if (m.front) leafMass(g, m.x, m.y, m.rx, m.ry, LT, m.seed, { under: .55 });
+  for (const m of ms) if (m.front) leafMass(g, m.x, m.y, m.rx, m.ry, LT, m.seed, { under: .55, clump: DET2 ? .34 : undefined });
 }
 function tierV(g, x, yB, hw, th, T, seed) { // one tier of a conifer: drooping tips, lit on its upper left, its underside dark
   const T5 = T.slice(1);
@@ -940,24 +951,103 @@ function bankV(g, x0, x1, wy) { // the far bank: a smooth turf lip lit along its
   for (let x = Math.max(0, x0); x < Math.min(g.W, x1); x++) { const top = wy - Math.round(U * 4 * ZS + 1.6 * ZS * Math.sin(x * .09 / ZS) + 1.1 * ZS * Math.sin(x * .023 + 2));
     for (let y = top; y < wy; y++) { const d = y - top; setp(g, x, y, y === wy - 1 ? code(R.trunk, 0) : d === 0 ? code(R.grass, ng - 1) : d < 1 + DET ? code(R.grass, ng - 3) : code(R.grass, ng - 5)); } }
 }
-function forestRowV(g, x0, x1, o = {}) { // home's wood: a back row a step darker, then a front row with gaps; four kinds of tree
-  const r = rng(Math.round(x0) + 77), kinds = ["broad", "blossom", "broad", "birch", "pine", "broad", "blossom", "birch"];
-  const ramp = (k) => k === "blossom" ? R.leafB : k === "birch" ? R.leafC : R.leafA;
+const WOOD_END = 968; // round 2: no tree's crown reaches past this x, so nothing is reflected under today's lily (x 1040, its pads ±58)
+function woodV(g, x0, x1) { // home's wood, round 2: a thick wood ringing the water, like the kit's, drawn as shaded volumes. Back to front:
+  // the far canopy in the far ramp, a haze, a wall of deep-shade crowns (no sky between trunks), a dark back row, the understorey, and a front row of big full crowns with blossom among them
+  const lim = Math.min(x1, WOOD_END), ok = (c, w) => c + w * .62 < lim, r = rng(907);
+  farTrees(g, x0, lim, WY);
+  for (let c = x0 - 10; c < lim; c += 16 + r() * 9) { const w = 28 + r() * 12; if (ok(c, w)) treeV(g, c, WY - 26, { kind: r() < .2 ? "pine" : "broad", ramp: R.far, h: 58 + r() * 22, w, seed: Math.round(c) }); } // far off: not scaled
+  const DK = leafTones(R.leafA, 5), DKB = leafTones(R.leafB, 5); // the wall: overlapping crowns in the deepest shade, low enough to close the gaps under the canopy
+  for (let c = x0 - sm(4); c < lim; c += sm(13) + r() * sm(7)) { const rx = sm(15 + r() * 7); if (c + rx * 1.15 > lim) continue;
+    leafMass(g, c, WY - sm(36 + r() * 26), rx, sm(15 + r() * 7), r() < .2 ? DKB : DK, Math.round(c), { under: .9, amp: 1.2 }); }
+  for (let x = x0; x < lim - sm(10); x++) { const top = WY - sm(30) - Math.round(sm(6) * (.5 + .5 * Math.sin(x * .07 / ZS) * Math.sin(x * .023 + 1))); // the shade under the canopy: no sky, far trees or mist shows between the trunks
+    for (let y = top; y < WY; y++) { const i = y * g.W + x, c = g.land[i], rp = c === TR ? -1 : c >> 5; if (c === TR || rp === R.far || rp === R.mist) g.land[i] = y === top ? DK[2] : DK[1]; } }
+  const backK = ["broad", "pine", "broad", "blossom", "broad", "broad", "pine", "blossom", "broad"], ramp = (k) => k === "blossom" ? R.leafB : k === "birch" ? R.leafC : R.leafA;
   let i = 0;
-  for (let c = x0 - sm(6); c < x1 + sm(6); c += sm(30) + r() * sm(14)) { const k = kinds[(i++ * 3 + 1) % kinds.length];
-    treeV(g, c, WY - 2, { kind: k, ramp: ramp(k), h: sm(62 + r() * 18), w: sm(k === "pine" ? 34 : 46 + r() * 12), seed: Math.round(c * 3), dark: 2 }); }
-  if (o.front === false) return;
+  for (let c = x0 + sm(4); c < lim; c += sm(22) + r() * sm(12)) { const k = backK[i++ % backK.length], w = sm(k === "pine" ? 34 : 54 + r() * 14); if (!ok(c, w)) continue;
+    treeV(g, c, WY - 3, { kind: k, ramp: ramp(k), h: sm(k === "pine" ? 88 + r() * 16 : 70 + r() * 20), w, seed: Math.round(c * 3), dark: 2, full: true, fork: .3 }); }
+  const US = leafTones(R.leafA, 3), USB = leafTones(R.leafB, 2); // the understorey: low shrubs along the bank, a few in flower
+  for (let c = x0; c < lim + sm(30); c += sm(9) + r() * sm(7)) { const rx = sm(8 + r() * 6); leafMass(g, c, WY - sm(5 + r() * 4), rx, sm(5.5 + r() * 3), r() < .14 ? USB : US, Math.round(c * 7), { under: .9, amp: 1.1, clump: .6 }); }
+  const frontK = ["broad", "blossom", "broad", "broad", "blossom", "broad", "birch", "broad", "blossom"];
   i = 0;
-  for (let c = x0 + sm(12); c < x1; c += sm(54) + r() * sm(20)) { if (o.gap && c > o.gap[0] && c < o.gap[1]) continue; const k = kinds[i++ % kinds.length];
-    treeV(g, c, WY - 1, { kind: k, ramp: ramp(k), h: sm(84 + r() * 24), w: sm(k === "pine" ? 44 : 60 + r() * 16), seed: Math.round(c * 5 + 1) }); }
+  for (let c = x0 + sm(16); c < lim; c += sm(42) + r() * sm(14)) { const k = frontK[i++ % frontK.length], w = sm(k === "birch" ? 52 : 70 + r() * 18);
+    if (c > 690 && c < 790 || !ok(c, w)) continue; // the gap behind the moored boat keeps a glimpse into the wood
+    treeV(g, c, WY - 1, { kind: k, ramp: ramp(k), h: sm(k === "birch" ? 110 : 96 + r() * 26), w, seed: Math.round(c * 5 + 1), full: k !== "birch", fork: k === "blossom" ? .26 : .3 }); }
 }
-function forestHomeV(g) { // backdrop B redrawn: the far ramp's deep row, a haze, the wood, the bank
-  farTrees(g, 380, 1040, WY);
-  { const r = rng(451); for (let c = 370; c < 1050; c += 20 + r() * 12) treeV(g, c, WY - 30, { kind: "broad", ramp: R.far, h: 56 + r() * 20, w: 30 + r() * 10, seed: Math.round(c) }); } // a deeper row, in the far ramp, not scaled: it is far off
-  hazeV(g, 380, 1040, WY - 44, 9); mistV(g, 380, 1040, WY);
-  forestRowV(g, 380, 1040, { gap: [690, 790] });
-  bankV(g, 380, 1040, WY);
-  cattails(g, 540, 600, 9); cattails(g, 860, 930, 10);
+function forestHomeV(g, P) { // backdrop B redrawn: the wood, the bank; in the redraw variants, the cove in front
+  woodV(g, 380, 1040);
+  bankV(g, 380, WOOD_END + 20, WY);
+  if (COVE()) coveV(g, P); else { cattails(g, 540, 600, 9); cattails(g, 860, 930, 10); }
+}
+
+// ---------- round 2: home as a little cove. Two arms of near shore come forward at the screen's edges; the left arm's inner edge is a beach the walker starts from ----------
+const COVE = () => RD && BD() === "B";
+const BH_X = 470; // the boathouse (Settings), at the far end of the left arm, past the home view
+function coveGeo() { // the arms' shape, from the variant's scale; the home view spans x ~542–898 in every variant
+  // the left arm: a strip of near shore from the landing (x ~400) to a rounded sandy point; the right arm: a gentler point, its back in the wood's shade
+  const Dp = Math.round(40 + 20 * ZS), xtL = 542 + Math.round(45 + 25 * ZS), tipL = Math.round(26 + 14 * ZS), xf = xtL - tipL;
+  const xtR = 898 - Math.round(60 + 30 * ZS), DpR = Math.round(Dp * .8), xr = 870, xe = 962;
+  const dL = (x) => x < 392 || x >= xtL ? 0 : x < 432 ? Dp * smooth((x - 392) / 40) : x <= xf ? Dp : Dp * Math.sqrt(1 - ((x - xf) / tipL) ** 2);
+  const dR = (x) => x <= xtR || x >= xe ? 0 : x < xr ? DpR * Math.sqrt(1 - ((xr - x) / (xr - xtR)) ** 2) : DpR * (1 - ((x - xr) / (xe - xr)) ** 2);
+  const depth = (x) => { x = mod(x); const d = Math.max(dL(x), dR(x)); return d < 1 ? 0 : Math.round(d + (d > 4 && x < xf ? Math.sin(x * .13 / ZS) * .7 * ZS : 0)); };
+  const shore = (x) => WY + depth(x);
+  const tipEdge = (y) => xf + tipL * Math.sqrt(Math.max(0, 1 - ((y - WY) / Dp) ** 2)); // the point's right edge at row y
+  const wx = xf + Math.round(tipL * .1), walker = { x: wx, y: shore(wx) - sm(4) }; // on the wet sand at the water's edge, facing the open water
+  const moor = { x: xtL + sm(24), y: WY + Math.round(Dp * .74) }; // the rowboat, tied just off the point
+  const bh = { x: BH_X, y: shore(BH_X) - sm(5) }; // the boathouse door, on the arm's front by the water
+  return { Dp, DpR, xf, xtL, tipL, xtR, xr, xe, depth, shore, tipEdge, walker, moor, bh, near: 1 + .5 * ZS };
+}
+const moorAt = () => COVE() ? coveGeo().moor : MOOR; // where the rowboat waits at home
+const coveRowY = (x, y) => { if (!COVE()) return y; const G = coveGeo(); return Math.max(y, G.shore(x - sm(16)) + sm(8), G.shore(x) + sm(8), G.shore(x + sm(16)) + sm(8)); }; // a row keeps off the arms
+function coveV(g, P) {
+  const G = coveGeo(), ng = N[R.grass], nt = N[R.trunk], W = g.W, r = rng(77), sandFrom = G.xf - sm(30);
+  const sandD = (x, y, S) => { if (x < sandFrom) return -1; const dv = S - 1 - y, dh = x >= G.xf ? Math.floor(G.tipEdge(y) - x) : 1e9; return Math.min(dv, dh); }; // distance to the water, for the beach
+  const sandW = (x) => x < sandFrom || x > G.xtL ? 0 : Math.round(sm(4) + sm(9) * smooth((x - sandFrom) / sm(30)));
+  // the back of each arm: low shrubs where the arm meets the wood
+  const US = leafTones(R.leafA, 2);
+  for (let c = 404; c < 966; c += sm(10) + r() * sm(6)) { if (G.depth(c) < sm(14)) continue; leafMass(g, c, WY + sm(2), sm(9 + r() * 4), sm(6 + r() * 2), US, Math.round(c * 11), { under: .8, clump: .55 }); }
+  for (let x = 396; x < 966; x++) { const S = G.shore(x); if (S <= WY) continue; const sw = sandW(x), wob = Math.round(Math.sin(x * .09 / ZS + 1) * 1.2 * ZS);
+    for (let y = WY + sm(6); y < S; y++) { const d = S - 1 - y, e = y - WY, sd = sw ? sandD(x, y, S) : -1; let c;
+      if (sw && sd < sw) c = sd === 0 ? code(R.trunk, 2) : sd < Math.max(2, sm(2.5)) ? code(R.trunk, 3) : sd < sw * .55 ? code(R.light, 0) : sd === sw - 1 ? code(R.grass, ng - 8) : code(R.light, 1); // wet sand at the water, then pale sand, under a turf edge in shadow
+      else if (!sw && d < sm(3)) c = d === 0 ? code(R.trunk, 0) : code(R.trunk, d === sm(3) - 1 ? 2 : 1); // the bank's earth face, a wet row at the water
+      else if (!sw && d === sm(3)) c = code(R.grass, ng - 1); // the turf lip, lit
+      else c = code(R.grass, e < sm(14) + wob ? ng - 8 : e < sm(24) + wob ? ng - 5 : x < 720 ? ng - 3 : ng - 4); // turf: in the wood's shade at the back, then open
+      setp(g, x, y, c); } }
+  // a worn path along the left arm's front, from the beach to the boathouse door
+  for (let x = G.bh.x + sm(10); x < sandFrom + sm(6); x++) { const y0 = G.bh.y - sm(2) + Math.round(Math.sin(x * .05 / ZS) * sm(1)); for (let j = 0; j < sm(3); j++) setp(g, x, y0 + j, code(R.trunk, j === 0 ? 3 : 2)); }
+  // near trees, larger than the far wood: one on each arm, at the screen's edges
+  treeV(g, 552, WY + sm(14), { kind: "broad", ramp: R.leafA, h: sm(138), w: sm(72), seed: 556, full: true, fork: .3 });
+  const rx = Math.min(G.xr + 8, WOOD_END - Math.round(sm(76) * .62)); treeV(g, rx, WY + sm(12), { kind: "blossom", ramp: R.leafB, h: sm(126), w: sm(76), seed: 885, full: true, fork: .26 });
+  // tufts and flowers along the turf; stones on the beach; boulders and reeds at the right arm's point
+  for (let x = 404; x < 962; x += sm(7) + Math.floor(hash2(x, 3, 511) * sm(8))) { const S = G.shore(x); if (S - WY < sm(16) || x >= sandFrom - sm(2) && x < G.xtL + 2 || Math.abs(x - G.bh.x) < sm(30)) continue; tuft(g, x, S - sm(5), hash2(x, 4, 512) > .5 ? sm(2) : Math.max(1, sm(1.4)), P, hash2(x, 5, 513) < .3 ? [P.gold, P.white, P.pink][x % 3] : null); }
+  for (let x = sandFrom + sm(6); x < G.xtL - sm(4); x += sm(9) + Math.floor(hash2(x, 6, 514) * sm(8))) { if (Math.abs(x - G.walker.x) < sm(10)) continue; const S = G.shore(x); pebble(g, x, S - sm(2) - Math.floor(hash2(x, 9, 519) * sm(5)), sm(2 + hash2(x, 7, 515) * 1.4), sm(1.3 + hash2(x, 8, 516) * .6)); }
+  boulder(g, G.xtR + sm(18), G.shore(G.xtR + sm(18)) + 1, sm(6), sm(4), true); boulder(g, G.xtR + sm(28), G.shore(G.xtR + sm(28)) + 1, sm(3.5), sm(2.5));
+  for (let i = 0; i < 9; i++) { const x = Math.round(G.xtR - sm(2) + i * sm(2.6) + hash2(i, 1, 517) * sm(2)), S = Math.max(WY + sm(4), G.shore(x) + sm(2)), h = sm(12 + hash2(i, 2, 518) * 12), lean = i % 3 === 0 ? 1 : 0; // reeds standing in the shallows off the right arm's point
+    for (let j = 0; j < h; j++) setp(g, x + (j > h * .65 ? lean : 0), S - j, code(R.grass, j > h * .5 ? ng - 4 : ng - 6));
+    if (i % 2 === 0) for (let j = 0; j < sm(4); j++) { setp(g, x + lean, S - h - j, code(R.trunk, j === 0 ? nt - 1 : 1)); if (DET) setp(g, x + lean + 1, S - h - j, code(R.trunk, 0)); } }
+  // the mooring: a stake on the point and a rope to the boat's bow, sagging
+  const sx = G.xtL - sm(5), sy = G.shore(sx) - sm(3), bx = G.moor.x - sm(18), by = G.moor.y - sm(4);
+  for (let j = 0; j < sm(8); j++) { setp(g, sx, sy - j, code(R.trunk, j === sm(8) - 1 ? nt - 1 : 2)); setp(g, sx + 1, sy - j, code(R.trunk, 0)); }
+  for (let i = 0, n = bx - sx; i <= n; i++) { const t = i / n, y = Math.round(lerp(sy - sm(6), by, t) + Math.sin(t * Math.PI) * sm(3)); setp(g, sx + 1 + i, y, code(R.light, 0)); }
+  boathouseV(g, G.bh.x, G.bh.y + sm(5));
+  // everything drawn below the far waterline stands in front of the water
+  for (let y = WY; y < Math.min(g.H, WY + G.Dp + sm(30)); y++) for (let x = 380; x < 970; x++) { const i = y * W + x; if (g.land[i] !== TR) g.body[i] = 0; }
+}
+function boathouseV(g, x, base) { // the boathouse, round 2: a plank-walled gable end facing us with its side in shade, a slate roof in courses, and an open door: a dark way in
+  const ns = N[R.stone], nt = N[R.trunk], w = sm(26), h = sm(23), gh = sm(15), sd = sm(13), ov = sm(3), dw = sm(7), dh = sm(21);
+  const wall = (xx, y) => { const seam = ((xx + w) % sm(5)) === 0; return code(R.trunk, seam ? 1 : xx < -w * .3 ? nt - 2 : xx < w * .4 ? 3 : 2); }; // boards lit from the upper left, seams a darker step
+  for (let k = 1; k <= sd; k++) for (let y = -h; y < 0; y++) setp(g, x + w + k, base + y - Math.round(k * .5), code(R.trunk, k === sd ? 0 : ((k) % sm(5)) === 0 ? 0 : 1)); // the side wall, receding, in shade
+  for (let y = -h; y < 0; y++) for (let xx = -w; xx <= w; xx++) setp(g, x + xx, base + y, xx === -w || xx === w ? code(R.trunk, 1) : wall(xx, y));
+  for (let j = 0; j < gh; j++) { const hw = Math.round(w * (1 - j / gh)); for (let xx = -hw; xx <= hw; xx++) setp(g, x + xx, base - h - 1 - j, wall(xx, j)); } // the gable
+  for (let k = 0; k <= sd; k++) for (let j = 0; j <= gh + 1; j++) { const t = j / gh, rx0 = x + Math.round((w + ov) * (1 - t)), ry = base - h - j + Math.round(ov * .5) - Math.round(k * .5); // the roof's right slope, running back
+    setp(g, rx0 + k, ry, code(R.stone, k === sd ? 1 : (j % sm(3)) === 0 ? ns - 4 : ns - 3)); setp(g, rx0 + k, ry + 1, code(R.stone, (j % sm(3)) === 0 ? 2 : ns - 4)); }
+  for (const s of [-1, 1]) for (let j = -1; j <= gh + 1; j++) { const t = j / gh, xx = Math.round(s * (w + ov) * (1 - t)); // the bargeboards along the gable, the left one lit
+    for (let b = 0; b < Math.max(2, sm(1.5)); b++) setp(g, x + xx, base - h - j + Math.round(ov * .5) - b, code(R.trunk, s < 0 ? (b ? nt - 1 : nt - 2) : (b ? 2 : 1))); }
+  for (let y = -dh; y < 0; y++) for (let xx = -dw; xx <= dw; xx++) setp(g, x + xx, base + y, code(R.trunk, 0)); // the open door: dark inside
+  for (let y = -dh - 1; y < 0; y++) { setp(g, x - dw - 1, base + y, code(R.trunk, nt - 1)); setp(g, x + dw + 1, base + y, code(R.trunk, 1)); } for (let xx = -dw - 1; xx <= dw + 1; xx++) setp(g, x + xx, base - dh - 1, code(R.trunk, nt - 1)); // its frame, the lintel lit
+  for (let y = -dh + sm(2); y < -sm(1); y++) for (let xx = dw + 2; xx < dw + 2 + sm(4); xx++) setp(g, x + xx, base + y, code(R.trunk, xx === dw + 2 ? 3 : 2)); // the door leaf, swung open
+  const wy = base - h - Math.round(gh * .55), ww = sm(3); for (let y = -ww; y <= ww; y++) for (let xx = -ww; xx <= ww; xx++) setp(g, x + xx, wy + y, Math.abs(xx) === ww || Math.abs(y) === ww ? code(R.trunk, nt - 1) : xx === 0 || y === 0 ? code(R.trunk, 2) : code(R.stone, xx < 0 && y < 0 ? 3 : 1)); // a small window in the gable
+  for (let y = -sm(3); y < 0; y++) for (let xx = -w - sm(1); xx <= w + sd; xx++) { if (xx > w && y < -Math.round((xx - w) * .5) - sm(3)) continue; setp(g, x + xx, base + y - (xx > w ? Math.round((xx - w) * .5) : 0) + sm(1), code(R.stone, y === -sm(3) ? ns - 2 : xx > w ? 1 : ((xx + y * 3) % sm(6) === 0 ? 2 : 3))); } // a stone footing
 }
 function jettyV(g, x0, x1, deck) { // the pier: a lit deck edge, its face, a dark underside, posts lit on their left
   const dt = Math.max(2, sm(2)), pw = DET ? 3 : 2;
@@ -978,6 +1068,24 @@ const BRIDGES_V = {
       setp(g, x, y + bt, P.wood1);
       const ry = rail(x); setp(g, x, ry, ST[3]); if (DET) setp(g, x, ry + 1, ST[1]); }
   },
+  arches(g, xa, xb, P) { // round 2: a stone bridge on low round arches: coursed spandrels, a lit voussoir ring round each dark opening, piers with cutwaters, a coping and a low parapet
+    const deck = (x) => DECK_V.arches(xa, xb, x), n = Math.max(2, Math.round((xb - xa) / sm(30))), span = (xb - xa) / n, aw = span * .36, ah = sm(5.5), ring = Math.max(1.5, sm(1.6)), par = sm(3);
+    const S = (k) => code(R.stone, k);
+    for (let x = xa; x <= xb; x++) { const k = Math.min(n - 1, Math.floor((x - xa) / span)), xc = xa + (k + .5) * span, du = (x + .5 - xc) / aw, d = deck(x);
+      for (let y = d - par; y < WY; y++) { const dv = (WY - y - .5) / ah, e = du * du + dv * dv;
+        let c;
+        if (y < d) c = y === d - par ? S(7) : (x - xa) % sm(7) === 0 ? S(2) : y === d - 1 ? S(3) : S(5); // the parapet: a lit top, coursed, its foot in shadow
+        else if (y === d) c = S(7); // the coping, lit
+        else if (y === d + 1) c = S(1); // its shadow
+        else if (e < 1) c = dv > .7 ? S(1) : S(0); // the opening: the barrel's underside a step lighter at its crown
+        else if (e < ((1 + ring / aw) ** 2)) { const a = Math.atan2(dv, du), j = Math.round(a / (Math.PI / Math.max(5, Math.round(aw / sm(2.4))))); const joint = Math.abs(a / (Math.PI / Math.max(5, Math.round(aw / sm(2.4)))) - j) < .12;
+          c = joint ? S(2) : du < 0 ? S(7) : S(5); } // the voussoirs: lit on the left of the crown, a step darker on the right
+        else c = ashlar(x, y, xa, d + 2, "front", 61);
+        setp(g, x, y, c); }
+      }
+    for (let k = 1; k < n; k++) { const px = Math.round(xa + k * span), cw = sm(3); // a cutwater at each pier: a pointed nose, lit on its left
+      for (let y = WY - sm(4); y < WY; y++) { const w = Math.round(cw * (y - (WY - sm(4)) + 1) / sm(4)); for (let x = px - w; x <= px + w; x++) setp(g, x, y, y === WY - sm(4) ? S(7) : x < px ? S(6) : x === px + w ? S(1) : S(3)); } }
+  },
   rope(g, xa, xb, P) { // a plank walk on ropes: two posts at the ends and a trestle at the middle, a hand rope with hangers
     const deck = (x) => DECK_V.rope(xa, xb, x), dt = Math.max(2, sm(2)), pw = DET ? 3 : 2, ph = sm(17), hang = sm(8);
     const ropeY = (x) => Math.round(WY - ph + 1 + Math.sin(Math.PI * (x - xa) / (xb - xa)) * sm(7));
@@ -993,6 +1101,7 @@ const BRIDGES_V = {
   },
 };
 const DECK_V = { // the deck row the walker's feet stand on, matching BRIDGES_V
+  arches: () => WY - sm(10),
   reeds: (xa, xb, x) => Math.round(WY - sm(4) + Math.sin(Math.PI * (x - xa) / (xb - xa)) * sm(2)),
   rope: (xa, xb, x) => Math.round(WY - sm(6) + Math.sin(Math.PI * (x - xa) / (xb - xa)) * sm(3)),
 };
@@ -1059,7 +1168,7 @@ function boulder(g, cx, base, rx, ry, moss) { const ST = [code(R.stone, 2), code
     setp(g, x, y, moss && dy < -.62 && dx < .35 ? code(R.grass, dy < -.85 ? ng - 2 : ng - 4) : edge ? code(R.stone, 1) : tone(ST, lum(dx, dy, Math.sqrt(1 - d)))); } }
 function thatchV(g, x0, yb, w0, rows, tiers, P) { // a cone of thatch in bands, each lipped a step darker, the eave hanging in clumps
   const nC = N[R.leafC], TH = [code(R.leafC, nC - 1), code(R.leafC, nC - 2), code(R.leafC, nC - 3), P.woodL];
-  for (let j = 0; j < rows; j++) { const w = Math.round(w0 * (1 - j / rows) ** (DET ? .9 : 1)), y = yb - j, lip = tiers.includes(j) || (DET && tiers.includes(j + 1));
+  for (let j = 0; j < rows; j++) { const w = Math.round(w0 * (1 - j / rows) ** (DET ? .9 : 1)), y = yb - j, lip = tiers.includes(j) || (DET && tiers.includes(j + 1)) || (DET2 && j > 1 && j % 3 === 0); // D: a course every third row
     rect(g, x0 - w, y, x0 + w + 1, y + 1, (x) => { const u = (x - x0) / (w + .5), i = u < -.45 ? 0 : u > .4 ? 2 : 1; return j === 0 ? (u > .4 ? P.wood1 : P.wood) : TH[Math.min(3, i + (lip ? 1 : 0))]; }); }
   for (let x = x0 - w0; x <= x0 + w0; x++) if (Math.sin(x * .9 / ZS) + Math.sin(x * .37 / ZS + 1) > .4) setp(g, x, yb + 1, (x - x0) / w0 > .4 ? P.wood1 : P.wood);
 }
@@ -1088,6 +1197,8 @@ function houseV(g, hx, b, P) { // the painted house: lime-white walls lit on the
   const dw = sm(3.5), dh = sm(12); // the doorway: a dark opening, its left jamb lit, a red lintel, a step
   rect(g, hx - dw, b - dh, hx + dw + 1, b, (x) => DET && x === hx + dw ? P.wood1 : P.woodD); rect(g, hx - dw - 1, b - dh - 1, hx + dw + 2, b - dh, P.red);
   if (DET) { rect(g, hx - dw - 2, b - dh - 2, hx + dw + 3, b - dh - 1, P.woodD); rect(g, hx - dw - 1, b - 1, hx + dw + 2, b, P.stoneL); for (const wx of [hx - sm(11), hx + sm(9)]) { rect(g, wx, b - b0 + 1, wx + sm(2.6), b - sm(2), P.woodD); rect(g, wx - 1, b - sm(2), wx + sm(2.6) + 1, b - sm(2) + 1, P.white); } }
+  if (DET2) for (let x = hx - dw + 1; x <= hx + dw; x += 2) rect(g, x, b - dh + 1, x + 1, b, P.wood1); // D: the door's planks
+  if (DET2) for (const wx of [hx - sm(11), hx + sm(9)]) { rect(g, wx, b - b0 + 1 + Math.round((b0 - sm(3)) / 2), wx + sm(2.6), b - b0 + 2 + Math.round((b0 - sm(3)) / 2), P.white); rect(g, wx + Math.round(sm(1.3)), b - b0 + 1, wx + Math.round(sm(1.3)) + 1, b - sm(2), P.white); } // D: window panes
   thatchV(g, hx, b - wh - 1, ww + sm(4), sm(18), [sm(7), sm(13)], P);
   rect(g, hx, b - wh - sm(22), hx + 1, b - wh - sm(18), P.woodD);
 }
@@ -1158,6 +1269,56 @@ function ledgeV(g, sx, b, P) { // a flat stone to sit on: a lit top, its left fa
   const w = sm(6), h = sm(4);
   rect(g, sx - w, b - h, sx + w + 1, b, (x, y) => { const corner = (x === sx - w || x === sx + w) && y === b - h; if (corner) return null; return y === b - h ? P.stoneL : y === b - 1 ? P.stoneDD : x < sx - w + 2 ? P.stone : x > sx + w - 2 ? P.stoneDD : P.stoneD; });
 }
+function ashlar(x, y, ox, oy, face, seed) { // coursed stone, lit from the upper left: each block's top and left rows a step lighter, its joints a step darker; some blocks warm, most cool
+  const ch = Math.max(3, sm(2.7)), bl = Math.max(5, sm(6.5)), r = Math.floor((y - oy) / ch), jy = ((y - oy) % ch + ch) % ch, off = Math.floor(hash2(r, 7, seed) * bl), cx = x - ox + off, bi = Math.floor(cx / bl), jx = ((cx % bl) + bl) % bl;
+  const h = hash2(bi, r, seed), warm = h > .86, S = (k) => code(R.stone, k), W2 = code(R.trunk, N[R.trunk] - 1);
+  if (jy === ch - 1 || jx === bl - 1) return face === "shade" ? S(0) : S(1);
+  const bev = jy === 0 || jx === 0;
+  if (face === "lit") return bev ? S(7) : warm ? W2 : h < .3 ? S(5) : S(6);
+  if (face === "shade") return bev ? S(3) : h < .3 ? S(1) : S(2);
+  return bev ? (warm ? S(6) : S(5)) : warm ? W2 : h < .3 ? S(3) : S(4);
+}
+function heatherV(g, cx, base, rx, ry, seed) { // a cushion of heather: a low dome of flower tones lit on its upper left, a dark green foot
+  const ng = N[R.grass], HT = [code(R.flower, 0), code(R.flower, 1), code(R.flower, 2), code(R.flower, 3)];
+  for (let y = Math.floor(base - ry); y < base; y++) for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) { const dx = (x + .5 - cx) / rx, dy = (y + .5 - base) / ry, bump = Math.sin(x * 1.3 / ZS + seed) * .12;
+    if (dx * dx + dy * dy > 1 + bump) continue; const d = dx * dx + dy * dy, edge = ((x + 1.5 - cx) / rx) ** 2 + dy * dy > 1 + bump;
+    setp(g, x, y, y === Math.ceil(base) - 1 ? code(R.grass, ng - 7) : edge ? HT[0] : tone(HT, lum(dx, dy, Math.sqrt(Math.max(0, 1 - d))))); }
+}
+function keepV(g, kx, b, rockTop, P) { // the keep, ruined: a square tower in coursed stone, its front lit, its right side receding in shade; crenels on the standing half, the rest fallen; slits, a window, a door, ivy
+  const kw = sm(12), sd = sm(5), kh = sm(60), x0 = kx - kw, x1 = kx + kw, S = (k) => code(R.stone, k);
+  const topAt = (x) => x < kx + sm(2) ? b - kh : Math.round(b - kh + (x - kx - sm(2)) * 1.5 + hash2(Math.floor(x / Math.max(2, sm(2.5))), 3, 611) * sm(4));
+  for (let x = x0; x <= x1 + sd; x++) { const side = x > x1, t = side ? topAt(x1) + Math.round((x - x1) * .8) + sm(3) : topAt(x), foot = Math.min(b + sm(2), rockTop(x) + 1);
+    for (let y = t; y < foot; y++) { let c = side ? ashlar(x, y + Math.round((x - x1) * .5), x1, b, "shade", 612) : ashlar(x, y, x0, b, "front", 612);
+      if (x === x0 && !side) c = S(6); // the lit corner
+      if (y === t) c = side ? S(2) : x < kx + sm(2) ? S(7) : S(3); // the broken edge, dark where it has fallen
+      if (x === x1 + sd || (side && y === t)) c = S(0);
+      setp(g, x, y, c); } }
+  const ct = b - kh, mw = sm(4), gw = sm(3); // the crenels along the standing half, and a corbel line under the parapet
+  for (let x = x0; x < kx + sm(2); x++) { const m = (x - x0) % (mw + gw) < mw; if (m) for (let y = ct - sm(4); y < ct; y++) setp(g, x, y, y === ct - sm(4) ? S(7) : x === x0 ? S(6) : (x - x0) % (mw + gw) === mw - 1 ? S(2) : S(4));
+    setp(g, x, ct + sm(5), S(1)); setp(g, x, ct + sm(5) - 1, S(6)); }
+  const slit = (x, y, h) => { rect(g, x, y, x + Math.max(1, sm(1)), y + h, S(0)); setp(g, x - 1, y - 1, S(6)); rect(g, x - 1, y + h, x + Math.max(1, sm(1)) + 1, y + h + 1, S(6)); };
+  slit(kx - sm(6), b - sm(46), sm(6)); slit(kx + sm(5), b - sm(33), sm(6));
+  const wx = kx - sm(4), wy = b - sm(26), ww = sm(5), wh = sm(7); // an arched window, a lit sill
+  for (let x = wx; x < wx + ww; x++) { const u = (x + .5 - wx - ww / 2) / (ww / 2), t = Math.round(wy - Math.sqrt(Math.max(0, 1 - u * u)) * sm(1.5)); rect(g, x, t, x + 1, wy + wh, DET2 && x === wx + Math.floor(ww / 2) ? S(2) : S(0)); setp(g, x, t - 1, u < 0 ? S(7) : S(5)); }
+  rect(g, wx - 1, wy + wh, wx + ww + 1, wy + wh + 1, S(7));
+  const dx0 = kx - sm(3), dw = sm(6), dh = sm(11); // the door: an arch over planks (a dark gap in B)
+  for (let x = dx0; x < dx0 + dw; x++) { const u = (x + .5 - dx0 - dw / 2) / (dw / 2), t = Math.round(b - dh - Math.sqrt(Math.max(0, 1 - u * u)) * sm(2.5));
+    for (let y = t; y < b; y++) setp(g, x, y, !DET ? S(0) : (x - dx0) % Math.max(2, sm(2)) === 0 ? P.woodD : y === t ? P.wood1 : x < dx0 + 1 ? P.wood : P.wood1);
+    setp(g, x, t - 1, u < 0 ? S(7) : S(5)); if (DET2 && (x - dx0) % sm(2) === 1) setp(g, x, b - Math.round(dh * .55), S(2)); }
+  const IV = leafTones(R.leafA, 2), r = rng(613); // ivy climbing the lit face from the foot
+  const n = DET ? 14 : 9; for (let i = 0; i < n; i++) { const t = i / (n - 1), ix = x0 + sm(1.5) + sm(5) * Math.sin(i * 1.7) ** 2 + t * sm(3), iy = b - sm(2) - t * sm(34); // a climbing sheet hugging the wall, thinning upward
+    leafMass(g, ix, iy, sm(3.4 - t * 1.6 + r() * .6), sm(2.6 - t * .9), IV, 620 + i, { under: .3, clump: .45, amp: .6 }); }
+  return { top: ct - sm(4) };
+}
+function turretV(g, tx, b, P) { // the broken turret: a round tower in courses, lit on its left, its top broken off in jags
+  const rr = sm(7), th = sm(40), ch = Math.max(3, sm(2.7)), ns = N[R.stone], ST = [1, 2, 3, 4, 5, 6, 7].map((k) => code(R.stone, k));
+  for (let x = Math.floor(tx - rr); x <= Math.ceil(tx + rr); x++) { const u = (x + .5 - tx) / (rr + .5); if (Math.abs(u) > 1) continue;
+    const t = Math.round(b - th + sm(4) * (Math.abs(Math.sin(x * .8 / ZS + 1)) + (u > .2 ? 1.6 : 0) + hash2(Math.floor(x / sm(2)), 4, 631))), a = Math.asin(u);
+    for (let y = t; y < b; y++) { const r = Math.floor((b - y) / ch), jy = (b - y) % ch, joint = Math.abs(((a + (r % 2) * .4) / .8) % 1) < .1 || jy === 0;
+      let v = lum(u, -.15, Math.sqrt(1 - u * u)) + (hash2(Math.floor((a + (r % 2) * .4) / .8), r, 632) - .5) * .25;
+      setp(g, x, y, y === t ? (u < .2 ? ST[6] : ST[1]) : u > .92 ? ST[0] : joint ? ST[Math.max(0, Math.floor(clamp(v, 0, .999) * 7) - 2)] : ST[clamp(Math.floor(v * 7), 0, 6)]); } }
+  rect(g, tx - 1, b - sm(26), tx - 1 + Math.max(1, sm(1)), b - sm(20), code(R.stone, 0)); void ns; void P;
+}
 const ISLETS_V = {
   baobab(g, cx, P) { const h = sm(14), b = WY - h, top = moundV(g, cx, HW, h, "grass", 3), bx = cx - sm(50), hx = cx + sm(4);
     dressV(g, cx, HW, top, P, { path: [cx - HW * .8, hx - sm(3)], flowers: [P.gold, P.straw], fd: .3 });
@@ -1166,10 +1327,37 @@ const ISLETS_V = {
     for (const [ox, oy, s] of [[25.5, 0, 1], [30, 0, .85], [27.5, -4.6, .75]]) potV(g, cx + sm(ox), b + sm(oy), s, P);
     treeV(g, cx + sm(70), top(cx + sm(70)), { kind: "acacia", h: sm(30), w: sm(30), ramp: R.leafA, seed: 71 });
     g.seat = { dx: -sm(34), y: b, ground: true }; },
+  crag(g, cx, P) { // round 2: a crag of bedded rock in heather, the ruined keep on its spur, a curtain wall and gate, the broken turret, a pine
+    const h = sm(28), b = WY - h, top = moundV(g, cx, HW, h, "rock", 7), ox = cx - sm(26), ohw = sm(36);
+    const spur = (x) => { const u = (x - ox) / ohw; if (Math.abs(u) >= 1) return WY; return Math.min(top(x), Math.round(b - sm(10) * Math.sqrt(1 - u * u) ** .6 - sm(2) * Math.sin(x * .3 / ZS))); };
+    rockV(g, ox, ohw, spur, 8); // the spur the keep stands on, its planes lit by how they face
+    const kx = cx - sm(24), wx0 = kx + sm(12) + sm(5), wx1 = cx + sm(26), wh = sm(24), gx = cx + sm(8);
+    const lowL = cx - sm(64); for (let x = lowL; x < kx - sm(12); x++) { const t = Math.round(spur(x) - sm(4) - Math.max(0, x - lowL) * .35 + hash2(Math.floor(x / sm(3)), 2, 640) * sm(3)); // a fallen wall running down the spur
+      for (let y = t; y < spur(x) + 1; y++) setp(g, x, y, y === t ? code(R.stone, 6) : ashlar(x, y, lowL, b, "front", 641)); }
+    for (let x = wx0; x <= wx1; x++) { const t = b - wh, mer = (x - wx0) % sm(7) < sm(4); // the curtain wall: coursed, a walk behind its crenels, its foot in turf
+      for (let y = t - (mer ? sm(3) : 0); y < b + 1; y++) setp(g, x, y, y === t - (mer ? sm(3) : 0) ? code(R.stone, 7) : y === t + sm(1) ? code(R.stone, 2) : ashlar(x, y, wx0, b, "front", 642)); }
+    const gw = sm(5); // the gate: a dark arch, a lit ring of voussoirs, a portcullis half raised (C and D)
+    for (let x = gx - gw; x <= gx + gw; x++) { const u = (x + .5 - gx) / (gw + .5), t = Math.round(b - sm(10) - Math.sqrt(Math.max(0, 1 - u * u)) * sm(4));
+      for (let y = t; y < b + 1; y++) setp(g, x, y, DET && y < t + sm(5) && ((x - gx) % sm(2) === 0 || (y - t) % sm(2) === 0) ? P.woodD : code(R.stone, 0));
+      for (let j = 1; j <= sm(1.5); j++) setp(g, x, t - j, u < .1 ? code(R.stone, 7) : code(R.stone, 5)); }
+    const tb = keepV(g, kx, b, spur, P);
+    turretV(g, cx + sm(32), b + 1, P);
+    for (let x = cx - HW + sm(10); x < cx + HW - sm(8); x++) { const t = top(x); if (t >= WY - sm(3)) continue; // turf along the foot of the walls
+      if (x > lowL - sm(2) && x < cx + sm(40)) { setp(g, x, t, code(R.grass, N[R.grass] - 2)); setp(g, x, t - 1, hash2(x >> 1, 9, 650) > .5 ? code(R.grass, N[R.grass] - 1) : code(R.grass, N[R.grass] - 3)); } }
+    dressV(g, cx, HW, top, P, { path: [gx - sm(4), cx + sm(60)], flowers: [P.heather, P.heather, P.pink], fd: .45, rock: true });
+    for (const [dx, rx, ry] of [[-72, 7, 4], [-48, 5, 3], [44, 6, 3.5], [74, 7, 4], [-6, 4, 2.5]]) { const x = cx + sm(dx); heatherV(g, x, top(x) + 1, sm(rx), sm(ry), dx); }
+    if (DET) for (const dx of [-58, 20, 56, 66]) { const x = cx + sm(dx); heatherV(g, x, top(x) + 1, sm(3), sm(2), dx * 3); }
+    treeV(g, cx + sm(66), top(cx + sm(66)) + 1, { kind: "pine", h: sm(46), w: sm(24), ramp: R.leafA, seed: 77 });
+    if (DET) for (const [dx, w, hh] of [[-16, 4, 3], [-11, 3, 2], [-13, 2.5, 2]]) { const x0 = cx + sm(dx), t = top(x0) + 1; // C and D: fallen blocks at the keep's foot, each a small lit volume
+      rect(g, x0, t - sm(hh) - (dx === -13 ? sm(3) : 0), x0 + sm(w), t - (dx === -13 ? sm(3) : 0), (x, y) => y === t - sm(hh) - (dx === -13 ? sm(3) : 0) ? code(R.stone, 7) : x === x0 ? code(R.stone, 5) : x === x0 + sm(w) - 1 ? code(R.stone, 1) : code(R.stone, 3)); }
+    const sx = cx + sm(50); ledgeV(g, sx, b, P);
+    g.towerTop = tb.top; g.seat = { dx: sm(50), y: b - sm(4), ground: false }; },
   lighthouse(g, cx, P) { const h = sm(26), b = WY - h, top = moundV(g, cx, HW, h, "rock", 5), tx = cx - sm(16), kx = cx + sm(30);
     dressV(g, cx, HW, top, P, { path: [cx - HW * .8, kx - sm(1)], flowers: [P.white, P.pink], fd: .35, rock: true });
     keeperV(g, kx, b, P); drystone(g, kx + sm(17), kx + sm(29), b); towerV(g, tx, b, P);
     const sx = cx + sm(4); ledgeV(g, sx, b, P);
+    if (DET) for (const [dx, dy] of [[56, 0], [62, 0], [59, -4]]) { const x0 = kx + sm(dx - 30), y1 = b + sm(dy), pw = sm(5), ph = sm(4); // C and D: lobster pots stacked by the keeper's door: a lit frame of withies, dark inside
+      rect(g, x0, y1 - ph, x0 + pw, y1, (x, y) => y === y1 - ph || x === x0 ? P.woodL : x === x0 + pw - 1 || y === y1 - 1 ? P.woodD : (x - x0) % 2 ? P.wood : P.wood1); }
     g.seat = { dx: sm(4), y: b - sm(4), ground: false }; },
 };
 
@@ -1208,6 +1396,11 @@ function headSide(F, k, cx, cy, HD, D, big, z, backTo) { // a head in profile: h
     return v > .5 ? k.shade : k.skin; });
   for (let y = Math.round(cy); y <= backTo; y++) for (let i = 0; i < (big ? 3 : 2); i++) F.put(cx - D * (hr - .5 - i), y, k.hair, z - .2);
   if (big) { F.put(cx + D * hr * .42, cy - .2, k.hair, z + .1); F.put(cx + D * (hr + .5), cy + .7, k.skin, z + .1); }
+  if (HD >= 9) { // D: a readable face in profile: a brow, an eye with a lit catch, the nose, a mouth, an ear
+    F.put(cx + D * hr * .3, cy - 1.2, k.hair, z + .1); F.put(cx + D * hr * .55, cy - 1.2, k.hair, z + .1);
+    F.put(cx + D * hr * .45, cy - .1, k.edge, z + .2); F.put(cx + D * hr * .3, cy - .1, k.skin, z + .2);
+    F.put(cx + D * (hr + .5), cy + 1.6, k.skin, z + .1); F.put(cx + D * (hr - .2), cy + 2.6, k.shade, z + .2); F.put(cx + D * (hr - 1.2), cy + 2.6, k.shade, z + .2);
+    F.put(cx - D * hr * .05, cy + .6, k.shade, z + .2); F.put(cx - D * hr * .05, cy + 1.6, k.shade, z + .2); F.put(cx + D * hr * .1, cy + 1.1, k.skin, z + .2); }
 }
 function walkerV(h, frame, dir) { // side on, walking: a head, a coat with width (a fold in it in C), arms that swing, legs with knees, shoes
   const k = figInk(), F = FigBuf(), big = h >= 24, D = dir, f4 = frame & 3;
@@ -1228,6 +1421,8 @@ function walkerV(h, frame, dir) { // side on, walking: a head, a coat with width
   const hand = [p0[0] + D * Math.sin(a) * aL, p0[1] + Math.cos(a) * aL], el = [lerp(p0[0], hand[0], .5) + D * (big ? .5 : 0), lerp(p0[1], hand[1], .5)];
   F.seg(p0[0], p0[1], el[0], el[1], lw * .85, 4, [k.edge, k.coat, k.lit]); F.seg(el[0], el[1], hand[0], hand[1], lw * .8, 4, [k.edge, k.coat, k.lit]);
   F.put(hand[0], hand[1] + .5, k.skin, 4.5); if (big) F.put(hand[0] + D, hand[1] + .5, k.shade, 4.5);
+  if (h >= 34) { F.put(hand[0], hand[1] + 1.5, k.skin, 4.5); F.put(hand[0] + D, hand[1] + 1.5, k.shade, 4.5); F.put(hand[0] + D * 2, hand[1] + .5, k.skin, 4.6); // D: a hand, its thumb toward the way it faces
+    for (const t of [.2, .48, .76]) F.put(D * (td - .5), lerp(shY + 2, hemY, t), k.edge, 2.7); F.seg(D * -td * .2, hemY - 2, D * td * .9, hemY - 2.4, 1, 2.6, [k.edge, k.edge, k.edge]); } // buttons down the front, a belt
   headSide(F, k, D * h * .03, shY - HD * .5 + .3, HD, D, big, 5, shY + (big ? 3 : 1));
   F.outline(figDark(k));
   return F.px();
@@ -1249,10 +1444,15 @@ function sitterV(h, ground, hd = 0) { // facing us, sitting: cross-legged on the
   F.seg(-sw - .1, shY + 1.2, -sw - .3, mid, lw * .85, 3, [k.coat, k.lit, k.lit]); F.seg(-sw - .3, mid, -1, hy, lw * .8, 3, [k.coat, k.lit, k.lit]);
   F.seg(sw + .1, shY + 1.2, sw + .3, mid, lw * .85, 3, [k.edge, k.edge, k.coat]); F.seg(sw + .3, mid, 1, hy, lw * .8, 3, [k.edge, k.edge, k.coat]);
   F.put(-.5, hy, k.skin, 4); F.put(.5, hy, k.shade, 4); if (big) { F.put(-1.5, hy, k.skin, 4); F.put(1.5, hy, k.shade, 4); }
+  if (h >= 34) { for (const x of [-2.5, -1.5, -.5, .5, 1.5, 2.5]) F.put(x, hy + 1, x < 0 ? k.skin : k.shade, 4); F.put(-2.5, hy - 1, k.skin, 4.1); // D: two hands folded in the lap
+    for (const t of [.25, .55]) F.put(1, lerp(shY + 2, lapTop, t), k.lit, 2.7); }
   const hr = HD * .5, vr = HD * .52, hc = [hd, shY - vr + .3];
   F.ell(hc[0], hc[1], hr, vr, 5, (u, v) => { if (v < -.28 || Math.abs(u - hd * .25) > .68) return u < -.1 && v < -.15 ? k.hairL : k.hair; return v > .62 || u > .5 ? k.shade : k.skin; });
   for (const s of [-1, 1]) for (let y = Math.round(hc[1]); y <= shY + (big ? 2 : 1); y++) F.put(hc[0] + s * (hr - .2), y, k.hair, 4.8); // hair to the shoulders
   if (big) for (const s of [-1, 1]) F.put(hc[0] + hd * .6 + s * hr * .4, hc[1] + .1, k.hair, 5.2);
+  if (HD >= 9) { const ex = hc[0] + hd * .6, ey = hc[1] + .3; // D: a face: brows, eyes, the nose's shade, a mouth, ears
+    for (const s of [-1, 1]) { F.put(ex + s * hr * .4, ey - 1.4, k.hair, 5.3); F.put(ex + s * hr * .4 + .9, ey - 1.4, k.hair, 5.3); F.put(ex + s * hr * .4, ey + .2, k.edge, 5.3); F.put(hc[0] + s * (hr - .3), ey + .9, k.shade, 5.25); }
+    F.put(ex + .6, ey + 1.8, k.shade, 5.3); F.put(ex - .4, ey + 3.4, k.shade, 5.3); F.put(ex + .6, ey + 3.4, k.shade, 5.3); }
   F.outline(figDark(k));
   return F.px();
 }
@@ -1524,8 +1724,8 @@ const THEMES = [ // islet and the bridge that leads to it
   { id: "ghat", name: "Ghats and chhatris", bridge: "jali", blurb: "a sandstone walk with a pierced screen rail to stone steps running down into the water, little lamps, two domed chhatris hung with marigolds and a broad banyan on prop roots" },
   { id: "chalet", name: "Alpine chalet", bridge: "covered", blurb: "a covered bridge to a chalet with a stone floor, a flowered balcony, a wide roof, a woodpile and pines" },
 ];
-function routeFor(seed, path) { // #221: a fixed route, the baobab first and the lighthouse second
-  const first = ["baobab", "lighthouse"].map((id) => THEMES.find((t) => t.id === id));
+function routeFor(seed, path) { // #221: a fixed route: the baobab, the lighthouse, then the crag
+  const first = ["baobab", "lighthouse", "crag"].map((id) => THEMES.find((t) => t.id === id));
   return [...first, ...THEMES.filter((t) => !first.includes(t))].slice(0, SLOTS);
 }
 function routeForJourney(seed, path) { // the islets in walking order: a fresh order for every Path, never opening on the islet the last one opened on
@@ -1544,7 +1744,7 @@ const TODAY = { x: 1040, y: WY + 94 }, MOOR = { x: 680, y: WY + 40 }, DROP = { x
 const slotX = (k) => ROUTE_X0 + k * STEP;
 let WORLD_W = slotX(SLOTS - 1) + 190; const WORLD_H = 1180;
 function applyVariant(v) { // #221: set the art scale and the world's geometry for a variant; distances along the route scale with the art
-  VARIANT = v; const o = VARIANTS[v]; ZS = o.zs; RD = o.redraw; DET = ZS > 1.2;
+  VARIANT = v; const o = VARIANTS[v]; ZS = o.zs; RD = o.redraw; DET = ZS > 1.2; DET2 = ZS > 1.8;
   HW = Math.round(84 * ZS); STEP = Math.round(262 * ZS); ROUTE_X0 = PIER[1] + Math.round((1330 - PIER[1]) * ZS); WORLD_W = slotX(SLOTS - 1) + 190;
 }
 applyVariant(VARIANT);
@@ -1577,7 +1777,7 @@ function buildShore(season, seed, path) { // the world key below includes st.bd
   // today's lily's pier, then the islets
   const JET = RD ? jettyV : jetty, BRS = RD ? BRIDGES_V : BRIDGES, DKS = RD ? DECK_V : DECK, ISL = RD ? ISLETS_V : ISLETS; // #221: B and C draw with the redraw
   JET(g, PIER[0], PIER[1], WY - 6);
-  g.bed = null; if (RD && BD() === "B") forestHomeV(g); else HOME[BD()].build(g, P); // this prototype: home's backdrop
+  g.bed = null; if (RD && BD() === "B") forestHomeV(g, P); else HOME[BD()].build(g, P); // this prototype: home's backdrop
   const picks = routeFor(seed, path), edge = Math.round(HW * .82); // bridges first, so each islet's banks cover its ends
   picks.forEach((t, k) => (BRS[t.bridge] || BRIDGES[t.bridge])(g, k ? slotX(k - 1) + edge : PIER[1], slotX(k) - edge, P));
   JET(g, slotX(SLOTS - 1) + edge, W - 140, WY - 6); // ashore: the last walk is a plain jetty to the landing
@@ -1596,10 +1796,10 @@ function buildShore(season, seed, path) { // the world key below includes st.bd
   g.walkY = wy;
   g.rand = rng(3);
   signpost(g, 360, WY - 3); item(g, "sign", 360, WY - 14, 12, 12, "About");
-  boathouse(g, 470, WY - 2);
-  item(g, "boat", MOOR.x, MOOR.y - 9, 38, 16, "Begin today's Inquiry");
+  if (!COVE()) boathouse(g, 470, WY - 2); // in the cove, coveV draws the boathouse on the left arm
+  item(g, "boat", moorAt().x, moorAt().y - sm(9), sm(38), sm(16), "Begin today's Inquiry");
   item(g, "landboat", LAND_X + 40, LANDBOAT.y - 9, 38, 16, "Row home"); // round 3: placed from the view, see placeLandBoat
-  item(g, "house", 470, WY - 12, 22, 14, "Settings");
+  if (COVE()) { const bh = coveGeo().bh; item(g, "house", bh.x, bh.y - sm(22), sm(30), sm(24), "Settings"); } else item(g, "house", 470, WY - 12, 22, 14, "Settings");
   item(g, "lily", 772, WY + 82, 30, 20, "Today's Recap");
   item(g, "old0", 716, WY + 150, 20, 13, "An older Recap"); item(g, "old1", 664, WY + 202, 15, 10, "An older Recap");
   sky(g, 0, WY, { x: g.sunX ?? 750, y: g.sunY ?? WY - 80, r: 520, s: st.sky === "low" ? 0 : g.spring ? .45 : .3 }, g.moon ? { x: 1460, y: 160, r: 9 } : null);
@@ -1758,7 +1958,7 @@ const WELCOME = [ // from prototypes/shoreline-guide, verbatim
   { cap: "Keep a Recap", head: "And keep what you saw.", body: "It's kept on your device, just for you." },
   { cap: "", head: "No judging, ever.", body: "It won't tell you what's right or wrong, or what you should think. It offers a way to examine your own thoughts, and the looking is yours." },
 ];
-const BLURB = "Throwaway prototype for #221. Should the pixel world be framed closer, with every subject drawn about 1.5× larger at the same 320 art px across, and does redrawing the art as shaded volumes fix what looks wrong today? Switch A, B and C with the bar at the bottom; the screen stays put.";
+const BLURB = "Throwaway prototype for #221. Should the pixel world be framed closer, with every subject drawn about 1.5× larger at the same 320 art px across, and does redrawing the art as shaded volumes fix what looks wrong today? Switch A, B, C and D with the bar at the bottom (D, 2× closer, is the default); the screen stays put.";
 const JUDGE = [
   "<b>At each place</b> (the welcome, home, the row out, the Probes, each islet while reading and while writing, the walk, the Path's end, the long pan ashore, the Recap, Row home): what pulled your eye off the words?",
   "<b>What felt empty</b> there, and <b>what felt comforting</b>?",
@@ -1795,15 +1995,16 @@ const beats = () => [...WEL, "home", "problem", "probes", ...Array.from({ length
 const stepK = (b) => /^p\d+$/.test(b || "") ? +b.slice(1) : 0; // a Path step (not "probes", not "problem")
 const slotK = (b) => stepK(b) || (b === "end" ? STEPS + 1 : 0); // the islet: a step's own, or the fifth for the Path's end
 const INQ = (b) => b === "problem" || b === "probes" || slotK(b) > 0 || b === "recap"; // the Inquiry screens: Help, reading mode
-const LABEL = (b) => isWel(b) ? "Welcome " + b.slice(1) + " of 6" : ({ home: "Home", problem: "Problem", probes: "Probes", recap: "Recap" })[b]
+const KNOWN = (b) => beats().includes(b) || b === "boathouse"; // round 2: the boathouse (Settings) is a screen off home, not a beat of the Inquiry
+const LABEL = (b) => isWel(b) ? "Welcome " + b.slice(1) + " of 6" : ({ home: "Home", problem: "Problem", probes: "Probes", recap: "Recap", boathouse: "Boathouse" })[b]
   || (b === "end" ? "The Path's end · " : "Step " + b.slice(1) + " · ") + world().themes[slotK(b) - 1].name;
 const SHORT = (b) => isWel(b) ? "W" + b.slice(1) : stepK(b) ? "Step " + b.slice(1) : b === "end" ? "End" : LABEL(b);
 if (narrow()) st.device = "real";
-if (!beats().includes(st.beat)) st.beat = "home";
+if (!KNOWN(st.beat)) st.beat = "home";
 
 let G = null; const worlds = new Map(); // round 2: worlds cached by key, so a season can dissolve into the other one
 const wKey = (season) => [VARIANT, season, st.seed, st.path, BD(), st.sky].join(); // #221: keyed by the variant too, so a switch never reuses a world built at the other size
-function worldFor(season) { const k = wKey(season); let g = worlds.get(k); if (!g) { g = buildShore(season, st.seed, st.path); worlds.set(k, g); if (worlds.size > 6) worlds.delete(worlds.keys().next().value); } return g; }
+function worldFor(season) { const k = wKey(season); let g = worlds.get(k); if (!g) { g = buildShore(season, st.seed, st.path); worlds.set(k, g); if (worlds.size > 8) worlds.delete(worlds.keys().next().value); } return g; }
 function world() { const g = worldFor(SEA()); if (G !== g) { G = g; drawMapBase(); } return g; }
 function prebuild() { const o = SEA() === "spring" ? "autumn" : "spring", v = VARIANT; if (!worlds.has(wKey(o))) (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(() => { if (VARIANT === v) worldFor(o); }); } // the other season, built when idle
 
@@ -1890,7 +2091,7 @@ const mod = (a) => ((a % WORLD_W) + WORLD_W) % WORLD_W;
 const walkAt = (x) => world().walkY[mod(Math.round(x))];
 const q8 = (p) => Math.max(1 / 8, Math.ceil(clamp(p, 0, 1) * 8) / 8); // an 8-step dither fade
 const SZ = () => ({ S: 0, M: 1, L: 2 })[st.size] ?? 1;
-const walkerH = () => (ZS > 1.2 ? [21, 28, 36] : [14, 18, 24])[SZ()]; // #221: C draws the walker at its own size, 28 art px at M
+const walkerH = () => (ZS > 1.8 ? [28, 36, 48] : ZS > 1.2 ? [21, 28, 36] : [14, 18, 24])[SZ()]; // #221: C and D draw the walker at its own size, 28 and 36 art px at M
 const FIG = { woman: { name: "Woman", hem: 0, flare: .25, hair: 2 }, man: { name: "Man", hem: .12, flare: .18, hair: 0 }, neutral: { name: "Neither", hem: .05, flare: .21, hair: 1 } };
 const COATS = [["rose", "Rose"], ["moss", "Moss"], ["sky", "Sky"], ["ochre", "Ochre"], ["slate", "Slate"]];
 const SKINS = ["Lightest", "Light", "Medium", "Brown", "Deep"];
@@ -1984,6 +2185,8 @@ const SEATS = {
 function seatFor(k) { const t = world().themes[k - 1], s = (RD && world().seats && world().seats[k - 1]) || SEATS[t.id]; return { kind: "sit", x: slotX(k - 1) + s.dx, y: s.y, ground: !!s.ground }; }
 function spot(b) { // where the walker is at rest on each screen; none during the welcome
   const k = slotK(b);
+  if (b === "home" && COVE()) { const w = coveGeo().walker; return { kind: "beach", x: w.x, y: w.y }; } // round 2: the walker waits on the left arm's beach, the boat tied off it
+  if (b === "boathouse") { if (!COVE()) return { kind: "stand", x: BH_X }; const d = coveGeo().bh; return { kind: "door", x: d.x, y: d.y }; } // at the boathouse door, stepping in
   return b === "home" ? { kind: "boat", x: MOOR.x, y: MOOR.y } : b === "problem" || b === "probes" ? { kind: "stand", x: STAND_X } : k ? seatFor(k) : b === "recap" ? { kind: "boat", x: WORLD_W + LANDBOAT.x, y: LANDBOAT.y } : null;
 }
 const onPath = (b) => b === "problem" || b === "probes" || slotK(b) > 0;
@@ -1992,25 +2195,33 @@ function drawWalker(out, v) {
   const boat = (x, y, moving, fade = 1, dir = 1) => out.push({ x: Math.round(x), y: Math.round(y), px: boatPx(moving ? (full ? Math.floor(now() * 8) % 8 : 2) : -1, true, dir), bob: !moving, i: 3, fade });
   const at = (s, fade = 1) => { if (!s) return;
     if (s.kind === "boat") boat(s.x, s.y, false, fade);
+    else if (s.kind === "beach" || s.kind === "door") { if (s.kind === "beach") empty(); out.push({ x: s.x, y: s.y, px: walkerPx(h, 0, 1), bob: false, fade }); }
     else if (s.kind === "sit") out.push({ x: s.x, y: s.y, px: sitterPx(h, s.ground, v.headDx || 0), bob: false, refl: true, fade });
     else out.push({ x: s.x, y: Math.round(walkAt(s.x)), px: walkerPx(h, 0, 1), bob: false, refl: true, fade }); };
-  const empty = () => out.push({ x: MOOR.x, y: MOOR.y, px: boatPx(-1, false), bob: true, i: 3 });
+  const empty = () => out.push({ x: moorAt().x, y: moorAt().y, px: boatPx(-1, false), bob: true, i: 3 });
   if (isWel(v.beat)) return empty(); // no walker during the welcome: the boat waits empty at its mooring
   const tk = mv && mv.token, mode = tk ? tk.mode : "";
   if (!tk && mv && v.beat === "home" && isWel(v.prevBeat)) { // arriving home from the welcome: the walker dissolves in, sitting in the boat
     const p = clamp((performance.now() - mv.t0) / mv.dur, 0, 1), hh = Math.max(6, Math.round(h * .5));
+    if (COVE()) return at(spot("home"), q8(p)); // in the cove: the walker dissolves in on the beach
     out.push({ x: MOOR.x, y: MOOR.y, px: sitterPx(h, true).map(([x, y, c]) => [x, y - hh + 1, c]), bob: true, i: 3, fade: q8(p) });
     return empty();
   }
+  if (COVE() && (v.beat === "boathouse" || mode === "walk" && v.prevBeat === "boathouse")) empty(); // the boat stays tied off the beach while the walker is at the boathouse
   if (onPath(v.beat) && mode !== "row") out.push({ x: PIERBOAT.x, y: PIERBOAT.y, px: boatPx(-1, false), bob: true, i: 2 }); // the boat waits at the pier while the Path is walked
   if (!tk) return at(spot(v.beat));
   const p = clamp((performance.now() - mv.t0) / mv.dur, 0, 1);
   if (mv.style !== "pan") return at(tk.b, q8(p));
   if (mode === "far") return p < .25 ? at(tk.a, 1 - Math.ceil(p / .25 * 8) / 8) : p > .75 ? at(tk.b, q8((p - .75) / .25)) : null;
   const e = rowing && v.beat === "home" ? smooth(p) : ease(p);
-  if (mode === "row") return boat(lerp(tk.src.x, tk.dst.x, e), lerp(tk.src.y, tk.dst.y, e), true, 1, Math.sign(tk.dst.x - tk.src.x) || 1);
+  if (mode === "row") { const p0 = tk.p0 || 0, p1 = tk.p1 ?? 1; // round 2: from or to the beach, the walker steps into or out of the boat (a short dissolve) at the ends of the row
+    if (p < p0) { const q = q8(p / p0); at(tk.a, 1 - q); return boat(tk.src.x, tk.src.y, false, q); }
+    if (p > p1) { const q = q8((p - p1) / (1 - p1)); at(tk.b, q); return boat(tk.dst.x, tk.dst.y, false, 1 - q); }
+    const pe = (p - p0) / (p1 - p0), ee = rowing && v.beat === "home" ? smooth(pe) : ease(pe), bx = lerp(tk.src.x, tk.dst.x, ee);
+    return boat(bx, coveRowY(bx, lerp(tk.src.y, tk.dst.y, ee)), true, 1, Math.sign(tk.dst.x - tk.src.x) || 1); }
   const x = lerp(tk.a.x, tk.b.x, e), dir = Math.sign(tk.b.x - tk.a.x) || 1, frame = full ? Math.floor(Math.abs(x - tk.a.x) / Math.max(3, h * .32)) % 4 : 0;
-  out.push({ x: Math.round(x), y: Math.round(walkAt(x)), px: walkerPx(h, frame, dir), bob: false, refl: true });
+  const shoreWalk = tk.a.y != null && tk.b.y != null && tk.a.kind !== "sit" && tk.b.kind !== "sit"; // the cove's walk along the left arm, beach to boathouse: its own row, not the bank's
+  out.push({ x: Math.round(x), y: Math.round(shoreWalk ? lerp(tk.a.y, tk.b.y, (x - tk.a.x) / ((tk.b.x - tk.a.x) || 1)) : walkAt(x)), px: walkerPx(h, frame, dir), bob: false, refl: !shoreWalk });
 }
 function headY(s) { const h = walkerH();
   if (RD) { const px = s.kind === "sit" ? sitterPx(h, s.ground) : s.kind === "boat" ? boatPx(-1, true) : walkerPx(h, 0, 1), y0 = s.kind === "stand" ? Math.round(walkAt(s.x)) : s.y; let m = 0; for (const p of px) if (p[1] < m) m = p[1]; return y0 + m; } // #221: the redrawn figure's own top
@@ -2109,17 +2320,18 @@ const FUR = { deer: [F(3), F(4), F(5), F(8)], fox: [F(0), F(1), F(2), F(8)], whi
 const WOODP = () => { const nt = N[R.trunk]; return [code(R.trunk, nt - 1), code(R.trunk, 2), code(R.trunk, 1), code(R.trunk, 0)]; };
 const STONEP = () => { const ns = N[R.stone]; return [code(R.stone, ns - 1), code(R.stone, ns - 3), code(R.stone, 2), code(R.stone, 1)]; };
 const PAINTP = () => [code(R.paint, 3), code(R.paint, 2), code(R.paint, 2), code(R.paint, 0)];
+let SPRK = 1; // round 2: the scale a detail is drawn at; the cove's right arm draws its near detail larger, as shaded shapes (not blown-up pixels)
 function Spr() {
-  const m = new Map(), S = {
-    set(x, y, pal, v, line = true) { m.set(x + "," + y, { x, y, pal, v, line }); return S; },
-    ell(cx, cy, rx, ry, pal, o = {}) { for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
-      const dx = (x - cx) / rx, dy = (y - cy) / ry; if (dx * dx + dy * dy <= 1.05) S.set(x, y, pal, (o.v ?? .5) - .35 * dx - .45 * dy, o.line !== false); } return S; },
-    line(x0, y0, x1, y1, pal, w = 1, v = .5) { const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
-      for (let i = 0; i <= n; i++) { const x = Math.round(lerp(x0, x1, i / n)), y = Math.round(lerp(y0, y1, i / n)); for (let k = 0; k < w; k++) S.set(x + k, y, pal, v - k * .25); } return S; },
-    poly(pts, pal, vf) { let y0 = 1e9, y1 = -1e9; for (const [, y] of pts) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  const m = new Map(), K = SPRK, put = (x, y, pal, v, line = true) => { m.set(x + "," + y, { x, y, pal, v, line }); }, S = {
+    set(x, y, pal, v, line = true) { put(Math.round(x * K), Math.round(y * K), pal, v, line); return S; },
+    ell(cx, cy, rx, ry, pal, o = {}) { cx *= K; cy *= K; rx *= K; ry *= K; for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
+      const dx = (x - cx) / rx, dy = (y - cy) / ry; if (dx * dx + dy * dy <= 1.05) put(x, y, pal, (o.v ?? .5) - .35 * dx - .45 * dy, o.line !== false); } return S; },
+    line(x0, y0, x1, y1, pal, w = 1, v = .5) { x0 *= K; y0 *= K; x1 *= K; y1 *= K; w = Math.max(1, Math.round(w * K)); const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), 1);
+      for (let i = 0; i <= n; i++) { const x = Math.round(lerp(x0, x1, i / n)), y = Math.round(lerp(y0, y1, i / n)); for (let k = 0; k < w; k++) put(x + k, y, pal, v - k * .25 / K); } return S; },
+    poly(pts, pal, vf) { pts = pts.map(([x, y]) => [x * K, y * K]); let y0 = 1e9, y1 = -1e9; for (const [, y] of pts) { y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
       for (let y = Math.floor(y0); y <= y1; y++) { const xs = []; for (let i = 0; i < pts.length; i++) { const [ax, ay] = pts[i], [bx, by] = pts[(i + 1) % pts.length]; if ((ay <= y + .5) !== (by <= y + .5)) xs.push(ax + (y + .5 - ay) / (by - ay) * (bx - ax)); }
-        xs.sort((a, b) => a - b); for (let i = 0; i + 1 < xs.length; i += 2) for (let x = Math.round(xs[i]); x < Math.round(xs[i + 1]); x++) S.set(x, y, pal, vf ? vf(x, y) : .5); } return S; },
-    rect(x0, y0, x1, y1, pal, v = .5) { for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) S.set(x, y, pal, v - (x - x0) / Math.max(1, x1 - x0) * .3); return S; },
+        xs.sort((a, b) => a - b); for (let i = 0; i + 1 < xs.length; i += 2) for (let x = Math.round(xs[i]); x < Math.round(xs[i + 1]); x++) put(x, y, pal, vf ? vf(x / K, y / K) : .5); } return S; },
+    rect(x0, y0, x1, y1, pal, v = .5) { x0 = Math.round(x0 * K); y0 = Math.round(y0 * K); x1 = Math.round(x1 * K); y1 = Math.round(y1 * K); for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) put(x, y, pal, v - (x - x0) / Math.max(1, x1 - x0) * .3); return S; },
     px() { const out = []; for (const p of m.values()) { let c = p.v > .7 ? p.pal[0] : p.v > .38 ? p.pal[1] : p.pal[2];
       if (p.line && (!m.has(p.x + "," + (p.y + 1)) || !m.has((p.x + 1) + "," + p.y))) c = p.pal[3]; out.push([p.x, p.y, c]); } return out; },
   };
@@ -2148,11 +2360,11 @@ function duckPx(drake) { const s = Spr(), B = FUR.duck; s.ell(1, -2, 5, 2.4, B);
 function tentPx() { const s = Spr(), C = FUR.canvas, K = FUR.dark;
   s.poly([[-20, 0], [0, -22], [0, 0]], C, (x, y) => .85 + (y + 22) * .004); s.poly([[0, 0], [0, -22], [20, 0]], C, () => .3);
   s.poly([[-7, 0], [0, -13], [5, 0]], K); s.line(0, -23, 0, -25, K); s.line(-20, 0, -26, 1, K); s.line(20, 0, 26, 1, K); return s.px(); }
-function flamePx(x0, y0, big) { const f = tick(6) % 3, red = code(R.flower, 0), org = F(0), yel = code(R.light, 1), wht = code(R.light, 2), px = [], h = big ? 9 : 5;
-  for (let y = 0; y < h; y++) { const w = Math.round((1 - y / h) * (big ? 3.5 : 2) + ((y + f) % 3 === 0 ? .6 : 0)), sway = Math.round(Math.sin(y * .9 + f * 2) * (y / h) * 1.5);
+function flamePx(x0, y0, big) { const K = SPRK, f = tick(6) % 3, red = code(R.flower, 0), org = F(0), yel = code(R.light, 1), wht = code(R.light, 2), px = [], h = Math.round((big ? 9 : 5) * K); x0 = Math.round(x0 * K); y0 = Math.round(y0 * K);
+  for (let y = 0; y < h; y++) { const w = Math.round(((1 - y / h) * (big ? 3.5 : 2) + ((y + f) % 3 === 0 ? .6 : 0)) * K), sway = Math.round(Math.sin(y * .9 / K + f * 2) * (y / h) * 1.5 * K);
     for (let x = -w; x <= w; x++) px.push([x0 + x + sway, y0 - y, Math.abs(x) === w ? red : y > h * .55 ? yel : Math.abs(x) < w - 1 && y < h * .5 ? wht : org]); }
   return px; }
-const smokePx = (x0, y0, n, rise = 5) => { const px = []; for (let i = 0; i < n; i++) { const t = (T * .8 + i * 1.3) % 7, y = Math.round(-t * rise), x = Math.round(Math.sin(t * 1.1 + i) * 2 + t * .9), c = code(R.mist, t > 3.5 ? 0 : 1);
+const smokePx = (x0, y0, n, rise = 5) => { const px = [], K = SPRK; x0 = Math.round(x0 * K); y0 = Math.round(y0 * K); for (let i = 0; i < n; i++) { const t = (T * .8 + i * 1.3) % 7, y = Math.round(-t * rise * K), x = Math.round((Math.sin(t * 1.1 + i) * 2 + t * .9) * K), c = code(R.mist, t > 3.5 ? 0 : 1);
   if (t < 6.4) { px.push([x0 + x, y0 + y, c]); if (t > 1.5) px.push([x0 + x + 1, y0 + y, c], [x0 + x, y0 + y - 1, c]); } } return px; };
 function logPx(x0, len) { const s = Spr(), Wd = WOODP(); s.rect(x0, -5, x0 + len, 0, Wd, .5); s.ell(x0 + len, -2.5, 1.5, 2.5, [F(7), F(7), F(7), Wd[3]]); for (let x = x0 + 2; x < x0 + len; x += 4) s.set(x, -3, Wd, .1); return s.px(); }
 function stonesPx(r) { const s = Spr(), St = STONEP(); for (let i = 0; i < 9; i++) { const a = Math.PI * (i / 8), x = Math.round(Math.cos(a) * r); s.ell(x, -1 - (i % 2), 2.2, 1.6, St); } return s.px(); }
@@ -2200,7 +2412,25 @@ function rollDetails() { // one or two, at places that don't crowd each other
     const xs = DETAILS[k].where.filter((x) => picks.every((p) => Math.abs(p.x - x) > 70)); if (xs.length) picks.push({ k, x: st.only ? xs[0] : xs[Math.floor(r() * xs.length)] }); }
   st.picks = picks; save();
 }
-function homeDetails(out) { for (const p of st.picks || []) if (DETAILS[p.k]) out.push(...DETAILS[p.k].sprites(p.x)); }
+const NEAR_OK = ["deer", "fox", "rabbits", "tent", "firepit", "picnic", "canoe"]; // round 2: the land details the cove's right arm can hold, near and larger
+function homeDetails(out) {
+  let nearDone = false;
+  for (const p of st.picks || []) { const D = DETAILS[p.k]; if (!D) continue;
+    if (!COVE()) { out.push(...D.sprites(p.x)); continue; }
+    if (p.k === "heron" || p.k === "ducks") { const G = coveGeo(); out.push(...D.sprites(p.k === "heron" ? G.xtR - sm(20) : G.xtR - sm(52))); continue; } // in the cove: in the water, off the right arm's point
+    if (!NEAR_OK.includes(p.k) || nearDone) { out.push(...D.sprites(p.x)); continue; }
+    nearDone = true; out.push(...nearDetail(D)); }
+}
+function nearDetail(D) { // draw a land detail on the right arm at the arm's scale: offsets and shapes scaled about an anchor, standing on the turf, clear of the view's right edge
+  const G = coveGeo(), A = 800, span = (sp, K) => { let x0 = 1e9, x1 = -1e9; for (const q of sp) { const dx = A + (q.x - A) * K; for (const [x] of q.px) { x0 = Math.min(x0, dx + x); x1 = Math.max(x1, dx + x); } } return [x0, x1]; };
+  const land = (sp) => sp.filter((q) => q.y <= BANK + 1); // the glints in the water stay with the far bank's version
+  const [a0, a1] = span(land(D.sprites(A)), 1), K = Math.max(1, Math.min(G.near, (888 - G.xtR - sm(14)) / (a1 - a0 + 1))); // as large as the arm allows, up to the arm's scale
+  SPRK = K; let sp; try { sp = land(D.sprites(A)); } finally { SPRK = 1; }
+  const [x0, x1] = span(sp, K);
+  const cx = Math.round(Math.min(888 - (x1 - x0) / 2, G.xtR + sm(12) + (x1 - x0) / 2)), shift = cx - (x0 + x1) / 2;
+  let base = 1e9; for (let x = Math.round(x0 + shift); x <= x1 + shift; x += 2) base = Math.min(base, G.shore(x)); base = Math.max(WY + sm(16), base - sm(7));
+  return sp.map((q) => ({ ...q, x: Math.round(A + (q.x - A) * K + shift), y: Math.round(base + (q.y - BANK) * K), refl: false }));
+}
 
 function scene(v) {
   const beat = v.beat, out = [];
@@ -2244,6 +2474,7 @@ function frameFor(beat) {
 function frameRaw(beat) {
   if (isWel(beat)) return { x: WLILY.x, share: .56 }; // the welcome: on the landing, the camera still, its lily centred under the words
   if (beat === "home") return { x: 720, share: .4 };
+  if (beat === "boathouse") return { x: BH_X + 50, share: .4 }; // level with home: the door left of centre, the beach in view
   if (beat === "problem" || beat === "probes") return { x: TODAY.x + 6, share: .6 };
   if (beat === "recap") return { x: LAND_X + 40, share: .76 };
   return { x: slotX(Math.min(SLOTS, slotK(beat)) - 1), share: .44 };
@@ -2290,7 +2521,7 @@ function headLimit(c, beat) { // round 3: the css y a top-hung pane may reach: j
 // round 3: every screen's main words hang from just under the top bar and grow downward; a long pane scrolls rather than reach the walker
 const hang = (c, inner, beat, cls = "") => `<div class="above scroll ${cls}" style="top:${c.top + HANG}px;bottom:${Math.round(c.H - Math.max(c.top + HANG + 60, headLimit(c, beat)))}px">${inner}</div>`;
 const above = (c, inner, cls = "", gap = 10) => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + gap}px">${inner}</div>`;
-const below = (c, inner, bottom, gap = 10) => `<div class="col" style="top:${c.wl + gap}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
+const below = (c, inner, top) => `<div class="col pinb" style="top:${Math.round(top ?? c.wl + 10)}px;bottom:${c.bot + 10}px">${inner}</div>`; // round 2: pinned to the bottom, the thumb's control lowest; its top is how high it may grow
 const bottomBar = (c, inner) => `<div class="bbar" style="bottom:${c.bot + 12}px">${inner}</div>`;
 const pill = (t, go, cls = "") => Bt("pillg " + cls, P_("ctl", t), go);
 const lifted = (c) => `bottom:calc(${c.bot + 10}px + var(--kb, 0px))`; // the composer rises above the keyboard; the scene never moves
@@ -2314,8 +2545,10 @@ function welcomeFrame(c, beat) { // from prototypes/shoreline-guide
 }
 function homeFrame(c) { // the boat is the way in; once today's Inquiry is used, the lily shows its Recap's title and the boat waits for tomorrow
   const used = st.finished;
-  let h = hits(c, (used ? [] : [["boat", "problem"]]).concat([["house", "noop"], ["sign", "noop"]], used && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
-    + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 12)}px">${used ? Gp("dimg", P_("ctl", "Next at 15:40"), 'tabindex="0"') : Bt("", P_("ctl", "Begin today's Inquiry"), "problem")}</div>`;
+  const m = moorAt(), off = c.x(BH_X) < 0; // the boathouse is past the left edge of home's view: a small Settings label at the edge walks there
+  let h = hits(c, (used ? [] : [["boat", "problem"]]).concat([["house", COVE() ? "boathouse" : "noop"], ["sign", "noop"]], used && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
+    + (COVE() && off ? `<div class="tag" style="transform:none;left:12px;top:${c.y(WY) - 64}px">${Bt("", P_("ctl", "‹ Settings"), "boathouse")}</div>` : "")
+    + `<div class="tag" style="left:${c.x(m.x)}px;top:${c.y(m.y + sm(10))}px">${used ? Gp("dimg", P_("ctl", "Next at 15:40"), 'tabindex="0"') : Bt("", P_("ctl", "Begin today's Inquiry"), "problem")}</div>`;
   if (used && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 20)}px">${Bt("lbl", P_("lt", esc(COPY.recap.title)), "noop")}</div>`;
   return h;
 }
@@ -2330,9 +2563,9 @@ function inquiryFrame(c, beat) {
     // round 2: no caption, just the four questions; Finish and Your Problem go below today's lily, never over it, and Your Problem is dropped when there's no room
     const fin = st.walked ? Bt("row", P_("rd", "Finish Inquiry ›"), "finish") : "", lilyBot = c.y(TODAY.y + 34) + 8, room = c.H - (c.bot + 10) - lilyBot;
     const qs = COPY.probes.map((q, i) => Bt("row", `<span class="rt">${P_("rd", q)}${i === 0 && st.walked ? P_("ctl dim", "Walked") : ""}</span>`, i === 0 && !st.walked ? "p1" : "noop")).join("");
-    const lower = (fin ? (room >= 52 ? fin : "") : "") + (room >= (fin ? 52 : 0) + PROBLEM_MIN ? problem : "");
+    const lower = (room >= (fin ? 52 : 0) + PROBLEM_MIN ? problem : "") + (fin ? (room >= 52 ? fin : "") : ""); // Finish lowest, where the thumb is
     c.dropped = room < (fin ? 52 : 0) + PROBLEM_MIN;
-    return top + hang(c, qs + (fin && room < 52 ? fin : ""), beat) + (lower ? `<div class="col" style="top:${lilyBot}px;bottom:${c.bot + 10}px">${lower}</div>` : "");
+    return top + hang(c, qs + (fin && room < 52 ? fin : ""), beat) + (lower ? below(c, lower, lilyBot) : "");
   }
   if (beat === "recap") { const R_ = COPY.recap, kc = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
     return top + hits(c, [["landboat", "row"]]) + `<div class="tag" style="left:${c.x(LANDBOAT.x)}px;top:${c.y(LANDBOAT.y + 6)}px">${Bt("", P_("ctl", "Row home"), "row")}</div>`
@@ -2344,14 +2577,18 @@ function inquiryFrame(c, beat) {
   }
   if (c.pend) return top + sideNav(c, beat) + reflected(c, "p" + (k - 1)); // waiting on the reply: only what was just said, where it was said
   if (beat === "end") return top + hang(c, Gp("", P_("q", "That's where this Path ends.")), beat)
-    + below(c, Gp("card", P_("cap", "An Open Question") + P_("rd", COPY.oq) + P_("ctl dim", "To keep with you, not to answer now.")) + Bt("row", P_("rd", "Back to the questions ›"), "toprobes"));
+    + below(c, Gp("card", P_("cap", "An Open Question") + P_("rd", COPY.oq) + P_("ctl dim", "To keep with you, not to answer now.")) + Bt("row", P_("rd", "Back to the questions ›"), "toprobes"), c.y(2 * WY - headY(spot(beat))) + 10); // below the walker's reflection
   const s = COPY.steps[k - 1], q = hang(c, Gp("", P_("q", s.q)), beat); // round 3: the question hangs from the top, and scrolls before it would reach the walker
   if (k <= st.done) return top + sideNav(c, beat) + q + reflected(c, "p" + k); // already answered: the Reflection as sent, no Submit
   return top + sideNav(c, beat) + q + composer(c, "p" + k, "Submit", "Reflect, or tap the mic");
 }
+function boathouseFrame(c) { // round 2: a placeholder; the inside of the boathouse is designed in a later ticket
+  return topbar(c, Gp("", P_("wm", "Look Together"))) + hang(c, Gp("", P_("q", "Settings") + P_("rd dim", "The inside of the boathouse is designed in a later ticket.")) + Bt("row", P_("rd", "Back to the lake ›"), "home"), "boathouse");
+}
 function frameHTML(c, beat) {
   if (isWel(beat)) return welcomeFrame(c, beat);
   if (beat === "home") return homeFrame(c);
+  if (beat === "boathouse") return boathouseFrame(c);
   return inquiryFrame(c, beat) + (helpOpen ? helpSheet() : "");
 }
 function overlay(v, beat, cam, dir = "") {
@@ -2367,7 +2604,9 @@ function grow(ta) { // the composer grows with the text, up to ~40% of the scree
   ta.style.height = Math.min(sh, cap) + "px"; ta.style.overflowY = sh > cap ? "auto" : "hidden";
   v.lastKey = ""; // the frost is drawn from the DOM rects: repaint
 }
-function show(v, html) { v.html = html; v.ov.innerHTML = html; for (const ta of v.ov.querySelectorAll("textarea")) grow(ta); v.lastKey = ""; }
+function show(v, html, fadeGone = false) { const id = (e) => `${[...e.classList].filter((c) => c !== "nw").join(" ")}|${e.getAttribute("style") || ""}|${e.textContent}`, had = new Set([...v.ov.querySelectorAll("[data-g]")].map(id)), prev = v.ov.innerHTML; v.html = html; v.ov.innerHTML = html; const keep = new Set([...v.ov.querySelectorAll("[data-g]")].map(id));
+  if (fadeGone && !v.move && [...had].some((k) => !keep.has(k))) { v.ovOld.innerHTML = prev; v.ovOld.style.cssText = ""; for (const e of [...v.ovOld.querySelectorAll("[data-g]")]) if (keep.has(id(e))) e.remove(); else e.classList.add("gone"); v.ovOld.querySelectorAll(":scope > :not([data-g]):not(:has([data-g].gone))").forEach((e) => e.remove()); } // round 2: a pane the reply replaces in place fades out under the new words rather than blinking out
+  for (const e of v.ov.querySelectorAll("[data-g]")) if (!had.has(id(e))) e.classList.add("nw"); /* round 2: what is already in view, unchanged, is not faded in again */ for (const ta of v.ov.querySelectorAll("textarea")) grow(ta); v.lastKey = ""; }
 
 // ================= views and painting =================
 const TINT = {
@@ -2503,7 +2742,7 @@ let views = [];
 const single = document.getElementById("single"), stageEl = document.getElementById("stage");
 function layout() {
   single.innerHTML = ""; views = [];
-  if (!beats().includes(st.beat)) st.beat = "home";
+  if (!KNOWN(st.beat)) st.beat = "home";
   const real = isReal(); document.body.classList.toggle("realmode", real);
   const d = real ? realDevice() : DEVICES.find((x) => x.id === st.device) || DEVICES[2];
   views.push(makeView(d, single, stageEl.clientWidth - 32, stageEl.clientHeight - 110));
@@ -2532,11 +2771,14 @@ function setScreen(v, beat, animate, dir = "") {
   let a = spot(prevBeat), b = spot(beat), token = null, dur = clamp(dist / 260, .7, 2.4);
   if (a && b) {
     const dc = Math.sign(to.x - from.x) || 1; b = { ...b, x: dc > 0 ? a.x + mod(b.x - a.x) : a.x - mod(a.x - b.x) }; // the walker goes the way the camera goes
-    const far = Math.abs(b.x - a.x) > 700, row = a.kind === "boat" || b.kind === "boat";
+    const boatish = (s) => s.kind === "boat" || s.kind === "beach", door = a.kind === "door" || b.kind === "door";
+    const far = Math.abs(b.x - a.x) > 700, row = !door && (boatish(a) || boatish(b));
     token = { a, b, mode: far ? "far" : row ? "row" : "walk" };
     if (row && !far) {
-      token.src = a.kind === "boat" ? a : { x: a.x + PIERBOAT.x - STAND_X, y: PIERBOAT.y }; token.dst = b.kind === "boat" ? b : { x: b.x + PIERBOAT.x - STAND_X, y: PIERBOAT.y };
-      dur = clamp(Math.hypot(token.dst.x - token.src.x, token.dst.y - token.src.y) / 70, 1.2, 3.6);
+      const end = (s) => s.kind === "boat" ? s : s.kind === "beach" ? { x: s.x + moorAt().x - coveGeo().walker.x, y: moorAt().y } : { x: s.x + PIERBOAT.x - STAND_X, y: PIERBOAT.y };
+      token.src = end(a); token.dst = end(b);
+      const rd = clamp(Math.hypot(token.dst.x - token.src.x, token.dst.y - token.src.y) / 70, 1.2, 3.6), on = a.kind === "beach" ? .6 : 0, off = b.kind === "beach" ? .6 : 0; // stepping in or out of the boat: .6 s each
+      dur = rd + on + off; token.p0 = on / dur; token.p1 = 1 - off / dur;
     } else if (!far) dur = clamp(Math.abs(b.x - a.x) / (90 * ZS), .9, 3.6); // the camera keeps the walker's pace; #221: in C the pace scales with the walker, so a crossing takes as long
   }
   if (finishing) dur = st.finishPan;
@@ -2558,20 +2800,23 @@ function frame(nowMs) {
       if (p > 0) v.ov.style.visibility = "";
       if (mv.style === "pan") {
         const e = rowing && v.beat === "home" ? smooth(p) : ease(p); cam = { x: Math.round(lerp(mv.from.x, mv.to.x, e)), y: Math.round(lerp(mv.from.y, mv.to.y, e)) };
-        v.ov.style.transform = `translate(${(mv.to.x - cam.x) * s}px, ${(mv.to.y - cam.y) * s}px)`;
-        v.ovOld.style.transform = `translate(${(mv.from.x - cam.x) * s}px, ${(mv.from.y - cam.y) * s}px)`;
+        // round 2: nothing vanishes in view. When the camera's own travel is shorter than the view, the panes and tags keep sliding the way the world moves:
+        // the old ones end a full view width (plus a margin) out, the new ones start that far out on the other side, both eased with the camera
+        const Wv = v.sc.vw * s + 24, dxT = (mv.to.x - mv.from.x) * s, sg = Math.sign(dxT) || 1, short = Math.abs(dxT) < Wv ? sg * Wv - dxT : 0;
+        v.ov.style.transform = `translate(${(mv.to.x - cam.x) * s + (1 - e) * short}px, ${(mv.to.y - cam.y) * s}px)`;
+        v.ovOld.style.transform = `translate(${(mv.from.x - cam.x) * s - e * short}px, ${(mv.from.y - cam.y) * s}px)`;
       } else { cam = mv.from; mix = { cam2: mv.to, p }; v.ovOld.style.opacity = clamp(1 - p * 2, 0, 1); v.ov.style.opacity = clamp(p * 2 - 1, 0, 1); }
       if (p >= 1) {
         const homeAgain = rowing && v.beat === "home";
         if (homeAgain) bloomPending = false;
         if (springHold) { springHold = false; if (st.season !== "spring") { seasonFx = { from: "spring", t0: now() }; } } // landed home: now the season dissolves
         v.move = null; v.lastMove = mv; v.arrived = now(); v.cam = { x: wrapNear(mv.to.x, 0), y: mv.to.y }; cam = mv.to; mix = null;
-        v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); show(v, overlay(v, v.beat, v.cam));
+        v.ovOld.innerHTML = ""; v.ov.style.cssText = ""; v.ovOld.style.cssText = ""; v.deco.innerHTML = decoHTML(v); show(v, overlay(v, v.beat, v.cam), true);
         if (homeAgain) v.ov.classList.add("fresh");
       }
     }
     if (v.pending && !v.move && !helpOpen && now() >= replyAt[v.beat]) { // the reply lands (held while Help is open): the words fade in
-      v.pending = false; v.shownAt = now(); show(v, overlay(v, v.beat, v.cam)); v.ov.classList.add("fresh");
+      v.pending = false; v.shownAt = now(); show(v, overlay(v, v.beat, v.cam), true); v.ov.classList.add("fresh");
     }
     const t = now(), busy = v.move || palFx || seasonFx || ct(v.beat) < 2.5 || v.pending || t - (v.shownAt || -9) < 2 || t - (v.arrived ?? -9) < 1.8;
     const key = `${cam.x},${cam.y}|${mix ? Math.floor(mix.p * 8) : ""}|${m === "full" ? Math.floor(T * 8) : 0}|${Math.floor(Tg)}|${busy ? Math.floor(nowMs / 60) : ""}`;
@@ -2609,7 +2854,7 @@ function go(to) {
 }
 function navTo(beat, jump = false) {
   const B = beats(), from = st.beat;
-  if (beat === "home" && from !== "home") rollDetails(); // home has come round: pick again
+  if (beat === "home" && from !== "home" && from !== "boathouse") rollDetails(); // home has come round: pick again (not on the way back from the boathouse)
   if (beat !== "home") rowing = false;
   if (jump) { helpOpen = false; replyAt[beat] = 0; }
   const fwd = B.indexOf(beat) >= B.indexOf(from) || rowing, s0 = SEA(), r0 = rowName();
@@ -2623,7 +2868,7 @@ function navTo(beat, jump = false) {
     if (k || beat === "probes" || beat === "recap") st.begun = true;
     if (k) { st.done = k - 1; st.walked = false; }
     if (beat === "recap") { st.done = STEPS; st.walked = true; }
-    st.reach = B.indexOf(beat === "recap" ? "end" : beat);
+    st.reach = B.indexOf(beat === "recap" ? "end" : beat === "boathouse" ? "home" : beat);
   } else st.reach = Math.max(st.reach, B.indexOf(beat));
   save();
   for (const v of views) setScreen(v, beat, !jump, dir);
@@ -2740,14 +2985,16 @@ function drawMapCams() {
 // ================= #221: the variant bar: ‹ › and the arrow keys switch the variant, the screen stays =================
 let barOpen = new URLSearchParams(location.search).get("bar") !== "0", moreOpen = false;
 const barRoom = () => barOpen && isReal() ? 52 : 0; // css px kept clear at the bottom (the composer sits above the bar)
-const JUMPS = [["home", "Home"], ["problem", "Problem"], ["probes", "Breakdown"], ["p1", "Step 1"], ["p1write", "Step 1 writing"], ["walk", "Walk"], ["p2", "Step 2"]];
+const JUMPS = [["home", "Home"], ["boathouse", "Boathouse"], ["problem", "Problem"], ["probes", "Breakdown"], ["p1", "Step 1"], ["p1write", "Step 1 writing"], ["walk", "Walk"], ["p2", "Step 2"], ["p3", "Step 3"], ["end", "Path's end"], ["finish", "Finish"], ["recap", "Recap"]];
 let screenId = "home";
 function jumpTo(id) {
   if (moving()) for (const v of views) { v.move = null; v.ov.style.cssText = ""; v.ovOld.innerHTML = ""; }
   rowing = false; bloomPending = false; screenId = id;
   if (id === "p1write") { navTo("p1", true); const ta = document.querySelector('textarea[data-key="p1"]'); if (ta) { ta.value = sampleFor("p1"); st.typed.p1 = ta.value; grow(ta); ta.focus({ preventScroll: true }); } }
   else if (id === "walk") { navTo("p1", true); st.typed.p1 = sampleFor("p1"); go("submit"); }
-  else { if (id === "p2") st.sent.p1 = st.sent.p1 || sampleFor("p1"); navTo(id, true); }
+  else if (id === "finish") { for (let i = 1; i <= STEPS; i++) st.sent["p" + i] = st.sent["p" + i] || sampleFor("p" + i); navTo("probes", true); st.walked = true; st.done = STEPS; st.reach = beats().indexOf("end"); for (const v of views) setScreen(v, "probes", false); renderPanel(); } // the questions after a walked Path: Finish Inquiry
+  else if (id === "end" || id === "recap") { for (let i = 1; i <= STEPS; i++) st.sent["p" + i] = st.sent["p" + i] || sampleFor("p" + i); navTo(id, true); if (id === "end") { st.done = STEPS; for (const v of views) setScreen(v, "end", false); } }
+  else { if (id === "p2" || id === "p3") st.sent.p1 = st.sent.p1 || sampleFor("p1"); if (id === "p3") st.sent.p2 = st.sent.p2 || sampleFor("p2"); navTo(id, true); }
   renderBar(); syncURL();
 }
 function syncURL() { const u = new URL(location.href); u.searchParams.set("variant", VARIANT); u.searchParams.set("screen", screenId); history.replaceState(null, "", u); }
@@ -2772,8 +3019,9 @@ function renderBar() {
 function bounds(px) { let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9; for (const p of px) { if (p[1] > 0) continue; x0 = Math.min(x0, p[0]); x1 = Math.max(x1, p[0]); y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); } return { w: x1 - x0 + 1, h: y1 - y0 + 1 }; }
 function readout() { // per variant, measured from what is drawn
   const g = world(), v = views[0], h = walkerH(), wb = bounds(walkerPx(h, 0, 1)), bb = bounds(boatPx(-1, false)), iw = 2 * HW + 1, edge = Math.round(HW * .82);
-  const s1 = seatFor(1), s2 = seatFor(2), dist = Math.abs(s2.x - s1.x), secs = clamp(dist / (90 * ZS), .9, 3.6), br = slotX(1) - edge - (slotX(0) + edge);
-  let out = `variant   ${VARIANT}: ${VARIANTS[VARIANT].label}\nwalker    ${wb.h} art px tall (${wb.w} wide)${v ? `, ${(wb.h * v.sc.k / v.d.dpr).toFixed(0)} css px` : ""}\nboat      ${bb.w} × ${bb.h} art px\nislet     ${iw} art px wide, ${Math.round(iw / 320 * 100)}% of 320${v ? `, ${Math.round(iw / v.sc.vw * 100)}% of the ${v.sc.vw} px view` : ""}\nworld     ${g.W} × ${g.H} art px\nbridge    step 1 → 2: rope walk ${br} art px; seat to seat ${dist} art px, ${secs.toFixed(2)} s`;
+  const s1 = seatFor(1), s2 = seatFor(2), s3 = seatFor(3), dist = Math.abs(s2.x - s1.x), secs = clamp(dist / (90 * ZS), .9, 3.6), br = slotX(1) - edge - (slotX(0) + edge), d3 = Math.abs(s3.x - s2.x), br3 = slotX(2) - edge - (slotX(1) + edge);
+  const bw = COVE() ? Math.abs(spot("home").x - spot("boathouse").x) : 0;
+  let out = `variant   ${VARIANT}: ${VARIANTS[VARIANT].label}\nwalker    ${wb.h} art px tall (${wb.w} wide)${v ? `, ${(wb.h * v.sc.k / v.d.dpr).toFixed(0)} css px` : ""}\nboat      ${bb.w} × ${bb.h} art px\nislet     ${iw} art px wide, ${Math.round(iw / 320 * 100)}% of 320${v ? `, ${Math.round(iw / v.sc.vw * 100)}% of the ${v.sc.vw} px view` : ""}\nworld     ${g.W} × ${g.H} art px\nbridge    step 1 → 2: rope walk ${br} art px; seat to seat ${dist} art px, ${secs.toFixed(2)} s\nbridge    step 2 → 3: stone arches ${br3} art px; seat to seat ${d3} art px, ${clamp(d3 / (90 * ZS), .9, 3.6).toFixed(2)} s${COVE() ? `\nboathouse beach to door ${bw} art px, ${clamp(bw / (90 * ZS), .9, 3.6).toFixed(2)} s` : ""}`;
   if (v && v.cam) { const sp = spot(st.beat), cam = v.cam;
     if (sp) { const head = headY(sp) - cam.y, feet = (sp.kind === "stand" ? Math.round(walkAt(sp.x)) : sp.y) - cam.y, pane = rectsArt(v, ".ov .above [data-g]"), comp = rectsArt(v, ".ov .composer");
       const pb = pane.length ? Math.max(...pane.map((r) => r.y1)) : null, ct_ = comp.length ? Math.min(...comp.map((r) => r.y0)) : null;
