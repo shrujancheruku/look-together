@@ -91,7 +91,7 @@ One of the small themed islands a Path crosses, one per step, each joined to the
 _Avoid_: Level, stage, checkpoint
 
 **Walker**:
-The small figure that stands for the person on the Shoreline, set up by them in Settings. It walks one islet per Reflection and rows the boat; it never speaks, gestures or leads.
+The small figure that stands for the person on the Shoreline, set up by them on the Make yourself at home step or in Settings. It walks one islet per Reflection and rows the boat; it never speaks, gestures or leads.
 _Avoid_: Avatar, character, guide, companion
 
 **Lily**:
@@ -115,8 +115,20 @@ A short one-off animation the world plays when an Inquiry's state changes or the
 _Avoid_: Reward, effect, celebration, feedback
 
 **Still water**:
-The setting, and the matching colours, in which the world stops moving altogether. Help uses the same still colours.
+The setting, and the matching colours, in which the world stops moving altogether and goes quiet. Help uses the same still colours.
 _Avoid_: Pause, low-power mode
+
+**Soundscape**:
+The looping sound of the place the camera is on: water, wind and birds, never a melody. It goes quiet wherever the world stops moving, and whenever the person dictates or listens to a reply.
+_Avoid_: Music, soundtrack, ambience track
+
+**Cue sound**:
+The short sound a cue makes, always the noise of the thing itself (footsteps, oars, water). Not every cue has one, and nothing the person taps makes one.
+_Avoid_: SFX, sound effect, chime, audio feedback
+
+**Make yourself at home**:
+The step after the welcome where the person may choose their season, whether the world has sound, and their walker. Nothing on it has to be chosen.
+_Avoid_: Personalise, onboarding, preferences, customise
 
 **Leaf note**:
 A note from the guide on the person's first Inquiry, set beside the thing it explains while everything else dims.
