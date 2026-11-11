@@ -313,8 +313,14 @@ function rowT([L, C, h], row) {
   return [L, C, h];
 }
 const pack = ([r, g, b]) => (255 << 24 | b << 16 | g << 8 | r) >>> 0;
+// round 3, Autumn water "Lighter": the lake a dusk blue-violet, not near-black; still darker than the sky's low band, still evening. The reflection twin lifts with it
+const AUTUMN_LIGHTER = { water: { L: [.30, .48], C: [.05, .06], H: [272, 290], fixed: 1 }, refl: { L: .36, mix: .35, dark: .04 } };
+function seasonSpec(season) {
+  const sea = SEASONS[season]; if (season !== "autumn" || st.awater !== "lighter") return sea;
+  return { ...sea, ramps: { ...sea.ramps, water: AUTUMN_LIGHTER.water }, refl: AUTUMN_LIGHTER.refl };
+}
 function makeLUT(season, row) {
-  const sea = SEASONS[season], LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
+  const sea = seasonSpec(season), LUT = new Uint32Array(RAMPS.length * 32).fill(0xffff00ff);
   RAMPS.forEach((name, r) => (EXPLICIT[name] ? EXPLICIT[name].map(([L, C, h]) => season === "autumn" ? [L * .82, C * .9, h] : [L, C, h]) : rampLch(sea.ramps[name], N[r])).forEach((c, s) => { // the evening dims the walker with everything else
     LUT[code(r, s)] = pack(oklch(...rowT(c, row)));
     LUT[code(r, s) + 16] = pack(oklch(...rowT([c[0] * (1 - sea.refl.mix) + sea.refl.L * sea.refl.mix - sea.refl.dark, c[1] * .75, c[2]], row)));
@@ -1091,7 +1097,7 @@ function buildShore(season, seed, path) { // the world key below includes st.bd
   signpost(g, 360, WY - 3); item(g, "sign", 360, WY - 14, 12, 12, "About");
   boathouse(g, 470, WY - 2);
   item(g, "boat", MOOR.x, MOOR.y - 9, 38, 16, "Begin today's Inquiry");
-  item(g, "landboat", LAND_X + 40, WY + 49, 38, 16, "Row home");
+  item(g, "landboat", LAND_X + 40, LANDBOAT.y - 9, 38, 16, "Row home"); // round 3: placed from the view, see placeLandBoat
   item(g, "house", 470, WY - 12, 22, 14, "Settings");
   item(g, "lily", 772, WY + 82, 30, 20, "Today's Recap");
   item(g, "old0", 716, WY + 150, 20, 13, "An older Recap"); item(g, "old1", 664, WY + 202, 15, 10, "An older Recap");
@@ -1265,8 +1271,8 @@ const isWel = (b) => WEL.includes(b);
 // ================= state =================
 const narrow = () => matchMedia("(max-width: 820px)").matches;
 const st = { beat: "w1", device: "p8", season: matchMedia("(prefers-color-scheme: dark)").matches ? "autumn" : "spring", reduce: matchMedia("(prefers-reduced-motion: reduce)").matches, still: false, reading: "auto",
-  seed: 1, path: 1, size: "M", latency: 3, finishPan: 2.4, cues: "big", figure: "woman", coat: "rose", skin: 2, bd: "B", reach: 0, done: 0, begun: false, walked: false, finished: false,
-  picks: [], only: "", count: "1-2", typed: {}, sent: {}, waterline: "one", dragonfly: "far", focus: "dim", sky: "low", evening: "moon" };
+  seed: 1, path: 1, size: "M", latency: 3, finishPan: 5, cues: "big", figure: "woman", coat: "rose", skin: 2, bd: "B", reach: 0, done: 0, begun: false, walked: false, finished: false,
+  picks: [], only: "", count: "1-2", typed: {}, sent: {}, waterline: "one", dragonfly: "far", focus: "dim", sky: "low", evening: "moon", awater: "lighter" };
 try { Object.assign(st, JSON.parse(localStorage.getItem("journey") || "{}")); } catch {}
 for (const [k, val] of new URLSearchParams(location.search)) if (k in st && typeof st[k] !== "object") st[k] = typeof st[k] === "number" ? +val : typeof st[k] === "boolean" ? val === "1" : val; // e.g. ?device=real&beat=p2
 st.bd = "B"; if (!st.typed || typeof st.typed !== "object") st.typed = {}; if (!st.sent || typeof st.sent !== "object") st.sent = {};
@@ -1521,6 +1527,8 @@ function homeLily(out, v) { // a new person: no lily at home until today's Recap
 // ---- round 2: the wait. The koi comes as the wait starts and glides a slow arc in open water; the dragonfly comes ~2.5 s in, if the reply is still out ----
 const mir = (px) => px.map((p) => [-p[0], p[1], p[2], p[3]]);
 const waitAt = {}; // beat → when its wait started (Begin or Submit)
+const DF_AFTER = 5; // round 3: the dragonfly comes only when the reply is still out this long after the walker has sat down
+let dfWait = null; // round 3: the one wait on this Path that has had its dragonfly ("beat|w0"); no other wait on the Path gets one
 function koiPx(big) {
   const rx = big ? 14 : 6, ry = big ? 3.4 : 1.2, px = [];
   for (let dx = -rx; dx <= rx; dx++) for (let dy = -Math.ceil(ry); dy <= Math.ceil(ry); dy++) if ((dx / rx) ** 2 + (dy / ry) ** 2 <= 1) {
@@ -1541,8 +1549,8 @@ function dragonflyPx(big, wing) {
   return px;
 }
 function koiSpot(v, beat, cam) { // a place in open water, well out: not under the walker, the pier, the boat or today's lily, and never under a pane
-  const rest = spot(beat); if (!rest) return null;
-  const { vw, vh } = v.sc, cx = cam.x + vw / 2, g = world(), hy = Math.round(headY(rest)) - 4;
+  const rest0 = spot(beat); if (!rest0) return null;
+  const { vw, vh } = v.sc, cx = cam.x + vw / 2, rest = { ...rest0, x: wrapNear(rest0.x, cx) }, shift = rest0.x - rest.x; // round 3: the walker's x taken round the loop to the camera's (the Path's end was missed) g = world(), hy = Math.round(headY(rest)) - 4;
   const open = (sd) => { let n = 0; for (let dx = 36; dx <= 64; dx += 4) for (let dy = -6; dy <= 4; dy += 2) { const i = (hy + dy) * g.W + mod(Math.round(rest.x + sd * dx)), c = g.land[i]; if (c === TR || (c >> 5) === R.sky || (c >> 5) === R.cloud || (c >> 5) === R.far || (c >> 5) === R.mist) n++; } return n; };
   const toward = Math.sign(cx - rest.x) || 1, dfSide = open(-toward) > open(toward) + 6 ? -toward : toward; // the dragonfly hovers on the open side, against sky or far ridges, not over a house
   const panes = rectsArt(v, ".layer.ov:not(.old) [data-g]").map((r) => ({ x0: cam.x + r.x0 - 8, x1: cam.x + r.x1 + 8, y0: cam.y + r.y0 - 8, y1: cam.y + r.y1 + 8 }));
@@ -1553,7 +1561,7 @@ function koiSpot(v, beat, cam) { // a place in open water, well out: not under t
     const x = rest.x + side * dx, y = WY + dy, a = { x0: x - 40, x1: x + 40, y0: y - 9, y1: y + 9 };
     if (x - 40 < cam.x + 8 || x + 40 > cam.x + vw - 8 || y + 10 > cam.y + vh - 4 || hit(a)) continue;
     if (side === dfSide && Math.abs(dx) < 110) continue; // the dragonfly's side: only well apart from it
-    return { x, y, dfSide };
+    return { x: x + shift, y, dfSide };
   }
   return { x: null, dfSide };
 }
@@ -1571,8 +1579,10 @@ function waitCues(v, out) { // returns the dragonfly's side while it is near the
       px = px.filter((p) => p.length < 4); } // sinking: the blush goes first
     if (fade > 0) out.push({ x, y, px: face < 0 ? mir(px) : px, bob: false, fade });
   }
-  // the dragonfly: comes ~2.5 s in, only if the reply is still out; eases in from the side, hovers, leaves unhurried
-  const d0 = w0 + 2.5; if (L <= d0 || t < d0 || t > L + 1.8) return 0;
+  // the dragonfly: only on a long wait on the Path (never the Breakdown's), 5 s after the walker sat down with the reply still out, once per Path; eases in, hovers, leaves unhurried
+  if (beat === "probes" || v.move || v.arrived == null) return 0;
+  const key = beat + "|" + w0, d0 = Math.max(w0, v.arrived) + DF_AFTER; if (L <= d0 || t < d0 || t > L + 1.8 || (dfWait && dfWait !== key)) return 0;
+  dfWait = key;
   const side = K.dfSide, hand = st.dragonfly === "hand" && rest.kind === "sit", f8 = Math.floor(t * 8), headY_ = Math.round(headY(rest));
   const H = hand ? { x: rest.x, y: rest.y - 4 } : { x: rest.x + side * 50, y: headY_ - (big ? 6 : 2) };
   const inP = smooth((t - d0) / 1.6), outP = t > L ? smooth((t - L) / 1.8) : 0, landed = hand && inP >= 1 && !outP;
@@ -1764,11 +1774,14 @@ const sideNav = (c, beat) => { const y = Math.round(c.H / 2), f = fwdOf(beat);
     + (f && !c.pend && beats().indexOf(f) <= st.reach ? `<button type="button" class="g side" data-g data-go="fwd" aria-label="Forward" style="right:4px;top:${y}px">›</button>` : ""); };
 const helpBtn = () => Bt("ctl", "Help", "help", `aria-expanded="${helpOpen}"`);
 const PROBLEM_MIN = 96; // css px Your Problem needs: its caption and two lines
-function clearGap(c, beat) { // round 2: a pane hanging from the waterline stops above the walker's head (and its seat), never over them
-  const s = spot(beat); if (!s) return 10;
-  const head = s.kind === "sit" ? s.y - walkerH() - 4 : s.kind === "stand" ? walkAt(s.x) - walkerH() - 2 : WY;
-  return Math.max(10, Math.round((WY - head + 6) * c.s));
+const HANG = 58; // css px under the top bar where every screen's main words start
+function headLimit(c, beat) { // round 3: the css y a top-hung pane may reach: just above the walker's head, or the waterline when there's no walker
+  const s = spot(beat); if (!s) return c.wl - 10;
+  const head = s.kind === "sit" ? s.y - walkerH() - 4 : s.kind === "stand" ? walkAt(s.x) - walkerH() - 2 : headY(s) - 5;
+  return Math.min(beat === "recap" ? 1e9 : c.wl - 10, Math.round(c.y(head) - 8)); // the Recap runs on over the water, down to just above the boat
 }
+// round 3: every screen's main words hang from just under the top bar and grow downward; a long pane scrolls rather than reach the walker
+const hang = (c, inner, beat, cls = "") => `<div class="above scroll ${cls}" style="top:${c.top + HANG}px;bottom:${Math.round(c.H - Math.max(c.top + HANG + 60, headLimit(c, beat)))}px">${inner}</div>`;
 const above = (c, inner, cls = "", gap = 10) => `<div class="above ${cls}" style="top:${c.top + 58}px;bottom:${c.H - c.wl + gap}px">${inner}</div>`;
 const below = (c, inner, bottom, gap = 10) => `<div class="col" style="top:${c.wl + gap}px;bottom:${(bottom ?? c.bot) + 10}px">${inner}</div>`;
 const bottomBar = (c, inner) => `<div class="bbar" style="bottom:${c.bot + 12}px">${inner}</div>`;
@@ -1795,7 +1808,7 @@ function welcomeFrame(c, beat) { // from prototypes/shoreline-guide
 function homeFrame(c) { // the boat is the way in; once today's Inquiry is used, the lily shows its Recap's title and the boat waits for tomorrow
   const used = st.finished;
   let h = hits(c, (used ? [] : [["boat", "problem"]]).concat([["house", "noop"], ["sign", "noop"]], used && !bloomPending ? [["lily", "noop"]] : [])) + topbar(c, Gp("", P_("wm", "Look Together")))
-    + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 6)}px">${used ? Gp("dimg", P_("ctl", "Next at 15:40"), 'tabindex="0"') : Bt("", P_("ctl", "Begin today's Inquiry"), "problem")}</div>`;
+    + `<div class="tag" style="left:${c.x(MOOR.x)}px;top:${c.y(MOOR.y + 12)}px">${used ? Gp("dimg", P_("ctl", "Next at 15:40"), 'tabindex="0"') : Bt("", P_("ctl", "Begin today's Inquiry"), "problem")}</div>`;
   if (used && !bloomPending) h += `<div class="tag" style="left:${c.x(HOME_LILY.x)}px;top:${c.y(HOME_LILY.y + 20)}px">${Bt("lbl", P_("lt", esc(COPY.recap.title)), "noop")}</div>`;
   return h;
 }
@@ -1803,7 +1816,7 @@ const helpSheet = () => `<div class="scrim" data-go="noop"></div><div class="she
   + `${P_("per dim", "Here we list crisis contacts for your country, so you can reach a person right now. This prototype leaves them out.")}<button type="button" class="cbtn walk hb" data-go="helpclose">Back to my Inquiry</button></div>`;
 function inquiryFrame(c, beat) {
   const top = topbar(c, "", helpBtn()), k = slotK(beat), problem = Gp("", P_("cap", "Your Problem") + P_("per", sentText("problem")));
-  if (beat === "problem") return top + sideNav(c, beat) + above(c, Gp("", P_("q", "What are you facing?") + P_("rd dim", "Write it as it comes. It isn't here to be fixed, just looked at.")), "", clearGap(c, beat)) // round 2: hangs from the waterline, like the questions
+  if (beat === "problem") return top + sideNav(c, beat) + hang(c, Gp("", P_("q", "What are you facing?") + P_("rd dim", "Write it as it comes. It isn't here to be fixed, just looked at.")), beat)
     + composer(c, "problem", "Begin", "Write it, or tap the mic");
   if (beat === "probes") {
     if (c.pend) return top + `<span class="sr" role="status">Waiting for a reply</span>`; // round 2: the Breakdown is out: an empty screen, only Help
@@ -1812,20 +1825,20 @@ function inquiryFrame(c, beat) {
     const qs = COPY.probes.map((q, i) => Bt("row", `<span class="rt">${P_("rd", q)}${i === 0 && st.walked ? P_("ctl dim", "Walked") : ""}</span>`, i === 0 && !st.walked ? "p1" : "noop")).join("");
     const lower = (fin ? (room >= 52 ? fin : "") : "") + (room >= (fin ? 52 : 0) + PROBLEM_MIN ? problem : "");
     c.dropped = room < (fin ? 52 : 0) + PROBLEM_MIN;
-    return top + above(c, qs + (fin && room < 52 ? fin : ""), "", clearGap(c, beat)) + (lower ? `<div class="col" style="top:${lilyBot}px;bottom:${c.bot + 10}px">${lower}</div>` : "");
+    return top + hang(c, qs + (fin && room < 52 ? fin : ""), beat) + (lower ? `<div class="col" style="top:${lilyBot}px;bottom:${c.bot + 10}px">${lower}</div>` : "");
   }
   if (beat === "recap") { const R_ = COPY.recap, kc = R_.card; // the Recap fills the sky; the walker waits in the boat below it, and the boat is the way home
     return top + hits(c, [["landboat", "row"]]) + `<div class="tag" style="left:${c.x(LANDBOAT.x)}px;top:${c.y(LANDBOAT.y + 6)}px">${Bt("", P_("ctl", "Row home"), "row")}</div>`
-      + above(c, Gp("", P_("cap", "Recap") + P_("q", R_.title)) + problem + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
+      + hang(c, Gp("", P_("cap", "Recap") + P_("q", R_.title)) + problem + Gp("card", P_("cap", "Open Questions") + P_("rd", COPY.oq))
       + Bt("card", P_("ctl it", kc.probe) + P_("rd", kc.a) + `<div class="cwl"></div>` + P_("per", kc.quote) + P_("ctl more", "›"), "noop")
       + Gp("", P_("cap", "Not looked at yet") + COPY.probes.slice(1).map((q) => P_("rd", q)).join(""))
       + Gp("", P_("rd", "Was this worth your time?") + `<div class="row2 yn"><button type="button" class="cbtn walk" data-go="noop">Yes</button><button type="button" class="cbtn walk" data-go="noop">No</button><span style="flex:1"></span></div>`)
-      + Bt("row", P_("rd", "Share"), "noop"), "scroll", 36);
+      + Bt("row", P_("rd", "Share"), "noop"), beat);
   }
   if (c.pend) return top + sideNav(c, beat) + reflected(c, "p" + (k - 1)); // waiting on the reply: only what was just said, where it was said
-  if (beat === "end") return top + above(c, Gp("", P_("q", "That's where this Path ends.")), "skytop")
+  if (beat === "end") return top + hang(c, Gp("", P_("q", "That's where this Path ends.")), beat)
     + below(c, Gp("card", P_("cap", "An Open Question") + P_("rd", COPY.oq) + P_("ctl dim", "To keep with you, not to answer now.")) + Bt("row", P_("rd", "Back to the questions ›"), "toprobes"));
-  const s = COPY.steps[k - 1], q = above(c, Gp("", P_("q", s.q)), "", clearGap(c, beat)); // round 2: the question hangs just above the waterline, clear of the seated walker
+  const s = COPY.steps[k - 1], q = hang(c, Gp("", P_("q", s.q)), beat); // round 3: the question hangs from the top, and scrolls before it would reach the walker
   if (k <= st.done) return top + sideNav(c, beat) + q + reflected(c, "p" + k); // already answered: the Reflection as sent, no Submit
   return top + sideNav(c, beat) + q + composer(c, "p" + k, "Submit", "Reflect, or tap the mic");
 }
@@ -1913,7 +1926,7 @@ function notch(pix, vw, r, src) {
 const READING = (b) => st.reading === "auto" && INQ(b); // reading mode: the Problem, the Probes, the Path, its end and the Recap
 let T = 0, Tg = 0; // the world clock in real seconds (half speed in reading mode, stopped by Reduce Motion, Still water and Help); Tg: the glints' cycle, which Reduce Motion slows but keeps
 const lutCache = new Map();
-function lutFor(season, row) { const k = season + "|" + row; if (!lutCache.has(k)) lutCache.set(k, makeLUT(season, row)); return lutCache.get(k); }
+function lutFor(season, row) { const k = season + "|" + row + "|" + st.awater; if (!lutCache.has(k)) lutCache.set(k, makeLUT(season, row)); return lutCache.get(k); }
 function lutNow(row, season = SEA()) {
   const Lb = lutFor(season, row), out = Lb.slice(), b = code(R.glint, 0), tc = Math.floor(Tg);
   for (let s = 0; s < 4; s++) out[b + s] = Lb[b + (s + tc) % 4];
@@ -1921,16 +1934,15 @@ function lutNow(row, season = SEA()) {
 }
 let palFx = null; // a palette dissolve between rows: { from, t0 }, 8 ordered-dither steps over 0.7 s
 let paintCount = 0, paintFps = 0;
-// ---- round 2, Sky light Low: one body low in the sky, drawn in view space (it is far away: it doesn't move as the camera pans), with its reflection ----
+// ---- round 2, Sky light Low: one body low in the sky, drawn in view space (it is far away: it doesn't move as the camera pans) ----
 function skyBody(season) { // up: art px above the waterline. 300 puts it in the band of sky that no pane covers on a phone (below the top bar, above the four questions)
   if (st.sky !== "low") return null;
-  if (season === "spring") return { kind: "sun", r: 6, up: 300, glow: 46, gs: 3, lift: 1, wide: 1.4, dens: .45 }; // a pale morning sun; its column faint
-  return st.evening === "sun" ? { kind: "setting", r: 9, up: 92, glow: 70, gs: 5, lift: 6, wide: 2.6, dens: 1 } // a setting sun, low on the ridges: seen on home and the welcome, behind the panes on the Inquiry's screens
-    : { kind: "moon", r: 5, up: 300, glow: 30, gs: 3, lift: 6, wide: 2.6, dens: .8 }; // a low moon
+  if (season === "spring") return { kind: "sun", r: 6, up: 300, glow: 46, gs: 3 }; // a pale morning sun
+  return st.evening === "sun" ? { kind: "setting", r: 9, up: 92, glow: 70, gs: 5 } // a setting sun, low on the ridges: seen on home and the welcome, behind the panes on the Inquiry's screens
+    : { kind: "moon", r: 5, up: 300, glow: 30, gs: 3 }; // a low moon
 }
 const BODY_X = .75; // a quarter in from the right: clear of the main words pane and the walker's column
-let skyPanes = []; // the panes below the waterline: words first, the streaks pass behind them unlit (the lift stays)
-function skyLight(buf, wet, vw, vh, wl, season, T, motion) {
+function skyLight(buf, vw, vh, wl, season) { // round 3: the body and its glow only; the water has no reflection of it
   const B = skyBody(season); if (!B) return;
   const bx = Math.round(vw * BODY_X), by = Math.round(Math.max(B.r + 70, wl - B.up)), S0 = code(R.sky, 0), nS = N[R.sky], isSky = (c) => c >= S0 && c < S0 + 16;
   for (let y = Math.max(0, by - B.glow); y < Math.min(vh, wl, by + B.glow); y++) for (let x = Math.max(0, bx - B.glow); x < Math.min(vw, bx + B.glow); x++) { // the glow: sky steps lifted by ordered dither, only on sky
@@ -1945,31 +1957,13 @@ function skyLight(buf, wet, vw, vh, wl, season, T, motion) {
     const e = Math.hypot(x, y) / B.r;
     buf[i] = B.kind === "moon" ? code(R.light, (x + y) / B.r > .7 || hash2(x + 99 >> 1, y + 99 >> 1, 7) > .8 ? 1 : 2) : code(R.light, e > .82 ? 1 : 2);
   }
-  // the reflection: a column of broken horizontal streaks under the body, wider and sparser further down, rippling at the water's 8 fps (frozen with the water)
-  const tw = motion === "full" ? Math.floor(T * 8) : 0, H = vh - wl, nW = N[R.water];
-  for (let y = Math.max(0, wl); y < vh; y++) {
-    const d = y - wl, f = d / Math.max(1, H), half = 8 + d * .55, dx = motion === "full" ? Math.round(Math.sin(y * .66 + tw * RIPPLE) * (.6 + Math.min(1.6, d / 20))) : 0;
-    for (let x = Math.max(0, Math.floor(bx - half * B.wide)); x < Math.min(vw, Math.ceil(bx + half * B.wide)); x++) { // the lift: the water's own steps raised around the column
-      const i = y * vw + x; if (!wet[i]) continue;
-      const u = Math.abs(x - bx) / (half * B.wide), a = (1 - u) ** 1.5 * B.lift * (1 - f * .45); if (a <= 0) continue;
-      const n = Math.floor(a) + (bay(x, y) < a % 1 ? 1 : 0); if (!n) continue;
-      const c = buf[i], r = c >> 5, st_ = c & 15; if (r === R.light || r === R.glint) continue;
-      buf[i] = (c & ~15) | Math.min((r === R.water ? nW : N[r]) - 1, st_ + n);
-    }
-    if (d < 2 || hash2(y, 3, 41) > B.dens * (.75 - f * .35)) continue; // the streaks: some rows lit, fewer further down
-    const hw = Math.round((1.5 + d * .16) * (.6 + hash2(y, 5, 43) * .8)), x0 = bx + dx + Math.round((hash2(y, 7, 47) - .5) * d * .12);
-    for (let x = x0 - hw; x <= x0 + hw; x++) {
-      if (x < 0 || x >= vw || !wet[y * vw + x] || hash2(x + dx >> 1, y, 53) < .2 + f * .3 || skyPanes.some((r) => x >= r.x0 - 1 && x < r.x1 + 1 && y >= r.y0 - 1 && y < r.y1 + 1)) continue; // broken
-      buf[y * vw + x] = code(R.light, Math.abs(x - x0) < hw * .4 && d < H * .5 && B.kind !== "sun" ? 2 : 1);
-    }
-  }
 }
 function renderTo(v, g, sea, cam, mix, out, masks) { // a composed frame for one season, through its LUT, into out
   const { vw, vh } = v.sc, dyn = scene(v), m = motion(), buf = masks.buf, M = masks;
-  compose(g, cam.x, cam.y, vw, vh, T, m, buf, dyn, M); skyLight(buf, M.wet, vw, vh, WY - cam.y, sea, T, m);
+  compose(g, cam.x, cam.y, vw, vh, T, m, buf, dyn, M); skyLight(buf, vw, vh, WY - cam.y, sea);
   if (mix) {
     const M2 = masks.m2 || (masks.m2 = { buf: new Uint16Array(vw * vh), lit: new Uint8Array(vw * vh), wet: new Uint8Array(vw * vh) });
-    compose(g, mix.cam2.x, mix.cam2.y, vw, vh, T, "reduce", M2.buf, dyn, M2); skyLight(M2.buf, M2.wet, vw, vh, WY - mix.cam2.y, sea, T, "reduce");
+    compose(g, mix.cam2.x, mix.cam2.y, vw, vh, T, "reduce", M2.buf, dyn, M2); skyLight(M2.buf, vw, vh, WY - mix.cam2.y, sea);
     const p = Math.floor(mix.p * 8) / 8;
     for (let y = 0; y < vh; y++) for (let x = 0, i = y * vw; x < vw; x++, i++) if (bay(x, y) < p) { buf[i] = M2.buf[i]; M.lit[i] = M2.lit[i]; }
   }
@@ -1980,7 +1974,6 @@ function renderTo(v, g, sea, cam, mix, out, masks) { // a composed frame for one
 }
 function paint(v, cam, mix) {
   const frostSel = v.ov.style.visibility === "hidden" ? ".ov.old [data-g]" : ".ov [data-g]", panes = rectsArt(v, frostSel);
-  skyPanes = panes.filter((r) => r.y1 > WY - cam.y);
   const { vw, vh } = v.sc, sea = SEA(), pix = v.pix, mk = () => ({ buf: new Uint16Array(vw * vh), lit: new Uint8Array(vw * vh), wet: new Uint8Array(vw * vh) });
   renderTo(v, world(), sea, cam, mix, pix, v.mA || (v.mA = mk()));
   let shown = sea;
@@ -2010,7 +2003,14 @@ function layout() {
   for (const v of views) setScreen(v, st.beat, false);
   renderPanel(); onVV(); prebuild();
 }
+const ROW_LABEL = 34; // css px: the "Row home" label under the landing boat
+function placeLandBoat(v) { // round 3: the Recap's boat sits at the very bottom of the view on any phone, its label clear of the safe area
+  const sc = v.sc, s = sc.k / v.d.dpr, cam = cameraFor(world(), "recap", v.d, sc);
+  LANDBOAT.y = cam.y + sc.vh - Math.ceil((v.d.bottom + 10 + ROW_LABEL) / s) - 6;
+  for (const g of worlds.values()) if (g.items.landboat) g.items.landboat.y = LANDBOAT.y - 9;
+}
 function setScreen(v, beat, animate, dir = "") {
+  placeLandBoat(v);
   const g = world(), raw = cameraFor(g, beat, v.d, v.sc), from = v.cam, prevHTML = v.html, prevBeat = v.beat;
   const to = from ? { x: wrapNear(raw.x, from.x), y: raw.y } : raw; // the shorter way round the loop
   const finishing = !!from && animate && beat === "recap" && prevBeat === "probes";
@@ -2090,7 +2090,7 @@ function go(to) {
   if (to === "submit") {
     const key = b === "problem" ? "problem" : "p" + k, typed = (st.typed[key] || "").trim();
     st.sent[key] = typed || sampleFor(key); // Submit works with an empty box: it sends the sample
-    if (b === "problem") { st.begun = true; replyAt.probes = now() + st.latency; waitAt.probes = now(); return navTo("probes"); } // Begin: the Breakdown waits on the model
+    if (b === "problem") { st.begun = true; dfWait = null; replyAt.probes = now() + st.latency; waitAt.probes = now(); return navTo("probes"); } // Begin: the Breakdown waits on the model
     st.done = Math.max(st.done, k);
     const nx = k < STEPS ? "p" + (k + 1) : "end";
     replyAt[nx] = now() + st.latency; waitAt[nx] = now(); return navTo(nx); // the walk is the wait
@@ -2125,7 +2125,7 @@ function navTo(beat, jump = false) {
 function startOver() {
   Object.assign(st, { beat: "w1", reach: 0, done: 0, begun: false, walked: false, finished: false, typed: {}, sent: {} });
   for (const k in replyAt) delete replyAt[k]; for (const k in cueAt) delete cueAt[k];
-  rowing = false; bloomPending = false; helpOpen = false; palFx = null; springHold = false; seasonFx = null;
+  rowing = false; bloomPending = false; helpOpen = false; palFx = null; springHold = false; seasonFx = null; dfWait = null;
   rollDetails(); save(); layout();
 }
 function rerender() { for (const v of views) setScreen(v, st.beat, false); renderPanel(); }
@@ -2170,11 +2170,12 @@ function renderPanel() {
   $("flow").replaceChildren(
     rowEl("Jump", beats().map((b) => pchip(SHORT(b), st.beat === b, () => { rowing = false; bloomPending = false; navTo(b, true); }))),
     rowEl("Start over", [pchip("Start over", false, startOver, "the welcome, nothing typed")]),
-    rowEl("Reply takes", [[.8, "0.8 s"], [3, "3 s"], [7, "7 s"]].map(([s, l]) => pchip(l, st.latency === s, () => set("latency", s)))),
-    rowEl("Finish pan", [[2.4, "2.4 s", "today's rule"], [5, "5 s"], [9, "9 s"]].map(([s, l, sub]) => pchip(l, st.finishPan === s, () => set("finishPan", s), sub))));
+    rowEl("Reply takes", [[.8, "0.8 s"], [3, "3 s"], [7, "7 s"], [9, "9 s"]].map(([s, l]) => pchip(l, st.latency === s, () => set("latency", s)))),
+    rowEl("Finish pan", [[2.4, "2.4 s", "today's rule"], [5, "5 s", "round 3"], [9, "9 s"]].map(([s, l, sub]) => pchip(l, st.finishPan === s, () => set("finishPan", s), sub))));
   $("worldUi").replaceChildren(
     rowEl("Season", [["spring", "Spring morning"], ["autumn", "Autumn evening"]].map(([k, l]) => pchip(l, st.season === k, () => setSeason(k)), isWel(st.beat) ? "the welcome plays in spring" : "")),
     rowEl("Sky light", [["low", "Low", "one body, low, in view"], ["now", "As now"]].map(([k, l, sub]) => pchip(l, st.sky === k, () => set("sky", k), sub))),
+    rowEl("Autumn water", [["lighter", "Lighter", "dusk blue-violet"], ["before", "As before"]].map(([k, l, sub]) => pchip(l, st.awater === k, () => set("awater", k), sub))),
     rowEl("Autumn evening", [["moon", "Moon"], ["sun", "Setting sun"]].map(([k, l]) => pchip(l, st.evening === k, () => set("evening", k)))),
     rowEl("Waterline", [["one", "One height", "share " + ONE_SHARE], ["per", "Per screen", ".6 / .44 / .76"]].map(([k, l, sub]) => pchip(l, st.waterline === k, () => set("waterline", k, true), sub))),
     rowEl("Welcome focus", [["dim", "Dim the rest", "Guide row, the lily on Normal"], ["plain", "Plain"]].map(([k, l, sub]) => pchip(l, st.focus === k, () => setRow("focus", k), sub))),
