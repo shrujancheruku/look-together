@@ -44,3 +44,15 @@ Used by `/wayfinder`. The **map** is a single issue with **child** issues as tic
 - **Frontier query**: list the map's open children (`gh issue list --state open`, scoped to the map's sub-issues / task list), drop any with an open blocker (`issue_dependencies_summary.blocked_by > 0`, or an open issue in the `Blocked by` line) or an assignee; first in map order wins.
 - **Claim**: `gh issue edit <n> --add-assignee @me`, the session's first write.
 - **Resolve**: `gh issue comment <n> --body "<answer>"`, then `gh issue close <n>`, then append a context pointer (gist + link) to the map's Decisions-so-far.
+
+<!-- flow:begin orca-milestones -->
+## Orca and milestones
+
+Added by the `flow` plugin. The conventions above stand; this is what `/flow:build` adds. The policy is in `docs/agents/orchestration.md`.
+
+- **Milestone.** A build milestone is a GitHub Milestone. Put a ticket in it with `gh issue edit <n> --milestone "<title>"`; list its tickets with `gh issue list --milestone "<title>" --state all`. Milestones are read and made through `gh api repos/shrujancheruku/look-together/milestones`.
+- **Integration branch and PR.** One branch and one draft PR into main per milestone. The PR body lists `Closes #<n>` for each ticket, so merging it closes them. The founder merges it.
+- **`integrated`.** A ticket merged into the integration branch gets this label and stays open. The frontier counts an `integrated` blocker as satisfied, so a ticket whose blocker is on the integration branch can start. This is the fix for the stale frontier in the **Frontier query** above.
+- **`size:S`, `size:M`, `size:L` and `risk`.** Size picks the worker's model; `risk`, or a ticket that touches a path in `risk_paths` (`docs/agents/flow.json`), raises it. Propose sizes with `estimate.py propose`; the founder approves.
+- **Worktrees.** `orca worktree create --issue <n> --base-branch integration/<slug>` links a worktree to the issue; `orca reference find https://github.com/shrujancheruku/look-together/issues/<n>` finds the workspace or agent already on it. Orca has no GitHub issue commands, so read and write issues with `gh`.
+<!-- flow:end orca-milestones -->
