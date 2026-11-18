@@ -8,7 +8,7 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 
 ## Standing rules
 
-- Never judge an Assumption true or false. When stuck, try another angle, else leave an Open Question ([ADR 0001](adr/0001-never-judge-assumptions.md)).
+- Never judge an Assumption true or false. When stuck, try another angle. A Path ends on an Open Question whenever the question is still alive, stuck or not ([ADR 0001](adr/0001-never-judge-assumptions.md), [Angles and stuck][207]).
 - Never speak as Krishnamurti, imitate him or attribute words to him. His texts stay out of prompts, retrieval and training without the Foundations' permission ([ADR 0002](adr/0002-never-speak-as-krishnamurti.md), [Foundations][3]).
 - Not therapy, and never claims to be. One not-therapy wording list covers app copy, the store listing and model replies ([Distress][10]); a copy test and the evaluation's text checks both read it ([Evaluation in CI][154]).
 - Inquiry content stays on the person's devices and in their own encrypted backups and exports, never on our servers ([ADR 0003](adr/0003-inquiry-content-never-on-our-servers.md), [ADR 0008](adr/0008-inquiries-travel-only-in-the-persons-own-encrypted-backups-and-exports.md)). The one exception is an exchange the person chooses to send with a Report ([ADR 0007](adr/0007-a-report-may-carry-one-exchange-by-choice.md)).
@@ -17,6 +17,8 @@ Words follow [`GLOSSARY.md`](../GLOSSARY.md). Standing rules are also in the ADR
 - Model-agnostic: every model call goes through one abstraction, and the app, not the model, owns the Step-out ([Model choice][11]).
 
 ## Inquiry
+
+The reasons behind these rules, with example turns to aim for and to avoid, are in [`docs/research/questioning-principles.md`](research/questioning-principles.md), the input to the prompts and the evaluation. Where it and this sheet differ, this sheet wins ([Questioning principles][209]).
 
 - **App-owned state machine:** the device holds the Inquiry and its Assumption records. Each model call returns `{reply, distress, events}`, and one pure shared reducer, `step(inquiry, input)`, checks every event before applying it. It returns `{ inquiry, applied, refused }` and never throws on a model's event; each refusal carries its reason and whether it holds the reply back ([Architecture review][88]). It runs on the device for app-only moves ([ADR 0004](adr/0004-inquiry-is-an-app-owned-state-machine.md), [Inquiry driver][33]). For model turns, each `vN` splits the check from the apply: the backend runs `check(context, modelOut)` on the turn context it was sent and returns the applied events only, and the device re-runs them through `step` (which is `check(turnContext(inquiry), …)` then apply) and saves before showing. A property test pins that the two agree; if the device refuses an event the backend applied, the turn is `no_answer` and Sentry gets a report without content ([Turn wire contract][143]).
 - **One turn module on the backend** owns the whole sequence of a turn (classifier, model, reducer, hold-back retry, Step-out precedence, and charging through admission's one-shot run) and returns exactly one of `breakdown | clarify | decline | reply | step_out | no_answer | busy | limited | update_required`. HTTP only maps that result to a response, and the device switches on the same set. The classifier and the model run in parallel, and the reply is discarded on a Step-out ([Architecture review][88]). The classifier runs even when admission refuses the turn (`busy`, `limited`), and a Step-out beats those and any model failure or block; only `update_required` skips it, and only a classifier failure gives `no_answer` ([Distress merge][146]). Auth failures (`unauthenticated`, `account_deleted`) never reach it: one shared auth-failure response on every authenticated endpoint, handled by the device's session layer ([Turn wire contract][143]).
@@ -402,3 +404,4 @@ Carried as build or launch work, not decisions: prompt tuning, the Skia v2 / v3 
 [207]: https://github.com/shrujancheruku/look-together/issues/207
 [216]: https://github.com/shrujancheruku/look-together/issues/216
 [217]: https://github.com/shrujancheruku/look-together/issues/217
+[209]: https://github.com/shrujancheruku/look-together/issues/209
