@@ -36,6 +36,10 @@ _Avoid_: Thread, branch, tree
 What a person gives the app at each step of a Path, written or dictated, then reviewed and edited before they choose to submit it. Until then it is not part of the Dialogue.
 _Avoid_: Message, answer, reply, turn
 
+**Reply**:
+What the app writes back to a Reflection on a Path, always ending in one question.
+_Avoid_: Response, answer, message, turn
+
 **Open Question**:
 The question a Path leaves standing, handed back to the person deliberately unanswered.
 _Avoid_: Homework, takeaway, advice
@@ -83,6 +87,26 @@ _Avoid_: Server, location, data centre
 **Pattern**:
 An Assumption or friction that recurs across a person's Inquiries, shown to them only in a long-term view, outside any Inquiry.
 _Avoid_: Insight, profile, progress
+
+### Evaluation
+
+Each of these describes what the app wrote, never the person or how well they looked.
+
+**Relevant**:
+How far the person feels a Probe or Reply is about them and what they said. Only the person can say.
+_Avoid_: On-topic, accurate, personalised
+
+**Pointing**:
+A Probe or Reply that points at something in the person's own words they hadn't examined.
+_Avoid_: Insightful, insight, deep, clever
+
+**Perspective-opening**:
+A Probe or Reply after which the person's next Reflection brings something not in their earlier words. The question opens the perspective; the person finds it.
+_Avoid_: Perspective-giving, thought-provoking, insightful, reframe
+
+**Path endings**:
+How many Paths end each way, counted across everyone and never shown to the person. No single Path is a failure.
+_Avoid_: Completion rate, success rate, drop-off
 
 ### The pixel world
 
