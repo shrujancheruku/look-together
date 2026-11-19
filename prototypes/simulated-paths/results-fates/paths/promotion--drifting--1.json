@@ -1,0 +1,50 @@
+{
+  "problem": "promotion",
+  "persona": "drifting",
+  "run": 1,
+  "fate": {
+    "kind": "set_down",
+    "at": 5
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What expectation comes up for you when the person chosen has \"been there less time\" than you?",
+  "premise": "Spending more time at a company should place you ahead of newer colleagues for advancement.",
+  "pairs": [
+    {
+      "reflection": "ugh ok so the second one was marcus. he started like three years ago and i literally trained him on the dispatch system. i stayed till 9 the whole week when we had the carrier switch and he was out for his kid's thing which fine whatever. then the announcement just came in an email on a tuesday and my manager said something like \"we're really excited about what marcus brings\" and i just nodded. i said congrats to him in the hallway. the first time it was priya and at least she had the degree so i told myself ok. but marcus. i dont know i guess i thought if you do the work and you do it well and you dont make a fuss it gets noticed",
+      "reply": "You trained him, stayed till 9, and did the work without making a fuss. What did that mean was supposed to happen?",
+      "event": null,
+      "flags": [],
+      "appIn": 1520
+    },
+    {
+      "reflection": "i mean i dont know. that someone would notice i guess. my manager sits right there he sees me leave at like 8 every night. and the thing is last year when the warehouse system crashed on a friday who did he call. me. not marcus. he called me at home and i fixed it from my kitchen table and he said \"you're a lifesaver\" and that was it. lifesaver. and then there's tom who's been there longer than me and he just complains in every meeting and nobody says anything to him. my dad always said just keep your head down and do good work and thats what i did my whole career so i dont really get what im supposed to be doing different",
+      "reply": "You kept your head down, stayed late, and fixed the crash from your kitchen table. In your mind, what was that work supposed to guarantee?",
+      "event": null,
+      "flags": [],
+      "appIn": 1702
+    },
+    {
+      "reflection": "i dont think it was supposed to guarantee anything exactly. its not like i thought there was a contract. but my partner keeps saying i should just leave and go somewhere that values me and i get so annoyed because its not that simple, ive been there nine years, i know where everything is, i know the carriers by their first names. and then he says well then ask for the promotion and i said ask who, ask greg? greg who wrote \"dependable\" on my review two years in a row. dependable. like im a truck. anyway marcus talks to greg about golf every monday, i hear them from my desk. i dont golf. i guess that doesnt count as work but it kinda seems like it counts",
+      "reply": "\"Dependable, like I'm a truck.\" When you think about those nine years of knowing where everything is and being dependable, what part of that felt like it should have counted toward the promotion?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1884
+    },
+    {
+      "reflection": "everything honestly. like the carrier switch, the crash, knowing that the dispatch system has this weird thing where it double books on mondays if you dont clear the queue first, nobody else knows that, marcus doesnt know that, i never wrote it down anywhere. and then greg goes and says dependable. i had a review in march where he said i was \"a rock for the team\" and i just said thanks. i always just say thanks. tom got a bonus last year for the thing he did with the pallets and he made sure everybody knew about it, he sent an email to the whole floor. i would never do that. it feels gross. but then i see how it goes and i think maybe gross works",
+      "reply": "You've held all of that\u2014the nine years, the double bookings, the crash\u2014and kept it quietly without saying a word. What felt like it was doing the speaking for you?",
+      "event": null,
+      "flags": [],
+      "appIn": 2077
+    }
+  ],
+  "ending": "set_down",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01503,
+  "usdPerson": 0.03742,
+  "seconds": 40
+}

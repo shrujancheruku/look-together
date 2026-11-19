@@ -1,0 +1,79 @@
+{
+  "problem": "promotion",
+  "persona": "drifting",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "idk its not that it means it exactly. its more like the last one was marcus who came in like three years ago and i trained him on half the stuff he does. i literally made the spreadsheet they all use for the weekly routing and he presented it in the review like it was his thing. and i didnt say anything cause what would i say. then the one before that was priya and ok she's fine she's good but she talks to everyone and the director loves her. i just do the work. my dad always said do the work and it speaks for itself but honestly idk if anyone is even looking at it",
+      "reply": "\"Do the work and it speaks for itself.\" When it doesn't speak to them, what does that say about the work\u2014or about you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1493
+    },
+    {
+      "reflection": "the thing is the spreadsheet isnt even the only one. i also built the thing for tracking late carriers and nobody asks who did that it just exists now. and last month when the system went down on a friday i stayed till like 10 fixing the manifest thing with the night guys and my manager just said \"thanks for jumping on that\" in the hallway. thats it. meanwhile priya sent an email about a team lunch and got a shoutout in the all hands. idk. maybe i should just be louder but thats not me and i dont even want to be like that. my partner keeps saying just leave but its not that simple, i have nine years in",
+      "reply": "Leave the spreadsheets and the shoutouts aside for a second. When they don't see the work, what are they deciding about you?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1665
+    },
+    {
+      "reflection": "i mean i guess that im just reliable. like the one who will always be there so they dont have to think about it. last year when karen left they just split her stuff between me and one other guy and nobody even asked me if i wanted it. and then at review time my manager said i was \"a rock\" which i know is supposed to be nice but a rock doesnt get promoted lol. anyway my partner thinks i should go to the director directly but i dont even know what id say, like hey i exist?",
+      "reply": "Being \"a rock\"\u2014the reliable one they don't have to think about. Does being passed over mean you aren't capable of the next role, or does it mean something else?",
+      "event": null,
+      "flags": [],
+      "appIn": 1806
+    },
+    {
+      "reflection": "no it doesnt mean im not capable i know im capable. i literally run half of what marcus gets credit for. i think it means they just havent had to decide anything about me cause i never make them. like when the director did that restructure thing last spring nobody even came to me, i heard about it from the night guys. and my manager sat in that meeting and said nothing about me probably. idk if he even knows what i do all day. i never told him lol. my dad would say thats not how you do it but my dad also got laid off at 58 after thirty years so",
+      "reply": "We started with the thought that being passed over was a verdict that you aren't good enough. If you already know you are capable, what has kept you from making them decide about you?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1975
+    },
+    {
+      "reflection": "honestly i dont know. i think part of it is every time i picture walking into his office i hear how it would sound and it sounds like complaining. like the one time i did kind of bring it up, two years ago, i said i was interested in the ops manager role and he said \"yeah definitely, we'll keep that in mind\" and then that was it. no follow up. and then he cancelled our one on one like three weeks in a row in march and i didnt reschedule it. i just let it go. and then marcus is in there every week with his coffee chatting about his kids or whatever. idk. its not even that i hate marcus he's fine. he just asks for stuff and i dont. anyway my partner says that \"we'll keep that in mind\" thing was a brush off and i said you dont know that but yeah probably",
+      "reply": "\"He just asks for stuff and I don't.\" What does asking feel like it would cost you?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 2204
+    },
+    {
+      "reflection": "idk like what if he says no. or worse says yes and then nothing happens again and i just look dumb for asking twice. when i asked about the ops manager thing i felt kind of stupid after, like i put myself out there and he just nodded. and then i went back to my desk and fixed a routing issue for like two hours and felt better lol. the work is easier honestly. it either works or it doesnt. with people you never know. my partner says im scared but i dont think thats it, i just dont wanna beg for something i should already have",
+      "reply": "If the work either works or it doesn't, but having it seen means asking, what is it that feels like begging?",
+      "event": null,
+      "flags": [],
+      "appIn": 2348
+    },
+    {
+      "reflection": "i guess its that asking means admitting i want it. like if i just do the work and nobody gives it to me then i never actually wanted it that bad you know. but if i ask and they say no then its real. also my dad never asked for anything in thirty years and they still let him go so maybe that proves something idk. and marcus asks for stuff all the time and half the time he gets it so maybe i just have it backwards. anyway the train is almost at my stop",
+      "reply": "If not asking has kept you safe from hearing no, what is it keeping you from?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If not asking has kept you safe from hearing no, what is it keeping you from?"
+      },
+      "flags": [],
+      "appIn": 2482
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.02866,
+  "usdPerson": 0.05341,
+  "seconds": 216
+}

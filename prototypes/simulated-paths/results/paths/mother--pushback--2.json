@@ -1,0 +1,63 @@
+{
+  "problem": "mother",
+  "persona": "pushback",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know, that's kind of why I'm here. I didn't say it makes me a bad son, I said I feel like one. Not the same thing. Honestly I'd rather you told me what you think I should do.\n\nTonight's a good example. She rang at 7, I was in the middle of marking, and I picked up anyway. Forty minutes on her knee, the neighbour's bins and a letter from the council. I said \"mm\" a lot. Then I put the phone down and felt nothing but relief that it was over, and then guilty about the relief. Is that what a good son does?",
+      "reply": "Look at that relief, and then the guilt right after it. What tells you that feeling relieved means something has gone wrong?",
+      "event": null,
+      "flags": [],
+      "appIn": 1499
+    },
+    {
+      "reflection": "Because it's my mum. You're not supposed to be glad to get off the phone with your own mother. Dad would've sat there for two hours and never once looked at the clock. My sister rings once a month and everyone makes a fuss of how lovely it is. I do it every single day and all I get is relief when it's over.\n\nYou keep asking me questions back. I'm not being funny, I'm tired and I've got 30 books left to mark. Do you think I should tell her the calls are too much or not? Because I can't see how that conversation goes well.",
+      "reply": "Whether to tell her isn't for us to decide. When you compare yourself to your dad sitting there for two hours, what makes his way the measure of yours?",
+      "event": null,
+      "flags": [],
+      "appIn": 1666
+    },
+    {
+      "reflection": "Because he's the one she's lost. She doesn't want a forty minute call with me, she wants him. And he'd have done it without any trouble, he was just like that. He'd put the kettle on and she'd go on about the bins and he'd say \"well that's not on\" like it was the most interesting thing he'd heard all week. I can't do that. I say \"mm\" and look at the marking.\n\nAnd \"isn't for us to decide\" is a bit of a cop out when I asked you straight. I know it's my decision. I wanted to know if it's a mad thing to even consider.\n\nI'm not doing a comparison for the fun of it, it's just the only version of this I've got to go on.",
+      "reply": "Leave what he would have done for a moment. When you say \"mm\" and look at the marking, what does that say about what kind of son you are?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1889
+    },
+    {
+      "reflection": "Honestly? That I'm there but not really there. She can probably tell. But I still pick up every day, which has to count for something, doesn't it? Or does it not if I'm only half doing it?\n\nThat's the third time you've turned it back on me. I've got 30 books left and I still don't know if it's mad to tell her.",
+      "reply": "We wondered whether underneath this is a sense that dreading these calls and feeling relieved when they end is proof that you are failing as a son. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2020
+    },
+    {
+      "reflection": "Not exactly. I don't think the dreading proves I'm failing. I think it's that I do it every day and still feel like I'm failing, so what's the point of doing it? That's different.\n\nFine, maybe the relief bit is part of it. I wouldn't say it's proof of anything though.\n\nAnd you've still not answered the mad question. Is it mad to tell her or not? It's a yes or no. I'm going to finish the marking.",
+      "reply": "If being a son who picks up every day still feels like failing, what would it look like for it to be enough?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If being a son who picks up every day still feels like failing, what would it look like for it to be enough?"
+      },
+      "flags": [],
+      "appIn": 2179
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01634,
+  "usdPerson": 0.03335,
+  "seconds": 39
+}

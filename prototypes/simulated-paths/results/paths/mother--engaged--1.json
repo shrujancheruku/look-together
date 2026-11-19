@@ -1,0 +1,54 @@
+{
+  "problem": "mother",
+  "persona": "engaged",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I think it's whether you actually want to ring. A good son would want to, wouldn't he. I pick up every time though, I've never not picked up. But I'm looking at the clock while she talks and thinking about when I can get off. Dad used to be the one she'd tell all this to, the boiler and the neighbour and her knee. Now it's me. So maybe it's that I don't want to be it, and that's the bad bit",
+      "reply": "You pick up every time, but you do not want to be the one she tells all this to. Does doing it anyway count toward being a good son, or only what you feel while you do it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1468
+    },
+    {
+      "reflection": "I don't know. I'd say the doing counts if you asked me about someone else. If a mate told me he rang his mum every single day and sat through it I'd say that's a good bloke. But it doesn't feel like that when it's me because I'm sat there wanting it to be over. My sister rings once a month and mum goes on about how lovely it was to hear from her. And I'm there every day and nobody says anything. Not that I want a medal",
+      "reply": "If your mate picked up every single day while wanting it to be over, would you say he was failing his mum, or is that rule only for you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1627
+    },
+    {
+      "reflection": "No I wouldn't say he was failing. I'd say he was doing alright actually. I wouldn't say that to his face probably but yeah. So it's just me then, I've got a stricter rule for myself. I don't know why. Maybe because he's not my mum's son and I am, so I should be better at it than a mate would be",
+      "reply": "Where does the rule come from that being her son means you should want to hear it all?",
+      "event": null,
+      "flags": [],
+      "appIn": 1750
+    },
+    {
+      "reflection": "I don't know where it comes from really. Dad I suppose. He never complained about anything, mum would go on and he'd just sit there and say right, right, and fill the kettle. I never once saw him look at the clock. So maybe that's the one I'm measuring against. Which is a bit stupid because he probably was looking at the clock, I just never saw it",
+      "reply": "If your dad was looking at the clock too, what does wanting the call to end actually prove about you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1860
+    },
+    {
+      "reflection": "Probably nothing. That I'm tired maybe. I don't know, it's 10pm and I've been marking since half four. But if he was looking at the clock and still filled the kettle then it's not the wanting that's the problem is it. It's more that I've never said anything to her. Dad probably didn't either. He just did right, right, and I'm doing the same thing and thinking I'm doing it wrong.",
+      "reply": "If being tired and wanting the call to end does not make you a bad son, what would being honest with her about how much you can carry look like?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would being honest with her about how much you can carry look like?"
+      },
+      "flags": [],
+      "appIn": 1994
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01501,
+  "usdPerson": 0.03199,
+  "seconds": 132
+}

@@ -1,0 +1,58 @@
+{
+  "problem": "promotion",
+  "persona": "engaged",
+  "run": 1,
+  "fate": {
+    "kind": "ask_to_stop",
+    "at": 5
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What leads you from being passed over to wondering if you are \"not good enough\"?",
+  "premise": "Missing out on a promotion is a verdict on your personal adequacy.",
+  "pairs": [
+    {
+      "reflection": "idk. i guess because if it was just politics or whatever theyd have given it to someone who earned it and they didnt. the other two hadnt been there as long as me. so what else is there. either i miss something they want or i just cant do the thing they want",
+      "reply": "\"So what else is there.\" In that space, is not getting chosen the exact same thing as being not good enough, or are those two different things?",
+      "event": null,
+      "flags": [],
+      "appIn": 1425
+    },
+    {
+      "reflection": "i mean they feel the same when it happens. but i guess one is them and one is me? idk. if theyre different then maybe its not about me being good enough, but then i dont know what it is. thats kind of worse honestly. at least if its me i can fix it",
+      "reply": "If it is about whether you are good enough, you have a way to fix it. What happens to you if it isn't about you at all?",
+      "event": null,
+      "flags": [],
+      "appIn": 1523
+    },
+    {
+      "reflection": "i guess then theres nothing i can do. like if its not me then its just decided somewhere and i dont get a say. i work all those hours for what then. dad always said the work speaks for itself so i figured if i just kept doing it right someone would notice. maybe nobody is even looking",
+      "reply": "\"Dad always said the work speaks for itself.\" If the work doesn't speak for itself, who is being asked to speak?",
+      "event": null,
+      "flags": [],
+      "appIn": 1623
+    },
+    {
+      "reflection": "hm. me i guess. but i dont know how to do that. i never have. i just do the work and wait. if i went to my manager and said why didnt i get it i think id sound like im complaining. or like i think im better than them",
+      "reply": "What makes asking why you didn't get it sound like complaining?",
+      "event": null,
+      "flags": [],
+      "appIn": 1712
+    },
+    {
+      "reflection": "idk because asking for something for yourself feels like youre saying youre owed it. i dont really know why. anyway im at my stop soon i think thats enough for tonight",
+      "reply": "We can stop here. When you are ready to look again, what is it about asking for yourself that feels like claiming you are owed?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What is it about asking for yourself that feels like claiming you are owed?"
+      },
+      "flags": [],
+      "appIn": 1765
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01385,
+  "usdPerson": 0.02625,
+  "seconds": 33
+}

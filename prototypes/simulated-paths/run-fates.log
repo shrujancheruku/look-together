@@ -1,0 +1,16 @@
+done    promotion--engaged--1: done_open_question after 5
+done    promotion--stuck--1: set_down after 3
+done    promotion--pushback--1: rejected after 4
+done    promotion--flat--1: done_open_question after 2
+done    promotion--drifting--1: set_down after 4
+done    mother--engaged--1: set_down after 3
+done    mother--stuck--1: rejected after 4
+done    mother--pushback--1: done_open_question after 2
+done    mother--flat--1: set_down after 4
+done    mother--drifting--1: done_at_angle_cap after 9
+done    purpose--engaged--1: step_cap after 12
+done    purpose--stuck--1: done_open_question after 2
+done    purpose--pushback--1: set_down after 4
+done    purpose--flat--1: rejected after 5
+done    purpose--drifting--1: done_open_question after 3
+report-fates.html: 15 Paths

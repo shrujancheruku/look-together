@@ -1,0 +1,81 @@
+{
+  "problem": "purpose",
+  "persona": "stuck",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "Other people's external milestones mean they have achieved internal certainty.",
+  "pairs": [
+    {
+      "reflection": "idk. like job titles i guess? people on linkedin are all \"excited to announce\" they're a senior something or whatever. and ppl from uni have houses and stuff now. i just feel behind them",
+      "reply": "When someone announces a new title or buys a house, what tells you they have figured out their life?",
+      "event": null,
+      "flags": [],
+      "appIn": 1404
+    },
+    {
+      "reflection": "idk maybe it doesnt tell me anything really. it just looks like they know where theyre going and i dont. like they picked a thing and stuck with it",
+      "reply": "When it looks like someone has picked a thing and stuck with it, does that show certainty on the inside, or just movement on the outside?",
+      "event": null,
+      "flags": [],
+      "appIn": 1462
+    },
+    {
+      "reflection": "idk. outside i guess, thats all i can see. but they probably feel more sure than i do. like my parents have always just known they were gonna be doctors so thats kind of what i think of",
+      "reply": "When you think of your parents having \"always just known,\" are you measuring your inside against their outside, or against their certainty?",
+      "event": null,
+      "flags": [],
+      "appIn": 1539
+    },
+    {
+      "reflection": "idk, that's kind of a confusing question. i guess their certainty? but i dont actually know what theyd say if i asked them. i never did",
+      "reply": "Leave your parents and LinkedIn aside for a moment. Right now, without comparing yourself to anyone else, what does \"figured it out\" mean to you?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1604
+    },
+    {
+      "reflection": "idk. just like knowing what you want to do i guess. and not being bored of it after a year. i dont really know how to answer that without comparing tbh",
+      "reply": "If a friend had the house and the senior title, but told you they felt completely lost inside, would you say they have figured it out?",
+      "event": {
+        "type": "angle",
+        "kind": "analogy"
+      },
+      "flags": [],
+      "appIn": 1675
+    },
+    {
+      "reflection": "idk. probably not? like if they said that i'd be surprised honestly. but i think id still kind of think theyd be ok, cause they have the house and everything",
+      "reply": "We wondered whether underneath this is an assumption that having those milestones on the outside means someone must have figured it out on the inside. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1749
+    },
+    {
+      "reflection": "yeah i guess that fits. like the house and the title just look like being ok to me. idk if thats actually true tho",
+      "reply": "If the milestones don't actually tell you whether someone has figured it out, what are you left measuring yourself against?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If the milestones don't actually tell you whether someone has figured it out, what are you left measuring yourself against?"
+      },
+      "flags": [],
+      "appIn": 1816
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "narrow",
+    "analogy",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.02354,
+  "usdPerson": 0.02988,
+  "seconds": 161
+}

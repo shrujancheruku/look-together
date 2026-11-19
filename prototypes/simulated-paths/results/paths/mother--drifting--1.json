@@ -1,0 +1,40 @@
+{
+  "problem": "mother",
+  "persona": "drifting",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know. Honestly I don't think it's the calls. Tonight she rang at about half six while I was in the middle of marking and I let it go to voicemail, then felt sick about it all through tea, so I rang back and she'd already got herself worked up. It was the boiler, then the neighbour's bins, then her hip again, and I said \"right, yeah\" about fifteen times and watched the clock. Forty-five minutes. Then I got off and sat there with 30 year nine books still to do.\n\nMy sister rang her on Sunday, once, for twenty minutes, and mum was all \"oh it was lovely to hear from her, she sounds so well.\" And I do this every single day and nobody says anything. Which I know sounds petty. I'm not saying I want a medal. But she's in a different time zone and gets thanked and I'm two hours down the motorway and I'm the one who's failing.\n\nDad would have just sat there and let her talk. That's what he did. I think that's what I keep comparing myself to.",
+      "reply": "\"Dad would have just sat there and let her talk.\" When you watch the clock while she talks, what makes that a failure?",
+      "event": null,
+      "flags": [],
+      "appIn": 1602
+    },
+    {
+      "reflection": "I don't know, it's just that he never did. He'd have the telly on mute and say \"aye\" and \"is that right\" and she'd go on for an hour and she was fine after. I'm sat there thinking about the marking and whether I've got the Year 9 books back by Friday, and I can hear myself saying \"right, yeah\" in this flat voice. She must hear it. She's not stupid.\n\nLast month she said \"you sound tired\" and I said I was fine. Then she started on the hip again. So that's that.\n\nAnd my sister's got all the time in the world to be lovely for twenty minutes, she's not got 30 books waiting. Sorry, I keep going on about her. It's just that it gets me.",
+      "reply": "When you hear that flat voice in yourself, what is it failing to do?",
+      "event": null,
+      "flags": [],
+      "appIn": 1816
+    },
+    {
+      "reflection": "I suppose it's failing to sound like I care. Which I do, that's the stupid bit. I'm not ringing back at 7 because I don't care. But it comes out like I'm reading a script at a call centre.\n\nLast weekend I drove down and fixed the boiler thing, the pressure valve, took me ten minutes. She made me a sandwich and stood over me the whole time telling me how dad always did it differently. Then when I was leaving she said \"you're not stopping for tea then\" and I just said no, I've got marking. And she said \"course you have.\" Not even narky about it, just flat, like mine. So maybe that's where I get it from.\n\nAnyway I should really get on. There's still 30 books on the table.",
+      "reply": "If the flat voice isn't a lack of care, what makes it proof of failing her?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If the flat voice isn't a lack of care, what makes it proof of failing her?"
+      },
+      "flags": [],
+      "appIn": 2016
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01006,
+  "usdPerson": 0.02669,
+  "seconds": 62
+}

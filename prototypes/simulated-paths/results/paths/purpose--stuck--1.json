@@ -1,0 +1,101 @@
+{
+  "problem": "purpose",
+  "persona": "stuck",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "Other people's external milestones mean they have achieved internal certainty.",
+  "pairs": [
+    {
+      "reflection": "idk honestly. like job titles i guess? people from uni are on linkedin saying theyre \"excited to announce\" stuff and im just like.. still here. not sure what else there is to measure",
+      "reply": "Let's go slowly. When someone announces a new job title, what does that actually tell us about what it feels like to be them?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1401
+    },
+    {
+      "reflection": "idk. nothing really? i guess it doesnt tell me how they feel, just that they got the job. but it always looks like they know what theyre doing and im just.. not there",
+      "reply": "When it looks like they know what they are doing, is that something visible in them, or something we fill in from where we stand?",
+      "event": null,
+      "flags": [],
+      "appIn": 1474
+    },
+    {
+      "reflection": "idk probably filling it in? like i know its just a post. but i still look at it and think they must know what theyre doing, otherwise why would they be there. maybe thats just me tho",
+      "reply": "If getting a job required someone to first know what they were doing with their life, how many of those posts would actually exist?",
+      "event": null,
+      "flags": [],
+      "appIn": 1549
+    },
+    {
+      "reflection": "idk fewer maybe? i mean i get what youre saying. probably lots of them are just winging it too. but it doesnt really feel like that when im scrolling at 11pm lol",
+      "reply": "In that moment scrolling at 11pm, what makes their announcement feel like proof of something solid inside them?",
+      "event": null,
+      "flags": [],
+      "appIn": 1620
+    },
+    {
+      "reflection": "idk i think its the photo and the title and everyone commenting congrats. it just looks finished? like theyve arrived somewhere and im still in my bed on my phone",
+      "reply": "\"Finished.\" When you see that finished picture, are you seeing certainty in their life, or the contrast with where you're sitting?",
+      "event": null,
+      "flags": [],
+      "appIn": 1682
+    },
+    {
+      "reflection": "the contrast probably. like theyre just a photo and im actually here in my room so of course i feel worse. idk its not really about them i guess",
+      "reply": "If it isn't really about them, what is the finished picture an image of?",
+      "event": null,
+      "flags": [],
+      "appIn": 1747
+    },
+    {
+      "reflection": "idk. like what i think i should have by now maybe? i dont really know what that is tho. just something that looks sorted i guess",
+      "reply": "\"Something that looks sorted.\" When you imagine yourself feeling sorted, what is actually different on the inside?",
+      "event": null,
+      "flags": [],
+      "appIn": 1800
+    },
+    {
+      "reflection": "idk. i guess i wouldnt be checking? like i wouldnt feel that dip when i see a post. just calmer maybe. not sure what else",
+      "reply": "If the calm is about not needing to check, does \"figuring it out\" live in what we achieve, or in stopping the comparison?",
+      "event": null,
+      "flags": [],
+      "appIn": 1856
+    },
+    {
+      "reflection": "idk maybe the second one? but its hard to stop checking when i do feel behind. like if i actually had a thing id stop probably. not sure those are separate tbh",
+      "reply": "When you imagine having \"a thing,\" is it to live that life, or to have proof against the feeling of being behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 1926
+    },
+    {
+      "reflection": "idk both? i think proof mostly if im being honest. but then i dont even know what the thing would be so its a bit pointless lol",
+      "reply": "If the thing is mostly wanted as proof against falling behind, what would it actually take to feel like you've caught up?",
+      "event": null,
+      "flags": [],
+      "appIn": 1987
+    },
+    {
+      "reflection": "idk. i dont think i know what caught up even looks like. like no one ever says \"ok youre level now\". i guess just not feeling like everyone else is ahead? but that probably wouldnt ever happen lol",
+      "reply": "If there is no finish line where someone says you are level, what are you actually measuring yourself against?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If there is no finish line where someone says you are level, what are you actually measuring yourself against?"
+      },
+      "flags": [],
+      "appIn": 2062
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "slow"
+  ],
+  "refused": [],
+  "usdApp": 0.03247,
+  "usdPerson": 0.05842,
+  "seconds": 296
+}

@@ -1,0 +1,59 @@
+{
+  "problem": "mother",
+  "persona": "stuck",
+  "run": 1,
+  "fate": {
+    "kind": "reject",
+    "at": 3
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it actually mean to \"be there for her\"?",
+  "premise": "Supporting your mother properly requires being available to her every single day.",
+  "pairs": [
+    {
+      "reflection": "I don't really know. Picking up when she rings I suppose. Listening. Going over more often but it's two hours each way and I work. I just feel like a good son would want to do it and I don't, I just dread it.",
+      "reply": "Stay with that thought for a moment: \"a good son would want to do it.\" Where did that picture of a good son come from?",
+      "event": null,
+      "flags": [],
+      "appIn": 1411
+    },
+    {
+      "reflection": "I don't know, it's just what you're supposed to think isn't it. Dad would have just done it, he never complained about anything. I'm not sure it came from anywhere really.",
+      "reply": "Leave the rest. When you compare yourself to your dad never complaining, what does that comparison ask of you?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1492
+    },
+    {
+      "reflection": "I'm not comparing myself to my dad. I just said what he was like. That's not what this is about. I don't know why you keep going back to him.",
+      "reply": "We wondered whether underneath this is a sense that supporting your mother properly means being available to her every single day. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1560
+    },
+    {
+      "reflection": "No, that's not it. I never said she needs me every day. She rings every day, that's her not me. I just said I dread it and then feel bad. You keep making it into something else.",
+      "reply": "That premise does not fit. Where does the feeling of being a bad son come from when you dread her call?",
+      "event": {
+        "type": "reject"
+      },
+      "flags": [],
+      "appIn": 1645
+    }
+  ],
+  "ending": "rejected",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01244,
+  "usdPerson": 0.02044,
+  "seconds": 81
+}

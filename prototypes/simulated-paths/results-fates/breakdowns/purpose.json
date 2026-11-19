@@ -1,0 +1,44 @@
+{
+  "title": "Figuring Out What I'm Supposed to Be Doing",
+  "assumptions": [
+    {
+      "premise": "There is a specific, correct path each person is meant to find.",
+      "probe": "Who or what decided what you are supposed to be doing with your life?",
+      "keyWords": [
+        "supposed to be doing",
+        "with your life"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Other people's apparent career stability means they have solved how to live.",
+      "probe": "What does it look like when someone has truly figured it out?",
+      "keyWords": [
+        "figured it out"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Trying paths that do not last permanently is lost time.",
+      "probe": "What makes an experience count if nothing sticks?",
+      "keyWords": [
+        "nothing sticks"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Life follows a single shared schedule where not knowing by 29 means being late.",
+      "probe": "What are we measuring against when we worry we are falling behind?",
+      "keyWords": [
+        "falling behind"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 544,
+    "out": 2720,
+    "usd": 0.021216,
+    "seconds": 21.0
+  }
+}

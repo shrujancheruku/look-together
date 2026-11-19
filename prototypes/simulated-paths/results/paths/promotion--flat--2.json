@@ -1,0 +1,88 @@
+{
+  "problem": "promotion",
+  "persona": "flat",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "idk. they picked someone else",
+      "reply": "Let's go slowly. When \"they picked someone else,\" what tells you it was about whether you were good enough?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1370
+    },
+    {
+      "reflection": "i guess nothing else explains it",
+      "reply": "We wondered whether underneath this is an assumption that being passed over is always a verdict on your capability and worth. Does that fit, or does it miss what you mean?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1407
+    },
+    {
+      "reflection": "kinda fits i guess",
+      "reply": "If a friend came to you with this exact situation, what would you hear in their conclusion that they aren't good enough?",
+      "event": {
+        "type": "angle",
+        "kind": "analogy"
+      },
+      "flags": [],
+      "appIn": 1453
+    },
+    {
+      "reflection": "i'd probably say theyre being too hard on themselves",
+      "reply": "If that conclusion is being too hard on a friend, what is it doing when you turn it on yourself?",
+      "event": null,
+      "flags": [],
+      "appIn": 1498
+    },
+    {
+      "reflection": "idk. maybe its easier to blame myself than ask them",
+      "reply": "\"Maybe it's easier to blame myself than ask them.\" What would asking them risk?",
+      "event": null,
+      "flags": [],
+      "appIn": 1537
+    },
+    {
+      "reflection": "hearing it out loud i guess. that its true",
+      "reply": "If hearing it out loud is the risk, what makes you trust your own blame more than what they would actually say?",
+      "event": null,
+      "flags": [],
+      "appIn": 1572
+    },
+    {
+      "reflection": "i guess i dont. its just the one i already know",
+      "reply": "If the blame is just the story you already know, what might you find out if you didn't rely on it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1614
+    },
+    {
+      "reflection": "maybe that its not about me. or that it is. not sure which is scarier",
+      "reply": "Not knowing which is scarier\u2014that it is about you, or that it is not. What would it mean if what happened was never a verdict on you at all?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would it mean if what happened was never a verdict on you at all?"
+      },
+      "flags": [],
+      "appIn": 1663
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "slow",
+    "reveal",
+    "analogy"
+  ],
+  "refused": [],
+  "usdApp": 0.02521,
+  "usdPerson": 0.02606,
+  "seconds": 230
+}

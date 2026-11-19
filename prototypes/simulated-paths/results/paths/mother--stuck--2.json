@@ -1,0 +1,91 @@
+{
+  "problem": "mother",
+  "persona": "stuck",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know. I just feel like a good son would want to talk to her and I don't. I get off the phone and I'm relieved it's over and then I feel bad about being relieved.",
+      "reply": "Stay with the relief for a moment. What does the relief say that feels so wrong?",
+      "event": null,
+      "flags": [],
+      "appIn": 1406
+    },
+    {
+      "reflection": "I don't know. That I'm glad when it's over, I guess. Like I'm glad to be rid of her. Which isn't it exactly, but that's how it feels.",
+      "reply": "If being glad to hang up isn't being glad to be rid of her, what is it you are actually relieved to put down?",
+      "event": null,
+      "flags": [],
+      "appIn": 1476
+    },
+    {
+      "reflection": "I don't know really. The listing of everything that's wrong I suppose. Her going through it all and me just saying yeah and right. I don't know, it's just a lot by the end of the day.",
+      "reply": "Leave the rest of the call aside. In the exact moment she is listing what's wrong and you are saying \"yeah\", what is it you feel you are failing to do?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1560
+    },
+    {
+      "reflection": "I don't know. Help her I guess. She'll say the boiler's making a noise again or her neighbour didn't wave, and I just say yeah, that's annoying. I can't fix any of it so I just say that. Then she goes on to the next thing.",
+      "reply": "When she moves on to the next thing, is she asking you to fix it, or is the demand to fix it coming from you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1668
+    },
+    {
+      "reflection": "I don't think she's asking me to fix it. She never says can you sort the boiler or anything. She just says it and goes on. I don't know, maybe it's me. I just feel like I should have something to say that makes it better and I don't.",
+      "reply": "If having nothing to say that makes it better is true, what makes that a failure?",
+      "event": null,
+      "flags": [],
+      "appIn": 1767
+    },
+    {
+      "reflection": "I don't know. I suppose it isn't really, when you put it like that. It just feels like it is. Dad would have had something to say to her, he always did.",
+      "reply": "When you hold yourself against how your dad was with her, whose standard are you trying to meet?",
+      "event": null,
+      "flags": [],
+      "appIn": 1833
+    },
+    {
+      "reflection": "I don't know, mine I suppose. Nobody ever said I had to be like him. He'd just say something and she'd laugh and that was it. I don't have that.",
+      "reply": "If that was his way and not yours, what would being there for her actually look like in your own?",
+      "event": null,
+      "flags": [],
+      "appIn": 1902
+    },
+    {
+      "reflection": "I don't know. Just being on the phone I suppose, which I do already. I don't know what else there is. I could go up there more but it's two hours each way and I've got marking and that.",
+      "reply": "We wondered whether underneath this dread is a sense that finding these calls draining is proof that you're failing her. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1982
+    },
+    {
+      "reflection": "Yeah maybe. I don't know. It does feel like if I was a proper son it wouldn't wear me out like that. But it does wear me out, so.",
+      "reply": "If it does wear you out, what does being worn out actually have to do with whether you care?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What does being worn out actually have to do with whether you care?"
+      },
+      "flags": [],
+      "appIn": 2058
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.02682,
+  "usdPerson": 0.04261,
+  "seconds": 225
+}

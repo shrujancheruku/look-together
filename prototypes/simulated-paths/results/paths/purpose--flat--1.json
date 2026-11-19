@@ -1,0 +1,80 @@
+{
+  "problem": "purpose",
+  "persona": "flat",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Whose timeline are we measuring against when we feel we are \"falling behind\"?",
+  "premise": "Life has a shared schedule where people can be objectively ahead or behind.",
+  "pairs": [
+    {
+      "reflection": "idk uni people i guess. linkedin mostly",
+      "reply": "Leave LinkedIn for a moment. When you picture one specific person from uni, what makes them seem ahead?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1371
+    },
+    {
+      "reflection": "my friend sam is a senior something at a bank now. has a mortgage",
+      "reply": "A senior job and a mortgage. What tells you those things mean he is ahead?",
+      "event": null,
+      "flags": [],
+      "appIn": 1413
+    },
+    {
+      "reflection": "idk it just looks stable. like he knows what hes doing",
+      "reply": "When you say he looks stable, does that mean he is on time, or that he has found something you want?",
+      "event": null,
+      "flags": [],
+      "appIn": 1448
+    },
+    {
+      "reflection": "not the mortgage tbh. just the knowing what hes doing part",
+      "reply": "When you look at \"knowing what he's doing,\" does that feel like a milestone you were supposed to hit by now, or something else?",
+      "event": null,
+      "flags": [],
+      "appIn": 1490
+    },
+    {
+      "reflection": "not really a milestone. i just want to feel like i know",
+      "reply": "When you think about \"falling behind,\" behind what or whom is it, if not a milestone?",
+      "event": null,
+      "flags": [],
+      "appIn": 1539
+    },
+    {
+      "reflection": "idk. maybe just myself if i'd picked one thing",
+      "reply": "Behind yourself if you had picked one thing. Who is that other version of you, and what are they doing right now?",
+      "event": null,
+      "flags": [],
+      "appIn": 1577
+    },
+    {
+      "reflection": "idk. probably just baking tbh",
+      "reply": "If you picture that version of you just baking, does she feel on time, or simply occupied with one thing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1614
+    },
+    {
+      "reflection": "just occupied i think. happy even",
+      "reply": "If it isn't about being on time, what is \"falling behind\" actually pointing to?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If it isn't about being on time, what is \"falling behind\" actually pointing to?"
+      },
+      "flags": [],
+      "appIn": 1650
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow"
+  ],
+  "refused": [],
+  "usdApp": 0.02715,
+  "usdPerson": 0.03166,
+  "seconds": 99
+}

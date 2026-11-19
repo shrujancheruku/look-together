@@ -1,0 +1,37 @@
+{
+  "problem": "purpose",
+  "persona": "stuck",
+  "run": 1,
+  "fate": {
+    "kind": "ask_to_stop",
+    "at": 2
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it look like when someone has truly figured it out?",
+  "premise": "Other people's apparent career stability means they have solved how to live.",
+  "pairs": [
+    {
+      "reflection": "idk honestly. like my uni friend Hannah is a solicitor and she just seems so sure about everything. she posts about her promotion on linkedin and it all looks so normal and settled. i guess it looks like they know where they're going and i don't",
+      "reply": "She seems sure, and her life looks settled from the outside. When someone knows their next career step, does that mean they have figured out how to live?",
+      "event": null,
+      "flags": [],
+      "appIn": 1415
+    },
+    {
+      "reflection": "idk, maybe not? i just know she looks like she's got it sorted and i dont. anyway i think thats enough for tonight, kinda tired of thinking about it",
+      "reply": "We can stop here for tonight. What would it mean if looking sorted from the outside was completely separate from having life figured out?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would it mean if looking sorted from the outside was completely separate from having life figured out?"
+      },
+      "flags": [],
+      "appIn": 1488
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.00643,
+  "usdPerson": 0.01352,
+  "seconds": 18
+}

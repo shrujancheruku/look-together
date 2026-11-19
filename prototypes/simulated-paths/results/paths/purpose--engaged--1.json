@@ -1,0 +1,84 @@
+{
+  "problem": "purpose",
+  "persona": "engaged",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Where does the idea come from of what you are \"supposed to be doing\"?",
+  "premise": "There is a predetermined or correct purpose that a person is meant to find.",
+  "pairs": [
+    {
+      "reflection": "idk. partly my parents i guess, they never say anything but they're both doctors so theres this like... you just KNOW what a real career looks like. and linkedin doesnt help, everyones getting promoted or \"excited to announce\" something. but i also dont even know what the thing is that im meant to be doing, i just feel like theres a thing and everyone else got told what it is",
+      "reply": "\"There's a thing and everyone else got told what it is.\" What makes it feel like there is a specific thing meant for you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1448
+    },
+    {
+      "reflection": "idk maybe cos my parents did. like they decided at 17 or whatever and that was it, done, they never had to wonder. so i think i assume thats how it works and i missed it somehow. \n\nthough honestly the only time i didnt think about it was the bakery. 4am starts and my hands were just busy. which is not a \"thing\" lol. cant exactly put that on linkedin",
+      "reply": "When your hands were busy and you did not think about it, what made that not a \"thing\"?",
+      "event": null,
+      "flags": [],
+      "appIn": 1569
+    },
+    {
+      "reflection": "because its baking?? like its not a \"career\" its just bread. my parents would be polite about it but you can tell what they'd think. and i didnt have a title or anything, i was just the person who came in early and did the dough. idk it just felt small i guess. but i wasnt the one feeling small, its more like everyone else would think it was",
+      "reply": "\"I wasn't the one feeling small, it's more like everyone else would think it was.\" When you set aside what everyone else would think, what is left of the feeling that you are missing your thing?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1676
+    },
+    {
+      "reflection": "hm. i dont know if much is left honestly. maybe just that i get bored? like after a year anywhere i start feeling itchy and i assume thats me failing to find it. but at the bakery i was there the longest i think, like a year and a half, and i only left cos the place closed down. so thats kind of weird. i hadnt thought about that",
+      "reply": "When you feel itchy after a year, what tells you that the feeling means you are failing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1805
+    },
+    {
+      "reflection": "idk, i guess cos everyone says you should stick things out? like staying is the grown up thing and leaving is what you do when you cant hack it. my dad did 30 years at the same hospital and people treat that like its the point\n\nbut when i actually think about the jobs i left, i wasnt really running away from them. the recruitment one yeah, i was counting days. the others i just kind of got to the end of? like i knew how to do it all and nothing was new. idk if thats failing or just done",
+      "reply": "Getting to the end of something and failing at it: what makes them seem like the same thing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1943
+    },
+    {
+      "reflection": "idk. i think cos ive only ever seen it from the outside? like if someone leaves a job after a year it looks like they couldnt do it. nobody sees that you actually got good at it and then it just stopped being interesting\n\nand my dad stayed 30 years but i dont actually know if he was still into it the whole time. he never says. he just says \"its fine, its busy\"",
+      "reply": "Looking from the inside of your own life rather than from the outside, how do you know when you are done with something?",
+      "event": null,
+      "flags": [],
+      "appIn": 2054
+    },
+    {
+      "reflection": "i think i stop being able to predict the day? like at the start everything is a bit of a surprise and i kinda feel a bit stupid and then i get good and then one morning i realise i could do the whole week with my eyes shut. thats when i start checking my phone and looking at other jobs\n\nthe bakery was different tho, i still knew it all but the dough was never the same twice. humidity or whatever. so maybe that was why it didnt get old. idk thats probably a stretch",
+      "reply": "When nothing is staying the same twice, what happens to the idea that you are falling behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 2188
+    },
+    {
+      "reflection": "it kind of goes quiet? which is weird. like at the bakery i never once thought about being behind, i was just trying to get the sourdough to not be flat\n\nthen i go home and scroll linkedin and it comes straight back. so maybe its not about the job at all, its more like it only shows up when im not busy with something. idk. that sounds a bit like im saying i should just go back to baking lol which i dont think i mean",
+      "reply": "When you are entirely absorbed in what is in front of you, who is it that is supposed to be somewhere else?",
+      "event": null,
+      "flags": [],
+      "appIn": 2308
+    },
+    {
+      "reflection": "haha ok that's a weird one. nobody i guess? when im doing the dough theres no one there to be behind. its only when im scrolling that theres like a version of me who should be further along, and shes kind of made up from other peoples posts\n\nactually i think shes a bit like my parents' version of me. like a doctor-ish one who decided at 17. which i obviously never was so its a bit mad that shes the one i keep measuring against\n\nidk. feels like i shouldnt be this annoyed at someone who doesnt exist",
+      "reply": "If the person who was supposed to decide at 17 doesn't exist, who is doing the choosing now?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If the person who was supposed to decide at 17 doesn't exist, who is doing the choosing now?"
+      },
+      "flags": [],
+      "appIn": 2458
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.02987,
+  "usdPerson": 0.06306,
+  "seconds": 164
+}

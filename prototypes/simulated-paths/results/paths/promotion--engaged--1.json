@@ -1,0 +1,82 @@
+{
+  "problem": "promotion",
+  "persona": "engaged",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "i mean if i was good enough they would have picked me right. thats how it works. you do the work and they notice. at least thats what i always figured. but the two people who got it are not better than me at the actual job, i know that, one of them asks me how to run the weekly reports. so i dont know. maybe it doesnt mean that and i just dont have another explanation",
+      "reply": "If being passed over doesn't mean you are not good enough, what else might a promotion decision be measuring?",
+      "event": null,
+      "flags": [],
+      "appIn": 1449
+    },
+    {
+      "reflection": "hm. i guess how people come across? the two who got it talk more in meetings. one of them is always in the directors ear after. i dont do that. i just figured it was obvious what i do, like the reports go out on time and nothing breaks. but maybe nobody sees nothing breaking",
+      "reply": "If what is being seen is who talks and who is in the director's ear, what does being passed over tell you about your capability?",
+      "event": null,
+      "flags": [],
+      "appIn": 1540
+    },
+    {
+      "reflection": "i guess it doesnt tell me much about that then. which is weird to say because ive been telling myself for a year that it does. but if its about who talks then it just tells me i dont talk. and thats not the same as not being good",
+      "reply": "If being passed over doesn't define your capability, what was keeping that link in place for a whole year?",
+      "event": null,
+      "flags": [],
+      "appIn": 1627
+    },
+    {
+      "reflection": "i think because it was easier to believe? like if its me not being good enough then i just have to work harder and thats something i can do. if its that i dont talk then i have to actually do something different and i dont really want to. my dad always said the work speaks for itself so i just kept doing more of it",
+      "reply": "\"The work speaks for itself.\" Does it, or is that something you were handed?",
+      "event": null,
+      "flags": [],
+      "appIn": 1725
+    },
+    {
+      "reflection": "handed i guess. he wasnt wrong for his job. he was at the plant thirty years and they knew him, everybody knew him, he didnt need to say anything. but its not the same where i am. nobody there knows what i do unless i say it. and i dont know how to say it without feeling like im bragging",
+      "reply": "What makes letting someone know what you do feel like bragging?",
+      "event": null,
+      "flags": [],
+      "appIn": 1816
+    },
+    {
+      "reflection": "i think because in my head talking about what you did is for people who dont have anything to show. like if its good people will see it. my dad would have thought it was kind of embarrassing honestly, a guy going around saying look what i did. and i dont want to be that guy. but then the other two are that guy and they got it so",
+      "reply": "If letting your work be known isn't bragging, what is it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1908
+    },
+    {
+      "reflection": "i dont know. maybe just telling people what happened? like the reports went out and the thing with the carrier got fixed before it hit anyone. thats just information. i guess if the director doesnt know it happened then to him it didnt. i still feel weird about it though. like i said it out loud in my head just now and my face got hot",
+      "reply": "Stay with that heat in your face for a moment. When you think of telling him what happened, who are you worried will see you doing it?",
+      "event": null,
+      "flags": [],
+      "appIn": 2001
+    },
+    {
+      "reflection": "i think my dad. which is dumb because hes not even there. but its like i can see his face doing that little look he did when someone was full of themselves. and then also the team i guess, like they'd think oh shes decided to start performing now. i dont know if they would actually think that. nobody has ever said anything like that to me",
+      "reply": "If no one has ever said that to you, whose judgment are you protecting yourself from when you keep quiet?",
+      "event": null,
+      "flags": [],
+      "appIn": 2113
+    },
+    {
+      "reflection": "mostly his i think. the team is kind of made up, i dont actually know what they think. but my dad is in my head and hes not even alive to be embarrassed by me. which sounds bad. he just wouldnt have said anything, he'd just do the look. and i guess ive been keeping quiet so i dont get the look from a guy who cant give it anymore",
+      "reply": "You've been keeping quiet to avoid a look from someone who isn't there. If you don't need his protection from being seen, what decides whether you speak?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If you don't need his protection from being seen, what decides whether you speak?"
+      },
+      "flags": [],
+      "appIn": 2220
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.02748,
+  "usdPerson": 0.04796,
+  "seconds": 246
+}

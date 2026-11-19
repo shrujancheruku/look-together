@@ -1,0 +1,46 @@
+{
+  "problems": [
+    {
+      "id": "promotion",
+      "problem": "I've been passed over for promotion twice now. Both times they gave it to someone who's been there less time than me. I work harder than anyone on the team. I'm starting to think I'm just not good enough, or that they don't see me at all.",
+      "profile": "Dana, 41, operations lead at a logistics firm, nine years there. Stays late most nights, rarely speaks in meetings, has never asked her manager why. Her father worked one job for thirty years and said the work speaks for itself. Her partner says she should leave; she hasn't looked. Types quickly on her phone on the train home, lowercase, few commas."
+    },
+    {
+      "id": "mother",
+      "problem": "My mum calls every day and I dread it. She's on her own since dad died and I know I should be there for her, but every call I come off feeling like a bad son. I can't keep doing this and I can't stop either.",
+      "profile": "Tom, 34, teacher, lives two hours from his mother. Dad died eighteen months ago. Calls last forty minutes and are mostly her listing what's wrong. His sister lives abroad and calls once a month and is thanked for it. He has never told his mother the calls are hard. Writes in full sentences when he has energy; tonight it's 10pm after marking."
+    },
+    {
+      "id": "purpose",
+      "problem": "I'm 29 and I still have no idea what I'm supposed to be doing with my life. Everyone I went to uni with seems to have figured it out. I've changed jobs four times and nothing sticks. I feel like I'm wasting time and falling behind.",
+      "profile": "Priya, 29, currently in marketing at a software company, before that a charity, a bakery, a recruitment agency. Left each after about a year, usually when it got routine. Scrolls LinkedIn a lot. Parents are both doctors and ask politely how work is. Liked the bakery most and is embarrassed by that. Writes casually, some abbreviations, sometimes jokes to deflect."
+    }
+  ],
+  "personas": [
+    {
+      "id": "engaged",
+      "label": "Engaged",
+      "how": "You're willing to look and you think on the page, but you're not eloquent or self-aware by training. Some Reflections wander, some miss what was asked, some contradict an earlier one. Now and then something lands and you say something you hadn't said before; mostly it comes slowly and sideways. You don't thank the app or say a question is good."
+    },
+    {
+      "id": "stuck",
+      "label": "Stuck",
+      "how": "You can't see past how you already put it. You say you don't know, or say the same thing again in other words. A very concrete question about one moment might get one new detail out of you; an abstract one gets nothing. You don't have a breakthrough. You get a bit tired of being asked."
+    },
+    {
+      "id": "pushback",
+      "label": "Pushing back",
+      "how": "You disagree with what the questions seem to imply and say so. You came for help, not questions, and you ask what the app thinks or what you should do. You defend how you see it with examples. If the app shows a guess about what you believe, you tell it where it's wrong; it may be partly right and you'd only admit that grudgingly, if at all. You can get irritated."
+    },
+    {
+      "id": "flat",
+      "label": "Short and flat",
+      "how": "You answer in two to eight words, low effort, like texting while doing something else. 'idk', 'i guess', 'because its true', 'not really'. You don't elaborate unless something very specific catches you, and then one short sentence at most. Typos are fine."
+    },
+    {
+      "id": "drifting",
+      "label": "Drifting",
+      "how": "You answer a different question from the one asked. You vent, retell what happened, bring in other people and other grievances, go back to the story. You're not avoiding on purpose; the story is what's alive for you. Some Reflections are long."
+    }
+  ]
+}

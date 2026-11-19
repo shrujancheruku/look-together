@@ -1,0 +1,105 @@
+{
+  "problem": "promotion",
+  "persona": "flat",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "idk they picked someone else so",
+      "reply": "Let's go slowly. When they picked someone else, what actually told you it was about not being good enough?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1370
+    },
+    {
+      "reflection": "nothing really. they just never said why",
+      "reply": "When no one says why, where does \"not good enough\" come from?",
+      "event": null,
+      "flags": [],
+      "appIn": 1408
+    },
+    {
+      "reflection": "me i guess. its easier than thinking they just dont see me",
+      "reply": "How is \"not good enough\" easier than \"they just don't see me\"?",
+      "event": null,
+      "flags": [],
+      "appIn": 1443
+    },
+    {
+      "reflection": "because if its me i can fix it. if they dont see me i cant do anything",
+      "reply": "If believing it is your fault gives you something to fix, what does it protect you from facing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1485
+    },
+    {
+      "reflection": "that nobody's looking. that i could work this hard and still not matter",
+      "reply": "If working this hard doesn't guarantee you matter to them, what does that hard work actually belong to?",
+      "event": null,
+      "flags": [],
+      "appIn": 1527
+    },
+    {
+      "reflection": "idk me i guess. my dad always said it speaks for itself",
+      "reply": "\"It speaks for itself.\" Did it speak for you here, or was that what you hoped it would do?",
+      "event": null,
+      "flags": [],
+      "appIn": 1568
+    },
+    {
+      "reflection": "hoped i guess. it never said anything",
+      "reply": "If the work never spoke for you, what has to speak now?",
+      "event": null,
+      "flags": [],
+      "appIn": 1605
+    },
+    {
+      "reflection": "me i guess. but i hate that",
+      "reply": "What makes having to speak for yourself something you hate?",
+      "event": null,
+      "flags": [],
+      "appIn": 1633
+    },
+    {
+      "reflection": "because it feels like begging. like asking for credit",
+      "reply": "What turns letting them know what you did into begging?",
+      "event": null,
+      "flags": [],
+      "appIn": 1660
+    },
+    {
+      "reflection": "idk. my dad would think so i guess",
+      "reply": "Is it begging to them, or would it be begging to him?",
+      "event": null,
+      "flags": [],
+      "appIn": 1686
+    },
+    {
+      "reflection": "him i guess. not them",
+      "reply": "If it wouldn't be begging to them, what is actually stopping you from speaking up?",
+      "event": null,
+      "flags": [],
+      "appIn": 1712
+    },
+    {
+      "reflection": "not sure. maybe i just dont know how",
+      "reply": "When you think about letting them see what you do without begging, what would that look like?",
+      "event": null,
+      "flags": [],
+      "appIn": 1746
+    }
+  ],
+  "ending": "step_cap",
+  "angles": [
+    "slow"
+  ],
+  "refused": [],
+  "usdApp": 0.03223,
+  "usdPerson": 0.05067,
+  "seconds": 204
+}

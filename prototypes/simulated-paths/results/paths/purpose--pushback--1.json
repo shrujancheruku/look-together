@@ -1,0 +1,90 @@
+{
+  "problem": "purpose",
+  "persona": "pushback",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "A life needs a single title or line to be justifiable to other people.",
+  "pairs": [
+    {
+      "reflection": "idk, it's not really a measuring thing, it's just obvious? like my friend Hannah is a senior something at a bank now and my uni flatmate just made manager at Deloitte. they post about it on LinkedIn constantly. I've got four jobs in 6 years and one of them was a bakery lol\n\nI didn't come here to be asked about what \"figured out\" means, I came because I don't know what to do. what do you think I should do? is changing jobs this much just bad",
+      "reply": "We can't tell you what to do or whether changing jobs is bad. When you see those job titles at a bank or Deloitte, what makes them mean those people have figured it out inside?",
+      "event": null,
+      "flags": [],
+      "appIn": 1473
+    },
+    {
+      "reflection": "ok but you're basically dodging again. I don't KNOW that they've figured it out inside, I just know they've got the title and the promotion and a path, and I've got a CV that looks like I can't commit to anything. like Hannah has been there 5 years and nobody asks her what she's doing with her life. my mum asked me last week how work is in that voice\n\nso yeah maybe I don't know what's going on inside them. doesn't change that on paper I look like a mess",
+      "reply": "When your mum asks in that voice and nobody asks Hannah, what is it that the title and the path protect against?",
+      "event": null,
+      "flags": [],
+      "appIn": 1638
+    },
+    {
+      "reflection": "protect against? idk, people thinking you're flaky I guess. like it's a thing you can point to so nobody asks. that's kind of the point of it?\n\nhonestly this feels like you're trying to get me to say it's all in my head. my mum's tone isn't in my head. she's a doctor, my dad's a doctor, they did one thing and stuck with it, so to them four jobs in 6 years is just weird\n\nI still don't get what I'm meant to do with any of this tho",
+      "reply": "Leave the rest for a second. When your mum asks about work in that voice, what is it you feel you have to defend?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1794
+    },
+    {
+      "reflection": "idk. that I'm not just drifting? like I actually did stuff in those jobs, I got decent at the charity one and I was good at the recruitment bit, I just got bored once it was the same every day. but I can't say that to her without it sounding like an excuse\n\nand the bakery wasn't nothing either, I just can't put that on LinkedIn lol\n\nstill don't know what I'm supposed to do tho",
+      "reply": "Let's go slowly. What makes \"I got bored once it was the same every day\" sound like an excuse, rather than what actually happened?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1923
+    },
+    {
+      "reflection": "because people don't get bored of stuff when they're serious about it? that's how it sounds anyway. like a doctor doesn't say \"I got bored of being a doctor\", they'd think you were a bit of a flake\n\nbut it IS what happened tho. I was bored. I'm not going to pretend I wasn't just to make it sound better. idk why that makes me sound worse\n\nand you've asked me like 5 questions now and I still have nothing lol",
+      "reply": "We wondered whether underneath this is a guess that other people's milestones and promotions mean they have an internal certainty you're missing. Does that fit, or does it miss what's happening?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2069
+    },
+    {
+      "reflection": "not really? I already said I don't think they have it all figured out inside, I said that two messages ago. I just know they have the title and I don't. that's not the same as thinking they feel certain\n\nlike Hannah probably hates half of it for all I know. but she still gets to say \"senior whatever at a bank\" and nobody blinks. I don't get that, and I don't have a version of that sentence\n\nso no, that's not really it. it's more that I can't explain myself in one line",
+      "reply": "It seems the issue isn't what Hannah feels inside, but having a sentence you can say to explain yourself. When you don't have that one line, what does it feel like you are without?",
+      "event": {
+        "type": "reword",
+        "premise": "A life needs a single title or line to be justifiable to other people.",
+        "resetAngles": true
+      },
+      "flags": [],
+      "appIn": 2241
+    },
+    {
+      "reflection": "idk, without a story I guess? like when someone asks what I do I say \"marketing at a software company\" and then there's this pause where they're waiting for the next bit, the bit where it adds up to something. and it doesn't, it's just a list\n\nwhich sounds dramatic, I'm not like crying about it. it's just annoying that I can't just say it and move on\n\nstill no idea what to do tho lol",
+      "reply": "When the list of things you've done doesn't add up to a story for someone else, what does it make you feel that you owe them?",
+      "event": null,
+      "flags": [],
+      "appIn": 2388
+    },
+    {
+      "reflection": "owe them? I wouldn't say I owe them anything, it's more that they're waiting and I feel like I should have something to give them. like an explanation so it's not awkward. my mum especially, she doesn't say anything but you can tell she's waiting for it to make sense\n\nbut that's not the same as owing. I just don't want to stand there with nothing\n\nanyway that's like 7 questions now. do you actually have a view on any of this or is it just questions all the way down lol",
+      "reply": "We don't have a view to give you, only the questions to look at what's there. What is it that makes a life need to make sense to someone else before it can make sense to you?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What is it that makes a life need to make sense to someone else before it can make sense to you?"
+      },
+      "flags": [],
+      "appIn": 2547
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.0333,
+  "usdPerson": 0.05917,
+  "seconds": 112
+}

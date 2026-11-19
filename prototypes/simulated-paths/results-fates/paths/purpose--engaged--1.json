@@ -1,0 +1,121 @@
+{
+  "problem": "purpose",
+  "persona": "engaged",
+  "run": 1,
+  "fate": {
+    "kind": "reject",
+    "at": 3
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring against when we worry we are falling behind?",
+  "premise": "Wanting what you actually like doesn't count as a real way to move forward.",
+  "pairs": [
+    {
+      "reflection": "honestly probably the uni people? like on linkedin I see someone's made senior manager or whatever and i do the maths in my head. my cousin too, she's a consultant now, my parents bring her up in a very \"oh she's doing well\" way. so idk, other people i guess. not sure there's an actual list of what i should have done by 29 but it feels like there is",
+      "reply": "\"Not sure there's an actual list of what I should have done by 29, but it feels like there is.\" If you look closely at that unwritten list, who wrote it?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1453
+    },
+    {
+      "reflection": "hm. i mean my parents i guess, but they've never actually said a number or an age or anything. they just ask \"how's work\" in that voice. maybe linkedin wrote most of it lol. or me, i probably made it up from seeing everyone else's stuff",
+      "reply": "You said you probably made it up from seeing everyone else's stuff. If you made the list, what happens if you stop checking off the items?",
+      "event": null,
+      "flags": [],
+      "appIn": 1560
+    },
+    {
+      "reflection": "i don't think that's what i meant tho. i didn't say it's all in my head. people really are further ahead, that's not made up, they have the titles and the salary. i just said i don't know who wrote the list. stopping checking doesn't make me not behind",
+      "reply": "\"People really are further ahead.\" What does \"ahead\" mean when everyone is living a different life?",
+      "event": null,
+      "flags": [],
+      "appIn": 1666
+    },
+    {
+      "reflection": "no but that's the thing, it's not a different life thing, you keep making it sound like everyone's just on their own path and that's not what i think. ahead is ahead. they have more money and a proper title and a flat. i'm not saying it's fair or whatever, i'm just saying it's real. i don't think i'm secretly fine",
+      "reply": "We wondered whether underneath this is a sense that life really does run on a single shared track where money, titles, and a flat define who is ahead. Does that fit what you see, or does it miss it?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1781
+    },
+    {
+      "reflection": "no thats not really me at all. i never said life runs on one track, you're making me sound like some person who thinks money and a flat is the point of everything. i just said people are ahead of me on those things. that's different. i'd probably take the bakery over any of it tbh, which is kind of the problem",
+      "reply": "You say you'd take the bakery over any of it, yet still feel behind. If those markers aren't what you actually want, what are you behind on?",
+      "event": {
+        "type": "reword",
+        "premise": "Measuring yourself by markers you don't even want still creates the feeling of falling behind.",
+        "resetAngles": true
+      },
+      "flags": [],
+      "appIn": 1905
+    },
+    {
+      "reflection": "i didn't say i don't want them tho. i said id take the bakery, that's not the same as not wanting a flat and money. you keep turning what i say into something tidier. i just feel like i'm behind and also the thing i liked doesn't count as a real thing to be good at. idk how that adds up to \"behind on\" something",
+      "reply": "We keep tidying this up, and it doesn't fit. What makes the bakery feel like something that doesn't count as a real thing to be good at?",
+      "event": {
+        "type": "reword",
+        "premise": "Wanting what you actually like doesn't count as a real way to move forward.",
+        "resetAngles": true
+      },
+      "flags": [],
+      "appIn": 2030
+    },
+    {
+      "reflection": "nobody told me it doesn't count, i never said that. you're making it sound like someone ruled on it. it's more that when i say \"i liked the bakery\" i can hear how it sounds next to \"consultant\" and i go quiet. my parents are doctors so. and i wasn't even that good at it tbh, i just liked 5am when the first trays came out and it was only like three of us there. idk if that's a thing to be good at",
+      "reply": "When you hear \"I liked the bakery\" next to \"consultant,\" what makes you go quiet?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 2179
+    },
+    {
+      "reflection": "it's not shame or whatever, don't make it that. it's just that i know what happens next. someone goes \"oh nice\" in a nice voice and then it moves on to the next person's thing. so i just don't bring it up. i said the 5am thing to nobody actually, til now i think",
+      "reply": "When it moved on to the next person's thing, what happened to the 5am trays?",
+      "event": null,
+      "flags": [],
+      "appIn": 2280
+    },
+    {
+      "reflection": "nothing happened to them? they're not a person lol. they just stay there i guess, i don't think about them as lost or whatever. i just think about them at random, like on the tube. the smell and the trays being too hot to hold properly. i don't know why that's the bit and not like, the customers or the money",
+      "reply": "The smell and the trays too hot to hold properly, coming back to you on the tube. What does that 5am bit ask of you, if anything at all?",
+      "event": null,
+      "flags": [],
+      "appIn": 2384
+    },
+    {
+      "reflection": "idk if it asks anything. that's you making it sound like it wants something from me. it's just a thing i think about. if anything it's more like a bit annoying because i can't do anything with it, i can't exactly go back to 5am trays at 29 and tell my parents that's the plan",
+      "reply": "\"I can't exactly go back to 5am trays at 29 and tell my parents that's the plan.\" What stops that from being a plan?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 2500
+    },
+    {
+      "reflection": "i didn't say it can't be a plan, i said i can't tell my parents it's the plan. those are different. maybe it could be one, idk. but you're doing it again, making it sound like the only thing in the way is me being scared or something. it's the pay mostly, bakery wages are bad, and i'd have to start again at the bottom at 29. that's just true",
+      "reply": "Starting at the bottom at 29 on bakery wages, and having that be the plan. If your parents never had to be told, what is left of the problem?",
+      "event": null,
+      "flags": [],
+      "appIn": 2639
+    },
+    {
+      "reflection": "that's not really what i said either. parents not having to know doesn't take the pay away or the starting at the bottom thing. it'd still be me at 29 on 12 grand less than everyone i know. also you keep coming back to the parents like that's the real issue and it's one bit of it. what's left is basically all of it lol. maybe not the quiet part, i'd still go quiet probably",
+      "reply": "If all of it is still there\u2014the pay, starting at the bottom, and being 12 grand less than everyone you know\u2014what makes the 5am trays keep coming back to you on the tube?",
+      "event": null,
+      "flags": [],
+      "appIn": 2779
+    }
+  ],
+  "ending": "step_cap",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.04292,
+  "usdPerson": 0.10492,
+  "seconds": 255
+}

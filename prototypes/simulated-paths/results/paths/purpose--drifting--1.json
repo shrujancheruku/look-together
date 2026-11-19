@@ -1,0 +1,47 @@
+{
+  "problem": "purpose",
+  "persona": "drifting",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "Other people's external milestones mean they have achieved internal certainty.",
+  "pairs": [
+    {
+      "reflection": "idk honestly. i was on linkedin last night (again) and this girl from my course, Hannah, posted that she's been made senior something at a bank?? with like the little confetti emoji and 200 people going \"so proud of you!!\" and i just sat there eating cereal for dinner lol\n\nand then my mum texted me this morning asking \"how's work, any news?\" in that voice. she doesn't mean anything by it, she just asks it politely like she's asking about the weather. but my brother in law is a registrar and my cousin just got into some surgical programme so everything at family stuff is just who's doing what\n\ni guess measuring titles? like who got promoted. but i don't even know if hannah likes it. she told me once she cries on sundays. so idk why i'm comparing myself to that\n\nanyway at the software company my manager said in my review i \"lack a clear trajectory\" which, thanks. like i've been there 11 months and it's already the same stuff every week. newsletter, campaign report, newsletter\n\nthe bakery wasn't like that. i was up at 4 and my hands were wrecked but every day was something you could actually see at the end. but you can't put that on linkedin lol",
+      "reply": "You notice Hannah cries on Sundays, yet her promotion still feels like something to measure against. What makes a title feel like certainty, even when you know what sits behind it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1638
+    },
+    {
+      "reflection": "idk, i think it's cause everyone else can just read it? like a title is a thing you can say at a dinner and people nod. my mum can tell her friends \"my nephew's a registrar\" and that's the whole conversation. if i say \"marketing at a software company\" they go \"oh nice\" and then there's a pause lol\n\nmy dad did actually ask once if i'd thought about going back to do something \"more structured\". he didn't mean the bakery, he meant like a masters or something. i didn't say anything, just kept eating. and then my aunt goes \"well she's still young\" which is somehow worse??\n\nalso the thing is i wasn't even unhappy at the bakery, i was just skint. i left cause the owner was selling up and then i thought ok time to be a proper adult, so i went to the recruitment place and hated it. and nobody in my family has ever asked about the bakery. not once. like it didn't happen\n\nanyway Hannah probably also has a flat she owns. i know that cause she posted the keys photo. so there's that",
+      "reply": "A title makes sense to everyone at the table without having to explain yourself. Is having a life that needs no explanation the same thing as having figured it out?",
+      "event": null,
+      "flags": [],
+      "appIn": 1923
+    },
+    {
+      "reflection": "lol i mean no? probably not. but it def feels like it. my friend Jess from the recruitment place just got engaged and everyone's like \"omg so settled\" and she literally told me she hates her job too, she just has a ring now so nobody asks her about it\n\ni did make a loaf last weekend actually. sourdough, first one in ages. it came out a bit flat and i ate half of it standing at the counter and it was the best i'd felt all week. then i opened my laptop to do a thing for work and it just went again\n\nand my manager, the trajectory comment. she said it in front of the other person from HR too, like cheers. she's 34 and has a mortgage and a dog called Biscuit that she mentions every single meeting. i don't think she's even happy, she just says \"going forward\" a lot\n\nidk. i don't think having no explanation needed is the same as figured out but it sure is easier at christmas",
+      "reply": "When you see the ring, the title, or the mortgage shield them from the questions, whose certainty is being satisfied: theirs, or the people asking?",
+      "event": null,
+      "flags": [],
+      "appIn": 2174
+    },
+    {
+      "reflection": "honestly probably my mum's? she goes quiet on the phone when i say \"same as usual\" and then changes the subject to my brother in law's rota or whatever. like she needs something to take back to the group chat. she's got a family whatsapp and i know for a fact it's all \"did you see Dev's post\" and stuff like that\n\nlast christmas my uncle asked what i \"actually do\" and i said marketing and he said \"so, adverts?\" and i said sort of and he went \"right\" and turned to my cousin to ask about theatre shifts. like i was a 30 second slot. my cousin was sweet about it after, said she's jealous i get weekends. which, ok, but she's literally going to be a surgeon\n\nalso the bakery owner, Maureen, messaged me in the summer. just a photo of the new people who bought it, and the sign they'd changed, and \"miss your hands in the dough!!\" and i looked at it for ages and didn't reply. don't know why. i think i didn't want to say i'm fine cause i'm not\n\nanyway i have a team call at 10 tomorrow about \"q1 roadmap\" so that's nice",
+      "reply": "If the milestones only satisfy the people asking, what does figuring it out look like when no one is asking?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If the milestones only satisfy the people asking, what does figuring it out look like when no one is asking?"
+      },
+      "flags": [],
+      "appIn": 2481
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01662,
+  "usdPerson": 0.04175,
+  "seconds": 85
+}

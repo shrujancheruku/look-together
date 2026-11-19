@@ -1,0 +1,47 @@
+{
+  "title": "Being passed over for promotion twice",
+  "assumptions": [
+    {
+      "premise": "Tenure at a company should give someone priority for advancement over newer colleagues.",
+      "probe": "What connects how much time someone has been there to who gets the promotion?",
+      "keyWords": [
+        "time",
+        "promotion"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Working harder than everyone else is the primary qualification for being promoted.",
+      "probe": "What does it mean to work harder than anyone if effort is not the main measure?",
+      "keyWords": [
+        "work harder than anyone",
+        "measure"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+      "probe": "What makes being passed over mean that you are not good enough?",
+      "keyWords": [
+        "passed over",
+        "not good enough"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Recognition from leadership only counts or exists if it results in a promotion.",
+      "probe": "What would it look like for them to see your contributions if a promotion is not how they show it?",
+      "keyWords": [
+        "promotion",
+        "contributions"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 546,
+    "out": 2883,
+    "usd": 0.0224415,
+    "seconds": 26.2
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "problem": "mother",
+  "persona": "flat",
+  "run": 1,
+  "fate": {
+    "kind": "set_down",
+    "at": 5
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Who decided that dreading a call makes someone a \"bad son\"?",
+  "premise": "Dreading these calls or struggling with them makes you a failing son.",
+  "pairs": [
+    {
+      "reflection": "idk me i guess",
+      "reply": "Let's go slowly. When the phone rings and that dread hits, what is it that tells you it means you are failing her?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1362
+    },
+    {
+      "reflection": "because she's alone and i'm not there",
+      "reply": "Is being there the only way a son isn't failing, or does the dread feel like proof you don't care enough?",
+      "event": null,
+      "flags": [],
+      "appIn": 1407
+    },
+    {
+      "reflection": "the second one i think",
+      "reply": "If the dread feels like proof you don't care enough, what would caring enough feel like when that phone rings?",
+      "event": null,
+      "flags": [],
+      "appIn": 1445
+    },
+    {
+      "reflection": "not dreading it i guess",
+      "reply": "Can someone care deeply about another person and still dread the phone ringing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1481
+    }
+  ],
+  "ending": "set_down",
+  "angles": [
+    "slow"
+  ],
+  "refused": [],
+  "usdApp": 0.00988,
+  "usdPerson": 0.01945,
+  "seconds": 26
+}

@@ -1,0 +1,66 @@
+{
+  "problem": "purpose",
+  "persona": "flat",
+  "run": 1,
+  "fate": {
+    "kind": "reject",
+    "at": 4
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it look like when someone has truly figured it out?",
+  "premise": "Other people's apparent career stability means they have solved how to live.",
+  "pairs": [
+    {
+      "reflection": "idk like they have a title and a house maybe",
+      "reply": "Leave the rest for a moment. Picture one person from uni who has the title and the house: what tells you they have figured life out?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1372
+    },
+    {
+      "reflection": "they post about it on linkedin and look calm",
+      "reply": "When you see them look calm on LinkedIn, what tells you they feel that way inside?",
+      "event": null,
+      "flags": [],
+      "appIn": 1416
+    },
+    {
+      "reflection": "nothing really, i guess it just looks that way",
+      "reply": "If looking calm on the outside doesn't tell you what's happening inside, what is it you feel you are falling behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 1450
+    },
+    {
+      "reflection": "not really sure that's what i said, i never said falling behind was about them",
+      "reply": "We started from the guess that seeing other people settled made it feel like they have solved how to live. If falling behind isn't about them, what is it you are falling behind?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1501
+    },
+    {
+      "reflection": "that's not me at all, you keep assuming stuff",
+      "reply": "Then we set that guess aside completely. When you say you are wasting time and falling behind, behind what?",
+      "event": {
+        "type": "reject"
+      },
+      "flags": [],
+      "appIn": 1559
+    }
+  ],
+  "ending": "rejected",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01563,
+  "usdPerson": 0.02035,
+  "seconds": 113
+}

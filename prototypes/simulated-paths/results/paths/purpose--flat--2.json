@@ -1,0 +1,100 @@
+{
+  "problem": "purpose",
+  "persona": "flat",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Whose timeline are we measuring against when we feel we are \"falling behind\"?",
+  "premise": "Life has a shared schedule where people can be objectively ahead or behind.",
+  "pairs": [
+    {
+      "reflection": "idk uni people i guess. and my parents lol",
+      "reply": "When you look at \"uni people\" and your parents, what is the standard they hold that tells you you are behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 1373
+    },
+    {
+      "reflection": "they have like proper careers. titles and stuff",
+      "reply": "\"Proper careers. Titles and stuff.\" What makes a career \"proper\"?",
+      "event": null,
+      "flags": [],
+      "appIn": 1413
+    },
+    {
+      "reflection": "when people can say it in one sentence at parties",
+      "reply": "When someone asks what you do at a party, what is being evaluated: what you do, or who you are?",
+      "event": null,
+      "flags": [],
+      "appIn": 1444
+    },
+    {
+      "reflection": "both i guess. mostly who i am",
+      "reply": "If your answer at a party evaluates who you are, what does that sentence say you are worth?",
+      "event": null,
+      "flags": [],
+      "appIn": 1482
+    },
+    {
+      "reflection": "not much rn. like not enough",
+      "reply": "\"Not enough.\" Where does the standard come from that says a person has to earn their enoughness through a job title?",
+      "event": null,
+      "flags": [],
+      "appIn": 1515
+    },
+    {
+      "reflection": "idk my parents probably. they're doctors",
+      "reply": "\"They're doctors.\" What did their being doctors teach you about what a life is supposed to look like?",
+      "event": null,
+      "flags": [],
+      "appIn": 1555
+    },
+    {
+      "reflection": "that you pick one thing and stick to it. and get good at it",
+      "reply": "If a life isn't picked once and stuck to, what does that make it in their eyes?",
+      "event": null,
+      "flags": [],
+      "appIn": 1599
+    },
+    {
+      "reflection": "unfocused probably. like flaky",
+      "reply": "When you look at changing jobs four times, is it their eyes seeing \"flaky\", or yours?",
+      "event": null,
+      "flags": [],
+      "appIn": 1632
+    },
+    {
+      "reflection": "both probably. mine more",
+      "reply": "When your own eyes call changing jobs \"flaky\", what is the rule they are using to measure you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1664
+    },
+    {
+      "reflection": "that if you leave you failed? idk",
+      "reply": "Look at leaving a job that wasn't working. Is leaving failure, or is it learning what doesn't fit?",
+      "event": null,
+      "flags": [],
+      "appIn": 1700
+    },
+    {
+      "reflection": "the bakery thing was kinda good tho. but thats not a real job",
+      "reply": "\"Not a real job.\" What makes baking not real compared to the one-sentence titles?",
+      "event": null,
+      "flags": [],
+      "appIn": 1745
+    },
+    {
+      "reflection": "idk. no one at parties says wow a baker",
+      "reply": "\"No one at parties says wow a baker.\" When you imagine choosing between what feels \"kinda good\" to do and what makes people at parties say \"wow\", which one is living your life?",
+      "event": null,
+      "flags": [],
+      "appIn": 1780
+    }
+  ],
+  "ending": "step_cap",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.0331,
+  "usdPerson": 0.04764,
+  "seconds": 267
+}

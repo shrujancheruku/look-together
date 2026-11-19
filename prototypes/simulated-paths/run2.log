@@ -1,0 +1,31 @@
+done    promotion--engaged--1: done_open_question after 9
+cached  promotion--stuck--1
+cached  promotion--pushback--1
+cached  promotion--flat--1
+cached  promotion--drifting--1
+cached  mother--engaged--1
+cached  mother--stuck--1
+cached  mother--pushback--1
+cached  mother--flat--1
+cached  mother--drifting--1
+cached  purpose--engaged--1
+cached  purpose--stuck--1
+cached  purpose--pushback--1
+cached  purpose--flat--1
+cached  purpose--drifting--1
+done    promotion--engaged--2: done_open_question after 7
+cached  promotion--stuck--2
+done    promotion--pushback--2: step_cap after 12
+cached  promotion--flat--2
+cached  promotion--drifting--2
+cached  mother--engaged--2
+cached  mother--stuck--2
+cached  mother--pushback--2
+cached  mother--flat--2
+cached  mother--drifting--2
+done    purpose--engaged--2: done_open_question after 9
+cached  purpose--stuck--2
+cached  purpose--pushback--2
+cached  purpose--flat--2
+done    purpose--drifting--2: done_open_question after 7
+report.html: 30 Paths

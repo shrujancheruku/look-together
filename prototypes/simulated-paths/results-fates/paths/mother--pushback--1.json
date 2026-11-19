@@ -1,0 +1,37 @@
+{
+  "problem": "mother",
+  "persona": "pushback",
+  "run": 1,
+  "fate": {
+    "kind": "ask_to_stop",
+    "at": 2
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it actually mean to \"be there for her\"?",
+  "premise": "Supporting your mother properly requires being available to her every single day.",
+  "pairs": [
+    {
+      "reflection": "I don't know, that's sort of the problem. Ringing every day is being there I suppose? I do that. She's on the phone for forty minutes telling me the boiler's making a noise and next door's cat is in her garden again and I'm just saying \"mm\" and \"that's annoying\". Is that being there? Honestly I came here for help not more questions. What do you think I should do, cut the calls down? She'd be devastated.",
+      "reply": "No advice will come from here, only looking at what you bring. When you say she would be devastated if the daily calls changed, whose devastation are you seeing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1462
+    },
+    {
+      "reflection": "Hers. Obviously hers. She'd put the phone down and sit in that house on her own, I can see it. I'm not making that up, she said once after dad that the calls were the only thing that got her through the day.\n\nLook, I'm knackered, it's 10pm and I've still got books to finish. I wanted someone to tell me what to do and you're just asking me things back. I'm going to leave it there for tonight.",
+      "reply": "We will leave it there. When you hear her say the calls get her through the day, what does that make your job?",
+      "event": {
+        "type": "done",
+        "openQuestion": "When you hear her say the calls get her through the day, what does that make your job?"
+      },
+      "flags": [],
+      "appIn": 1610
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.00561,
+  "usdPerson": 0.01734,
+  "seconds": 18
+}

@@ -1,0 +1,44 @@
+{
+  "problem": "purpose",
+  "persona": "drifting",
+  "run": 1,
+  "fate": {
+    "kind": "ask_to_stop",
+    "at": 3
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it look like when someone has truly figured it out?",
+  "premise": "Other people's apparent career stability means they have solved how to live.",
+  "pairs": [
+    {
+      "reflection": "idk, like Hannah i guess? she posted on linkedin last week about being made senior manager at some consultancy and everyone's commenting \"so deserved!!\" with the clapping emoji. and i was sat on the sofa eating cereal for dinner lol\n\nand then my mum rang on sunday and did the polite \"how's work\" thing, and i said fine, and she said \"good, good\" and then talked about my cousin's wedding for 20 mins. they never say anything but you can feel it. both doctors, they knew at like 12 what they were doing\n\ni think honestly it just looks like not being bored? like she seems to go in and care about it. i get about 8 months in and it's the same meetings, same slack pings and i just start looking at other jobs. at the bakery i did actually like it but that's not a real answer, you can't say that at a family dinner",
+      "reply": "You say baking was something you actually liked, but not a \"real answer.\" What makes an answer real?",
+      "event": null,
+      "flags": [],
+      "appIn": 1559
+    },
+    {
+      "reflection": "idk, like a real answer is one that doesn't make people go \"oh\" and do the face. my uncle did it at my cousin's engagement thing in the summer, \"so what is it you do now Priya?\" and I said marketing at a software company and he went \"ah nice, very stable\" like he was relieved lol. if I'd said I used to get up at 4:30 to do the sourdough he'd have just laughed\n\nand the thing is the bakery wasn't even some cute dream. it was freezing and my hands were always cracked and the pay was honestly awful, like I was on barely over minimum. but I wasn't looking at my phone the whole shift. Marco the head baker used to put the first tray of the morning on the side and we'd just stand there eating it before anyone else came in. I haven't had a moment like that at any job since and I'm not gonna say that to my dad who spent like 10 years training\n\nanyway I left because I couldn't live on it. and then everyone at uni was like \"oh that was a fun gap thing\" and I didn't correct them",
+      "reply": "A \"real answer\" is one that sounds stable at a family dinner, even if you spend the whole shift looking at your phone. When you picture having figured it out, who is that answer for?",
+      "event": null,
+      "flags": [],
+      "appIn": 1837
+    },
+    {
+      "reflection": "lol idk who its for, everyone else probably? my parents i guess, and Hannah and her clapping emojis. honestly my mum would be fine if i just stuck at something for more than a year, she'd not even care what it was. or maybe she would idk\n\nanyway i think im gonna stop there tonight, im knackered and the cereal bowl is still on the floor lol",
+      "reply": "If the answer isn't for you, whose life is being figured out?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If the answer isn't for you, whose life is being figured out?"
+      },
+      "flags": [],
+      "appIn": 1963
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.00927,
+  "usdPerson": 0.02642,
+  "seconds": 28
+}

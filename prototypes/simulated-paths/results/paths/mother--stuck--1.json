@@ -1,0 +1,60 @@
+{
+  "problem": "mother",
+  "persona": "stuck",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know really. I just know I come off the phone feeling like one. She's on her own and I'm sitting there wanting it to be over. I think that's what makes me a bad son, I don't know.",
+      "reply": "Let's go slowly. In the moment you find yourself wanting the call to be over, what tells you that wanting it to end makes you a bad son?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1413
+    },
+    {
+      "reflection": "I don't know. I just look at the clock and she's still going on about her knee or the neighbour and I think how much longer. Then I feel awful for thinking it. That's all it is really.",
+      "reply": "Leave the rest of the call aside. In the exact second you glance at the clock and feel awful, what is that awful feeling saying you ought to be feeling instead?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1500
+    },
+    {
+      "reflection": "I don't know. Like I should be patient maybe. Or like I should actually want to be talking to her. I just don't, not at that point. It's just the clock and her still going.",
+      "reply": "We wondered whether underneath this is a sense that finding these calls draining is proof that you're failing her. Does that fit, or does it miss?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1589
+    },
+    {
+      "reflection": "Yeah I suppose it fits. I don't know. If I was a good son I wouldn't be watching the clock, would I. It's just how it is.",
+      "reply": "If dreading a call and watching the clock does not make you a bad son, what does it make you?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If dreading a call and watching the clock does not make you a bad son, what does it make you?"
+      },
+      "flags": [],
+      "appIn": 1666
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "slow",
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01152,
+  "usdPerson": 0.02066,
+  "seconds": 149
+}

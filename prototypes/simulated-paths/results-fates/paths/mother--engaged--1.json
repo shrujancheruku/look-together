@@ -1,0 +1,41 @@
+{
+  "problem": "mother",
+  "persona": "engaged",
+  "run": 1,
+  "fate": {
+    "kind": "set_down",
+    "at": 4
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it actually mean to \"be there for her\"?",
+  "premise": "Supporting your mother properly requires being available to her every single day.",
+  "pairs": [
+    {
+      "reflection": "I think I just assumed it means picking up every time. Being on the phone when she wants me. Dad did that sort of thing, he'd sit with her for hours. I don't know if that's what she needs or just what I think a good son does. She doesn't ask me to come up, she just rings and tells me what's wrong with the boiler or her knee or whatever.",
+      "reply": "When you pick up and hear about the boiler or her knee, what tells you whether you are being a good son or a bad one?",
+      "event": null,
+      "flags": [],
+      "appIn": 1443
+    },
+    {
+      "reflection": "I suppose how I feel when I hang up. If I'm not wound up, I think I did alright. But I'm nearly always wound up. So I've been counting that as bad son. Though I did pick up, and I listened, and I said the right things about the boiler. I don't know what else I'm meant to have done. Maybe it's whether she sounds better at the end, and she never does really, she just stops because she's tired or the kettle's boiled.",
+      "reply": "If her sounding better isn't something you can make happen, what is it you are holding yourself responsible for on those calls?",
+      "event": null,
+      "flags": [],
+      "appIn": 1589
+    },
+    {
+      "reflection": "I don't know. Her not being on her own with it, maybe. Like if I'm not on the line then she's sat in that house with the boiler and nobody to say it to. Which sounds daft when I put it like that because she's got neighbours and she goes to church Sundays. I think I'm meant to be what dad was and I'm not, I'm doing it from two hours away with a pile of marking.",
+      "reply": "When you think of being \"what dad was\" from two hours away, whose expectation is that: hers, or yours?",
+      "event": null,
+      "flags": [],
+      "appIn": 1720
+    }
+  ],
+  "ending": "set_down",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.00806,
+  "usdPerson": 0.02479,
+  "seconds": 34
+}

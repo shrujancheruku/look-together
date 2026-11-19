@@ -1,0 +1,57 @@
+{
+  "problem": "purpose",
+  "persona": "pushback",
+  "run": 1,
+  "fate": {
+    "kind": "set_down",
+    "at": 5
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What does it look like when someone has truly figured it out?",
+  "premise": "Other people's apparent career stability means they have solved how to live.",
+  "pairs": [
+    {
+      "reflection": "idk, that's kind of the point? I only see the LinkedIn version. promotion posts, \"excited to announce\". my friend from uni is a senior consultant now and my mum brings her up like every call. so they look like they've figured it out\n\nbut why are you asking me that, I came here cos I don't know what to do. what do you think I should do",
+      "reply": "We are looking at what \"figured it out\" actually looks like to you, not deciding what you should do next. Leaving aside the LinkedIn posts and what your mum says, what does someone who has it figured out possess that you feel you lack?",
+      "event": null,
+      "flags": [],
+      "appIn": 1445
+    },
+    {
+      "reflection": "ok but that's still a question lol. I don't know what they have. like my friend Hannah just knows what she's doing, she's not sat there at 11pm googling \"career quiz\". she has a title and a path and she's going to be a director or whatever\n\nI had the bakery, which I actually liked, but you can't say that to anyone, mum would just go \"and where does that lead\". so I guess they have something that's allowed? idk. can you just tell me if changing jobs 4 times is bad or not",
+      "reply": "\"Something that's allowed.\" Leave aside whether four job changes is good or bad: who is it that decides what is allowed?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1627
+    },
+    {
+      "reflection": "my mum I guess? but not really just her. everyone. like if I said \"I'm going to go back to baking\" people would look at me like I'd had a breakdown. nobody's actually said that to me though, I just know\n\nand you've now dodged my question twice. is 4 jobs in 7 years bad or not? I just want someone to say. I'm not asking for a life philosophy",
+      "reply": "We can't tell you whether four jobs is bad or not, because that judgment only exists in someone's eyes. You say nobody has actually said baking would look like a breakdown, you \"just know\": what makes that judgment feel so certain if nobody has spoken it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1754
+    },
+    {
+      "reflection": "honestly cos of how mum reacted when I left the bakery for the recruitment job. she didn't say anything bad, she just went \"oh that's great, that's a much better company\" and sounded so relieved. and when I'd said I was at the bakery she did the polite \"oh how lovely\" voice. so I don't need her to say it\n\nand you still haven't answered me. 3 times now. if you can't say whether it's bad then what's the point of this, I could've just googled it",
+      "reply": "We seem to be caught on whether someone can tell you if four jobs is bad. We wondered whether underneath this is an assumption that because people like Hannah have an accepted career path, they have figured out how to live\u2014does that fit, or is it something else?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1938
+    }
+  ],
+  "ending": "set_down",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01231,
+  "usdPerson": 0.03368,
+  "seconds": 84
+}

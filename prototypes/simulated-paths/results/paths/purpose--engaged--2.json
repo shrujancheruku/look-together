@@ -1,0 +1,84 @@
+{
+  "problem": "purpose",
+  "persona": "engaged",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Where does the idea come from of what you are \"supposed to be doing\"?",
+  "premise": "There is a predetermined or correct purpose that a person is meant to find.",
+  "pairs": [
+    {
+      "reflection": "honestly probably my parents? they never say anything, they just ask how work is in that very polite way. and then linkedin, people posting about promotions and \"excited to announce\". i think i just assume there's a thing i'm meant to be on track for. like a ladder. but i couldn't tell you what the top of it is\n\nmy parents didn't really have a ladder, being doctors it was just one path and they did it. so maybe that's part of it",
+      "reply": "\"A thing I'm meant to be on track for.\" What tells you that such a track exists?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1470
+    },
+    {
+      "reflection": "hm. i guess nothing actually tells me? like nobody ever sat me down and said here's the track. it's more that everyone around me seems to be moving in the same direction and i'm not. the uni friends, the people on linkedin. even my cousin who's like 31 and already a director of something\n\nbut then the bakery, i wasn't thinking about any track there. i was just in it. which is annoying to admit because it's not like that was going anywhere",
+      "reply": "You say the bakery wasn't going anywhere, but you weren't thinking about a track. What does \"going somewhere\" mean to you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1605
+    },
+    {
+      "reflection": "hm. i think it means a title going up? or more money, or people being impressed when you say what you do. the bakery was 5am starts and i was on like minimum wage plus i couldn't really say \"i work at a bakery\" at my parents' friends' dinners without it going quiet\n\nbut that's more about how it sounds than what it was like, isn't it. i didn't hate it. i think i just never told anyone i didn't hate it",
+      "reply": "If the track is about how it sounds to other people, what is it that you actually want from what you do?",
+      "event": null,
+      "flags": [],
+      "appIn": 1747
+    },
+    {
+      "reflection": "i don't know, that's the hard bit. like when i try to answer it my brain goes straight to what sounds good. \"i want to grow\" \"i want impact\" which is just linkedin again\n\nthe bakery thing, i liked that you could see what you'd done by 8am. there were loaves. someone bought one. at marketing i genuinely can't tell you what i made this week\n\nmaybe that's it? idk. it sounds small though",
+      "reply": "\"It sounds small.\" Who is it small to?",
+      "event": null,
+      "flags": [],
+      "appIn": 1878
+    },
+    {
+      "reflection": "to my parents i guess. and the dinner people. but when i actually think about it my mum has never said anything bad about the bakery, she just went \"oh\" kind of flat when i told her i was leaving marketing before, not even the bakery. so i dunno if i'm making up what they think\n\nalso small to me maybe. which is weird because i'm the one who liked it",
+      "reply": "You say it might be small to you, even though you liked it. What makes loaves of bread by 8am feel smaller than a title that sounds good to dinner people?",
+      "event": null,
+      "flags": [],
+      "appIn": 1979
+    },
+    {
+      "reflection": "hm. because no one posts about it? like nobody does \"excited to announce i made 60 loaves today\". it doesn't have a word for how big it is, a title does\n\nalso i think i was taught that if it's something you could do without a degree then it's not really a career. which is a bit rich because i've got a degree and i can't tell you what i made this week\n\nnot sure that's an answer",
+      "reply": "If a career is measured by having a title to announce, what is work that doesn't need announcing?",
+      "event": null,
+      "flags": [],
+      "appIn": 2121
+    },
+    {
+      "reflection": "hm. i think maybe it's just work. like the stuff that has to happen whether anyone claps or not? the baker before me did the same 5am thing for years and nobody ever posted about that. but the bread was still there\n\ni dunno why that feels like a weird thing to say about a job i keep calling small. like if the bread matters then how is it small\n\nanyway i keep doing that, saying it's fine and then undoing it",
+      "reply": "\"If the bread matters then how is it small.\" What is it that undoes that for you?",
+      "event": null,
+      "flags": [],
+      "appIn": 2248
+    },
+    {
+      "reflection": "i think it's the dinner thing. like the second i picture saying it out loud to someone, the bread stops mattering and it's just \"she works at a bakery\" and the quiet. so it's not that i stop believing the bread matters, it's that i start hearing it in their voice\n\nwhich is stupid because i'm not even at a dinner, i'm just sat here on my phone\n\nalso my cousin. he'd say something nice about it probably and i'd still hear it as being nice about it if that makes sense",
+      "reply": "When you hear work in your own voice instead of theirs, what gives it its size?",
+      "event": null,
+      "flags": [],
+      "appIn": 2394
+    },
+    {
+      "reflection": "hm. in my own voice i think it's just like, did it get done and was it good. the loaves were either good or they weren't and i knew which. i could tell by the crust, the sound when you tap the bottom\n\nthat's weirdly specific sorry. but i can't do that with marketing, there's no tap the bottom. i just wait for someone to say \"nice\" in a meeting\n\nso maybe size is just whether i can tell myself if it was good? without anyone else",
+      "reply": "When work has its own test like the sound of tapping the bottom, what does that leave of the idea that you were supposed to be somewhere else by now?",
+      "event": {
+        "type": "done",
+        "openQuestion": "When work has its own test like the sound of tapping the bottom, what does that leave of the idea that you were supposed to be somewhere else by now?"
+      },
+      "flags": [],
+      "appIn": 2529
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.02999,
+  "usdPerson": 0.05722,
+  "seconds": 179
+}

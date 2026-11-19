@@ -1,0 +1,103 @@
+{
+  "problem": "mother",
+  "persona": "drifting",
+  "run": 1,
+  "fate": {
+    "kind": "reject",
+    "at": 4
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "Who decided that dreading a call makes someone a \"bad son\"?",
+  "premise": "Dreading these calls or struggling with them makes you a failing son.",
+  "pairs": [
+    {
+      "reflection": "I don't know, nobody said it out loud. It's just how it feels. Tonight she rang at ten past six, I'd literally just got in, hadn't even taken my coat off. First twenty minutes was the boiler man not turning up, then the neighbour's hedge, then her knee again. I said \"mm\" and \"right\" about forty times. Then she says \"well I won't keep you\" like I'd been the one dragging it out.\n\nMeanwhile Hannah rings once a month from Lisbon, talks for ten minutes about the weather and the kids, and mum goes on for days about how lovely it was to hear from her. Hannah's a saint apparently. I do this every single day and it's just what I'm supposed to do.\n\nI'm not saying I want a medal. But I sat in the car outside my flat for five minutes afterwards before I could go in. That's not normal is it.",
+      "reply": "Sitting in the car for five minutes before going in\u2014what felt not normal about that?",
+      "event": null,
+      "flags": [],
+      "appIn": 1563
+    },
+    {
+      "reflection": "I don't know, just that I wasn't angry or anything, I just didn't want to walk in. My hands were on the wheel and I was looking at the bins. Like I needed a minute to be a person again before I could go in. Then I felt rubbish for that as well because she's sat in that house on her own and I'm sat outside mine because I can't face being on the phone to her.\n\nDad used to take most of it, to be fair. She'd go on at him in the kitchen and he'd say \"yes love\" and carry on with the crossword. I never realised that was what he was doing. Now it all comes to me down the phone and there's no crossword.\n\nHannah said last month I should \"just tell her to ring less\". Easy from Lisbon. She doesn't get the calls that go wrong, when mum goes quiet and says \"no, no, you get on.\"",
+      "reply": "\"Like I needed a minute to be a person again before I could go in.\" What feels like it stops you being a person on those calls?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1792
+    },
+    {
+      "reflection": "I think it's that I'm not allowed to be anything on them. I just have to be there and say mm. If I said what I actually thought, which is mostly \"can we talk about something else\", it'd sound like I was having a go at her. Last Christmas I did try once, I said maybe the boiler thing could wait till the morning and she went completely silent and then said \"I'm sorry I'm such a burden.\" Then I spent the next hour on the phone apologising. So now I just say mm.\n\nAlso I teach all day, Year 9 for most of it, and I'm basically listening to people all day. By six I've got nothing left. Marking tonight till gone nine and I've still got the mocks to do.",
+      "reply": "\"I just have to be there and say mm.\" Who says you are not allowed to be anything else on that call?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1995
+    },
+    {
+      "reflection": "Nobody says it. Mum's never told me to shut up and listen, that's not what she's like. You're making it sound like she's some sort of tyrant and she isn't, she's lonely. That's not what I said.\n\nI just know that if I say anything other than mm it goes wrong. Like at Christmas. That's not her forbidding me, that's just what happens.\n\nAnd last Sunday she did ask how work was, which she hardly ever does, and I said fine, busy, and she said \"good, good\" and went straight back to the boiler. I don't even think she heard me. But I'm not having a go at her for that either, so I don't know why you're asking who's stopping me.",
+      "reply": "If no one is forbidding you, what tells you it has gone wrong when she goes quiet?",
+      "event": null,
+      "flags": [],
+      "appIn": 2201
+    },
+    {
+      "reflection": "I don't think you've got me right. You keep making it sound like I'm sat there working out what she's thinking, and I'm not. She goes quiet and it's horrible. That's all it is. There's no \"telling me\" anything.\n\nThe last time she did it was a Thursday. I'd said I couldn't do the weekend because of the mocks and she just went \"no, no, you get on.\" Then nothing for about ten seconds, and I could hear the telly on in the background. I ended up saying I'd pop over Saturday morning, and then I had to mark in the car park of her Tesco because I'd lost the whole day.\n\nHannah said \"well you didn't have to go.\" Brilliant. Thanks Hannah.\n\nAnyway I've got about forty books left and it's gone ten.",
+      "reply": "When that ten seconds of quiet happens on the line, what feels like it forces you to step in and fix it?",
+      "event": null,
+      "flags": [],
+      "appIn": 2416
+    },
+    {
+      "reflection": "Nothing forces me. That's another one where you've made it sound like I'm deciding something in my head, and I'm not. It's ten seconds of her sat there with the telly on and I say something to make it stop. Anyone would.\n\nI didn't even want to go Saturday. She had the kettle on when I got there and the first thing she said was the boiler man still hadn't rung back. I sat there two hours. Then she gave me a bag of those little satsumas she knows I don't really like, and said \"you look tired.\" Which, yeah.\n\nHannah sent a message Sunday asking how it went. I said fine. Didn't see the point in saying anything else.\n\nRight, forty books. I'm doing ten and going to bed.",
+      "reply": "We seem to be missing what is happening here, as if there is a calculation where there isn't one. In those ten seconds of quiet, what is the feeling that makes stepping in the only thing to do?",
+      "event": {
+        "type": "angle",
+        "kind": "name"
+      },
+      "flags": [],
+      "appIn": 2620
+    },
+    {
+      "reflection": "I don't know. You keep asking what the feeling is like it's a thing I can point at, and it isn't. It's just horrible. That's not some big feeling, it's a telly on in an empty room.\n\nDad's chair is still by the window, did I say that? She hasn't moved it. Hannah suggested she get a cat. A cat. Mum said \"I'm not having hair on the settee\" and that was the end of it.\n\nI'm not sat there feeling guilty in some special way, I think you've got that wrong too. It's more that I'm knackered and she's on her own and one of us has to say something.\n\nAnyway. Thirty-eight books.",
+      "reply": "Leave the reasons aside for a moment. In those ten seconds with the telly in an empty room, what would happen if you just didn't speak?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 2839
+    },
+    {
+      "reflection": "I don't know. Nothing, probably. She'd just sit there and the telly would carry on. I've never left it long enough to find out and I'm not sure why you'd want me to. That's not me being scared of it, I just don't see the point of letting her sit there.\n\nDad did it. He'd just not answer and do the crossword and she'd carry on regardless. But that was him in the same room, she could see he was there. On the phone it's just nothing.\n\nI'm not trying to be difficult but you keep asking like there's something under it and I think it's just that I'm tired. Hannah would say I'm overthinking it too.\n\nThirty-six books now. The one on top has written \"Macbeth is a bad man because he is bad\" so that's where I'm at.",
+      "reply": "We wondered whether underneath this dread is a sense that struggling with these calls makes you a failing son\u2014does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 3079
+    },
+    {
+      "reflection": "No, that's not it. I'm not sat there thinking I'm a failing anything. I'm knackered. You've got me down as some bloke who's beating himself up and I'm just trying to get through the calls.\n\nMum rang again at half eight, which she never does. I let it go to voicemail and then felt rubbish and then she didn't even leave one. So who knows. I'll ring her at lunch tomorrow, she'll say she was just checking the boiler man had been in touch.\n\nThirty-five. Someone has written \"Lady Macbeth is a bit much\" and honestly fair enough.",
+      "reply": "When she rings and you are already worn out, what is it that makes not answering feel impossible to sit with?",
+      "event": {
+        "type": "done",
+        "openQuestion": "When she rings and you are already worn out, what is it that makes not answering feel impossible to sit with?"
+      },
+      "flags": [],
+      "appIn": 3252
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "name",
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.03636,
+  "usdPerson": 0.09857,
+  "seconds": 275
+}

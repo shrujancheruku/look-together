@@ -1,0 +1,111 @@
+{
+  "problem": "promotion",
+  "persona": "drifting",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "i mean it's not like i think that exactly its more that the guy they gave it to last time tom started like 3 years after me and i literally trained him on the routing system. he still messages me when something breaks. and the one before that was priya who is fine i guess but she's always in the vp's ear at lunch and i just eat at my desk because theres always something. my dad always said the work speaks for itself so i just kept doing it. nine years. i did the whole q3 reconciliation by myself when the other two were out and nobody even said anything just moved on to the next thing",
+      "reply": "You kept doing the work because you were told it speaks for itself. When nobody says anything, what do you hear the silence saying?",
+      "event": null,
+      "flags": [],
+      "appIn": 1496
+    },
+    {
+      "reflection": "i dont know. honestly i think it says they just assume ive got it handled. like last month my manager said \"i never have to worry about your side\" and i didnt know if that was a compliment or what. and then the week after he put tom on the new carrier rollout and i found out in the standup. i didnt say anything. i just wrote down the dates",
+      "reply": "\"I never have to worry about your side.\" How does being dependable turn into being passed over?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1607
+    },
+    {
+      "reflection": "i mean tom gets the stuff that people will see right. carrier rollout is the thing the vp asks about in the all hands. my stuff is the stuff that doesnt break so nobody asks about it. and i keep it that way on purpose which is kind of dumb when i say it. last year the audit went through with zero findings and my manager just forwarded the email with no comment, tom had a rollout hiccup in march and got a whole meeting about it, like attention. anyway i dont know. my partner says just go somewhere else but its not like other places are gonna be different",
+      "reply": "If getting passed over isn't about whether you're good enough, what is it about?",
+      "event": null,
+      "flags": [],
+      "appIn": 1752
+    },
+    {
+      "reflection": "i dont know what its about exactly. visibility i guess but that sounds like a thing people say. like priya literally just talks to people and it works for her and i cant do that, i tried once at the holiday thing and it felt so fake. my manager is not a bad guy he just doesnt think about it. he had me cover for dev when he went on leave and didnt put it anywhere. so when review time comes theres nothing on paper. i had to remind hr myself that i did it and they were like oh ok",
+      "reply": "If the silence doesn't mean you aren't good enough, what makes you still measure your worth by whether they put it on paper?",
+      "event": null,
+      "flags": [],
+      "appIn": 1887
+    },
+    {
+      "reflection": "i mean its not that i need it on paper for me. i know what i did. its just that review time is the only time anyone looks at what i did and if its not written down it didnt happen to them. like when i covered for dev i did his job and mine for six weeks and had to stay til 8 most nights and my partner was pretty annoyed about that actually. and then hr says oh ok. so what was i supposed to do just not do it. tom would have made a whole thing about it in the standup",
+      "reply": "You say you know what you did, yet you wait for them to write it down to make it count. What does their recognition give you that knowing what you did doesn't?",
+      "event": null,
+      "flags": [],
+      "appIn": 2034
+    },
+    {
+      "reflection": "i dont know maybe it just makes it real? like my dad worked at the same plant thirty years and when he retired they gave him a clock and a sheet cake and he was so proud of that clock. which is kind of sad now that i say it. anyway when i did the dev thing i kept thinking somebody will say something at the end and then my manager just said thanks for holding it down and went to a meeting. and i went home and my partner asked how it went and i said fine",
+      "reply": "If your own knowing already holds what you did, what makes another person's notice the thing that would make it real?",
+      "event": null,
+      "flags": [],
+      "appIn": 2179
+    },
+    {
+      "reflection": "i dont know i guess because knowing it by myself doesnt get me anywhere. like i could know all day that i did q3 and dev and the audit and its just me knowing. my dad had the clock but he also had guys at the plant who knew him, i dont really have that here. priya has the vp, tom has my manager, i have a spreadsheet lol. and my partner keeps saying i should just tell my manager what i want but its not like he asked. he just says i never have to worry about your side and goes back to his laptop",
+      "reply": "You say knowing it by yourself doesn't get you anywhere. What are you waiting for them to notice that you haven't yet brought to them yourself?",
+      "event": null,
+      "flags": [],
+      "appIn": 2326
+    },
+    {
+      "reflection": "i mean i guess the stuff i did but they should already know that. its not like its a secret, its in the tickets and the audit email went to everybody. and i did tell hr about dev and it still just went oh ok. so i dont know what else i would be telling him. like hey i did my job? tom does that every week basically and people eat it up. last time i brought something up in a one on one he said great and then we talked about the carrier thing for twenty minutes",
+      "reply": "We seem to be circling the same place. If they already have the tickets and the audit email, what is it you actually want them to see?",
+      "event": {
+        "type": "angle",
+        "kind": "name"
+      },
+      "flags": [],
+      "appIn": 2469
+    },
+    {
+      "reflection": "i dont know what i want them to see. that im not just the person who keeps things from breaking maybe. like when stuff works nobody sees it and when its fixed nobody remembers it was broken. tom breaks something and everybody knows his name. anyway my manager did say once in like 2022 that i should think about the team lead thing and then nothing happened and i never brought it up again. so idk",
+      "reply": "Leave the tickets and the promotions aside for a moment. When you think of being seen here, what is it you want them to see?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 2590
+    },
+    {
+      "reflection": "i dont know like what do i want them to see. i guess that i was there the whole time? that i didnt just show up when it got good. tom wasnt even here for the 2019 migration when everything was on spreadsheets and i basically lived here for a month. nobody on that team even works here anymore except me and the vp was like two years in. and the team lead thing in 2022 honestly i was kind of waiting for him to come back to it. he said it once and i thought ok he knows. then priya got the other thing and i just kept my head down",
+      "reply": "We wondered whether underneath this is a sense that being passed over means you yourself aren't seen as good enough, even when you know how much you've held up. Does that fit, or is it something else?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2754
+    },
+    {
+      "reflection": "i mean kind of? its not that i think im bad at it. i know im not bad at it. its more like they know i can do it so they dont have to do anything about it. like the 2022 thing, he said it once and i waited and he never came back to it and i never asked because if i have to ask then what was the point of him saying it. tom would have asked the next day probably. anyway my partner got promoted last year after like two years at her place and she just kept sending her boss little updates every friday and i thought that was so cringe but she got it",
+      "reply": "If having to ask makes being recognized feel pointless, what would it mean to let someone see what you want before they offer it to you?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If having to ask makes being recognized feel pointless, what would it mean to let someone see what you want before they offer it to you?"
+      },
+      "flags": [],
+      "appIn": 2937
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "name",
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.04064,
+  "usdPerson": 0.08301,
+  "seconds": 257
+}

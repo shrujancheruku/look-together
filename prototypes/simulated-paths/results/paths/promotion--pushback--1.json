@@ -1,0 +1,116 @@
+{
+  "problem": "promotion",
+  "persona": "pushback",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What connects how much time someone has been there to who gets the promotion?",
+  "premise": "Tenure at a company should give someone priority for advancement over newer colleagues.",
+  "pairs": [
+    {
+      "reflection": "i mean it shouldnt connect thats the point. nine years should count for something. the last guy who got it was there like two years and he talks a lot in meetings and thats about it. i do the actual work. so are you saying its about tenure or what because i dont get what youre asking",
+      "reply": "\"Nine years should count for something.\" What is the something you feel it should count for?",
+      "event": null,
+      "flags": [],
+      "appIn": 1427
+    },
+    {
+      "reflection": "it should count for being trusted i guess. like they know i get things done and nothing falls through. when the system went down last march i was the one who fixed it and stayed til 2am. everyone knows that. honestly what would you do here, i came here for advice not more questions",
+      "reply": "There is no advice here to give. If being trusted to get things done is already proven, what do you feel the promotion itself would mean?",
+      "event": null,
+      "flags": [],
+      "appIn": 1513
+    },
+    {
+      "reflection": "ok that kinda annoyed me. \"no advice to give\" great. thats what i came for\n\nthe promotion would mean they see it. that all the late nights counted for something. and more money obviously, im not doing this for free. but mostly that someone looked at what i do and said yeah thats worth more",
+      "reply": "\"That someone looked at what I do and said yeah that's worth more.\" Without that promotion, how do you know what your work is worth?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1612
+    },
+    {
+      "reflection": "i mean i know what its worth. i fix things nobody else can and nothing falls through. thats not a feeling its just true. the problem is nobody with a say in it seems to count that\n\nor are you saying i only think its worth something because i want them to say so? because thats not it",
+      "reply": "If your knowing of its worth doesn't depend on them saying so, what is it that still needs them to count it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1712
+    },
+    {
+      "reflection": "because they decide the pay and who moves up. thats not me needing a pat on the head its just how a job works. i can know im good and still be stuck at the same level\n\nhonestly this feels like youre turning it around on me. the guy who got it two years in didnt have to wonder what his work was worth\n\nso do i say something to my manager or not. thats all i want to know",
+      "reply": "Whether to talk to your manager is for you to decide. If you leave aside what the other person got, what is it you actually want your manager to know?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1831
+    },
+    {
+      "reflection": "i mean i want them to know i want it. which sounds dumb to say out loud but ive never actually told anyone i want the next level. i just assumed it was obvious from how much i do\n\nand i guess nobody has ever said to me what they think im missing either. i dont know if thats because theres nothing or because nobody wants to say it\n\nstill dont know if i should say something though",
+      "reply": "\"I just assumed it was obvious from how much I do.\" What made it feel as though doing the work was the same as asking for the role?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1953
+    },
+    {
+      "reflection": "i mean my dad always said the work speaks for itself and it did for him. he was at the same plant thirty years and nobody ever had to ask him for anything. so i guess i figured thats just how it goes\n\nbut he also never moved up come to think of it. not saying thats related. anyway that doesnt answer if i should say something",
+      "reply": "\"He also never moved up come to think of it.\" When you look at keeping quiet and letting the work speak, what has that actually brought you?",
+      "event": null,
+      "flags": [],
+      "appIn": 2062
+    },
+    {
+      "reflection": "ok so what its brought me is nine years and two promotions i didnt get. i get it. youre going to say its not working\n\nbut its not like i wasnt doing anything wrong, i was doing the job. i dont think its fair that i have to go campaign for something that i already earned. and what if i say it and they say no or say what i think theyre missing and its something i cant fix\n\nSET_DOWN\n\nWait \u2014 output only the Reflection text. Corrected:\n\nok so what its brought me is nine years and two promotions i didnt get. i get it. youre going to say its not working\n\nbut i wasnt doing anything wrong, i was doing the job. i dont think its fair that i have to go campaign for something i already earned. and what if i say it and they tell me what theyre missing and its something i cant fix",
+      "reply": "If asking means risking hearing what's missing, what has keeping silent been protecting?",
+      "event": null,
+      "flags": [],
+      "appIn": 2278
+    },
+    {
+      "reflection": "protecting nothing. im not hiding from anything, i just dont think i should have to beg\n\ni guess if they say what's missing then its about me and not just politics. thats not nice to hear after nine years. but thats not fear its just not wanting to hear something dumb\n\nyou keep asking me stuff like you know the answer. if you think i should just ask then say that",
+      "reply": "We don't have an answer. When you say you shouldn't have to beg for what you already earned, what makes you feel the promotion was already earned?",
+      "event": null,
+      "flags": [],
+      "appIn": 2381
+    },
+    {
+      "reflection": "because ive done the job at that level for years already. last two reviews were exceeds expectations. i train the new people, the guy who got it last year i literally onboarded. thats what earned means to me\n\n\"we dont have an answer\" ok fine. but then why keep asking like theres one\n\nand yeah nobody ever told me i had it coming if thats where this is going. no one promised me anything. doesnt change that i did the work",
+      "reply": "If no one promised you anything and doing the work doesn't guarantee being promoted, what is the link you feel between doing the work and having earned the promotion?",
+      "event": null,
+      "flags": [],
+      "appIn": 2514
+    },
+    {
+      "reflection": "because thats how its supposed to work? you do the job well and you move up. if doing the work doesnt count for earning it then what does. talking in meetings?\n\ni know that sounds like im describing the guy who got it and yeah maybe. but i dont want to become someone who sells herself like that. thats not what i'm good at\n\nstill havent got an answer on whether to say something to my manager",
+      "reply": "We wondered whether underneath this is a sense that the time and effort put in ought to be enough on its own, without having to make yourself visible. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2640
+    },
+    {
+      "reflection": "kinda but not really. its not that effort alone should be enough, ive got results. the march thing, the reviews, people i trained. thats visible, i just dont do the talking in meetings thing\n\nok maybe i did figure somebody would just notice without me saying anything. fine. but that still sounds like youre making it my fault when the people deciding are the ones not paying attention\n\nso is that a yes on telling my manager or not",
+      "reply": "What would it mean for your work if being seen required asking for what you want?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would it mean for your work if being seen required asking for what you want?"
+      },
+      "flags": [],
+      "appIn": 2775
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.04152,
+  "usdPerson": 0.09382,
+  "seconds": 369
+}

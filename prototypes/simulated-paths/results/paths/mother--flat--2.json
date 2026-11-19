@@ -1,0 +1,102 @@
+{
+  "problem": "mother",
+  "persona": "flat",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "idk, dreading it i guess",
+      "reply": "Let's go slowly. What connects dreading a call with being a bad son?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1365
+    },
+    {
+      "reflection": "because a good son would want to talk to her",
+      "reply": "Where does the idea come from that wanting to talk is what makes a son good?",
+      "event": null,
+      "flags": [],
+      "appIn": 1399
+    },
+    {
+      "reflection": "i dunno, just always thought so",
+      "reply": "We wondered whether underneath this is an assumption that dreading these calls is proof you are failing as a son. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1429
+    },
+    {
+      "reflection": "yeah kind of. i still pick up every time though",
+      "reply": "You pick up every time, yet still feel like a failing son. What is deciding that the feeling of dread matters more than the act of picking up?",
+      "event": null,
+      "flags": [],
+      "appIn": 1477
+    },
+    {
+      "reflection": "idk. picking up feels like the bare minimum",
+      "reply": "\"The bare minimum.\" Who set the standard for what counts as enough?",
+      "event": null,
+      "flags": [],
+      "appIn": 1523
+    },
+    {
+      "reflection": "me i guess. dad never said anything about it",
+      "reply": "If you set the standard yourself, what makes picking up every single day only the \"bare minimum\"?",
+      "event": null,
+      "flags": [],
+      "appIn": 1554
+    },
+    {
+      "reflection": "because she's on her own and its every day",
+      "reply": "If taking the call every day is the minimum, what would it actually take to count as enough?",
+      "event": null,
+      "flags": [],
+      "appIn": 1591
+    },
+    {
+      "reflection": "not sure. being there i guess",
+      "reply": "\"Being there.\" When you say being there, what is it that cannot be done while also dreading the call?",
+      "event": null,
+      "flags": [],
+      "appIn": 1624
+    },
+    {
+      "reflection": "idk. maybe nothing. just feels like it should",
+      "reply": "If a friend answered every single day while dreading it, would you see them as a failing son?",
+      "event": {
+        "type": "angle",
+        "kind": "analogy"
+      },
+      "flags": [],
+      "appIn": 1664
+    },
+    {
+      "reflection": "no. probably not. i'd say hes doing loads",
+      "reply": "You would say a friend is doing loads. What makes you hold yourself to a completely different standard?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What makes you hold yourself to a completely different standard?"
+      },
+      "flags": [],
+      "appIn": 1705
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "slow",
+    "reveal",
+    "analogy"
+  ],
+  "refused": [],
+  "usdApp": 0.03446,
+  "usdPerson": 0.03335,
+  "seconds": 266
+}

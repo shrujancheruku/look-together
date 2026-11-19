@@ -1,0 +1,37 @@
+{
+  "problem": "promotion",
+  "persona": "flat",
+  "run": 1,
+  "fate": {
+    "kind": "ask_to_stop",
+    "at": 2
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What leads you from being passed over to wondering if you are \"not good enough\"?",
+  "premise": "Missing out on a promotion is a verdict on your personal adequacy.",
+  "pairs": [
+    {
+      "reflection": "because they picked someone newer. what else would it mean",
+      "reply": "\"What else would it mean.\" Does choosing someone newer have to mean a verdict on your worth, or could it mean something else entirely?",
+      "event": null,
+      "flags": [],
+      "appIn": 1377
+    },
+    {
+      "reflection": "idk maybe. im tired though gonna stop here",
+      "reply": "We can stop here. When you come back to it, what ties being passed over for someone newer to whether you are good enough?",
+      "event": {
+        "type": "done",
+        "openQuestion": "When you come back to it, what ties being passed over for someone newer to whether you are good enough?"
+      },
+      "flags": [],
+      "appIn": 1420
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.00762,
+  "usdPerson": 0.01083,
+  "seconds": 26
+}

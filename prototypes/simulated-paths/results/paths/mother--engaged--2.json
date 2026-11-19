@@ -1,0 +1,54 @@
+{
+  "problem": "mother",
+  "persona": "engaged",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know really. I think it's that I'm counting the minutes. She's talking about her knee or the neighbour or whatever it is and I'm looking at the clock on the cooker thinking when can I say I have to go. And a decent son wouldn't be doing that. Dad would have just listened, he was good at that. He'd say \"mm\" and carry on with the crossword.\n\nMaybe it's not the calls. It's that I'm there on the phone and not really there.",
+      "reply": "\"Not really there.\" When you are looking at the clock on the cooker, what tells you that wanting to get off the phone is proof of being a bad son, rather than just wanting to get off the phone?",
+      "event": null,
+      "flags": [],
+      "appIn": 1475
+    },
+    {
+      "reflection": "I don't know. Because she's on her own and I'm the one who's near enough. If I wanted to get off the phone with a friend that'd just be normal. With her it feels like I'm choosing me over her. Which I suppose I am, a bit, at ten to eight when I've still got marking to do.\n\nDad never looked at the clock. Or if he did I never saw it.",
+      "reply": "\"Choosing me over her.\" When you want time for yourself at ten to eight, what makes that a failure of care rather than simply having marking to do?",
+      "event": null,
+      "flags": [],
+      "appIn": 1621
+    },
+    {
+      "reflection": "I don't know that it is, when I put it like that. She's never said anything about me getting off the phone. If I say I've got to go she says \"oh of course, you get on,\" in a bright voice, and that's the bit I can't stand. It's the bright voice. I'd rather she was annoyed.\n\nThen I put the phone down and the kitchen's very quiet and I do the marking and don't take any of it in.",
+      "reply": "When she uses that bright voice and the kitchen goes quiet, what is it you hear in that quiet?",
+      "event": null,
+      "flags": [],
+      "appIn": 1769
+    },
+    {
+      "reflection": "I don't know. Her putting it on for me, I think. She's sitting in that house with the telly on and she's decided I'm not to know it's bad. So she does the bright voice and I go along with it. Neither of us says anything.\n\nDad would have heard it. He'd have gone and put the kettle on or something.\n\nI don't think it's guilt exactly, in the quiet. It's more that I've left her there and I've let her say it's fine.",
+      "reply": "\"Let her say it's fine.\" In that quiet moment, are you hearing her loneliness, or your conviction that you were meant to fix it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1918
+    },
+    {
+      "reflection": "Both probably. I don't know that I think I can fix it. I know I can't, she's not going to stop missing him because I ring. But I still feel like I should be doing something and all I do is say \"right, yeah\" and look at the clock.\n\nMaybe I just wish she'd say it. Even once. Then I'd know what I was meant to be doing. Though I've never said anything either, so I can't really go on about her.\n\nIt's gone ten. I've still got the year 9 books.",
+      "reply": "If neither of you says it, what would it mean if these calls are simply hard, rather than proof of a failing son?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If neither of you says it, what would it mean if these calls are simply hard, rather than proof of a failing son?"
+      },
+      "flags": [],
+      "appIn": 2083
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.01537,
+  "usdPerson": 0.03027,
+  "seconds": 132
+}

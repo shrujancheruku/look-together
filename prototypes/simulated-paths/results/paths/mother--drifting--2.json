@@ -1,0 +1,74 @@
+{
+  "problem": "mother",
+  "persona": "drifting",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know, honestly. My sister rings once a month from Lisbon and mum tells everyone how wonderful she is, how she always makes time. Meanwhile I'm the one doing every single day and nobody says anything about that. Tonight she rang at about 7 while I was in the middle of marking year nines' essays and I took it because if I don't pick up she rings again and then she's worried something's happened. Forty minutes. The boiler, the neighbour's bins, her knee, and then dad's chair again. She hasn't moved it and she won't. I said \"mm\" about fifteen times. Then I hung up and sat there with the essays and couldn't read any of them.",
+      "reply": "You picked up, listened for forty minutes, and sat there unable to read after. What in that made you feel like a bad son?",
+      "event": null,
+      "flags": [],
+      "appIn": 1515
+    },
+    {
+      "reflection": "I don't know that it was any one bit. I was looking at the clock on the cooker the whole time, I could see it through the door, and every time I looked it was like 7:20, 7:25, and she was still on the bins. The neighbour's bins. Who cares about the bins. And then she said \"I know you're busy, love, I won't keep you\" and then kept going for another quarter of an hour. That's what she always says.\n\nI went up there two weekends ago and she was fine, honestly. She made a roast, she was chatty, she was laughing at something on the telly. Then I get in the car and by the time I'm home she's ringing to say I left my scarf. So it's not like she's falling apart. Or maybe she is and I just don't see it, I don't know. Rachel would say I'm being hard on her. Rachel's in Lisbon with her lovely flat and she gets to be the nice one.\n\nAnyway the essays were all about whether Macbeth is responsible for what he does, which is a bit funny now I think about it. I read the same paragraph four times and gave up.",
+      "reply": "\"Who cares about the bins.\" While she is talking about them and you are watching the clock, what is it you feel you should be feeling instead?",
+      "event": null,
+      "flags": [],
+      "appIn": 1820
+    },
+    {
+      "reflection": "I don't know. Sympathetic I suppose. Like I should be sitting there going poor mum, her knee, instead of counting down. Dad would have just listened to her. He'd be in the other room with the radio on going \"yes love, yes\" and she never needed anyone else to say anything. That's the thing, he took all of it and I don't think he even noticed he was doing it. Now it's all coming at me down the phone.\n\nRachel came home for the funeral and was there nine days and mum still brings it up. Nine days. I was there every weekend for two months sorting the paperwork and the bank and the car and nobody brings that up. I'm not saying I want a medal. But it's a bit much.\n\nAnyway I've got a pile of year nines still to do and it's gone ten.",
+      "reply": "Leave Rachel and the paperwork aside for a moment. When you aren't feeling sympathetic while listening to her, why does that mean you are failing?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 2045
+    },
+    {
+      "reflection": "I don't know, because it's what you do isn't it. She's on her own in that house. Her knee's bad and she's sixty-eight and she's got nobody else to say it to. So if I'm sat there thinking who cares about the bins then what kind of person does that make me.\n\nI did snap at her once. Back in the summer. She was on about the boiler man for the third time and I just said \"mum, you've told me\" and it came out sharper than I meant. She went completely quiet and then said \"right, I'll let you go then\" in that voice. And I stayed on another twenty minutes to make up for it, so that was worse really. I came off that one feeling sick.\n\nRachel never has that because she's only on for ten minutes once a month and mum's on best behaviour. Sorry, I know you said leave her out. It's just it's the same thing.\n\nAnyway I've still got about eleven of the year nines to do.",
+      "reply": "We wondered whether underneath this is a sense that the emotional toll of these calls is proof that you are failing as a son. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2314
+    },
+    {
+      "reflection": "Maybe. I don't know. It's not that I think I'm failing exactly, I do ring her, I go up, I sort everything. It's more that I come off the phone feeling like I've been got at, and then I feel bad for feeling that, because she's only lonely.\n\nShe posted the scarf on Tuesday by the way. I said just leave it, I'll get it next time, and she said it was no trouble, she'd already been to the post office. Which is two miles with that knee. So now I've got a scarf I didn't need and I feel awful about it. I rang to say thanks and that was another thirty-five minutes.\n\nI think what gets me is I can't say any of it. If I said it's a lot, mum, she'd go quiet again like in the summer, and then I'd be the one who made her cry on the phone. So I just say mm.\n\nAnyway it's quarter past ten and I've done four of the year nines.",
+      "reply": "\"I feel bad for feeling that, because she's only lonely.\" If listening to her costs you something, does that make what you feel wrong?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 2588
+    },
+    {
+      "reflection": "I don't know. I mean when you put it like that no, probably not. But it doesn't feel like that at the time. At the time it feels like I'm being a bit of a git.\n\nMum's friend Pauline rang me last month, out of nowhere, got my number from mum. Said \"your mum's so proud of you, she says you ring her every day.\" And I just stood in the kitchen going yeah, yeah, I do. She meant it nicely. But I came off that thinking, so everyone knows I ring every day, so I can't ever not. It's like a rota I never agreed to.\n\nAnd dad would've found it funny. He used to wink at me across the table when she got going on the neighbours. I think that's what I miss, someone to wink at. Now I'm sat there on my own looking at the cooker clock.\n\nAnyway. Seven year nines left. I'll finish them, I always do.",
+      "reply": "\"A rota I never agreed to.\" What would happen if being a good son didn't have to look like taking every call?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would happen if being a good son didn't have to look like taking every call?"
+      },
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 2841
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.02238,
+  "usdPerson": 0.05704,
+  "seconds": 131
+}

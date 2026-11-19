@@ -1,0 +1,72 @@
+{
+  "problem": "promotion",
+  "persona": "stuck",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "i dont know. they picked someone else so i guess it means they think theyre better than me. and i dont see how thats possible when i put in more hours than anyone",
+      "reply": "Leave the hours aside for a moment. When you say they think someone is \"better than me\", what does that \"better\" actually mean to you?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1399
+    },
+    {
+      "reflection": "i dont know what it means exactly. better i guess. like more capable or something. but the guy who got it last time cant even run the weekly planning without asking me how the system works",
+      "reply": "If he has to ask you how the system works, what makes his promotion a verdict on who is more capable?",
+      "event": null,
+      "flags": [],
+      "appIn": 1475
+    },
+    {
+      "reflection": "i dont know. maybe it isnt about capable then. but i dont know what else it would be about. he just seems to get picked and i dont get why",
+      "reply": "We wondered whether underneath this is an assumption that being passed over has to be a verdict on your capability and worth. Does that fit what you feel, or does it not fit?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1537
+    },
+    {
+      "reflection": "i guess it fits kind of. i mean if its not about being good enough then i dont know what it is and thats almost worse. at least if im not good enough i know what to fix",
+      "reply": "\"At least if I'm not good enough I know what to fix.\" What would it mean if this decision wasn't something about you to fix at all?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1621
+    },
+    {
+      "reflection": "i dont know. that its just out of my hands i guess. which doesnt feel better honestly. then theres nothing i can do about it",
+      "reply": "If seeing it as your fault gives you something you can fix, which part of you needs it to be about your worth?",
+      "event": null,
+      "flags": [],
+      "appIn": 1689
+    },
+    {
+      "reflection": "i dont really know what you mean by which part of me. its just that i work so hard and it doesnt go anywhere so i have to think its something. i guess im getting tired of going around on this",
+      "reply": "We can leave this here. If your hard work isn't a guarantee of being chosen, what is that effort actually for?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If your hard work isn't a guarantee of being chosen, what is that effort actually for?"
+      },
+      "flags": [],
+      "appIn": 1763
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.0202,
+  "usdPerson": 0.02479,
+  "seconds": 260
+}

@@ -1,0 +1,68 @@
+{
+  "problem": "purpose",
+  "persona": "drifting",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "Other people's external milestones mean they have achieved internal certainty.",
+  "pairs": [
+    {
+      "reflection": "honestly i think its just linkedin lol. like last week Hannah from my course posted that shes now \"head of partnerships\" at some startup and everyone's going \"so proud of you!!\" and i just sat there on the sofa eating cereal for dinner. shes 29 same as me\n\nand then my mum rang on sunday and did the thing where she goes \"and how's work?\" in that very polite voice. like she's asking about a patient. dad just goes \"mm\" in the background. neither of them have ever said anything bad about it, which is almost worse\n\nidk what im measuring. titles maybe? or that they stayed somewhere long enough to get one. i got to like 11 months at the recruitment place and just couldn't face another monday of cold calling people about jobs i wouldn't want either\n\nanyway Hannah also did two years at a bank first and hated it so its not like she was sure either but she doesn't post that bit",
+      "reply": "When you see a title like \"head of partnerships,\" what does it look like she has on the inside that you feel you're missing?",
+      "event": null,
+      "flags": [],
+      "appIn": 1568
+    },
+    {
+      "reflection": "idk like... confidence? she just seems like someone who walks into a room and people listen. i went to her birthday thing a few years ago and she was doing this whole speech thing, everyone was laughing, and i was in the corner with a cousin of someone talking about sourdough lol\n\nactually that was when i was at the bakery. i was up at 5 every day and it was honestly the only job where i didn't check the time. but i can't say that to anyone, like \"yeah i peaked at 26 making croissants.\" my uncle asked what i was doing then and i said \"food industry\" like it was something bigger\n\nanyway my manager now keeps saying we should \"think about my trajectory\" and i just nod. i've been there 10 months so you can see where this is going",
+      "reply": "You didn't check the time at the bakery, but told your uncle \"food industry.\" What made making croissants feel like it wasn't enough to say?",
+      "event": null,
+      "flags": [],
+      "appIn": 1775
+    },
+    {
+      "reflection": "idk its just that in my family everything has to sound like a thing. my cousin Anjali is a consultant (the actual hospital kind) and at christmas everyone does this round where they say what theyre up to and it's like \"registrar\" \"partner at a firm\" and then me. last year i said \"marketing\" and my aunt went \"oh nice, and is that stable?? \" like i was in a band\n\nthe bakery one i didnt even get to say properly because my mum cut in with \"she's taking a bit of time to explore\" which i hate. like i'm on a gap year at 26\n\nalso my flatmate at the time said \"wait are you actually going to do that long term\" and i didnt really have an answer so i just left in the end?? which is dumb because nobody was making me. i think it was the pay as well tbh, i was on like not much and had a mini panic about my pension at 3am. so its not like it was only about what people thought\n\nanyway my manager just booked a \"career chat\" for thursday and i have no idea what to say",
+      "reply": "When you look at your cousin or Hannah, does their title feel like proof that they know who they are, or just something solid to tell the family?",
+      "event": null,
+      "flags": [],
+      "appIn": 2053
+    },
+    {
+      "reflection": "honestly idk about proof, i think they just have something that fits in a sentence. like anjali says \"registrar\" and everyone nods and moves on to the next person. nobody asks her a follow up. whereas when i say marketing it's always \"oh and what does that involve\" or the stable thing\n\nalthough anjali did cry in the car once after a night shift, my mum told me that like it was a funny story?? so she's obviously not fine either. but mum told it like \"oh she works so hard\" and not like something was wrong\n\nanyway the career chat is thursday and my manager is quite nice which makes it worse. she'll be all \"where do you see yourself\" and i'll say something about wanting more ownership because that's what you say. i actually looked up what to say on reddit last night lol. what i actually want to say is i don't know and i keep thinking about the bakery but you can't say that in a 1:1\n\nalso the bakery place closed in the summer, saw it on instagram. there's a vape shop there now",
+      "reply": "If a title only provides something that fits in a sentence rather than certainty, what makes it feel like they have figured their lives out while you are falling behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 2324
+    },
+    {
+      "reflection": "i mean i know its not actually proof lol. i think it's more like they get to stop being asked. like anjali has a thing so at christmas she can just eat her roast and nobody's looking at her. i'm always bracing for the question\n\nthere's a group chat from uni as well, 6 of us, and last month two of them were talking about mortgages and i just put a thumbs up. one of them, Tom, is basically doing the same job he had at 23 and everyone thinks that's amazing?? like \"so stable\" and he told me once he's bored out of his mind. so staying put counts as figured out even when you're bored. but when i leave after a year it's \"exploring\"\n\nanyway i keep thinking about thursday. i did a draft of what to say in my notes app and it's all \"ownership\" and \"scope\" and it doesn't sound like me at all. my manager did say \"i just want to know you're happy here\" in the last 1:1 and i said \"yeah definitely!!\" and then felt sick after\n\nand i know that vape shop thing is a bit random but i keep thinking about it. like the place where i didn't check the time is just gone and i didn't even go back before",
+      "reply": "If staying put can just mean being bored out of your mind, what is it that makes it count as having things figured out?",
+      "event": null,
+      "flags": [],
+      "appIn": 2646
+    },
+    {
+      "reflection": "idk, maybe it just looks like you made a choice and stuck to it? like Tom staying put reads as \"he picked this\" and me leaving reads as \"she couldn't pick.\" even though he's just as stuck as i am, he's just stuck in one place lol\n\nmy dad did 30 years at the same hospital and i've never once heard him say if he likes it. he just goes. so maybe that's what i think figured out is. not minding enough to ask\n\nanyway my manager messaged this morning like \"looking forward to thursday!! nothing to prepare\" which obviously means i'll prepare. i've now got \"ownership\" and \"scope\" and also a line about \"wanting to grow into strategy\" which i have never wanted in my life\n\nand i went on google maps last night and looked at the vape shop. there's a photo from like 2023 of the bakery with the sign still up. i zoomed in on the window for ages, which is a bit sad",
+      "reply": "\"Not minding enough to ask.\" If figuring it out doesn't mean being certain, but just not asking, what would it mean to actually choose for yourself?",
+      "event": null,
+      "flags": [],
+      "appIn": 2898
+    },
+    {
+      "reflection": "idk. thats kind of a big question for a sofa on a wednesday lol\n\ni think choosing for yourself would mean i could say the bakery thing out loud and not have it sound like a gap year. but i dont even know if i want to go back to baking, i just know i wasnt checking the time. and also the pay was rubbish, i did the maths once and it was like barely above minimum, so its not like i can just say oh i'll do that then\n\nmy brother in law (hes married to my sister, hes a pharmacist) said once \"just do what you enjoy, money follows\" and i wanted to throw my tea at him. easy to say when you've got a pension and a mortgage on a house with a garden\n\nanyway i think for thursday i might just not say the strategy thing. it feels like lying and she's nice. maybe i'll say i like the bits where i actually make stuff, like the campaign stuff when i get to do the actual design bit and not just the reports. thats true at least",
+      "reply": "If choosing for yourself isn't about having a neat answer for Christmas dinner or knowing the whole trajectory, what makes a choice feel like yours?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If choosing for yourself isn't about having a neat answer for Christmas dinner or knowing the whole trajectory, what makes a choice feel like yours?"
+      },
+      "flags": [],
+      "appIn": 3159
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.02736,
+  "usdPerson": 0.06967,
+  "seconds": 246
+}

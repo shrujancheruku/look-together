@@ -1,0 +1,45 @@
+{
+  "title": "Mum's daily calls and feeling like a bad son",
+  "assumptions": [
+    {
+      "premise": "Supporting your mother properly requires being available to her every single day.",
+      "probe": "What does it actually mean to \"be there for her\"?",
+      "keyWords": [
+        "be there for her"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Dreading these calls or struggling with them makes you a failing son.",
+      "probe": "Who decided that dreading a call makes someone a \"bad son\"?",
+      "keyWords": [
+        "dreading",
+        "bad son"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Because she is on her own, her loneliness is yours alone to fix.",
+      "probe": "How much of her being \"on her own\" is possible for one person to carry?",
+      "keyWords": [
+        "on her own"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Your only choices are enduring the daily drain or cutting her off completely.",
+      "probe": "What lives between having to \"keep doing this\" and choosing to \"stop\"?",
+      "keyWords": [
+        "keep doing this",
+        "stop"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 540,
+    "out": 1582,
+    "usd": 0.012675,
+    "seconds": 14.3
+  }
+}

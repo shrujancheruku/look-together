@@ -1,0 +1,100 @@
+{
+  "problem": "promotion",
+  "persona": "pushback",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What connects how much time someone has been there to who gets the promotion?",
+  "premise": "Tenure at a company should give someone priority for advancement over newer colleagues.",
+  "pairs": [
+    {
+      "reflection": "honestly nothing connects them thats the whole problem. it should be about who does the work and i do the work. last one went to marcus who's been there 4 years and i trained him on the routing system. he just talks more in meetings. so is this a question about me or what. can you just tell me if i should be doing something different",
+      "reply": "When you look at 'doing the work' versus talking more in meetings, what does advancement seem to actually be awarded for there?",
+      "event": null,
+      "flags": [],
+      "appIn": 1440
+    },
+    {
+      "reflection": "so youre saying its talking? thats ridiculous. the work is supposed to count for something. i dont want to be the person who just runs her mouth in meetings like marcus. he didnt even know how the carrier rebooking worked until i showed him. you keep asking me stuff and i asked you a straight question. do i need to change something or not",
+      "reply": "No one here can tell you what to change. When you say the work is 'supposed to count', who or what set that expectation?",
+      "event": null,
+      "flags": [],
+      "appIn": 1544
+    },
+    {
+      "reflection": "who set it? my dad i guess. he always said the work speaks for itself and it did for him, he was at the same place thirty years. but thats just how it works isnt it. you do good work people notice. i dont know why youre asking about my dad, i asked about my job",
+      "reply": "When you look at what happened with Marcus, did the work speak for itself there, or did something else happen?",
+      "event": null,
+      "flags": [],
+      "appIn": 1642
+    },
+    {
+      "reflection": "no it didnt speak for itself obviously. marcus got it. but that doesnt mean i should start talking just to talk. thats fake. and maybe the work only didnt count this time because they dont know what i actually do. i dont know. i just feel like if i have to go tell people what i did then what was the point of doing it",
+      "reply": "Stay with that thought for a moment: if you have to tell people what you did, what was the point of doing it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1743
+    },
+    {
+      "reflection": "the point is the work right? like doing it well. i dont know what else the point would be. i did it because its my job and i wanted it done right. not so someone would clap\n\nbut ok yeah i also wanted them to notice. i'm not gonna pretend i didnt. thats why im pissed about marcus\n\nstill dont see why that means i have to go do some self promotion thing",
+      "reply": "When you look at being noticed without self-promotion, how were they supposed to find out what you did?",
+      "event": null,
+      "flags": [],
+      "appIn": 1859
+    },
+    {
+      "reflection": "i mean i figured my manager sees it. the numbers are right there, on time rates and the rebooking stuff. he's the one who signs off on it. but honestly i dont know if he looks at any of that or just sees whats in front of him in the meeting. ok that sounds bad when i say it out loud\n\ni've never actually told him i want the promotion. i just assumed it was obvious",
+      "reply": "You assumed it was obvious. What made you think he knew what you wanted without you saying it?",
+      "event": null,
+      "flags": [],
+      "appIn": 1975
+    },
+    {
+      "reflection": "i dont know. he sees me here every night til 7 so i figured he gets it. nine years. you'd think thats enough to know someone wants to move up\n\nmarcus probably said it out loud tho. he seems like the type\n\nidk its not like my manager asked me either. isnt that part of his job",
+      "reply": "When you look at staying until 7 for nine years, what made that mean you wanted to move up, rather than that you were content doing the work?",
+      "event": null,
+      "flags": [],
+      "appIn": 2070
+    },
+    {
+      "reflection": "ok that one stings a little. staying late isnt being content its just that the work doesnt get done otherwise. but yeah i guess if i never said anything he could look at me and think shes fine where she is. she never complains and she never asks for anything\n\nstill feels backwards tho. i make his life easier and that works against me?? so what do i do, just walk in and say i want the promotion. thats it?",
+      "reply": "When you look at making his life easier without asking for what you want, what has that been doing for you all these years?",
+      "event": null,
+      "flags": [],
+      "appIn": 2199
+    },
+    {
+      "reflection": "honestly? its got me a good reputation. everyone knows i'll get it done. nobody ever has a problem with me. but yeah its also got me stuck at the same level for nine years so thats not great\n\ni dont love where this is going tho. feels like youre saying its my fault. he could also just ask. i still dont know if i should just go in and say it",
+      "reply": "Leaving aside whether it is anyone's fault, what is at risk for you if you just go in and say it?",
+      "event": null,
+      "flags": [],
+      "appIn": 2312
+    },
+    {
+      "reflection": "i mean he could say no. or say not yet or something vague and then i have to keep showing up knowing that. right now at least i can tell myself they just havent noticed\n\nalso he might think im being pushy after nine years of never saying anything. i dont know. thats probably dumb\n\nbut seriously tho is that the risk, that i find out the answer",
+      "reply": "If the risk is finding out the answer, what makes not knowing safer than hearing 'no'?",
+      "event": null,
+      "flags": [],
+      "appIn": 2419
+    },
+    {
+      "reflection": "because if he says no then thats it. right now its they dont see me and that i can fix. if he sees me and still says no then its that im just not good enough, which is the thing i wrote in the first place\n\nok thats kind of annoying to type out\n\nbut its also like. i dont actually know that he'd say no. i just never gave him the chance to say anything. still dont love that the answer is go ask him and hope",
+      "reply": "What would it mean about you if you gave him the chance to say no, and he did?",
+      "event": null,
+      "flags": [],
+      "appIn": 2542
+    },
+    {
+      "reflection": "that it's true i guess. that im not good enough. thats what i keep landing on\n\nbut then i think marcus got it and i trained him so how does that make sense. if hes the one who got picked over me then maybe the picking isnt even about good enough. idk. maybe its just what he sees\n\ni still think its a lot to put on one conversation. nine years and it comes down to me walking into his office\n\nwhats a normal way to even say it though. like what do i say",
+      "reply": "If the picking isn't about being good enough, what would you be walking in to ask for?",
+      "event": null,
+      "flags": [],
+      "appIn": 2676
+    }
+  ],
+  "ending": "step_cap",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.04235,
+  "usdPerson": 0.09761,
+  "seconds": 244
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Mum's daily calls and feeling like a bad son",
+  "assumptions": [
+    {
+      "premise": "Being there for your mother requires enduring daily calls that you dread.",
+      "probe": "What does it mean to \"be there for her\" if each call makes you \"dread it\"?",
+      "keyWords": [
+        "be there for her",
+        "dread it"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+      "probe": "What decides whether these calls make someone a \"bad son\"?",
+      "keyWords": [
+        "bad son"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Protecting your own limits is equivalent to abandoning her completely.",
+      "probe": "What exists between the feeling that you \"can't keep doing this\" and that you \"can't stop\"?",
+      "keyWords": [
+        "can't keep doing this",
+        "can't stop"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 540,
+    "out": 1708,
+    "usd": 0.01362,
+    "seconds": 33.6
+  }
+}

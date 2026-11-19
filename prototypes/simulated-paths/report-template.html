@@ -1,0 +1,119 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE: simulated Paths</title>
+<style>
+  :root { --bg:#f7f6f2; --fg:#22252a; --dim:#6b7280; --line:#d9d6cc; --card:#fff; --app:#eef3f7; --warn:#b45309; --ok:#15803d; --bad:#b91c1c; --accent:#2f5d8a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#16181c; --fg:#e6e6e3; --dim:#9aa1ab; --line:#33373e; --card:#1e2126; --app:#232a33; --warn:#f0a35e; --ok:#6fcf8e; --bad:#f08a8a; --accent:#8ab6e0; } }
+  body { background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, sans-serif; margin:0; padding:16px; }
+  main { max-width:920px; margin:0 auto; }
+  h1 { font-size:20px; margin:0 0 4px; } h2 { font-size:16px; margin:28px 0 8px; }
+  .dim { color:var(--dim); } .small { font-size:13px; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
+  th, td { border-bottom:1px solid var(--line); padding:5px 8px; text-align:right; white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  .bar { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; position:sticky; top:0; background:var(--bg); padding:8px 0; z-index:1; }
+  button { font:inherit; font-size:13px; padding:4px 10px; border:1px solid var(--line); border-radius:14px; background:var(--card); color:var(--fg); cursor:pointer; }
+  button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .path { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin:12px 0; }
+  .head { display:flex; flex-wrap:wrap; gap:8px; align-items:baseline; }
+  .tag { font-size:12px; border:1px solid var(--line); border-radius:4px; padding:0 6px; }
+  .tag.event { color:var(--accent); border-color:var(--accent); } .tag.flag, .tag.refused { color:var(--bad); border-color:var(--bad); }
+  .probe, .reply { background:var(--app); border-radius:6px; padding:6px 10px; margin:6px 0; }
+  .reflection { margin:6px 0 6px 24px; padding:6px 10px; border-left:3px solid var(--line); white-space:pre-wrap; }
+  .who { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--dim); display:block; }
+  .verdict { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); }
+  .verdict input { flex:1; min-width:160px; font:inherit; font-size:13px; padding:4px 8px; border:1px solid var(--line); border-radius:4px; background:var(--bg); color:var(--fg); }
+  textarea { width:100%; height:120px; font:12px/1.4 ui-monospace, monospace; background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:6px; box-sizing:border-box; }
+  details summary { cursor:pointer; }
+</style>
+<main>
+  <h1>Simulated Paths <span class="dim small">PROTOTYPE, throwaway</span></h1>
+  <p class="dim small">A model plays the person from a written profile and a disposition, through one whole Path, against draft prompts on Gemini 3.8 Flash. The question: does the simulated person behave enough like a real one to measure how Paths end? Read the Reflections, not the Replies, and mark each Path below it.</p>
+
+  <h2>How Paths ended, by persona</h2>
+  <div class="scroll" id="endings"></div>
+  <h2>The same, split by run</h2>
+  <p class="dim small">If the runs disagree with each other, the count isn't stable at this size.</p>
+  <div class="scroll" id="byrun"></div>
+  <details><summary class="small">The Breakdowns every Path started from</summary><div id="breakdowns"></div></details>
+
+  <h2>Transcripts</h2>
+  <div class="bar" id="filters"></div>
+  <div id="paths"></div>
+
+  <h2>Your read</h2>
+  <p class="dim small">Kept only in this tab. Copy it into the conversation when done.</p>
+  <textarea id="out" readonly></textarea>
+</main>
+<script>
+const DATA = /*DATA*/null;
+const ENDINGS = ["done_open_question", "done", "done_at_angle_cap", "rejected", "set_down", "step_cap"];
+const NAMES = { done_open_question: "done, Open Question", done: "done, none", done_at_angle_cap: "done at angle cap", rejected: "rejected", set_down: "set down", step_cap: `ran past ${DATA.maxReflections}` };
+const personas = DATA.people.personas, problems = DATA.people.problems;
+const label = id => personas.find(p => p.id === id).label;
+const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const words = s => s.trim().split(/\s+/).length;
+const mean = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+const key = p => `${p.problem}--${p.persona}--${p.run}`;
+const verdicts = {}, filter = { persona: null, problem: null };
+
+function table(rows, paths) {
+  const head = `<tr><th></th><th>Paths</th>${ENDINGS.map(e => `<th>${NAMES[e]}</th>`).join("")}<th>Reflections</th><th>words each</th><th>angles</th><th>flags</th><th>$ / Path</th><th>s / Path</th></tr>`;
+  return `<table>${head}${rows.map(([name, test]) => {
+    const ps = paths.filter(test);
+    if (!ps.length) return "";
+    const refl = ps.flatMap(p => p.pairs.map(x => words(x.reflection)));
+    return `<tr><td>${name}</td><td>${ps.length}</td>${ENDINGS.map(e => `<td>${ps.filter(p => p.ending === e).length || ""}</td>`).join("")}
+      <td>${mean(ps.map(p => p.pairs.length)).toFixed(1)}</td><td>${mean(refl).toFixed(0)}</td><td>${mean(ps.map(p => p.angles.length)).toFixed(1)}</td>
+      <td>${ps.reduce((n, p) => n + p.pairs.filter(x => x.flags.length).length + p.refused.length, 0) || ""}</td>
+      <td>${mean(ps.map(p => p.usdApp + p.usdPerson)).toFixed(3)}</td><td>${mean(ps.map(p => p.seconds)).toFixed(0)}</td></tr>`;
+  }).join("")}</table>`;
+}
+
+const rows = [...personas.map(p => [p.label, x => x.persona === p.id]), ["All", () => true]];
+document.getElementById("endings").innerHTML = table(rows, DATA.paths);
+const runs = [...new Set(DATA.paths.map(p => p.run))];
+document.getElementById("byrun").innerHTML = table(runs.flatMap(r => personas.map(p => [`${p.label}, run ${r}`, x => x.persona === p.id && x.run === r])), DATA.paths);
+document.getElementById("breakdowns").innerHTML = Object.entries(DATA.breakdowns).map(([id, b]) =>
+  `<p class="small"><b>${esc(id)}</b>: ${esc(b.title)}</p><ul class="small">${b.assumptions.map(a => `<li>${esc(a.probe)}<br><span class="dim">premise: ${esc(a.premise)}${a.anchored ? "" : " (NOT ANCHORED)"}</span></li>`).join("")}</ul>`).join("");
+
+function render() {
+  document.getElementById("filters").innerHTML =
+    [["persona", null, "All personas"], ...personas.map(p => ["persona", p.id, p.label])].map(([k, v, t]) => `<button class="${filter[k] === v ? "on" : ""}" data-k="${k}" data-v="${v ?? ""}">${t}</button>`).join("") + "<span style='width:12px'></span>" +
+    [["problem", null, "All Problems"], ...problems.map(p => ["problem", p.id, p.id])].map(([k, v, t]) => `<button class="${filter[k] === v ? "on" : ""}" data-k="${k}" data-v="${v ?? ""}">${t}</button>`).join("");
+  document.getElementById("paths").innerHTML = DATA.paths.filter(p => (!filter.persona || p.persona === filter.persona) && (!filter.problem || p.problem === filter.problem)).map(p => {
+    const v = verdicts[key(p)] || {};
+    return `<div class="path"><div class="head"><b>${label(p.persona)}</b><span>${esc(p.problem)}, run ${p.run}</span><span class="tag">${NAMES[p.ending]}</span>${p.fate ? `<span class="tag event">told: ${p.fate.kind.replace(/_/g, " ")} at Reflection ${p.fate.at}</span>` : ""}
+      <span class="dim small">${p.pairs.length} Reflections · angles: ${p.angles.join(", ") || "none"} · $${(p.usdApp + p.usdPerson).toFixed(3)} (app ${p.usdApp.toFixed(3)}, person ${p.usdPerson.toFixed(3)}) · ${p.seconds}s</span></div>
+      <p class="dim small">${esc(problems.find(x => x.id === p.problem).problem)}</p>
+      <div class="probe"><span class="who">Probe</span>${esc(p.probe)}<br><span class="dim small">premise at the end: ${esc(p.premise)}</span></div>
+      ${p.pairs.map((x, i) => `<div class="reflection"><span class="who">Reflection ${i + 1} · ${words(x.reflection)} words</span>${esc(x.reflection)}</div>
+        ${x.reply ? `<div class="reply"><span class="who">Reply</span>${esc(x.reply)}
+          ${x.event ? `<span class="tag event">${x.event.type}${x.event.kind ? ": " + x.event.kind : ""}${x.event.type === "reword" ? ": " + esc(x.event.premise || "") : ""}</span>` : ""}
+          ${x.flags.map(f => `<span class="tag flag">${esc(f)}</span>`).join("")}
+          ${p.refused.filter(r => r.at === i + 1).map(r => `<span class="tag refused">refused ${r.event.type}${r.event.kind ? ": " + r.event.kind : ""} (${esc(r.why)})</span>`).join("")}</div>` : ""}`).join("")}
+      ${p.ending === "set_down" ? `<div class="reflection dim"><span class="who">The person</span>put the phone down</div>` : ""}
+      <div class="verdict" data-key="${key(p)}"><span class="small">Reads like a real person?</span>
+        ${["yes", "partly", "no"].map(o => `<button class="${v.v === o ? "on" : ""}" data-verdict="${o}">${o}</button>`).join("")}
+        <input placeholder="what gave it away" value="${esc(v.note || "").replace(/"/g, "&quot;")}"></div></div>`;
+  }).join("");
+  out();
+}
+function out() {
+  const lines = personas.map(p => {
+    const vs = DATA.paths.filter(x => x.persona === p.id).map(x => verdicts[key(x)]?.v).filter(Boolean);
+    return `${p.label}: ${["yes", "partly", "no"].map(o => `${o} ${vs.filter(v => v === o).length}`).join(", ")}`;
+  });
+  const notes = Object.entries(verdicts).filter(([, v]) => v.note).map(([k, v]) => `${k} [${v.v || "-"}]: ${v.note}`);
+  document.getElementById("out").value = [...lines, "", ...notes].join("\n");
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.k) { filter[b.dataset.k] = b.dataset.v || null; render(); }
+  if (b.dataset.verdict) { const k = b.closest(".verdict").dataset.key; verdicts[k] = { ...verdicts[k], v: b.dataset.verdict }; b.parentElement.querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b)); out(); }
+});
+document.addEventListener("input", e => { const d = e.target.closest(".verdict"); if (d) { verdicts[d.dataset.key] = { ...verdicts[d.dataset.key], note: e.target.value }; out(); } });
+render();
+</script>

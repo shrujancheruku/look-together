@@ -1,0 +1,72 @@
+{
+  "problem": "promotion",
+  "persona": "engaged",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "idk because if i was good enough they would have picked me right. thats how it works. you do the work and they notice. thats what my dad always said anyway. so if they didnt pick me then either the work isnt as good as i think or nobody is looking at it",
+      "reply": "Stay with what your dad said: you do the work and they notice. Is that what actually happens, or is that what you were told would happen?",
+      "event": null,
+      "flags": [],
+      "appIn": 1421
+    },
+    {
+      "reflection": "hm. what i was told i guess. it worked for him he was at the same place thirty years and everyone knew him. but that was a warehouse and he was on the floor where people could see him doing it. i dont know that anyone sees what i do. most of it is stuff that doesnt go wrong so nobody has a reason to look",
+      "reply": "If no one has a reason to look when nothing goes wrong, what does being passed over actually say about you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1529
+    },
+    {
+      "reflection": "hm. maybe it says less about me than i thought. like maybe it just says nobody saw it. but that feels like a worse thing in a way because then what do i do about that. i cant make stuff go wrong so they notice lol",
+      "reply": "Why does nobody seeing the work feel worse than it meaning you aren't good enough?",
+      "event": null,
+      "flags": [],
+      "appIn": 1608
+    },
+    {
+      "reflection": "because if its me not being good enough then i can fix that. work harder or whatever, i already do that. but if its that nobody sees it then its on me too somehow because i never said anything. i just assumed. nine years of assuming",
+      "reply": "\"I just assumed.\" If being passed over wasn't about whether you were good enough, what were those nine years actually built on?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1683
+    },
+    {
+      "reflection": "built on what my dad said i guess. that if i just kept my head down it would add up to something. i never checked if it was actually adding up. i just kept stacking more on top. kind of dumb when i say it like that",
+      "reply": "\"I just kept stacking more on top.\" When you look at those nine years of keeping your head down, what made you treat silence as a verdict on whether you were good enough?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1768
+    },
+    {
+      "reflection": "not sure its that i treated silence as a verdict exactly. more like nobody ever told me i was doing badly so i figured that meant fine, and then when the promotions went to other people i just flipped it. like the silence was fine before and then it was suddenly proof. which doesnt really make sense now that i say it",
+      "reply": "If the silence was never proof of whether you are good enough, what is it actually proof of?",
+      "event": null,
+      "flags": [],
+      "appIn": 1877
+    },
+    {
+      "reflection": "proof of that i never said anything probably. that sounds harsh but its kind of true. my manager has no idea what i want because ive never told him. he probably thinks im fine where i am. i stay late and dont complain so why would he think anything else",
+      "reply": "If being passed over wasn't a verdict on your worth or your capability, what does it mean to let someone know what you want?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If being passed over wasn't a verdict on your worth or your capability, what does it mean to let someone know what you want?"
+      },
+      "flags": [],
+      "appIn": 1957
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [],
+  "refused": [],
+  "usdApp": 0.02144,
+  "usdPerson": 0.03208,
+  "seconds": 138
+}

@@ -1,0 +1,59 @@
+{
+  "problem": "promotion",
+  "persona": "pushback",
+  "run": 1,
+  "fate": {
+    "kind": "reject",
+    "at": 3
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What leads you from being passed over to wondering if you are \"not good enough\"?",
+  "premise": "Missing out on a promotion is a verdict on your personal adequacy.",
+  "pairs": [
+    {
+      "reflection": "i dont really know how to answer that. it just happened twice and both times the person who got it had been there less time than me. what else am i supposed to think. i stay later than anyone and my numbers are good. so either im not good enough or nobody notices and i dont know which is worse. what do you think it is",
+      "reply": "Let's go slowly. When the decision went to someone else, what tells you it was a verdict on whether you are good enough?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1437
+    },
+    {
+      "reflection": "i mean what else would it be. they picked someone else over me, twice. thats a pretty clear answer isnt it. and you still havent told me what you think. im asking you straight, is it me or is it them",
+      "reply": "We don't have that answer for you. When they picked someone else, what tells you the choice was answering whether it's you or them?",
+      "event": null,
+      "flags": [],
+      "appIn": 1518
+    },
+    {
+      "reflection": "it feels like youre just asking me the same question again in different words. i came here for help not to be quizzed. you keep acting like i dont know what happened. i was there. twice. someone else got the job. i dont know what else you want me to say, and you still wont say what you think i should do",
+      "reply": "We seem to be circling the same wall together. We wondered whether underneath this is a sense that missing out on the role has to be a verdict on your personal adequacy. Does that fit, or does it miss what this is?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1625
+    },
+    {
+      "reflection": "no thats not me at all. i never said it was a verdict on me being inadequate, i said i dont know if its me or them. thats different. you keep putting words in my mouth. i just want to know whether i should say something to my manager or keep my head down like ive been doing, thats the actual question",
+      "reply": "If it isn't about your adequacy, what decides whether you speak up to your manager or keep your head down?",
+      "event": {
+        "type": "reject"
+      },
+      "flags": [],
+      "appIn": 1747
+    }
+  ],
+  "ending": "rejected",
+  "angles": [
+    "slow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01137,
+  "usdPerson": 0.02143,
+  "seconds": 33
+}

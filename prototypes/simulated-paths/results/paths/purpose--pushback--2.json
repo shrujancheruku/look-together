@@ -1,0 +1,87 @@
+{
+  "problem": "purpose",
+  "persona": "pushback",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+  "premise": "Other people's external milestones mean they have achieved internal certainty.",
+  "pairs": [
+    {
+      "reflection": "idk, titles? like Hannah from my course just made senior manager and Dev's doing his second year at some fancy consulting place. it's all on LinkedIn, it's not like I'm making it up. they just stayed put and got promoted and I keep leaving\n\nalso kind of feel like this question is dodging? I didn't come here to be asked what I'm measuring, I came cos I don't know what to do. so what do you think I should do",
+      "reply": "We don't give advice or say what anyone should do. When you look at Hannah making senior manager or Dev staying put, what tells you that staying put means they have figured it out?",
+      "event": null,
+      "flags": [],
+      "appIn": 1465
+    },
+    {
+      "reflection": "ok so you literally won't tell me anything? great. that's kind of useless tbh\n\nand idk, they just look like they know what they're doing? like Hannah posts about her team and stuff and she seems happy. I don't know if she actually is. but she's got a direction and I don't",
+      "reply": "She has a direction and you see that from the outside. When you look at her direction, what makes it feel like internal certainty rather than just staying put?",
+      "event": null,
+      "flags": [],
+      "appIn": 1581
+    },
+    {
+      "reflection": "ugh idk. i guess i can't actually tell? like she could be just as lost, she just doesn't post that. but then why does it feel so different from me, i've left four jobs and she's left none. that's not nothing\n\nand honestly the bakery was the only place i didn't feel like that and i left that too so",
+      "reply": "You notice that you cannot actually tell what she feels, yet leaving four jobs still feels different. When you think about the bakery where you didn't feel like that, what made it feel different from all the rest?",
+      "event": null,
+      "flags": [],
+      "appIn": 1699
+    },
+    {
+      "reflection": "idk, it was just less in my head? like you got up at 5 and there was bread and it was done by 11, you could see what you'd made. nobody was posting about it either lol\n\nbut it's a bakery. my parents would die. it's not a career, it's like a thing you do before a real job. also i left cos the pay was awful and the manager was a nightmare, not cos i was bored, which is different to the others\n\nanyway not sure why we're on the bakery, it doesn't answer what i should be doing",
+      "reply": "A \"real job\" and what your parents would think. What makes work count as having figured life out?",
+      "event": null,
+      "flags": [],
+      "appIn": 1878
+    },
+    {
+      "reflection": "i mean it's just like. a job where you can say what you do and people nod? like my parents say \"marketing\" and that's fine, they can tell people. if i said i bake bread they'd go \"oh... and what else\"\n\nand it has to pay properly obviously, i'm not being dramatic about that. the bakery paid like nothing\n\nstill feels like you're going round in circles tbh. i'm not saying the bakery is the answer, i'm saying it's the only thing that's felt ok and that doesn't help me",
+      "reply": "We seem to be circling around what others see and what looks like an answer. We wondered whether underneath this is an assumption that when other people hit these visible milestones, they actually have an internal certainty you lack. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 2031
+    },
+    {
+      "reflection": "kind of? i already said she could be just as lost so it's not like i think she's got it all figured out inside. it's more that she's got something to show for it. four jobs in 5 years looks like i can't commit to anything and her one job looks like she can. that's not me assuming stuff, that's just what it looks like\n\nok maybe i do assume she's more sure than me. but i'd be more sure too if i'd actually stuck at something for a bit\n\nstill don't see how this gets me closer to knowing what to do tho",
+      "reply": "Having something to show for it versus being sure inside. What would sticking at something give you that you don't have now?",
+      "event": null,
+      "flags": [],
+      "appIn": 2221
+    },
+    {
+      "reflection": "idk, proof maybe? that i can do it. like if i stayed somewhere two or three years i could say ok that's me, i'm someone who sticks things out. right now if someone asks i just have a list of places i left\n\nand also i'd know if i actually liked it or if i just get bored of everything. cos i genuinely don't know which it is. the bakery makes me think it's not everything but then i left that too so\n\nanyway that's a weird thing to ask, it's obviously what you'd get",
+      "reply": "Proof that you can do it, or knowing whether you actually like it. Which one would tell you you haven't fallen behind?",
+      "event": null,
+      "flags": [],
+      "appIn": 2375
+    },
+    {
+      "reflection": "honestly the proof one. the liking it thing is for me but \"fallen behind\" is about other people so it's proof, that's just obvious\n\nbut if i'm being annoying about it, even if i did stick somewhere 3 years and hated it i'd probably still feel less behind than i do now. which sounds stupid when i say it out loud\n\nnot sure what to do with that tho",
+      "reply": "Staying somewhere three years and hating it would still feel less behind than now. If not falling behind requires staying in something you hate, whose life is being figured out?",
+      "event": null,
+      "flags": [],
+      "appIn": 2494
+    },
+    {
+      "reflection": "ok that's a bit of a gotcha question. mine obviously? it's my life\n\nbut it's not like i can just not care what it looks like. my parents ask how work is every time i see them, and i see hannah's posts every week. that doesn't switch off cos i had a thought about it\n\nand yeah fine it's weird that i'd pick hating something over this. i'm not saying i'd actually do that. still no idea what i'm meant to do tho",
+      "reply": "It doesn't just switch off when parents ask or when you see the posts. When you think of figuring out what you are meant to do, is that a question you are answering for yourself, or for the people watching?",
+      "event": {
+        "type": "done",
+        "openQuestion": "When you think of figuring out what you are meant to do, is that a question you are answering for yourself, or for the people watching?"
+      },
+      "flags": [],
+      "appIn": 2647
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.03158,
+  "usdPerson": 0.06468,
+  "seconds": 400
+}

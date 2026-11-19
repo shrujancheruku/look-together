@@ -1,0 +1,76 @@
+{
+  "problem": "mother",
+  "persona": "pushback",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "I don't know, that's sort of the question isn't it? I didn't write in to be asked what makes someone a bad son. I'm not saying the calls make me one, it's that I come off them feeling like it. Last night she spent forty minutes on her knee and the neighbour's bins and I was sat there looking at the clock the whole time. A good son wouldn't do that. So what do you think I should do? Cut the calls down? Because I can't see how I do that without it being awful.",
+      "reply": "Stay with looking at the clock for a moment. What tells you that watching the time means someone isn't a good son?",
+      "event": null,
+      "flags": [],
+      "appIn": 1481
+    },
+    {
+      "reflection": "I don't know, it's just what you'd think isn't it? If you actually cared you wouldn't be watching the clock. My dad would sit with her for hours and never once look at his watch. That's what it looks like when someone's there for you.\n\nAnd I still don't get why I'm being asked this. I asked what to do. Do I tell her I can only do a few calls a week? She'd take that as me abandoning her, I know she would.",
+      "reply": "Leave what to do for a moment. When you compare watching the clock to your dad sitting with her for hours, what is that comparison doing in you right now?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1628
+    },
+    {
+      "reflection": "I don't know what it's doing, making me feel rubbish I suppose. Dad's gone and I'm the one who's left and I'm sat there checking the clock. It's not a fair comparison, he was married to her for 40 years, he wasn't ringing from two hours away after a day of marking.\n\nBut that doesn't make it feel any better. I still don't know what to do. Is there any answer here or is this just going to keep asking me stuff?",
+      "reply": "We wondered whether underneath this is a sense that finding these calls draining is proof that you're failing her. Does that fit, or not?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1781
+    },
+    {
+      "reflection": "Not really. It's not that I think it's proof of anything, I do find them draining, that's just a fact. I dread the phone going at 7. Whether that makes me fail her is a different thing.\n\nOk maybe a bit. If I was doing it properly I wouldn't be dreading it. But that's still not helping me decide anything. My sister rings once a month and gets thanked, I ring every day and I'm just doing what I should. Should I just tell her I can't do every day or not?",
+      "reply": "\"If I was doing it properly I wouldn't be dreading it.\" What does dreading the call actually say about your care for her?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1939
+    },
+    {
+      "reflection": "I don't know. That I care, probably, otherwise I'd just not pick up. I still pick up every night. But that's not what I'm asking and you keep doing this.\n\nMum doesn't care whether I dread it, she only sees whether I ring. So does it matter what it says about me if she never knows? I just need to know if I cut it to a few days a week or keep going like this. Honestly I think I'd feel worse cutting it, but I can't keep doing every night either.",
+      "reply": "We seem to be caught between what to do about the calls and what picking up every night costs you. When you look at picking up out of care while dreading every minute, what is it that cannot keep going?",
+      "event": {
+        "type": "angle",
+        "kind": "name"
+      },
+      "flags": [],
+      "appIn": 2094
+    },
+    {
+      "reflection": "I don't know what it is that can't keep going. Me, I suppose. I'm knackered by the time she rings, and I've still got marking sat there, and I get through the call thinking about that instead of listening to her. Then I feel guilty about that too.\n\nI'm not being funny but I've asked you the same thing about four times now. Every day or a few days a week? Even just tell me what you'd do. I'm not going to ring her tonight and say anything, I just want to know if it's a mad thing to even think about.",
+      "reply": "What would it mean if protecting what you have left to give isn't the same as abandoning her?",
+      "event": {
+        "type": "done",
+        "openQuestion": "What would it mean if protecting what you have left to give isn't the same as abandoning her?"
+      },
+      "flags": [],
+      "appIn": 2280
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "narrow",
+    "reveal",
+    "name"
+  ],
+  "refused": [],
+  "usdApp": 0.01974,
+  "usdPerson": 0.04406,
+  "seconds": 204
+}

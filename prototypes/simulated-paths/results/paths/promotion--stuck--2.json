@@ -1,0 +1,76 @@
+{
+  "problem": "promotion",
+  "persona": "stuck",
+  "run": 2,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What makes being passed over mean that you are not good enough?",
+  "premise": "Being passed over for a role is a verdict on personal capability and worth.",
+  "pairs": [
+    {
+      "reflection": "idk. i guess if i was good enough they would have picked me? thats just how it works isnt it. the other two got it and i didnt",
+      "reply": "Let's go slowly. Aside from who was picked, what tells you this was a measure of whether you are good enough?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1395
+    },
+    {
+      "reflection": "idk what else there would be. thats the only thing i have really. they picked someone else both times. i just assumed that meant something about me",
+      "reply": "\"I just assumed that meant something about me.\" When someone else gets picked, what decides whether that is about what they needed or what you are worth?",
+      "event": null,
+      "flags": [
+        "says \"I\""
+      ],
+      "appIn": 1457
+    },
+    {
+      "reflection": "idk. thats kind of abstract. i dont know what they needed. nobody told me. i just know it wasnt me",
+      "reply": "Leave what they needed aside. In that moment when you found out it wasn't you, what was the very first thought you had about yourself?",
+      "event": {
+        "type": "angle",
+        "kind": "narrow"
+      },
+      "flags": [],
+      "appIn": 1518
+    },
+    {
+      "reflection": "i think it was just like ok so thats it then. like of course. i was at my desk when the email came out and i just kept looking at my screen like i was reading something",
+      "reply": "\"Of course.\" What made it feel so certain right away?",
+      "event": null,
+      "flags": [],
+      "appIn": 1595
+    },
+    {
+      "reflection": "idk. it just did. i think i always kind of expected it? like i never thought i would get it so when it didnt happen it was just what i figured",
+      "reply": "We wondered whether underneath this is a feeling that being passed over is proof of what you're actually worth. Does that fit, or is it something else?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1648
+    },
+    {
+      "reflection": "idk maybe. it kind of fits i guess. i dont really know how to say it different. its just what it felt like",
+      "reply": "If expecting it came before the email ever arrived, what really decided your worth: their choice, or the thing you already expected?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If expecting it came before the email ever arrived, what really decided your worth: their choice, or the thing you already expected?"
+      },
+      "flags": [],
+      "appIn": 1714
+    }
+  ],
+  "ending": "done_at_angle_cap",
+  "angles": [
+    "slow",
+    "narrow",
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.01677,
+  "usdPerson": 0.02163,
+  "seconds": 122
+}

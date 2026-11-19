@@ -1,0 +1,43 @@
+{
+  "title": "Feeling behind and figuring out what to do at 29",
+  "assumptions": [
+    {
+      "premise": "There is a predetermined or correct purpose that a person is meant to find.",
+      "probe": "Where does the idea come from of what you are \"supposed to be doing\"?",
+      "keyWords": [
+        "supposed to be doing"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Other people's external milestones mean they have achieved internal certainty.",
+      "probe": "What are we measuring when it seems everyone else has \"figured it out\"?",
+      "keyWords": [
+        "figured it out"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Trying multiple jobs without settling into one permanently is lost time rather than exploration.",
+      "probe": "What would have to happen for work to count as not \"wasting time\"?",
+      "keyWords": [
+        "wasting time"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Life has a shared schedule where people can be objectively ahead or behind.",
+      "probe": "Whose timeline are we measuring against when we feel we are \"falling behind\"?",
+      "keyWords": [
+        "falling behind"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 544,
+    "out": 1523,
+    "usd": 0.0122385,
+    "seconds": 17.1
+  }
+}

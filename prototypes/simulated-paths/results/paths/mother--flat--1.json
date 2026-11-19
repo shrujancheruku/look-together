@@ -1,0 +1,108 @@
+{
+  "problem": "mother",
+  "persona": "flat",
+  "run": 1,
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What decides whether these calls make someone a \"bad son\"?",
+  "premise": "The emotional toll of these calls is proof that you are failing as a son.",
+  "pairs": [
+    {
+      "reflection": "idk. whether i want to talk to her i guess",
+      "reply": "If not wanting to talk to her means being a bad son, what would a good son feel?",
+      "event": null,
+      "flags": [],
+      "appIn": 1369
+    },
+    {
+      "reflection": "glad to do it probably. not dreading it",
+      "reply": "Is dread something you choose, or something that happens?",
+      "event": null,
+      "flags": [],
+      "appIn": 1405
+    },
+    {
+      "reflection": "happens i guess. i dont pick it",
+      "reply": "If you don't pick the dread, how does having it make you a bad son?",
+      "event": null,
+      "flags": [],
+      "appIn": 1430
+    },
+    {
+      "reflection": "idk. it just feels like it does",
+      "reply": "Let's go slowly. In the moment that dread arrives, what tells you it means you're failing her?",
+      "event": {
+        "type": "angle",
+        "kind": "slow"
+      },
+      "flags": [],
+      "appIn": 1463
+    },
+    {
+      "reflection": "i think its her voice. she sounds so tired and i just want it to end",
+      "reply": "When you hear how tired she sounds and want it to end, what does wanting it to end say about you?",
+      "event": null,
+      "flags": [],
+      "appIn": 1510
+    },
+    {
+      "reflection": "that i dont care enough maybe",
+      "reply": "Is wanting the call to end the same thing as not caring about her?",
+      "event": null,
+      "flags": [],
+      "appIn": 1545
+    },
+    {
+      "reflection": "not sure. i still pick up every day",
+      "reply": "You pick up every day, even while wanting the call to end. Which of those two shows what you care about?",
+      "event": null,
+      "flags": [],
+      "appIn": 1575
+    },
+    {
+      "reflection": "the picking up i guess. but it doesnt feel like it counts",
+      "reply": "What makes picking up every day not count?",
+      "event": null,
+      "flags": [],
+      "appIn": 1618
+    },
+    {
+      "reflection": "because i do it resentful. like going through the motions",
+      "reply": "If picking up through resentment and going through the motions doesn't count, what would have to happen for it to count?",
+      "event": null,
+      "flags": [],
+      "appIn": 1645
+    },
+    {
+      "reflection": "i'd have to actually want to i guess. which i dont",
+      "reply": "If caring only counts when you want to do it, what does doing it when you don't want to mean?",
+      "event": null,
+      "flags": [],
+      "appIn": 1690
+    },
+    {
+      "reflection": "that i do it anyway. maybe thats something",
+      "reply": "If doing it anyway is something, what makes it proof that you are failing as a son?",
+      "event": null,
+      "flags": [],
+      "appIn": 1729
+    },
+    {
+      "reflection": "maybe it isnt. i dont know. still tired tho",
+      "reply": "If picking up anyway isn't proof that you're failing, what is the tiredness telling you?",
+      "event": {
+        "type": "done",
+        "openQuestion": "If picking up anyway isn't proof that you're failing, what is the tiredness telling you?"
+      },
+      "flags": [],
+      "appIn": 1765
+    }
+  ],
+  "ending": "done_open_question",
+  "angles": [
+    "slow"
+  ],
+  "refused": [],
+  "usdApp": 0.03157,
+  "usdPerson": 0.04607,
+  "seconds": 275
+}

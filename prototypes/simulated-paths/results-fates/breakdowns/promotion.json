@@ -1,0 +1,37 @@
+{
+  "title": "Passed over for promotion twice",
+  "assumptions": [
+    {
+      "premise": "Spending more time at a company should place you ahead of newer colleagues for advancement.",
+      "probe": "What expectation comes up for you when the person chosen has \"been there less time\" than you?",
+      "keyWords": [
+        "been there less time"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Exerting more effort than your peers is what should determine who gets promoted.",
+      "probe": "What link do you see between who can \"work harder than anyone\" and who receives a promotion?",
+      "keyWords": [
+        "work harder than anyone",
+        "promotion"
+      ],
+      "anchored": true
+    },
+    {
+      "premise": "Missing out on a promotion is a verdict on your personal adequacy.",
+      "probe": "What leads you from being passed over to wondering if you are \"not good enough\"?",
+      "keyWords": [
+        "passed over",
+        "not good enough"
+      ],
+      "anchored": true
+    }
+  ],
+  "usage": {
+    "in": 546,
+    "out": 1714,
+    "usd": 0.013674,
+    "seconds": 15.9
+  }
+}

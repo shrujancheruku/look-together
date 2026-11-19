@@ -1,0 +1,46 @@
+{
+  "problem": "promotion",
+  "persona": "stuck",
+  "run": 1,
+  "fate": {
+    "kind": "set_down",
+    "at": 4
+  },
+  "simModel": "claude-sonnet-5-5",
+  "probe": "What leads you from being passed over to wondering if you are \"not good enough\"?",
+  "premise": "Missing out on a promotion is a verdict on your personal adequacy.",
+  "pairs": [
+    {
+      "reflection": "i dont know really. if i work harder than everyone and still dont get it then it has to be something about me right. either im not as good as i think or they just dont notice me. i keep going back and forth between those two",
+      "reply": "Stay with that link for a moment. What makes hard work not leading to a promotion mean something about you, rather than something about the promotion?",
+      "event": null,
+      "flags": [],
+      "appIn": 1416
+    },
+    {
+      "reflection": "i mean what else would it be. the promotion goes to whoever is best or whoever they notice and its not me so. i dont really know how else to look at it",
+      "reply": "We wondered whether underneath this is a sense that missing out on the promotion is a verdict on how adequate you are as a person. Does that fit, or does it miss?",
+      "event": {
+        "type": "angle",
+        "kind": "reveal"
+      },
+      "flags": [],
+      "appIn": 1486
+    },
+    {
+      "reflection": "kind of i guess. i mean it doesnt feel like a verdict on me as a person just on my work. but my work is most of what i am so maybe thats the same thing. not sure",
+      "reply": "When work is most of what you are, what happens to the rest of you when the work isn't chosen?",
+      "event": null,
+      "flags": [],
+      "appIn": 1568
+    }
+  ],
+  "ending": "set_down",
+  "angles": [
+    "reveal"
+  ],
+  "refused": [],
+  "usdApp": 0.00789,
+  "usdPerson": 0.02258,
+  "seconds": 27
+}
